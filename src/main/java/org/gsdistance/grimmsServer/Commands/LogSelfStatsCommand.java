@@ -18,7 +18,7 @@ public class LogSelfStatsCommand implements CommandExecutor {
             for (Enumeration<String> keys = PlayerStats.Stats.keys(); keys.hasMoreElements();) {
                 String stat = keys.nextElement();
                 Object value = stats.getStat(stat, PlayerStats.Stats.get(stat));
-                player.sendMessage(stat + ": " + value.toString());
+                player.sendMessage(PlayerStats.StatNames.get(stat) + ": " + value.toString());
             }
 
             return true;
