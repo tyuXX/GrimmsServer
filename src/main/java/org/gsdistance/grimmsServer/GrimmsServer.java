@@ -3,7 +3,6 @@ package org.gsdistance.grimmsServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.Events.EventTrigger;
 import org.gsdistance.grimmsServer.Events.ServerStartupEvent;
-import org.gsdistance.grimmsServer.Commands.LogSelfStatsCommand;
 
 import java.util.logging.Logger;
 

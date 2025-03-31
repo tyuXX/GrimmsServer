@@ -8,7 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
-import java.util.List;
 
 public class PlayerStats {
     public static final Dictionary<String, PersistentDataType<?, ?>> Stats = new Hashtable<>();

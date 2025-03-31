@@ -4,9 +4,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.gsdistance.grimmsServer.GrimmsServer;
-
-import java.util.logging.Level;
 
 public class EventTrigger implements Listener {
     @EventHandler

@@ -1,14 +1,11 @@
 package org.gsdistance.grimmsServer.Commands;
 
-import com.google.common.math.Stats;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.PlayerStats;
 
-import java.lang.reflect.Array;
 import java.util.Enumeration;
 
 public class LogSelfStatsCommand implements CommandExecutor {
