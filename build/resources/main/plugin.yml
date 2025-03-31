@@ -1,0 +1,8 @@
+name: GrimmsServer
+main: org.gsdistance.grimmsServer.GrimmsServer
+version: 1
+api-version: 1.16
+commands:
+  logselfstats:
+    description: Displays the player's own stats including death count, money, and total kills.
+    usage: /logselfstats
