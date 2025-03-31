@@ -1,7 +1,7 @@
 package org.gsdistance.grimmsServer.Events;
 
 import org.gsdistance.grimmsServer.GrimmsServer;
-import org.gsdistance.grimmsServer.PlayerStats;
+import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 import java.util.Objects;
 import java.util.logging.Level;

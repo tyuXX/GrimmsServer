@@ -1,6 +1,6 @@
 package org.gsdistance.grimmsServer.Events;
 
-import org.gsdistance.grimmsServer.PlayerStats;
+import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class PlayerJoinEvent {
     public static void Event(org.bukkit.event.player.PlayerJoinEvent event) {

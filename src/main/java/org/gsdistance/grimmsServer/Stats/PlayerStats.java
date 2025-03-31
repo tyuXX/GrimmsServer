@@ -1,10 +1,11 @@
-package org.gsdistance.grimmsServer;
+package org.gsdistance.grimmsServer.Stats;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
