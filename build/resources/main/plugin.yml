@@ -6,3 +6,8 @@ commands:
   logselfstats:
     description: Displays the player's own stats including death count, money, and total kills.
     usage: /logselfstats
+    permission: grimmsserver.logselfstats
+  logworldstats:
+    description: Displays the world stats including total deaths, total kills, and total money.
+    usage: /logworldstats
+    permission: grimmsserver.logworldstats

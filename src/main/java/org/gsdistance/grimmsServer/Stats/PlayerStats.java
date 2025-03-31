@@ -27,12 +27,10 @@ public class PlayerStats {
     }
 
     private final JavaPlugin plugin;
-    private final Player player;
     private final PersistentDataContainer dataContainer;
 
     public PlayerStats(JavaPlugin plugin, Player player) {
         this.plugin = plugin;
-        this.player = player;
         this.dataContainer = player.getPersistentDataContainer();
     }
 
@@ -40,35 +38,30 @@ public class PlayerStats {
         return new PlayerStats(GrimmsServer.instance, player);
     }
 
-    public Object getStat(String stat, PersistentDataType type) {
-        if (Stats.get(stat) == null) {
+    public Object getStat(String stat) {
+        PersistentDataType type = Stats.get(stat);
+        if (type == null) {
             GrimmsServer.logger.warning("Stat " + stat + " does not exist.");
-            return null;
-        }
-        if (type != Stats.get(stat)) {
-            GrimmsServer.logger.warning("Stat type mismatch: " + stat + " is not of type " + type);
             return null;
         }
         return dataContainer.getOrDefault(new NamespacedKey(plugin, stat), type, 0);
     }
 
-    public void setStat(String stat, Object value, PersistentDataType type) {
-        if (Stats.get(stat) == null) {
+    public void setStat(String stat, Object value) {
+        PersistentDataType type = Stats.get(stat);
+        if (type == null) {
             GrimmsServer.logger.warning("Stat " + stat + " does not exist.");
-            return;
-        }
-        if((Stats.get(stat) != type)){
-            GrimmsServer.logger.warning("Stat type mismatch: " + stat + " is not of type " + type);
             return;
         }
         dataContainer.set(new NamespacedKey(plugin, stat), type, value);
     }
 
-    public void changeStat(String stat, int amount) {
-        if (!(Stats.get(stat) == PersistentDataType.INTEGER)) {
+    public void changeStat(String stat, int amount){
+        PersistentDataType type = Stats.get(stat);
+        if (!(Stats.get(stat) == PersistentDataType.BYTE || Stats.get(stat) == PersistentDataType.SHORT || Stats.get(stat) == PersistentDataType.INTEGER || Stats.get(stat) == PersistentDataType.FLOAT || Stats.get(stat) == PersistentDataType.DOUBLE)) {
             return;
         }
-        int currentStat = dataContainer.getOrDefault(new NamespacedKey(plugin, stat), PersistentDataType.INTEGER, 0);
-        dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.INTEGER, currentStat + amount);
+        int currentStat = dataContainer.getOrDefault(new NamespacedKey(plugin, stat), type, 0);
+        dataContainer.set(new NamespacedKey(plugin, stat), type, currentStat + amount);
     }
 }
