@@ -16,7 +16,12 @@ public class LogSelfStatsCommand implements CommandExecutor {
             for (Enumeration<String> keys = PlayerStats.Stats.keys(); keys.hasMoreElements();) {
                 String stat = keys.nextElement();
                 Object value = stats.getStat(stat);
-                sender.sendMessage(PlayerStats.StatNames.get(stat) + ": " + value.toString());
+                if(value instanceof Double) {
+                    player.sendMessage(PlayerStats.StatNames.get(stat) + ": " + Math.round((Double) value));
+                } else {
+                    player.sendMessage(PlayerStats.StatNames.get(stat) + ": " + value.toString());
+
+                }
             }
 
             return true;

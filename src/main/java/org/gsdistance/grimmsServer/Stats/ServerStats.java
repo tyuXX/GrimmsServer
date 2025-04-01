@@ -22,13 +22,15 @@ public class ServerStats {
     static {
         Stats.put("death_count", Integer.class);
         Stats.put("join_count", Integer.class);
-        Stats.put("market", Market.class);
+        Stats.put("market", String.class);
+        Stats.put("leaderboard", String.class);
     }
     public static final Dictionary<String,String> StatNames = new Hashtable<>();
     static {
         StatNames.put("death_count", "Death Count");
         StatNames.put("join_count", "Join Count");
         StatNames.put("market", "Market");
+        StatNames.put("leaderboard", "Leaderboard");
     }
 
     private final JavaPlugin plugin;
@@ -47,7 +49,8 @@ public class ServerStats {
     private void loadStats() {
         if (!statsFile.exists()) {
             stats = new Hashtable<>();
-            stats.put("market", new Market()); // Initialize market stat
+            stats.put("market", new Gson().toJson(new Market())); // Initialize market stat
+            stats.put("leaderboard", new Gson().toJson(new PlayerStatLeaderBoard())); // Initialize leaderboard stat
             saveStats();
             return;
         }
@@ -55,12 +58,16 @@ public class ServerStats {
             Type type = new TypeToken<Map<String, Object>>() {}.getType();
             stats = new Gson().fromJson(reader, type);
             if (!stats.containsKey("market")) {
-                stats.put("market", new Market()); // Ensure market stat is initialized
+                stats.put("market", new Gson().toJson(new Market())); // Initialize market stat
+            }
+            if (!stats.containsKey("leaderboard")) {
+                stats.put("leaderboard", new Gson().toJson(new PlayerStatLeaderBoard())); // Initialize leaderboard stat
             }
         } catch (IOException e) {
             GrimmsServer.logger.log(Level.WARNING, "Failed to load server stats.\n" + Arrays.toString(e.getStackTrace()));
             stats = new Hashtable<>();
-            stats.put("market", new Market()); // Initialize market stat
+            stats.put("market", new Gson().toJson(new Market())); // Initialize market stat
+            stats.put("leaderboard", new Gson().toJson(new PlayerStatLeaderBoard())); // Initialize leaderboard stat
         }
     }
 
