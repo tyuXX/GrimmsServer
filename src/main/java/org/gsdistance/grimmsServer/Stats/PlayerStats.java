@@ -65,10 +65,16 @@ public class PlayerStats {
             return;
         }
         if (type == PersistentDataType.INTEGER) {
-            int currentStat = dataContainer.getOrDefault(new NamespacedKey(plugin, stat), PersistentDataType.INTEGER, 0);
+            Integer currentStat = dataContainer.get(new NamespacedKey(plugin, stat), PersistentDataType.INTEGER);
+            if (currentStat == null) {
+                currentStat = 0;
+            }
             dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.INTEGER, currentStat + amount);
         } else if (type == PersistentDataType.DOUBLE) {
-            double currentStat = dataContainer.getOrDefault(new NamespacedKey(plugin, stat), PersistentDataType.DOUBLE, 0.0);
+            Double currentStat = dataContainer.get(new NamespacedKey(plugin, stat), PersistentDataType.DOUBLE);
+            if (currentStat == null) {
+                currentStat = 0.0;
+            }
             dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.DOUBLE, currentStat + amount);
         }
     }

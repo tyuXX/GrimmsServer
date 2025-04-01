@@ -19,3 +19,7 @@ commands:
     description: Sells the main hand for a certain amount of money.
     usage: /sellItem
     permission: grimmsserver.sellItem
+  buyItem:
+    description: Buys an item for a certain amount of money.
+    usage: /buyItem <item> <amount>
+    permission: grimmsserver.buyItem

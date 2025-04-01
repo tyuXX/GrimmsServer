@@ -11,6 +11,7 @@ public class EventTrigger implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         org.gsdistance.grimmsServer.Events.EntityDeathEvent.Event(event);
     }
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         org.gsdistance.grimmsServer.Events.BlockBreakEvent.Event(event);
     }

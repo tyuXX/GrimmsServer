@@ -9,7 +9,9 @@ public class BlockBreakEvent {
             PlayerStats.getPlayerStats(event.getPlayer()).setStat("money", (double) PlayerStats.getPlayerStats(event.getPlayer()).getStat("money") + 0.5D);
             PlayerStats.getPlayerStats(event.getPlayer()).setStat("tPoint", (double) PlayerStats.getPlayerStats(event.getPlayer()).getStat("tPoint") + 1D);
         }
-        WorldStats.getWorldStats(event.getBlock().getWorld()).setStat("block_break_count", (long) WorldStats.getWorldStats(event.getBlock().getWorld()).getStat("block_break_count") + 1L);
+        // Correctly handle block_break_count as Long
+        Long blockBreakCount = (Long) WorldStats.getWorldStats(event.getBlock().getWorld()).getStat("block_break_count");
+        WorldStats.getWorldStats(event.getBlock().getWorld()).setStat("block_break_count", blockBreakCount + 1L);
         WorldStats.getWorldStats(event.getBlock().getWorld()).setStat("wPoint", (double) WorldStats.getWorldStats(event.getBlock().getWorld()).getStat("wPoint") + 3.0D);
     }
 }

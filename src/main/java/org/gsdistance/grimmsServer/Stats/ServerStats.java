@@ -88,10 +88,10 @@ public class ServerStats {
             return;
         }
         if (type == Integer.class) {
-            int currentStat = stats.getOrDefault(stat, 0) instanceof Number ? ((Number) stats.get(stat)).intValue() : 0;
+            int currentStat = stats.get(stat) instanceof Number ? ((Number) stats.get(stat)).intValue() : 0;
             stats.put(stat, currentStat + amount);
         } else if (type == Double.class) {
-            double currentStat = stats.getOrDefault(stat, 0.0) instanceof Number ? ((Number) stats.get(stat)).doubleValue() : 0.0;
+            double currentStat = stats.get(stat) instanceof Number ? ((Number) stats.get(stat)).doubleValue() : 0.0;
             stats.put(stat, currentStat + amount);
         }
         saveStats();
