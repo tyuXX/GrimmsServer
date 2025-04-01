@@ -17,6 +17,7 @@ public class PlayerStats {
         Stats.put("money", PersistentDataType.DOUBLE);
         Stats.put("total_kill_count", PersistentDataType.INTEGER);
         Stats.put("join_count", PersistentDataType.INTEGER);
+        Stats.put("tPoint", PersistentDataType.DOUBLE);
     }
     public static final Dictionary<String,String> StatNames = new Hashtable<>();
     static {
@@ -24,6 +25,7 @@ public class PlayerStats {
         StatNames.put("money", "Money");
         StatNames.put("total_kill_count", "Total Kill Count");
         StatNames.put("join_count", "Join Count");
+        StatNames.put("tPoint", "Total Points");
     }
 
     private final JavaPlugin plugin;

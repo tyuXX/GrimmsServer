@@ -3,6 +3,7 @@ package org.gsdistance.grimmsServer.Stats;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.io.File;
@@ -21,11 +22,13 @@ public class ServerStats {
     static {
         Stats.put("death_count", Integer.class);
         Stats.put("join_count", Integer.class);
+        Stats.put("market", Market.class);
     }
     public static final Dictionary<String,String> StatNames = new Hashtable<>();
     static {
         StatNames.put("death_count", "Death Count");
         StatNames.put("join_count", "Join Count");
+        StatNames.put("market", "Market");
     }
 
     private final JavaPlugin plugin;

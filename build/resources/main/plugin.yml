@@ -11,3 +11,11 @@ commands:
     description: Displays the world stats including total deaths, total kills, and total money.
     usage: /logworldstats
     permission: grimmsserver.logworldstats
+  getMarketValue:
+    description: Displays the market value of a specified item.
+    usage: /getMarketValue <item>
+    permission: grimmsserver.getMarketValue
+  sellItem:
+    description: Sells the main hand for a certain amount of money.
+    usage: /sellItem
+    permission: grimmsserver.sellItem

@@ -14,10 +14,16 @@ public class WorldStats {
     public static final Dictionary<String, PersistentDataType<?, ?>> Stats = new Hashtable<>();
     static {
         Stats.put("death_count", PersistentDataType.INTEGER);
+        Stats.put("block_break_count", PersistentDataType.LONG);
+        Stats.put("wPoint", PersistentDataType.DOUBLE);
+        Stats.put("join_count", PersistentDataType.INTEGER);
     }
     public static final Dictionary<String,String> StatNames = new Hashtable<>();
     static {
         StatNames.put("death_count", "Death Count");
+        StatNames.put("block_break_count", "Block Break Count");
+        StatNames.put("wPoint", "World Points");
+        StatNames.put("join_count", "Join Count");
     }
 
     private final JavaPlugin plugin;
