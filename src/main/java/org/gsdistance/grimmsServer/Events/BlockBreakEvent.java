@@ -6,12 +6,10 @@ import org.gsdistance.grimmsServer.Stats.WorldStats;
 public class BlockBreakEvent {
     public static void Event(org.bukkit.event.block.BlockBreakEvent event) {
         if (event.getPlayer().getType() == org.bukkit.entity.EntityType.PLAYER) {
-            PlayerStats.getPlayerStats(event.getPlayer()).setStat("money", (double) PlayerStats.getPlayerStats(event.getPlayer()).getStat("money") + 0.5D);
-            PlayerStats.getPlayerStats(event.getPlayer()).setStat("tPoint", (double) PlayerStats.getPlayerStats(event.getPlayer()).getStat("tPoint") + 1D);
+            PlayerStats.getPlayerStats(event.getPlayer()).changeStat("money", 1);
+            PlayerStats.getPlayerStats(event.getPlayer()).changeStat("tPoint", 3);
         }
-        // Correctly handle block_break_count as Long
-        Long blockBreakCount = (Long) WorldStats.getWorldStats(event.getBlock().getWorld()).getStat("block_break_count");
-        WorldStats.getWorldStats(event.getBlock().getWorld()).setStat("block_break_count", blockBreakCount + 1L);
-        WorldStats.getWorldStats(event.getBlock().getWorld()).setStat("wPoint", (double) WorldStats.getWorldStats(event.getBlock().getWorld()).getStat("wPoint") + 3.0D);
+        WorldStats.getWorldStats(event.getBlock().getWorld()).changeStat("block_break_count", 1);
+        WorldStats.getWorldStats(event.getBlock().getWorld()).changeStat("wPoint", 3);
     }
 }

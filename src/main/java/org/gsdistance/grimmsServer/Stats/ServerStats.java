@@ -47,15 +47,20 @@ public class ServerStats {
     private void loadStats() {
         if (!statsFile.exists()) {
             stats = new Hashtable<>();
+            stats.put("market", new Market()); // Initialize market stat
             saveStats();
             return;
         }
         try (FileReader reader = new FileReader(statsFile)) {
             Type type = new TypeToken<Map<String, Object>>() {}.getType();
             stats = new Gson().fromJson(reader, type);
+            if (!stats.containsKey("market")) {
+                stats.put("market", new Market()); // Ensure market stat is initialized
+            }
         } catch (IOException e) {
             GrimmsServer.logger.log(Level.WARNING, "Failed to load server stats.\n" + Arrays.toString(e.getStackTrace()));
             stats = new Hashtable<>();
+            stats.put("market", new Market()); // Initialize market stat
         }
     }
 

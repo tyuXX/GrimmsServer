@@ -15,8 +15,7 @@ public class SellItem implements CommandExecutor {
             market.sell(((Player) sender).getInventory().getItemInMainHand(), (Player) sender);
             ServerStats.getServerStats().setStat("market", market);
             return true;
-        }
-        else {
+        } else {
             sender.sendMessage("This command can only be run by a player.");
             return false;
         }
