@@ -82,11 +82,18 @@ public class ServerStats {
     }
 
     public void changeStat(String stat, int amount) {
-        if (!Number.class.isAssignableFrom((Class<?>) Stats.get(stat))) {
+        Class<?> type = (Class<?>) Stats.get(stat);
+        if (type == null) {
+            GrimmsServer.logger.warning("Stat " + stat + " does not exist.");
             return;
         }
-        int currentStat = stats.getOrDefault(stat, 0) instanceof Number ? ((Number) stats.get(stat)).intValue() : 0;
-        stats.put(stat, currentStat + amount);
+        if (type == Integer.class) {
+            int currentStat = stats.getOrDefault(stat, 0) instanceof Number ? ((Number) stats.get(stat)).intValue() : 0;
+            stats.put(stat, currentStat + amount);
+        } else if (type == Double.class) {
+            double currentStat = stats.getOrDefault(stat, 0.0) instanceof Number ? ((Number) stats.get(stat)).doubleValue() : 0.0;
+            stats.put(stat, currentStat + amount);
+        }
         saveStats();
     }
 }

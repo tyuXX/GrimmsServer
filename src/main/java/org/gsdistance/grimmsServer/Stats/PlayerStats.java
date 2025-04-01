@@ -58,12 +58,18 @@ public class PlayerStats {
         dataContainer.set(new NamespacedKey(plugin, stat), type, value);
     }
 
-    public void changeStat(String stat, int amount){
+    public void changeStat(String stat, int amount) {
         PersistentDataType type = Stats.get(stat);
-        if (!(Stats.get(stat) == PersistentDataType.BYTE || Stats.get(stat) == PersistentDataType.SHORT || Stats.get(stat) == PersistentDataType.INTEGER || Stats.get(stat) == PersistentDataType.FLOAT || Stats.get(stat) == PersistentDataType.DOUBLE)) {
+        if (type == null) {
+            GrimmsServer.logger.warning("Stat " + stat + " does not exist.");
             return;
         }
-        int currentStat = dataContainer.getOrDefault(new NamespacedKey(plugin, stat), type, 0);
-        dataContainer.set(new NamespacedKey(plugin, stat), type, currentStat + amount);
+        if (type == PersistentDataType.INTEGER) {
+            int currentStat = dataContainer.getOrDefault(new NamespacedKey(plugin, stat), PersistentDataType.INTEGER, 0);
+            dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.INTEGER, currentStat + amount);
+        } else if (type == PersistentDataType.DOUBLE) {
+            double currentStat = dataContainer.getOrDefault(new NamespacedKey(plugin, stat), PersistentDataType.DOUBLE, 0.0);
+            dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.DOUBLE, currentStat + amount);
+        }
     }
 }
