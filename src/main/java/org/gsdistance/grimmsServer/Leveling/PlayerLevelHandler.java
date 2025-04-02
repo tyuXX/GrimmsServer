@@ -1,4 +1,4 @@
-package Leveling;
+package org.gsdistance.grimmsServer.Leveling;
 
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.GrimmsServer;
@@ -40,6 +40,14 @@ public class PlayerLevelHandler {
         return Math.pow(getLevel(), 1.7) * 100;
     }
 
+    public double getMoneyMultiplier() {
+        return Math.max(1, Math.floor(Math.sqrt(getLevel())));
+    }
+
+    public double getLesserMoneyMultiplier() {
+        return Math.max(1, Math.floor(Math.sqrt((double) getLevel() / 2)));
+    }
+
     public int addExp(double xp) {
         double exp = xp + getXp();
         int lvlups = 0;
@@ -47,7 +55,7 @@ public class PlayerLevelHandler {
         while (exp > getXpToLevel()) {
             exp -= getXpToLevel();
             playerStats.changeStat("level", 1);
-            tMoney += Math.pow(getLevel(), 1.5) * 10;
+            tMoney += Math.pow(getLevel(), 1.5) * 100;
             lvlups++;
         }
         setXp(exp);

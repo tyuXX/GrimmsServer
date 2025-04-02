@@ -15,5 +15,7 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("sendMoney").setExecutor(new SendMoney());
         GrimmsServer.instance.getCommand("buyRipoff").setExecutor(new BuyRipoffItem());
         GrimmsServer.instance.getCommand("makeItemLevelable").setExecutor(new MakeItemLevelable());
+        GrimmsServer.instance.getCommand("setPlayerStat").setExecutor(new SetPlayerStat());
+        GrimmsServer.instance.getCommand("logPlayerStats").setExecutor(new LogPlayerStats());
     }
 }

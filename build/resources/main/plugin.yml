@@ -43,3 +43,11 @@ commands:
     description: Makes the main hand item levelable for 3500 money.
     usage: /makeItemLevelable
     permission: grimmsserver.makeItemLevelable
+  setPlayerStat:
+    description: Set a player's stats.
+    usage: /setplayerstat <player> <stat> <value>
+    permission: grimmsserver.setPlayerStat
+  logPlayerStats:
+    description: Displays the stats of a specified player.
+    usage: /logPlayerStats <player>
+    permission: grimmsserver.logPlayerStats

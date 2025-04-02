@@ -1,6 +1,6 @@
 package org.gsdistance.grimmsServer.Commands;
 
-import Data.MarketBaseValues;
+import org.gsdistance.grimmsServer.Data.MarketBaseValues;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

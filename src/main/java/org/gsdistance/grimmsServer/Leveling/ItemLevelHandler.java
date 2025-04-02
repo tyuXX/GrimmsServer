@@ -1,4 +1,4 @@
-package Leveling;
+package org.gsdistance.grimmsServer.Leveling;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;

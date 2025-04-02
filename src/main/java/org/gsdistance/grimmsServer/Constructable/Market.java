@@ -1,6 +1,6 @@
 package org.gsdistance.grimmsServer.Constructable;
 
-import Data.MarketBaseValues;
+import org.gsdistance.grimmsServer.Data.MarketBaseValues;
 import com.google.gson.Gson;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

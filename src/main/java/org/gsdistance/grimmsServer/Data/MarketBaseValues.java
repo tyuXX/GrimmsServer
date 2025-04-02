@@ -1,4 +1,4 @@
-package Data;
+package org.gsdistance.grimmsServer.Data;
 
 import org.bukkit.Material;
 

@@ -1,6 +1,6 @@
 package org.gsdistance.grimmsServer.Events;
 
-import Leveling.PlayerLevelHandler;
+import org.gsdistance.grimmsServer.Leveling.PlayerLevelHandler;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
 import org.gsdistance.grimmsServer.Stats.WorldStats;
@@ -13,14 +13,14 @@ public class EntityDeathEvent {
                 WorldStats worldStats = WorldStats.getWorldStats(event.getEntity().getWorld());
 
                 playerStats.changeStat("total_kill_count", 1);
-                playerStats.changeStat("money", 3);
-                playerStats.changeStat("tPoint", 25);
+                playerStats.changeStat("money", (int)Math.round(3 * PlayerLevelHandler.getLevelHandler(event.getEntity().getKiller()).getLesserMoneyMultiplier()));
+                playerStats.changeStat("tPoint", (int)Math.round(25 * PlayerLevelHandler.getLevelHandler(event.getEntity().getKiller()).getMoneyMultiplier()));
                 worldStats.changeStat("wPoint", 40);
                 PlayerLevelHandler.getLevelHandler(event.getEntity().getKiller()).addExp(50);
 
                 if (event.getEntity().getType() == org.bukkit.entity.EntityType.PLAYER) {
-                    playerStats.changeStat("money", 12);
-                    playerStats.changeStat("tPoint", 50);
+                    playerStats.changeStat("money", (int)Math.round(12 * PlayerLevelHandler.getLevelHandler(event.getEntity().getKiller()).getLesserMoneyMultiplier()));
+                    playerStats.changeStat("tPoint", (int)Math.round(50 * PlayerLevelHandler.getLevelHandler(event.getEntity().getKiller()).getMoneyMultiplier()));
                     worldStats.changeStat("wPoint", 110);
                     PlayerLevelHandler.getLevelHandler(event.getEntity().getKiller()).addExp(150);
                 }
