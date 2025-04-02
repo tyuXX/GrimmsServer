@@ -29,5 +29,9 @@ commands:
     permission: grimmsserver.getMarket
   logLeaderboard:
     description: Displays the leaderboard of players with the most kills.
-    usage: /Leaderboard
+    usage: /logLeaderboard
     permission: grimmsserver.logLeaderboard
+  sendMoney:
+    description: Sends money to another player.
+    usage: /sendMoney <player> <amount>
+    permission: grimmsserver.sendMoney

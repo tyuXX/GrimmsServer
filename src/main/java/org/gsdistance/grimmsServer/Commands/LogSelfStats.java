@@ -8,19 +8,17 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 import java.util.Enumeration;
 
-public class LogSelfStatsCommand implements CommandExecutor {
+public class LogSelfStats implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player player) {
             PlayerStats stats = PlayerStats.getPlayerStats(player);
-            for (Enumeration<String> keys = PlayerStats.Stats.keys(); keys.hasMoreElements();) {
-                String stat = keys.nextElement();
+            for (String stat : PlayerStats.StatOrder) {
                 Object value = stats.getStat(stat);
-                if(value instanceof Double) {
+                if (value instanceof Double) {
                     player.sendMessage(PlayerStats.StatNames.get(stat) + ": " + Math.round((Double) value));
                 } else {
                     player.sendMessage(PlayerStats.StatNames.get(stat) + ": " + value.toString());
-
                 }
             }
 

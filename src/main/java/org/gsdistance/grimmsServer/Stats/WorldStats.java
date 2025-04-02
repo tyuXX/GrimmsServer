@@ -12,13 +12,16 @@ import java.util.Hashtable;
 
 public class WorldStats {
     public static final Dictionary<String, PersistentDataType<?, ?>> Stats = new Hashtable<>();
+
     static {
         Stats.put("death_count", PersistentDataType.INTEGER);
         Stats.put("block_break_count", PersistentDataType.LONG);
         Stats.put("wPoint", PersistentDataType.DOUBLE);
         Stats.put("join_count", PersistentDataType.INTEGER);
     }
-    public static final Dictionary<String,String> StatNames = new Hashtable<>();
+
+    public static final Dictionary<String, String> StatNames = new Hashtable<>();
+
     static {
         StatNames.put("death_count", "Death Count");
         StatNames.put("block_break_count", "Block Break Count");
@@ -34,7 +37,7 @@ public class WorldStats {
         this.dataContainer = world.getPersistentDataContainer();
     }
 
-    public static WorldStats getWorldStats(World world){
+    public static WorldStats getWorldStats(World world) {
         return new WorldStats(GrimmsServer.instance, world);
     }
 
@@ -75,11 +78,11 @@ public class WorldStats {
             }
             dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.DOUBLE, currentStat + amount);
         } else if (type == PersistentDataType.LONG) {
-                Long currentStat = dataContainer.get(new NamespacedKey(plugin, stat), PersistentDataType.LONG);
-                if (currentStat == null) {
-                    currentStat = 0L;
-                }
-                dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.LONG, currentStat + amount);
+            Long currentStat = dataContainer.get(new NamespacedKey(plugin, stat), PersistentDataType.LONG);
+            if (currentStat == null) {
+                currentStat = 0L;
+            }
+            dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.LONG, currentStat + amount);
         }
     }
 }

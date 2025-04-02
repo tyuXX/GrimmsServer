@@ -2,7 +2,6 @@ package org.gsdistance.grimmsServer.Events;
 
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Commands.CommandRegistry;
-import org.gsdistance.grimmsServer.Commands.LogSelfStatsCommand;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStatLeaderBoard;
 
@@ -10,6 +9,7 @@ import java.util.logging.Level;
 
 public class ServerStartupEvent {
     public static int ticks = 0;
+
     public static void Event() {
         CommandRegistry.registerCommands();
         GrimmsServer.instance.getServer().getScheduler().scheduleSyncRepeatingTask(GrimmsServer.instance, () -> {

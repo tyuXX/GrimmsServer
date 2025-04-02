@@ -14,33 +14,31 @@ public class PlayerStatLeaderBoard {
             "join_count", Integer.class,
             "tPoint", Double.class,
             "block_break_count", Long.class,
-            "money", Double.class
-    );
-    public static final Map<String, String> StatNames = Map.of(
-            "total_kill_count", "Kills",
-            "death_count", "Deaths",
-            "join_count", "Join Count",
-            "tPoint", "Total Points",
-            "block_break_count", "Blocks Broken",
-            "money", "Money"
+            "money", Double.class,
+            "level", Integer.class
     );
     public Map<String, LeaderboardEntry> leaderboard;
-    public PlayerStatLeaderBoard () {
+
+    public PlayerStatLeaderBoard() {
         this.leaderboard = Map.of(
                 "total_kill_count", new LeaderboardEntry("None", 0),
                 "death_count", new LeaderboardEntry("None", 0),
                 "join_count", new LeaderboardEntry("None", 0),
                 "tPoint", new LeaderboardEntry("None", 0),
                 "block_break_count", new LeaderboardEntry("None", 0),
-                "money", new LeaderboardEntry("None", 0)
+                "money", new LeaderboardEntry("None", 0),
+                "level", new LeaderboardEntry("None", 0)
         );
     }
-    public static PlayerStatLeaderBoard getPlayerStatLeaderBoard () {
-        return new Gson().fromJson((String) ServerStats.getServerStats().getStat("leaderboard"),PlayerStatLeaderBoard.class);
+
+    public static PlayerStatLeaderBoard getPlayerStatLeaderBoard() {
+        return new Gson().fromJson((String) ServerStats.getServerStats().getStat("leaderboard"), PlayerStatLeaderBoard.class);
     }
-    public void savePlayerStatLeaderBoard () {
+
+    public void savePlayerStatLeaderBoard() {
         ServerStats.getServerStats().setStat("leaderboard", new Gson().toJson(this));
     }
+
     public boolean checkPlayer(Player player) {
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
         boolean pass = false;

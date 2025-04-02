@@ -9,9 +9,11 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.List;
 
 public class PlayerStats {
     public static final Dictionary<String, PersistentDataType<?, ?>> Stats = new Hashtable<>();
+
     static {
         Stats.put("death_count", PersistentDataType.INTEGER);
         Stats.put("money", PersistentDataType.DOUBLE);
@@ -19,8 +21,13 @@ public class PlayerStats {
         Stats.put("join_count", PersistentDataType.INTEGER);
         Stats.put("tPoint", PersistentDataType.DOUBLE);
         Stats.put("block_break_count", PersistentDataType.LONG);
+        Stats.put("level", PersistentDataType.INTEGER);
+        Stats.put("xp", PersistentDataType.DOUBLE);
+        Stats.put("xp_required", PersistentDataType.DOUBLE);
     }
-    public static final Dictionary<String,String> StatNames = new Hashtable<>();
+
+    public static final Dictionary<String, String> StatNames = new Hashtable<>();
+
     static {
         StatNames.put("death_count", "Death Count");
         StatNames.put("money", "Money");
@@ -28,7 +35,21 @@ public class PlayerStats {
         StatNames.put("join_count", "Join Count");
         StatNames.put("tPoint", "Total Points");
         StatNames.put("block_break_count", "Block Break Count");
+        StatNames.put("level", "Level");
+        StatNames.put("xp", "Experience");
+        StatNames.put("xp_required", "Experience Required");
     }
+    public static final List<String> StatOrder = List.of(
+            "death_count",
+            "money",
+            "total_kill_count",
+            "join_count",
+            "tPoint",
+            "block_break_count",
+            "level",
+            "xp",
+            "xp_required"
+    );
 
     private final JavaPlugin plugin;
     private final PersistentDataContainer dataContainer;
@@ -78,6 +99,12 @@ public class PlayerStats {
                 currentStat = 0.0;
             }
             dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.DOUBLE, currentStat + amount);
+        } else if (type == PersistentDataType.LONG) {
+            Long currentStat = dataContainer.get(new NamespacedKey(plugin, stat), PersistentDataType.LONG);
+            if (currentStat == null) {
+                currentStat = 0L;
+            }
+            dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.LONG, currentStat + amount);
         }
     }
 }

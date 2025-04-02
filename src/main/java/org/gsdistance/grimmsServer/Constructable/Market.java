@@ -4,7 +4,6 @@ import Data.MarketBaseValues;
 import com.google.gson.Gson;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
@@ -34,7 +33,7 @@ public class Market {
             for (int i = 0; i < itemStack.getAmount(); i++) {
                 Object moneyObj = PlayerStats.getPlayerStats(player).getStat("money");
                 double money = moneyObj instanceof Integer ? ((Integer) moneyObj).doubleValue() : (double) moneyObj;
-                sold+= getPrice(itemStack.getType());
+                sold += getPrice(itemStack.getType());
                 PlayerStats.getPlayerStats(player).setStat("money", money + getPrice(itemStack.getType()));
                 items.put(itemStack.getType().getKey().toString(), items.get(itemStack.getType().getKey().toString()) + 1);
             }
@@ -72,8 +71,8 @@ public class Market {
             return 0;
         } else {
             long amount = items.get(item.getKey().toString());
-            if(MarketBaseValues.marketBaseValues.containsKey(item)){
-                return Math.max(Math.max(0.25D,Math.floor(MarketBaseValues.marketBaseValues.get(item)/100)), MarketBaseValues.marketBaseValues.get(item) - Math.sqrt(amount));
+            if (MarketBaseValues.marketBaseValues.containsKey(item)) {
+                return Math.max(Math.max(0.25D, Math.floor(MarketBaseValues.marketBaseValues.get(item) / 100)), MarketBaseValues.marketBaseValues.get(item) - Math.sqrt(amount));
             }
             return Math.max(0.25D, 25 - Math.sqrt(amount));
         }

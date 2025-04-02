@@ -19,13 +19,16 @@ import java.util.logging.Level;
 
 public class ServerStats {
     public static final Dictionary<String, Type> Stats = new Hashtable<>();
+
     static {
         Stats.put("death_count", Integer.class);
         Stats.put("join_count", Integer.class);
         Stats.put("market", String.class);
         Stats.put("leaderboard", String.class);
     }
-    public static final Dictionary<String,String> StatNames = new Hashtable<>();
+
+    public static final Dictionary<String, String> StatNames = new Hashtable<>();
+
     static {
         StatNames.put("death_count", "Death Count");
         StatNames.put("join_count", "Join Count");
@@ -42,6 +45,7 @@ public class ServerStats {
         this.statsFile = new File(plugin.getDataFolder(), "server_stats.json");
         loadStats();
     }
+
     public static ServerStats getServerStats() {
         return new ServerStats(GrimmsServer.instance);
     }
@@ -55,7 +59,8 @@ public class ServerStats {
             return;
         }
         try (FileReader reader = new FileReader(statsFile)) {
-            Type type = new TypeToken<Map<String, Object>>() {}.getType();
+            Type type = new TypeToken<Map<String, Object>>() {
+            }.getType();
             stats = new Gson().fromJson(reader, type);
             if (!stats.containsKey("market")) {
                 stats.put("market", new Gson().toJson(new Market())); // Initialize market stat

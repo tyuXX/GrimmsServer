@@ -1,6 +1,5 @@
 package org.gsdistance.grimmsServer.Events;
 
-import org.bukkit.ServerTickManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -12,10 +11,12 @@ public class EventTrigger implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         org.gsdistance.grimmsServer.Events.EntityDeathEvent.Event(event);
     }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         org.gsdistance.grimmsServer.Events.BlockBreakEvent.Event(event);
     }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         org.gsdistance.grimmsServer.Events.PlayerJoinEvent.Event(event);

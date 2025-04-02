@@ -1,13 +1,10 @@
 package org.gsdistance.grimmsServer.Events;
 
-import org.bukkit.plugin.java.JavaPlugin;
-import org.gsdistance.grimmsServer.GrimmsServer;
+import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Stats.LevelHandler;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
 import org.gsdistance.grimmsServer.Stats.WorldStats;
-
-import java.util.Objects;
-import java.util.logging.Level;
 
 public class EntityDeathEvent {
     public static void Event(org.bukkit.event.entity.EntityDeathEvent event) {
@@ -20,11 +17,13 @@ public class EntityDeathEvent {
                 playerStats.changeStat("money", 3);
                 playerStats.changeStat("tPoint", 25);
                 worldStats.changeStat("wPoint", 40);
+                LevelHandler.getLevelHandler(event.getEntity().getKiller()).addExp(50);
 
                 if (event.getEntity().getType() == org.bukkit.entity.EntityType.PLAYER) {
                     playerStats.changeStat("money", 12);
                     playerStats.changeStat("tPoint", 50);
                     worldStats.changeStat("wPoint", 110);
+                    LevelHandler.getLevelHandler(event.getEntity().getKiller()).addExp(150);
                 }
             }
         }
