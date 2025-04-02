@@ -60,8 +60,11 @@ public class Market {
                     items.put(item.getKey().toString(), items.get(item.getKey().toString()) - 1);
                     bought++;
                 }
-                player.getInventory().addItem(new ItemStack(item, bought));
+                else{
+                    break;
+                }
             }
+            player.getInventory().addItem(new ItemStack(item, bought));
             return boughtP;
         }
     }

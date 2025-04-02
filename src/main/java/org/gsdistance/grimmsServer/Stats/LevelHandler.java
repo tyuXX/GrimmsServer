@@ -4,11 +4,11 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 public class LevelHandler {
-    private final String playerName;
+    private final Player player;
     private final PlayerStats playerStats;
     public LevelHandler(Player player) {
         this.playerStats = PlayerStats.getPlayerStats(player);
-        this.playerName = player.getName();
+        this.player = player;
     }
     public static LevelHandler getLevelHandler(Player player) {
         return new LevelHandler(player);
@@ -25,16 +25,19 @@ public class LevelHandler {
     public int addExp(double xp){
         double exp = xp + getXp();
         int lvlups = 0;
+        double tMoney = 0;
         while(exp > getXpToLevel()){
             exp -= getXpToLevel();
             playerStats.changeStat("level",1);
-            playerStats.changeStat("money", (int) Math.min(2147483645,Math.pow(getLevel(),1.5) * 10));
+            tMoney += Math.pow(getLevel(),1.5) * 10;
             lvlups++;
         }
         playerStats.setStat("xp",exp);
         playerStats.setStat("xp_required",getXpToLevel());
         if(lvlups>0){
-            GrimmsServer.instance.getServer().broadcastMessage("[" + playerName + "] " + "Has leveled up to " + getLevel() + "!");
+            playerStats.setStat("money", (Double) playerStats.getStat("money") + tMoney);
+            GrimmsServer.instance.getServer().broadcastMessage("[" + player.getDisplayName() + "] " + "Has leveled up to " + getLevel() + "!");
+            player.sendMessage("By leveling up " + lvlups + " times, you have gained " + Math.round(tMoney) + " money!");
         }
         return lvlups;
     }
