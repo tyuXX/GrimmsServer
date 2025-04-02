@@ -6,7 +6,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class BuyRipoffItem implements CommandExecutor {
@@ -21,22 +20,21 @@ public class BuyRipoffItem implements CommandExecutor {
                 sender.sendMessage("Invalid item id:" + args[0]);
                 return false;
             }
-            if(MarketBaseValues.marketBaseValues.containsKey(Material.matchMaterial(args[0]))){
+            if (MarketBaseValues.marketBaseValues.containsKey(Material.matchMaterial(args[0]))) {
                 sender.sendMessage("This item is not available in the market.");
                 return false;
             }
             PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
             double bought = 0;
             for (int i = 0; i < Integer.parseInt(args[1]); i++) {
-                if((Double) playerStats.getStat("money") > MarketBaseValues.marketBaseValues.get(Material.matchMaterial(args[0]))*10){
-                    playerStats.setStat("money", (Double) playerStats.getStat("money") - MarketBaseValues.marketBaseValues.get(Material.matchMaterial(args[0]))*10);
+                if ((Double) playerStats.getStat("money") > MarketBaseValues.marketBaseValues.get(Material.matchMaterial(args[0])) * 10) {
+                    playerStats.setStat("money", (Double) playerStats.getStat("money") - MarketBaseValues.marketBaseValues.get(Material.matchMaterial(args[0])) * 10);
                     bought++;
-                }
-                else{
+                } else {
                     break;
                 }
             }
-            sender.sendMessage("You bought " + bought + " many of " + args[0] + " for " + MarketBaseValues.marketBaseValues.get(Material.matchMaterial(args[0]))*10*bought + " money.");
+            sender.sendMessage("You bought " + bought + " many of " + args[0] + " for " + MarketBaseValues.marketBaseValues.get(Material.matchMaterial(args[0])) * 10 * bought + " money.");
             return true;
         } else {
             sender.sendMessage("This command can only be run by a player.");

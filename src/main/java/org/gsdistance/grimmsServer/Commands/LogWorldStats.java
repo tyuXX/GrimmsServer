@@ -13,10 +13,11 @@ public class LogWorldStats implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             WorldStats stats = WorldStats.getWorldStats(((Player) sender).getWorld());
+            sender.sendMessage("__World stats:");
             for (Enumeration<String> keys = WorldStats.Stats.keys(); keys.hasMoreElements(); ) {
                 String stat = keys.nextElement();
                 Object value = stats.getStat(stat);
-                sender.sendMessage(WorldStats.StatNames.get(stat) + ": " + value.toString());
+                sender.sendMessage("|" + WorldStats.StatNames.get(stat) + ": " + value.toString());
             }
 
             return true;

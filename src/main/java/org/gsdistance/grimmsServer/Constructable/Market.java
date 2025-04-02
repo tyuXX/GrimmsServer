@@ -59,8 +59,7 @@ public class Market {
                     boughtP += getPrice(item);
                     items.put(item.getKey().toString(), items.get(item.getKey().toString()) - 1);
                     bought++;
-                }
-                else{
+                } else {
                     break;
                 }
             }

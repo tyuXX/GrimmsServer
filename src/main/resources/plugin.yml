@@ -39,3 +39,7 @@ commands:
     description: Buys the item for 10x base price, but can be bought when not available.
     usage: /buyRipoff <item> <amount>
     permission: grimmsserver.buyRipoff
+  makeItemLevelable:
+    description: Makes the main hand item levelable for 3500 money.
+    usage: /makeItemLevelable
+    permission: grimmsserver.makeItemLevelable

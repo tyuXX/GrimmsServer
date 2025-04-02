@@ -39,6 +39,7 @@ public class PlayerStats {
         StatNames.put("xp", "Experience");
         StatNames.put("xp_required", "Experience Required");
     }
+
     public static final List<String> StatOrder = List.of(
             "death_count",
             "money",
