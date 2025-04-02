@@ -3,8 +3,12 @@ package org.gsdistance.grimmsServer.Stats;
 import com.google.gson.Gson;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.LeaderboardEntry;
+import org.gsdistance.grimmsServer.Data.PlayerTitleManager;
+import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class PlayerStatLeaderBoard {
@@ -42,15 +46,24 @@ public class PlayerStatLeaderBoard {
     public boolean checkPlayer(Player player) {
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
         boolean pass = false;
+        List<String> overtakes = new ArrayList<>();
         for (String stat : leaderboard.keySet()) {
             Number playerStatValue = (Number) playerStats.getStat(stat);
             Number leaderboardStatValue = leaderboard.get(stat).getStatValue();
-
             if (playerStatValue != null && playerStatValue.doubleValue() > leaderboardStatValue.doubleValue()) {
+                if(!player.getName().equalsIgnoreCase(leaderboard.get(stat).getPlayerName())){
+                    overtakes.add(stat);
+                }
                 leaderboard.put(stat, new LeaderboardEntry(player.getName(), playerStatValue.intValue()));
                 savePlayerStatLeaderBoard();
                 pass = true;
             }
+        }
+        if(pass){
+            for (String stat : overtakes){
+                GrimmsServer.instance.getServer().broadcastMessage("The leader of stat " + stat + " is now " + player.getDisplayName());
+            }
+            PlayerTitleManager.gotOnLeaderboard(player);
         }
         return pass;
     }

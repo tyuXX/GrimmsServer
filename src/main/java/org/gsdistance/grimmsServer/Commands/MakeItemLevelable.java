@@ -1,6 +1,6 @@
 package org.gsdistance.grimmsServer.Commands;
 
-import org.gsdistance.grimmsServer.Leveling.ItemLevelHandler;
+import org.gsdistance.grimmsServer.Constructable.ItemLevelHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

@@ -1,7 +1,7 @@
 package org.gsdistance.grimmsServer.Events;
 
-import org.gsdistance.grimmsServer.Leveling.ItemLevelHandler;
-import org.gsdistance.grimmsServer.Leveling.PlayerLevelHandler;
+import org.gsdistance.grimmsServer.Constructable.ItemLevelHandler;
+import org.gsdistance.grimmsServer.Constructable.PlayerLevelHandler;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.WorldStats;

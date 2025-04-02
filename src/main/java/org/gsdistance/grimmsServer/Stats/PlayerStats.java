@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Stats;
 
+import com.google.gson.Gson;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -7,6 +8,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
@@ -24,6 +26,7 @@ public class PlayerStats {
         Stats.put("level", PersistentDataType.INTEGER);
         Stats.put("xp", PersistentDataType.DOUBLE);
         Stats.put("xp_required", PersistentDataType.DOUBLE);
+        Stats.put("titles", PersistentDataType.STRING);
     }
 
     public static final Dictionary<String, String> StatNames = new Hashtable<>();
@@ -38,6 +41,7 @@ public class PlayerStats {
         StatNames.put("level", "Level");
         StatNames.put("xp", "Experience");
         StatNames.put("xp_required", "Experience Required");
+        StatNames.put("titles", "Player Titles");
     }
 
     public static final List<String> StatOrder = List.of(
@@ -58,6 +62,9 @@ public class PlayerStats {
     public PlayerStats(JavaPlugin plugin, Player player) {
         this.plugin = plugin;
         this.dataContainer = player.getPersistentDataContainer();
+        if(!hasExactStat("titles")){
+            setStat("titles", new Gson().toJson(new ArrayList<String>().toArray()));
+        }
     }
 
     public static PlayerStats getPlayerStats(Player player) {
@@ -71,6 +78,14 @@ public class PlayerStats {
             return null;
         }
         return dataContainer.getOrDefault(new NamespacedKey(plugin, stat), type, 0);
+    }
+
+    public boolean hasStat(String stat){
+        return dataContainer.has(new NamespacedKey(plugin, stat));
+    }
+
+    public boolean hasExactStat(String stat){
+        return dataContainer.has(new NamespacedKey(plugin,stat),Stats.get(stat));
     }
 
     public void setStat(String stat, Object value) {

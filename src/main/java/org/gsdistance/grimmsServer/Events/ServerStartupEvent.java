@@ -2,6 +2,7 @@ package org.gsdistance.grimmsServer.Events;
 
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Commands.CommandRegistry;
+import org.gsdistance.grimmsServer.Data.PlayerTitleManager;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStatLeaderBoard;
 
@@ -13,11 +14,11 @@ public class ServerStartupEvent {
     public static void Event() {
         CommandRegistry.registerCommands();
         GrimmsServer.instance.getServer().getScheduler().scheduleSyncRepeatingTask(GrimmsServer.instance, () -> {
-            // none
             ticks++;
             if (ticks % 1000 == 0) {
                 for (Player player : GrimmsServer.instance.getServer().getOnlinePlayers()) {
                     PlayerStatLeaderBoard.getPlayerStatLeaderBoard().checkPlayer(player);
+                    PlayerTitleManager.checkForMoney(player);
                 }
             }
         }, 100L, 1L);

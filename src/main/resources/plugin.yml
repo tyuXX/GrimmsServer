@@ -45,9 +45,25 @@ commands:
     permission: grimmsserver.makeItemLevelable
   setPlayerStat:
     description: Set a player's stats.
-    usage: /setplayerstat <player> <stat> <value>
+    usage: /setPlayerStat <player> <stat> <value>
     permission: grimmsserver.setPlayerStat
   logPlayerStats:
     description: Displays the stats of a specified player.
     usage: /logPlayerStats <player>
     permission: grimmsserver.logPlayerStats
+  logSelfTitles:
+    description: Displays the titles of the player.
+    usage: /logSelfTitles
+    permission: grimmsserver.logSelfTitles
+  logPlayerTitles:
+    description: Displays the titles of a specified player.
+    usage: /logPlayerTitles <player>
+    permission: grimmsserver.logPlayerTitles
+  addTitle:
+    description: Adds a title to a player.
+    usage: /addTitle <player> <title>
+    permission: grimmsserver.addTitle
+  executePlayer:
+    description: Executes a player, requires title Executioner.
+    usage: /executePlayer <player>
+    permission: grimmsserver.execute

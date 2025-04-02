@@ -1,6 +1,6 @@
 package org.gsdistance.grimmsServer.Events;
 
-import org.gsdistance.grimmsServer.Leveling.ItemLevelHandler;
+import org.gsdistance.grimmsServer.Constructable.ItemLevelHandler;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.GrimmsServer;
