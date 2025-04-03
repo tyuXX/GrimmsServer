@@ -34,14 +34,12 @@ public class WithdrawMoney implements CommandExecutor {
                     sender.sendMessage("Smallest banknote is 25 money.");
                     return false;
                 }
-                for (int i = 0; i < Integer.parseInt(args[1]); i++) {
-                    ItemStack itemStack = new ItemStack(Material.PAPER,1);
-                    ItemMeta itemMeta = itemStack.getItemMeta();
-                    itemMeta.getPersistentDataContainer().set(new NamespacedKey(GrimmsServer.instance,"banknoteValue"), PersistentDataType.DOUBLE,banknoteValue);
-                    itemMeta.setItemName("Grimmnote - " + banknoteValue + " Money");
-                    itemStack.setItemMeta(itemMeta);
-                    ((Player)sender).getInventory().addItem(itemStack);
-                }
+                ItemStack itemStack = new ItemStack(Material.PAPER,Integer.parseInt(args[1]));
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.getPersistentDataContainer().set(new NamespacedKey(GrimmsServer.instance,"banknoteValue"), PersistentDataType.DOUBLE,banknoteValue);
+                itemMeta.setItemName("Grimmnote - " + banknoteValue + " Money");
+                itemStack.setItemMeta(itemMeta);
+                ((Player)sender).getInventory().addItem(itemStack);
                 sender.sendMessage("Gave " + args[1] + " banknotes.");
             }
             else{

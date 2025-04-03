@@ -24,7 +24,7 @@ public class DepositMoney implements CommandExecutor {
             }
             PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
             playerStats.setStat("money",(Double)playerStats.getStat("money") + (itemMeta.getPersistentDataContainer().getOrDefault(new NamespacedKey(GrimmsServer.instance,"banknoteValue"),PersistentDataType.DOUBLE, 0.0)*itemStack.getAmount()));
-            ((Player)sender).getInventory().remove(itemStack);
+            ((Player)sender).getInventory().remove(itemStack) ;
             sender.sendMessage("Deposited " + (itemMeta.getPersistentDataContainer().getOrDefault(new NamespacedKey(GrimmsServer.instance,"banknoteValue"),PersistentDataType.DOUBLE, 0.0)*itemStack.getAmount()) + " money.");
             return true;
         } else {

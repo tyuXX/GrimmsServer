@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.gsdistance.grimmsServer.Data.MarketBaseValues;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
@@ -20,8 +21,16 @@ public class BuyRipoffItem implements CommandExecutor {
                 sender.sendMessage("Invalid item id:" + args[0]);
                 return false;
             }
-            if (MarketBaseValues.marketBaseValues.containsKey(Material.matchMaterial(args[0]))) {
+            if (!MarketBaseValues.marketBaseValues.containsKey(Material.matchMaterial(args[0]))) {
                 sender.sendMessage("This item is not available in the market.");
+                return false;
+            }
+            if(MarketBaseValues.marketBaseValues.get(Material.matchMaterial(args[0])) > 10000.0){
+                sender.sendMessage("You cannot buy the ripoff of something which has a base value above 10000");
+                return false;
+            }
+            if(Integer.parseInt(args[1]) < 1){
+                sender.sendMessage("Can buy a minimum of 1.");
                 return false;
             }
             PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
@@ -34,6 +43,7 @@ public class BuyRipoffItem implements CommandExecutor {
                     break;
                 }
             }
+            ((Player) sender).getInventory().addItem(new ItemStack(Material.matchMaterial(args[0]),Integer.parseInt(args[1])));
             sender.sendMessage("You bought " + bought + " many of " + args[0] + " for " + MarketBaseValues.marketBaseValues.get(Material.matchMaterial(args[0])) * 10 * bought + " money.");
             return true;
         } else {

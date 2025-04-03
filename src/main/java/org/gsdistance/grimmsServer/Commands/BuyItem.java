@@ -16,15 +16,26 @@ public class BuyItem implements CommandExecutor {
                 return false;
             }
             if (Material.matchMaterial(args[0]) == null) {
-                sender.sendMessage("Invalid item id:" + args[0]);
+                sender.sendMessage("Invalid item id: " + args[0]);
+                return false;
+            }
+            int amount;
+            try {
+                amount = Integer.parseInt(args[1]);
+                if (amount <= 0) {
+                    sender.sendMessage("Amount must be greater than 0.");
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                sender.sendMessage("Invalid amount: " + args[1]);
                 return false;
             }
             Market market = Market.getMarket();
-            if (market.items.get(Material.matchMaterial(args[0]).getKey().toString()) <= Integer.parseInt(args[1])) {
+            if (market.items.get(Material.matchMaterial(args[0]).getKey().toString()) <= amount) {
                 sender.sendMessage("Not enough stock of " + args[0] + " in the market.");
                 return false;
             }
-            double bought = market.buy(Material.matchMaterial(args[0]), Integer.parseInt(args[1]), (Player) sender);
+            double bought = market.buy(Material.matchMaterial(args[0]), amount, (Player) sender);
             market.saveMarket();
             sender.sendMessage("You bought " + args[1] + " many of " + args[0] + " for " + Math.max(0.25D, Math.round((bought))));
             return true;
