@@ -94,6 +94,10 @@ commands:
     description: Deposit a banknote
     usage: /depositMoney
     permission: grimmsserver.depositMoney
+  acceptRequest:
+    description: Accepts a request.
+    usage: /acceptRequest
+    permission: grimmsserver.acceptRequest
 permissions:
   grimmsserver.logSelfStats:
     description: Allows a player to log their own stats
@@ -163,4 +167,7 @@ permissions:
     default: true
   grimmsserver.depositMoney:
     description: Allows a player to deposit a banknote
+    default: true
+  grimmsserver.acceptRequest:
+    description: Allows a player to accept a request
     default: true
