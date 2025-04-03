@@ -4,7 +4,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 
 public class LogSelfTitles implements CommandExecutor {

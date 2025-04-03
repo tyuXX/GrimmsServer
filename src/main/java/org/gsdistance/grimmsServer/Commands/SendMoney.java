@@ -19,7 +19,7 @@ public class SendMoney implements CommandExecutor {
                 sender.sendMessage("Player not found.");
                 return false;
             }
-            if(Double.parseDouble(args[1]) < 0) {
+            if (Double.parseDouble(args[1]) < 0) {
                 sender.sendMessage("You cannot send negative money.");
                 return false;
             }

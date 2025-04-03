@@ -1,10 +1,10 @@
 package org.gsdistance.grimmsServer.Commands;
 
-import org.gsdistance.grimmsServer.Constructable.ItemLevelHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Constructable.ItemLevelHandler;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class MakeItemLevelable implements CommandExecutor {

@@ -5,8 +5,8 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 public class CommandRegistry {
     public static void registerCommands() {
         // Register all commands here
-        GrimmsServer.instance.getCommand("logselfstats").setExecutor(new LogSelfStats());
-        GrimmsServer.instance.getCommand("logworldstats").setExecutor(new LogWorldStats());
+        GrimmsServer.instance.getCommand("logSelfStats").setExecutor(new LogSelfStats());
+        GrimmsServer.instance.getCommand("logWorldStats").setExecutor(new LogWorldStats());
         GrimmsServer.instance.getCommand("sellItem").setExecutor(new SellItem());
         GrimmsServer.instance.getCommand("buyItem").setExecutor(new BuyItem());
         GrimmsServer.instance.getCommand("getMarketStock").setExecutor(new GetStockOfItem());
@@ -21,5 +21,7 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("logPlayerTitles").setExecutor(new LogPlayerTitles());
         GrimmsServer.instance.getCommand("addTitle").setExecutor(new AddTitle());
         GrimmsServer.instance.getCommand("executePlayer").setExecutor(new ExecutePlayer());
+        GrimmsServer.instance.getCommand("buyEnchantment").setExecutor(new BuyEnchantment());
+        GrimmsServer.instance.getCommand("logEnchantmentCosts").setExecutor(new LogEnchantmentCosts());
     }
 }

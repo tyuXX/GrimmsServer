@@ -69,7 +69,7 @@ public class ItemLevelHandler {
         if (meta != null) {
             PersistentDataContainer data = meta.getPersistentDataContainer();
             double currentLevel = data.getOrDefault(levelKey, PersistentDataType.DOUBLE, 0.0);
-            GrimmsServer.logger.log(Level.INFO,"Current level: " + currentLevel);
+            GrimmsServer.logger.log(Level.INFO, "Current level: " + currentLevel);
             data.set(levelKey, PersistentDataType.DOUBLE, currentLevel + level);
             item.setItemMeta(meta);
         }
@@ -81,19 +81,19 @@ public class ItemLevelHandler {
         int levelUps = 0;
         while (exp > getXpToLevel()) {
             exp -= getXpToLevel();
-            GrimmsServer.logger.log(Level.INFO,"Current level: " + getLevel());
+            GrimmsServer.logger.log(Level.INFO, "Current level: " + getLevel());
             changeLevel(1);
-            GrimmsServer.logger.log(Level.INFO,"Current level: " + getLevel());
+            GrimmsServer.logger.log(Level.INFO, "Current level: " + getLevel());
             levelUps++;
         }
-        GrimmsServer.logger.log(Level.INFO,"Current level: " + getLevel());
+        GrimmsServer.logger.log(Level.INFO, "Current level: " + getLevel());
         setXp(exp);
-        GrimmsServer.logger.log(Level.INFO,"Current level: " + getLevel());
+        GrimmsServer.logger.log(Level.INFO, "Current level: " + getLevel());
         if (levelUps > 0) {
             player.sendMessage("Your " + item.getType().name().toLowerCase() + " has leveled up to " + getLevel() + "!");
-            GrimmsServer.logger.log(Level.INFO,"Current level: " + getLevel());
+            GrimmsServer.logger.log(Level.INFO, "Current level: " + getLevel());
         }
-        GrimmsServer.logger.log(Level.INFO,"Current level: " + getLevel());
+        GrimmsServer.logger.log(Level.INFO, "Current level: " + getLevel());
         return levelUps;
     }
 

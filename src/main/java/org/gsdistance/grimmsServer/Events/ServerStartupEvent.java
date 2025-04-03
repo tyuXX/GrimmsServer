@@ -19,6 +19,9 @@ public class ServerStartupEvent {
                 for (Player player : GrimmsServer.instance.getServer().getOnlinePlayers()) {
                     PlayerStatLeaderBoard.getPlayerStatLeaderBoard().checkPlayer(player);
                     PlayerTitleManager.checkForMoney(player);
+                    PlayerTitleManager.checkTitles(player);
+                    PlayerTitleManager.checkForBlockBreaks(player);
+                    PlayerTitleManager.checkForTotalKills(player);
                 }
             }
         }, 100L, 1L);

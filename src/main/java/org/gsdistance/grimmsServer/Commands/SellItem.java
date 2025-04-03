@@ -14,7 +14,7 @@ public class SellItem implements CommandExecutor {
         if (sender instanceof Player) {
             Market market = Market.getMarket();
             ItemStack iS = ((Player) sender).getInventory().getItemInMainHand();
-            if(iS.getType() == Material.AIR) {
+            if (iS.getType() == Material.AIR) {
                 sender.sendMessage("You are not holding anything.");
                 return false;
             }

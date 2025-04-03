@@ -3,14 +3,14 @@ main: org.gsdistance.grimmsServer.GrimmsServer
 version: ${version}
 api-version: 1.16
 commands:
-  logselfstats:
+  logSelfStats:
     description: Displays the player's own stats including death count, money, and total kills.
-    usage: /logselfstats
-    permission: grimmsserver.logselfstats
-  logworldstats:
+    usage: /logSelfStats
+    permission: grimmsserver.logSelfStats
+  logWorldStats:
     description: Displays the world stats including total deaths, total kills, and total money.
-    usage: /logworldstats
-    permission: grimmsserver.logworldstats
+    usage: /logWorldStats
+    permission: grimmsserver.logWorldStats
   sellItem:
     description: Sells the main hand for a certain amount of money.
     usage: /sellItem
@@ -67,3 +67,66 @@ commands:
     description: Executes a player, requires title Executioner.
     usage: /executePlayer <player>
     permission: grimmsserver.execute
+  buyEnchantment:
+    description: Buys 1 level of <enchant> for money
+    usage: /buyEnchantment <enchant>
+    permission: grimmsserver.buyEnchantment
+  logEnchantmentCosts:
+    description: Displays the costs of all available
+    usage: /logEnchantmentCosts
+    permission: grimmsserver.logEnchantmentCosts
+permissions:
+  grimmsserver.logSelfStats:
+    description: Allows a player to log their own stats
+    default: true
+  grimmsserver.logWorldStats:
+    description: Allows a player to log world stats
+    default: true
+  grimmsserver.sellItem:
+    description: Allows a player to sell an item
+    default: true
+  grimmsserver.buyItem:
+    description: Allows a player to buy an item
+    default: true
+  grimmsserver.getMarketStock:
+    description: Allows a player to get market stock
+    default: true
+  grimmsserver.getMarket:
+    description: Allows a player to get market information
+    default: true
+  grimmsserver.logLeaderboard:
+    description: Allows a player to log the leaderboard
+    default: true
+  grimmsserver.sendMoney:
+    description: Allows a player to send money to another player
+    default: true
+  grimmsserver.buyRipoff:
+    description: Allows a player to buy an item at a higher price
+    default: true
+  grimmsserver.makeItemLevelable:
+    description: Allows a player to make an item levelable
+    default: true
+  grimmsserver.setPlayerStat:
+    description: Allows a player to set another player's stats
+    default: op
+  grimmsserver.logPlayerStats:
+    description: Allows a player to log another player's stats
+    default: op
+  grimmsserver.logSelfTitles:
+    description: Allows a player to log their own titles
+    default: true
+  grimmsserver.logPlayerTitles:
+    description: Allows a player to log another player's titles
+    default: true
+  grimmsserver.addTitle:
+    description: Allows a player to add a title to another player
+    default: op
+  grimmsserver.execute:
+    description: Allows a player to execute another player
+    default: op
+  grimmsserver.buyEnchantment:
+    description: Allows a player to buy an enchantment
+    default: true
+  grimmsserver.logEnchantmentCosts:
+    description: Allows a player to log enchantment costs
+    default: true

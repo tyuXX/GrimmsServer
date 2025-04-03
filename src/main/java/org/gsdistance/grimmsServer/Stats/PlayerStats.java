@@ -27,6 +27,7 @@ public class PlayerStats {
         Stats.put("xp", PersistentDataType.DOUBLE);
         Stats.put("xp_required", PersistentDataType.DOUBLE);
         Stats.put("titles", PersistentDataType.STRING);
+        Stats.put("sent_messages", PersistentDataType.LONG);
     }
 
     public static final Dictionary<String, String> StatNames = new Hashtable<>();
@@ -42,6 +43,7 @@ public class PlayerStats {
         StatNames.put("xp", "Experience");
         StatNames.put("xp_required", "Experience Required");
         StatNames.put("titles", "Player Titles");
+        StatNames.put("sent_messages", "Messages Sent");
     }
 
     public static final List<String> StatOrder = List.of(
@@ -51,6 +53,7 @@ public class PlayerStats {
             "join_count",
             "tPoint",
             "block_break_count",
+            "sent_messages",
             "level",
             "xp",
             "xp_required"
@@ -62,7 +65,7 @@ public class PlayerStats {
     public PlayerStats(JavaPlugin plugin, Player player) {
         this.plugin = plugin;
         this.dataContainer = player.getPersistentDataContainer();
-        if(!hasExactStat("titles")){
+        if (!hasExactStat("titles")) {
             setStat("titles", new Gson().toJson(new ArrayList<String>().toArray()));
         }
     }
@@ -80,12 +83,12 @@ public class PlayerStats {
         return dataContainer.getOrDefault(new NamespacedKey(plugin, stat), type, 0);
     }
 
-    public boolean hasStat(String stat){
+    public boolean hasStat(String stat) {
         return dataContainer.has(new NamespacedKey(plugin, stat));
     }
 
-    public boolean hasExactStat(String stat){
-        return dataContainer.has(new NamespacedKey(plugin,stat),Stats.get(stat));
+    public boolean hasExactStat(String stat) {
+        return dataContainer.has(new NamespacedKey(plugin, stat), Stats.get(stat));
     }
 
     public void setStat(String stat, Object value) {

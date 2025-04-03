@@ -6,6 +6,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class EventTrigger implements Listener {
@@ -23,12 +24,19 @@ public class EventTrigger implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         org.gsdistance.grimmsServer.Events.PlayerJoinEvent.Event(event);
     }
+
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
         org.gsdistance.grimmsServer.Events.EntityDamageEvent.Event(event);
     }
+
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         org.gsdistance.grimmsServer.Events.EntityDamageByEntityEvent.Event(event);
+    }
+
+    @EventHandler
+    public void onChatUse(AsyncPlayerChatEvent event) {
+        PlayerChatEvent.Event(event);
     }
 }

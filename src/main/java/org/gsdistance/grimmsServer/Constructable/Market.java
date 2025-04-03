@@ -1,10 +1,10 @@
 package org.gsdistance.grimmsServer.Constructable;
 
-import org.gsdistance.grimmsServer.Data.MarketBaseValues;
 import com.google.gson.Gson;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.gsdistance.grimmsServer.Data.MarketBaseValues;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
 
@@ -72,11 +72,14 @@ public class Market {
         if (items.get(item.getKey().toString()) == null) {
             return 0;
         } else {
+            double rt = 0;
             long amount = items.get(item.getKey().toString());
             if (MarketBaseValues.marketBaseValues.containsKey(item)) {
-                return Math.max(Math.max(0.25D, Math.floor(MarketBaseValues.marketBaseValues.get(item) / 100)), MarketBaseValues.marketBaseValues.get(item) - Math.sqrt(amount));
+                rt = Math.max(Math.max(0.25D, Math.floor(MarketBaseValues.marketBaseValues.get(item) / 100)), MarketBaseValues.marketBaseValues.get(item) - Math.sqrt(amount));
+            } else {
+                rt = Math.max(0.25D, 25 - Math.sqrt(amount));
             }
-            return Math.max(0.25D, 25 - Math.sqrt(amount));
+            return rt;
         }
     }
 }

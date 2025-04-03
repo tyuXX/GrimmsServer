@@ -11,21 +11,21 @@ public class AddTitle implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            if(args.length < 2){
+            if (args.length < 2) {
                 sender.sendMessage("Usage: /addTitle <player> <title>");
                 return false;
             }
-            if(!PlayerTitles.titles.containsKey(args[1])){
+            if (!PlayerTitles.titles.containsKey(args[1])) {
                 sender.sendMessage("Title not found.");
                 return false;
             }
             Player player = GrimmsServer.instance.getServer().getPlayer(args[0]);
-            if(player == null){
+            if (player == null) {
                 sender.sendMessage("Player not found.");
                 return false;
             }
             PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
-            if(playerTitles.hasTitle(args[1])){
+            if (playerTitles.hasTitle(args[1])) {
                 sender.sendMessage("Player already has this title.");
                 return false;
             }

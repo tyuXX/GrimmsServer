@@ -11,12 +11,12 @@ public class LogPlayerTitles implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            if(args.length == 0){
+            if (args.length == 0) {
                 sender.sendMessage("Please specify a player name.");
                 return false;
             }
             Player player = GrimmsServer.instance.getServer().getPlayer(args[0]);
-            if(player == null){
+            if (player == null) {
                 sender.sendMessage("Player not found.");
                 return false;
             }
