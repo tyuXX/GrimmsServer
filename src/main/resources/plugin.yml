@@ -66,7 +66,7 @@ commands:
   executePlayer:
     description: Executes a player, requires title Executioner.
     usage: /executePlayer <player>
-    permission: grimmsserver.execute
+    permission: grimmsserver.executePlayer
   buyEnchantment:
     description: Buys 1 level of <enchant> for money
     usage: /buyEnchantment <enchantId>
@@ -83,6 +83,9 @@ commands:
     description: Take a job if you meet it's requirements
     usage: /takeJob <jobId>
     permission: grimmsserver.takeJob
+  grimmsServerCommands:
+    description: Displays all existing GrimmsServer commands
+    usage: /grimmsServerCommands
 permissions:
   grimmsserver.logSelfStats:
     description: Allows a player to log their own stats
@@ -129,9 +132,9 @@ permissions:
   grimmsserver.addTitle:
     description: Allows a player to add a title to another player
     default: op
-  grimmsserver.execute:
+  grimmsserver.executePlayer:
     description: Allows a player to execute another player
-    default: op
+    default: true
   grimmsserver.buyEnchantment:
     description: Allows a player to buy an enchantment
     default: true

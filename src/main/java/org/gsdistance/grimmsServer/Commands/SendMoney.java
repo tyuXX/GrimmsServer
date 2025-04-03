@@ -12,7 +12,7 @@ public class SendMoney implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             if (args.length < 2) {
-                sender.sendMessage("Usage: /sendmoney <player> <amount>");
+                sender.sendMessage(GrimmsServer.instance.getCommand("sendMoney").getUsage());
                 return false;
             }
             if (GrimmsServer.instance.getServer().getPlayer(args[0]) == null) {

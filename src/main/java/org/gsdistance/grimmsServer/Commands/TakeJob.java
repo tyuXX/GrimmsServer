@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.JobTitle;
 import org.gsdistance.grimmsServer.Data.JobTitlesBaseValues;
+import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class TakeJob implements CommandExecutor {
@@ -13,7 +14,7 @@ public class TakeJob implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player player) {
             if(args.length == 0){
-                sender.sendMessage("Usage: /takeJob <jobId>");
+                sender.sendMessage(GrimmsServer.instance.getCommand("takeJob").getUsage());
                 return false;
             }
             JobTitle jobTitle = JobTitlesBaseValues.jobTitleBaseValues.get(args[0]);
@@ -32,7 +33,8 @@ public class TakeJob implements CommandExecutor {
             }
             playerStats.setStat("jobTitle", args[0]);
             sender.sendMessage("Job taken: " + jobTitle.jobName);
-            sender.sendMessage("Paycheck: " + jobTitle.paycheckSize + "/Description: " + jobTitle.jobDescription);
+            sender.sendMessage("Paycheck: " + jobTitle.paycheckSize);
+            sender.sendMessage("Description: " + jobTitle.jobDescription);
             return true;
         } else {
             sender.sendMessage("This command can only be run by a player.");

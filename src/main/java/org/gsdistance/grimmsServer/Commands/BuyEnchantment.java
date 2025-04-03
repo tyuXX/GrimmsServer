@@ -8,6 +8,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.gsdistance.grimmsServer.Data.EnchantBaseValues;
+import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class BuyEnchantment implements CommandExecutor {
@@ -15,7 +16,7 @@ public class BuyEnchantment implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             if (args.length < 1) {
-                sender.sendMessage("Usage: /buyEnchantment <enchant>");
+                sender.sendMessage(GrimmsServer.instance.getCommand("buyEnchantment").getUsage());
                 return false;
             }
             Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(args[0].toLowerCase()));

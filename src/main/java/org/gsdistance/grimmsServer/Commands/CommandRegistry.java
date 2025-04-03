@@ -25,5 +25,6 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("logEnchantmentCosts").setExecutor(new LogEnchantmentCosts());
         GrimmsServer.instance.getCommand("logJobs").setExecutor(new LogJobs());
         GrimmsServer.instance.getCommand("takeJob").setExecutor(new TakeJob());
+        GrimmsServer.instance.getCommand("grimmsServerCommands").setExecutor(new LogGrimmsServerCommands());
     }
 }

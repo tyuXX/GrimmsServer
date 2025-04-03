@@ -12,7 +12,7 @@ public class ExecutePlayer implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             if (args.length == 0) {
-                sender.sendMessage("Usage /executePlayer <player>");
+                sender.sendMessage(GrimmsServer.instance.getCommand("executePlayer").getUsage());
                 return false;
             }
             Player player = GrimmsServer.instance.getServer().getPlayer(args[0]);

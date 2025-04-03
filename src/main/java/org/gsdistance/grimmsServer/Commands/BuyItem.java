@@ -6,13 +6,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Market;
+import org.gsdistance.grimmsServer.GrimmsServer;
 
 public class BuyItem implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             if (args.length < 2) {
-                sender.sendMessage("Usage: /buy <item> <amount>");
+                sender.sendMessage(GrimmsServer.instance.getCommand("buyItem").getUsage());
                 return false;
             }
             if (Material.matchMaterial(args[0]) == null) {

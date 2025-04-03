@@ -63,7 +63,13 @@ public class PlayerTitleManager {
         }
     }
     public static void checkForTotalKills(Player player) {
-        long totalKills = (long) PlayerStats.getPlayerStats(player).getStat("total_kill_count");
+        Object totalKillsObj = PlayerStats.getPlayerStats(player).getStat("total_kill_count");
+        long totalKills;
+        if (totalKillsObj instanceof Integer) {
+            totalKills = ((Integer) totalKillsObj).longValue();
+        } else {
+            totalKills = (Long) totalKillsObj;
+        }
         PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
         if (totalKills > 100) {
             playerTitles.addTitle("KillingMachine");
