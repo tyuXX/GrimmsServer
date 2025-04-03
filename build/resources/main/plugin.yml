@@ -86,6 +86,14 @@ commands:
   grimmsServerCommands:
     description: Displays all existing GrimmsServer commands
     usage: /grimmsServerCommands
+  withdrawMoney:
+    description: Withdraw an amount of money into a banknote
+    usage: /withdrawMoney <amount> (optional/banknoteAmount)
+    permission: grimmsserver.withdrawMoney
+  depositMoney:
+    description: Deposit a banknote
+    usage: /depositMoney
+    permission: grimmsserver.depositMoney
 permissions:
   grimmsserver.logSelfStats:
     description: Allows a player to log their own stats
@@ -149,4 +157,10 @@ permissions:
     default: true
   grimmsserver.takeJob:
     description: Allows a player to acquire a job title
+    default: true
+  grimmsserver.withdrawMoney:
+    description: Allows a player to withdraw money into a banknote
+    default: true
+  grimmsserver.depositMoney:
+    description: Allows a player to deposit a banknote
     default: true

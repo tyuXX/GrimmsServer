@@ -16,7 +16,6 @@ public class BuyEnchantment implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             if (args.length < 1) {
-                sender.sendMessage(GrimmsServer.instance.getCommand("buyEnchantment").getUsage());
                 return false;
             }
             Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(args[0].toLowerCase()));

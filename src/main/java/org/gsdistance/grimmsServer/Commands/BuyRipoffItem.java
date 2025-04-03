@@ -14,7 +14,6 @@ public class BuyRipoffItem implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             if (args.length < 2) {
-                sender.sendMessage(GrimmsServer.instance.getCommand("buyRipoff").getUsage());
                 return false;
             }
             if (Material.matchMaterial(args[0]) == null) {

@@ -14,7 +14,6 @@ public class SetPlayerStat implements CommandExecutor {
 
         if (sender instanceof Player) {
             if (args.length < 3) {
-                sender.sendMessage(GrimmsServer.instance.getCommand("setPlayerStat").getUsage());
                 return false;
             }
             Player targetPlayer = GrimmsServer.instance.getServer().getPlayer(args[0]);

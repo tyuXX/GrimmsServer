@@ -12,7 +12,6 @@ public class AddTitle implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             if (args.length < 2) {
-                sender.sendMessage(GrimmsServer.instance.getCommand("addTitle").getUsage());
                 return false;
             }
             if (!PlayerTitles.titles.containsKey(args[1])) {

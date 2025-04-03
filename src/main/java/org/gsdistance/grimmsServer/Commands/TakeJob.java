@@ -14,7 +14,6 @@ public class TakeJob implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player player) {
             if(args.length == 0){
-                sender.sendMessage(GrimmsServer.instance.getCommand("takeJob").getUsage());
                 return false;
             }
             JobTitle jobTitle = JobTitlesBaseValues.jobTitleBaseValues.get(args[0]);
