@@ -45,7 +45,7 @@ commands:
     permission: grimmsserver.makeItemLevelable
   setPlayerStat:
     description: Set a player's stats.
-    usage: /setPlayerStat <player> <stat> <value>
+    usage: /setPlayerStat <player> <statId> <value>
     permission: grimmsserver.setPlayerStat
   logPlayerStats:
     description: Displays the stats of a specified player.
@@ -69,12 +69,20 @@ commands:
     permission: grimmsserver.execute
   buyEnchantment:
     description: Buys 1 level of <enchant> for money
-    usage: /buyEnchantment <enchant>
+    usage: /buyEnchantment <enchantId>
     permission: grimmsserver.buyEnchantment
   logEnchantmentCosts:
     description: Displays the costs of all available
     usage: /logEnchantmentCosts
     permission: grimmsserver.logEnchantmentCosts
+  logJobs:
+    description: Displays all available jobs
+    usage: /logJobs
+    permission: grimmsserver.logJobs
+  takeJob:
+    description: Take a job if you meet it's requirements
+    usage: /takeJob <jobId>
+    permission: grimmsserver.takeJob
 permissions:
   grimmsserver.logSelfStats:
     description: Allows a player to log their own stats
@@ -129,4 +137,13 @@ permissions:
     default: true
   grimmsserver.logEnchantmentCosts:
     description: Allows a player to log enchantment costs
+    default: true
+  grimmsserver.multiHome:
+    description: Allows multiple homes to be set
+    default: op
+  grimmsserver.logJobs:
+    description: Allows a player to log available jobs
+    default: true
+  grimmsserver.takeJob:
+    description: Allows a player to acquire a job title
     default: true

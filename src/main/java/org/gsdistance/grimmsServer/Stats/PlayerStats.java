@@ -8,10 +8,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 public class PlayerStats {
     public static final Dictionary<String, PersistentDataType<?, ?>> Stats = new Hashtable<>();
@@ -28,6 +25,9 @@ public class PlayerStats {
         Stats.put("xp_required", PersistentDataType.DOUBLE);
         Stats.put("titles", PersistentDataType.STRING);
         Stats.put("sent_messages", PersistentDataType.LONG);
+        Stats.put("intelligence", PersistentDataType.INTEGER);
+        Stats.put("jobTitle", PersistentDataType.STRING);
+        Stats.put("homes", PersistentDataType.STRING);
     }
 
     public static final Dictionary<String, String> StatNames = new Hashtable<>();
@@ -44,6 +44,9 @@ public class PlayerStats {
         StatNames.put("xp_required", "Experience Required");
         StatNames.put("titles", "Player Titles");
         StatNames.put("sent_messages", "Messages Sent");
+        StatNames.put("intelligence", "Intelligence");
+        StatNames.put("jobTitle", "Job");
+        StatNames.put("homes", "Homes");
     }
 
     public static final List<String> StatOrder = List.of(
@@ -56,7 +59,9 @@ public class PlayerStats {
             "sent_messages",
             "level",
             "xp",
-            "xp_required"
+            "xp_required",
+            "intelligence",
+            "jobTitle"
     );
 
     private final JavaPlugin plugin;
@@ -67,6 +72,14 @@ public class PlayerStats {
         this.dataContainer = player.getPersistentDataContainer();
         if (!hasExactStat("titles")) {
             setStat("titles", new Gson().toJson(new ArrayList<String>().toArray()));
+        }
+        if (!hasExactStat("homes")) {
+            setStat("homes", new Gson().toJson(Map.of(
+                    "home","0 100 0"
+            )));
+        }
+        if(!hasExactStat("intelligence")){
+            setStat("intelligence", new Random().nextInt(0,100));
         }
     }
 

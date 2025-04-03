@@ -23,5 +23,7 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("executePlayer").setExecutor(new ExecutePlayer());
         GrimmsServer.instance.getCommand("buyEnchantment").setExecutor(new BuyEnchantment());
         GrimmsServer.instance.getCommand("logEnchantmentCosts").setExecutor(new LogEnchantmentCosts());
+        GrimmsServer.instance.getCommand("logJobs").setExecutor(new LogJobs());
+        GrimmsServer.instance.getCommand("takeJob").setExecutor(new TakeJob());
     }
 }
