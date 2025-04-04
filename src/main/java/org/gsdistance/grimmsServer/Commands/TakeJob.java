@@ -6,27 +6,26 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.JobTitle;
 import org.gsdistance.grimmsServer.Data.JobTitlesBaseValues;
-import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class TakeJob implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player player) {
-            if(args.length == 0){
+            if (args.length == 0) {
                 return false;
             }
             JobTitle jobTitle = JobTitlesBaseValues.jobTitleBaseValues.get(args[0]);
-            if(jobTitle == null || jobTitle == JobTitlesBaseValues.jobTitleBaseValues.get("")){
+            if (jobTitle == null || jobTitle == JobTitlesBaseValues.jobTitleBaseValues.get("")) {
                 sender.sendMessage("Job doesn't exist.");
                 return false;
             }
             PlayerStats playerStats = PlayerStats.getPlayerStats(player);
-            if((int)playerStats.getStat("intelligence") < jobTitle.intelligenceRequirement){
+            if ((int) playerStats.getStat("intelligence") < jobTitle.intelligenceRequirement) {
                 sender.sendMessage("Not smart enough!");
                 return false;
             }
-            if(!jobTitle.additionalRequirement.apply(player)){
+            if (!jobTitle.additionalRequirement.apply(player)) {
                 sender.sendMessage("Secondary requirement not met!");
                 return false;
             }

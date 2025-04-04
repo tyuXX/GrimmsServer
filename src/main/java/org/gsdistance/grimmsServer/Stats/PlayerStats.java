@@ -75,11 +75,11 @@ public class PlayerStats {
         }
         if (!hasExactStat("homes")) {
             setStat("homes", new Gson().toJson(Map.of(
-                    "home","0 100 0"
+                    "home", "0 100 0"
             )));
         }
-        if(!hasExactStat("intelligence")){
-            setStat("intelligence", new Random().nextInt(0,100));
+        if (!hasExactStat("intelligence")) {
+            setStat("intelligence", new Random().nextInt(0, 100));
         }
     }
 

@@ -29,5 +29,7 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("withdrawMoney").setExecutor(new WithdrawMoney());
         GrimmsServer.instance.getCommand("depositMoney").setExecutor(new DepositMoney());
         GrimmsServer.instance.getCommand("acceptRequest").setExecutor(new AcceptRequest());
+        GrimmsServer.instance.getCommand("buyTp").setExecutor(new BuyTp());
+        GrimmsServer.instance.getCommand("removeTitle").setExecutor(new RemoveTitle());
     }
 }

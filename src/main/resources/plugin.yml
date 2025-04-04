@@ -40,7 +40,7 @@ commands:
     usage: /buyRipoff <item> <amount>
     permission: grimmsserver.buyRipoff
   makeItemLevelable:
-    description: Makes the main hand item levelable for 3500 money.
+    description: Makes the main hand item levelable for 3500 money, requires level 10.
     usage: /makeItemLevelable
     permission: grimmsserver.makeItemLevelable
   setPlayerStat:
@@ -98,6 +98,18 @@ commands:
     description: Accepts a request.
     usage: /acceptRequest
     permission: grimmsserver.acceptRequest
+  buyTp:
+    description: Request to teleport to someone for 500 money, this increases every time you use it.
+    usage: /buyTp
+    permission: grimmsserver.buyTp
+  removeTitle:
+    description: Removes a title from a player.
+    usage: /removeTitle <player> <title>
+    permission: grimmsserver.removeTitle
+  faction:
+    description: Faction commands
+    usage: /faction <command> <args>
+    permission: grimmsserver.faction
 permissions:
   grimmsserver.logSelfStats:
     description: Allows a player to log their own stats
@@ -171,3 +183,15 @@ permissions:
   grimmsserver.acceptRequest:
     description: Allows a player to accept a request
     default: true
+  grimmsserver.buyTp:
+    description: Allows a player to buy a teleport request
+    default: true
+  grimmsserver.removeTitle:
+    description: Allows a player to remove a title from another player
+    default: op
+  grimmsserver.faction:
+    description: Allows a player to use faction commands
+    default: true
+  grimmsserver.factionAdmin:
+    description: Allows a player to use faction admin commands
+    default: op

@@ -12,24 +12,24 @@ public class LogJobs implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            if(args.length > 0){
+            if (args.length > 0) {
                 JobTitle jobTitle = JobTitlesBaseValues.jobTitleBaseValues.getOrDefault(args[0], null);
-                if(jobTitle == null){
+                if (jobTitle == null) {
                     sender.sendMessage("Job doesn't exist.");
                     return false;
                 }
                 sender.sendMessage("__Job:");
                 sender.sendMessage("|" + jobTitle.jobName + " with paycheck " + jobTitle.paycheckSize + " and intelligence requirement " + jobTitle.intelligenceRequirement);
                 sender.sendMessage("|" + jobTitle.jobName + "[" + args[0] + "]: " + jobTitle.jobDescription);
-                sender.sendMessage("|Available for you: " + (((int)PlayerStats.getPlayerStats(((Player) sender)).getStat("intelligence") > jobTitle.intelligenceRequirement) && jobTitle.additionalRequirement.apply((Player)sender)));
+                sender.sendMessage("|Available for you: " + (((int) PlayerStats.getPlayerStats(((Player) sender)).getStat("intelligence") > jobTitle.intelligenceRequirement) && jobTitle.additionalRequirement.apply((Player) sender)));
                 return true;
             }
             sender.sendMessage("__Jobs:");
-            for (String job : JobTitlesBaseValues.jobTitleBaseValues.keySet()){
+            for (String job : JobTitlesBaseValues.jobTitleBaseValues.keySet()) {
                 JobTitle jobTitle = JobTitlesBaseValues.jobTitleBaseValues.get(job);
                 sender.sendMessage("|" + jobTitle.jobName + " with paycheck " + jobTitle.paycheckSize + " and intelligence requirement " + jobTitle.intelligenceRequirement);
                 sender.sendMessage("|" + jobTitle.jobName + "[" + job + "]: " + jobTitle.jobDescription);
-                sender.sendMessage("|Available for you: " + (((int)PlayerStats.getPlayerStats(((Player) sender)).getStat("intelligence") > jobTitle.intelligenceRequirement) && jobTitle.additionalRequirement.apply((Player)sender)));
+                sender.sendMessage("|Available for you: " + (((int) PlayerStats.getPlayerStats(((Player) sender)).getStat("intelligence") > jobTitle.intelligenceRequirement) && jobTitle.additionalRequirement.apply((Player) sender)));
             }
             return true;
         } else {

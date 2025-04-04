@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Market;
-import org.gsdistance.grimmsServer.GrimmsServer;
 
 public class BuyItem implements CommandExecutor {
     @Override

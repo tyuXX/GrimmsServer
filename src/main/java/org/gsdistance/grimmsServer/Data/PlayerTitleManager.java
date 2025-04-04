@@ -62,6 +62,7 @@ public class PlayerTitleManager {
             playerTitles.addTitle("UltimateMiner");
         }
     }
+
     public static void checkForTotalKills(Player player) {
         Object totalKillsObj = PlayerStats.getPlayerStats(player).getStat("total_kill_count");
         long totalKills;

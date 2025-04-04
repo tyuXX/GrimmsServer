@@ -4,18 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.Constructable.Market;
+import org.gsdistance.grimmsServer.Data.PluginDataStorage;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.logging.Level;
 
 public class ServerStats {
     public static final Dictionary<String, Type> Stats = new Hashtable<>();
@@ -36,13 +31,11 @@ public class ServerStats {
         StatNames.put("leaderboard", "Leaderboard");
     }
 
-    private final JavaPlugin plugin;
-    private final File statsFile;
+    private final PluginDataStorage dataStorage;
     private Map<String, Object> stats;
 
     public ServerStats(JavaPlugin plugin) {
-        this.plugin = plugin;
-        this.statsFile = new File(plugin.getDataFolder(), "server_stats.json");
+        this.dataStorage = new PluginDataStorage(plugin);
         loadStats();
     }
 
@@ -51,42 +44,26 @@ public class ServerStats {
     }
 
     private void loadStats() {
-        if (!statsFile.exists()) {
+        stats = (Map<String, Object>) dataStorage.retrieveData("server_stats.json", new TypeToken<Map<String, Object>>() {
+        }.getType(), "");
+        if (stats == null) {
             stats = new Hashtable<>();
             stats.put("market", new Gson().toJson(new Market())); // Initialize market stat
             stats.put("leaderboard", new Gson().toJson(new PlayerStatLeaderBoard())); // Initialize leaderboard stat
             saveStats();
-            return;
-        }
-        try (FileReader reader = new FileReader(statsFile)) {
-            Type type = new TypeToken<Map<String, Object>>() {
-            }.getType();
-            stats = new Gson().fromJson(reader, type);
+        } else {
             if (!stats.containsKey("market")) {
                 stats.put("market", new Gson().toJson(new Market())); // Initialize market stat
             }
             if (!stats.containsKey("leaderboard")) {
                 stats.put("leaderboard", new Gson().toJson(new PlayerStatLeaderBoard())); // Initialize leaderboard stat
             }
-        } catch (IOException e) {
-            GrimmsServer.logger.log(Level.WARNING, "Failed to load server stats.\n" + Arrays.toString(e.getStackTrace()));
-            stats = new Hashtable<>();
-            stats.put("market", new Gson().toJson(new Market())); // Initialize market stat
-            stats.put("leaderboard", new Gson().toJson(new PlayerStatLeaderBoard())); // Initialize leaderboard stat
         }
     }
 
     private void saveStats() {
-        try {
-            if (!statsFile.getParentFile().exists()) {
-                statsFile.getParentFile().mkdirs();
-            }
-            try (FileWriter writer = new FileWriter(statsFile)) {
-                new Gson().toJson(stats, writer);
-            }
-        } catch (IOException e) {
-            GrimmsServer.logger.log(Level.WARNING, "Failed to save server stats.\n" + Arrays.toString(e.getStackTrace()));
-        }
+        dataStorage.saveData(stats, new TypeToken<Map<String, Object>>() {
+        }.getType(), "server_stats.json", "");
     }
 
     public Object getStat(String stat) {

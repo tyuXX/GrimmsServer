@@ -16,16 +16,16 @@ public class DepositMoney implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            ItemStack itemStack = ((Player)sender).getInventory().getItemInMainHand();
+            ItemStack itemStack = ((Player) sender).getInventory().getItemInMainHand();
             ItemMeta itemMeta = itemStack.getItemMeta();
-            if(!itemMeta.getPersistentDataContainer().has(new NamespacedKey(GrimmsServer.instance,"banknoteValue"),PersistentDataType.DOUBLE)){
+            if (!itemMeta.getPersistentDataContainer().has(new NamespacedKey(GrimmsServer.instance, "banknoteValue"), PersistentDataType.DOUBLE)) {
                 sender.sendMessage("Not a banknote.");
                 return false;
             }
             PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
-            playerStats.setStat("money",(Double)playerStats.getStat("money") + (itemMeta.getPersistentDataContainer().getOrDefault(new NamespacedKey(GrimmsServer.instance,"banknoteValue"),PersistentDataType.DOUBLE, 0.0)*itemStack.getAmount()));
-            ((Player)sender).getInventory().remove(itemStack) ;
-            sender.sendMessage("Deposited " + (itemMeta.getPersistentDataContainer().getOrDefault(new NamespacedKey(GrimmsServer.instance,"banknoteValue"),PersistentDataType.DOUBLE, 0.0)*itemStack.getAmount()) + " money.");
+            playerStats.setStat("money", (Double) playerStats.getStat("money") + (itemMeta.getPersistentDataContainer().getOrDefault(new NamespacedKey(GrimmsServer.instance, "banknoteValue"), PersistentDataType.DOUBLE, 0.0) * itemStack.getAmount()));
+            ((Player) sender).getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            sender.sendMessage("Deposited " + (itemMeta.getPersistentDataContainer().getOrDefault(new NamespacedKey(GrimmsServer.instance, "banknoteValue"), PersistentDataType.DOUBLE, 0.0) * itemStack.getAmount()) + " money.");
             return true;
         } else {
             sender.sendMessage("This command can only be run by a player.");

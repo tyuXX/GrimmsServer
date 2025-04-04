@@ -56,6 +56,21 @@ public class PlayerTitles {
         }
     }
 
+    public void removeTitle(String title) {
+        if (hasTitle(title)) {
+            String[] newTitles = new String[playerTitles.length - 1];
+            int index = 0;
+            for (String playerTitle : playerTitles) {
+                if (!playerTitle.equals(title)) {
+                    newTitles[index++] = playerTitle;
+                }
+            }
+            PlayerStats.getPlayerStats(player).setStat("titles", new Gson().toJson(newTitles));
+            GrimmsServer.instance.getServer().broadcastMessage("Title " + title + " was revoked from " + player.getDisplayName() + ".");
+            PlayerTitleManager.checkTitles(player);
+        }
+    }
+
     public boolean hasTitle(String title) {
         for (String playerTitle : playerTitles) {
             if (playerTitle.equals(title)) {

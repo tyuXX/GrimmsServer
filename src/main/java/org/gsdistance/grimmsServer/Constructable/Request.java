@@ -1,19 +1,21 @@
 package org.gsdistance.grimmsServer.Constructable;
 
 import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 
-import java.security.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.function.Function;
 
 public class Request {
-    private UUID uuid;
-    private String forPlayer;
+    private final UUID uuid;
+    private final String forPlayer;
     public String forPurpose;
     private Function<Object, ?> onAccept;
-    private LocalDateTime timestamp;
-    private Object requestData;
+    private final LocalDateTime timestamp;
+    private final Object requestData;
 
     public Request(Function<Object, ?> onAccept, Player forPlayer, String forPurpose, Object requestData) {
         uuid = UUID.randomUUID();
@@ -24,15 +26,23 @@ public class Request {
         this.timestamp = LocalDateTime.now();
     }
 
-    public boolean canAccept(Player player){
-        if(player.getName().equalsIgnoreCase(forPlayer)){
-            return true;
+    public static void newRequest(Function<Object, ?> onAccept, Player forPlayer, String forPurpose, Object requestData) {
+        Request request = new Request(onAccept, forPlayer, forPurpose, requestData);
+        int requestId = new Random().nextInt(1000000, 9999999);
+        while (PerSessionDataStorage.dataStore.containsKey("request-" + requestId)) {
+            requestId = new Random().nextInt(1000000, 9999999);
         }
-        return false;
+        forPlayer.sendMessage("You have a new request: " + forPurpose);
+        forPlayer.sendMessage("Accept with /acceptRequest " + requestId);
+        PerSessionDataStorage.dataStore.put("request-" + requestId, Map.of(request, Request.class));
     }
 
-    public boolean acceptRequest(Player player){
-        if(canAccept(player)){
+    public boolean canAccept(Player player) {
+        return player.getName().equalsIgnoreCase(forPlayer);
+    }
+
+    public boolean acceptRequest(Player player) {
+        if (canAccept(player)) {
             onAccept.apply(requestData);
             onAccept = (Object object) -> object;
             return true;
@@ -42,5 +52,5 @@ public class Request {
 
     public LocalDateTime getTimestamp() {
         return timestamp;
-    };
+    }
 }

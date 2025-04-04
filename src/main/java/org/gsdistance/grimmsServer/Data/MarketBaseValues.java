@@ -310,6 +310,9 @@ public class MarketBaseValues {
             Map.entry(Material.PURPUR_PILLAR, 50.0),
             Map.entry(Material.PURPUR_STAIRS, 50.0),
             Map.entry(Material.SPAWNER, 100.0),
-            Map.entry(Material.CHEST, 8.0)
+            Map.entry(Material.CHEST, 8.0),
+            Map.entry(Material.GUNPOWDER, 4.5),
+            Map.entry(Material.PAPER, 1.0),
+            Map.entry(Material.FIREWORK_ROCKET, 14.5)
     );
 }
