@@ -33,6 +33,9 @@ public class PlayerTitleManager {
     }
 
     public static void checkForMoney(Player player) {
+        if(!PlayerStats.getPlayerStats(player).hasExactStat("money")){
+            return;
+        }
         double money = (double) PlayerStats.getPlayerStats(player).getStat("money");
         PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
         if (money > 100000.0) {

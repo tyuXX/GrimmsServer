@@ -1,0 +1,6 @@
+testValue: false
+module_Jobs: true
+module_Factions: true
+module_Market: true
+module_Leaderboard: true
+disabledCommands: []

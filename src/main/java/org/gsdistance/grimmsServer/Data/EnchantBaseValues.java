@@ -5,7 +5,7 @@ import org.bukkit.enchantments.Enchantment;
 import java.util.Map;
 
 public class EnchantBaseValues {
-    public static final Map<Enchantment, Double> enchantBaseValues = Map.ofEntries(
+    public static Map<Enchantment, Double> enchantBaseValues = Map.ofEntries(
             Map.entry(Enchantment.SHARPNESS, 3000.0),
             Map.entry(Enchantment.EFFICIENCY, 3500.0),
             Map.entry(Enchantment.KNOCKBACK, 2000.0),

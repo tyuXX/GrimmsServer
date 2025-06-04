@@ -1,5 +1,7 @@
-package org.gsdistance.grimmsServer.Commands;
+package org.gsdistance.grimmsServer.Manage;
 
+import org.gsdistance.grimmsServer.Commands.*;
+import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 public class CommandRegistry {
@@ -31,5 +33,15 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("acceptRequest").setExecutor(new AcceptRequest());
         GrimmsServer.instance.getCommand("buyTp").setExecutor(new BuyTp());
         GrimmsServer.instance.getCommand("removeTitle").setExecutor(new RemoveTitle());
+        GrimmsServer.instance.getCommand("reloadGrimmsConfig").setExecutor(new ReloadConfig());
+    }
+
+    public static boolean CanExecute(String command) {
+        for (String disabledCommand : ActiveConfig.disabledCommands) {
+            if (disabledCommand.equalsIgnoreCase(command)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -1,4 +1,4 @@
-package org.gsdistance.grimmsServer.Events;
+package org.gsdistance.grimmsServer.Manage;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -8,6 +8,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.gsdistance.grimmsServer.Events.PlayerChatEvent;
+import org.gsdistance.grimmsServer.Events.PlayerCommandPreprocessEvent;
 
 public class EventTrigger implements Listener {
     @EventHandler
@@ -38,5 +40,13 @@ public class EventTrigger implements Listener {
     @EventHandler
     public void onChatUse(AsyncPlayerChatEvent event) {
         PlayerChatEvent.Event(event);
+    }
+    @EventHandler
+    public void onCommandUse(org.bukkit.event.player.PlayerCommandPreprocessEvent event) {
+        PlayerCommandPreprocessEvent.Event(event);
+    }
+    @EventHandler
+    public void onChunkLoad(org.bukkit.event.world.ChunkLoadEvent event) {
+        org.gsdistance.grimmsServer.Events.ChunkLoadEvent.Event(event);
     }
 }

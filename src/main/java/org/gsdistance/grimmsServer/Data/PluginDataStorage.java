@@ -27,7 +27,7 @@ public class PluginDataStorage {
     }
 
     public void saveData(Object object, Type objectType, String fileName, String addedPath) {
-        File writeFolder = new File(plugin.getDataFolder().getPath() + addedPath);
+        File writeFolder = new File(plugin.getDataFolder().getPath() + File.separatorChar + addedPath);
         File writeFile = new File(writeFolder.getPath() + File.separatorChar + fileName);
         if (!writeFolder.exists()) {
             writeFolder.mkdir();

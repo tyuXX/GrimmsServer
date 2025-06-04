@@ -1,7 +1,12 @@
 name: GrimmsServer
+author: Grimm&tyuXX
+description: A spigot plugin made by Grimm and tyuXX, it adds player leveling, a market, money, and more.
+website: www.gsdistance.org
+prefix: Grimm
 main: org.gsdistance.grimmsServer.GrimmsServer
 version: 1
-api-version: 1.16
+api-version: 1.20
+load: STARTUP
 commands:
   logSelfStats:
     description: Displays the player's own stats including death count, money, and total kills.
@@ -110,6 +115,10 @@ commands:
     description: Faction commands
     usage: /faction <command> <args>
     permission: grimmsserver.faction
+  reloadGrimmsConfig:
+    description: Reloads the GrimmsServer configuration.
+    usage: /reloadGrimmsConfig
+    permission: grimmsserver.reloadConfig
 permissions:
   grimmsserver.logSelfStats:
     description: Allows a player to log their own stats
@@ -194,4 +203,7 @@ permissions:
     default: true
   grimmsserver.factionAdmin:
     description: Allows a player to use faction admin commands
+    default: op
+  grimmsserver.reloadConfig:
+    description: Allows a player to reload the GrimmsServer configuration
     default: op

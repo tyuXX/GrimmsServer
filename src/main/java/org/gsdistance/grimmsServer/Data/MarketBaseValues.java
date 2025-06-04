@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import java.util.Map;
 
 public class MarketBaseValues {
-    public static final Map<Material, Double> marketBaseValues = Map.ofEntries(
+    public static Map<Material, Double> marketBaseValues = Map.ofEntries(
             Map.entry(Material.DRAGON_EGG, 250000.0),
             Map.entry(Material.DIAMOND, 100.0),
             Map.entry(Material.GOLD_INGOT, 50.0),
