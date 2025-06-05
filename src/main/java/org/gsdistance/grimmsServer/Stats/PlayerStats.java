@@ -10,24 +10,24 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.*;
 
+import static org.bukkit.persistence.PersistentDataType.*;
+
 public class PlayerStats {
     public static final Dictionary<String, PersistentDataType<?, ?>> Stats = new Hashtable<>();
 
     static {
-        Stats.put("death_count", PersistentDataType.INTEGER);
+        Stats.put("death_count", INTEGER);
         Stats.put("money", PersistentDataType.DOUBLE);
-        Stats.put("total_kill_count", PersistentDataType.INTEGER);
-        Stats.put("join_count", PersistentDataType.INTEGER);
+        Stats.put("total_kill_count", INTEGER);
+        Stats.put("join_count", INTEGER);
         Stats.put("tPoint", PersistentDataType.DOUBLE);
-        Stats.put("block_break_count", PersistentDataType.LONG);
-        Stats.put("level", PersistentDataType.INTEGER);
+        Stats.put("block_break_count", LONG);
+        Stats.put("level", INTEGER);
         Stats.put("xp", PersistentDataType.DOUBLE);
         Stats.put("xp_required", PersistentDataType.DOUBLE);
-        Stats.put("titles", PersistentDataType.STRING);
-        Stats.put("sent_messages", PersistentDataType.LONG);
-        Stats.put("intelligence", PersistentDataType.INTEGER);
-        Stats.put("jobTitle", PersistentDataType.STRING);
-        Stats.put("homes", PersistentDataType.STRING);
+        Stats.put("sent_messages", LONG);
+        Stats.put("intelligence", INTEGER);
+        Stats.put("jobTitle", STRING);
     }
 
     public static final Dictionary<String, String> StatNames = new Hashtable<>();
@@ -42,11 +42,9 @@ public class PlayerStats {
         StatNames.put("level", "Level");
         StatNames.put("xp", "Experience");
         StatNames.put("xp_required", "Experience Required");
-        StatNames.put("titles", "Player Titles");
         StatNames.put("sent_messages", "Messages Sent");
         StatNames.put("intelligence", "Intelligence");
         StatNames.put("jobTitle", "Job");
-        StatNames.put("homes", "Homes");
     }
 
     public static final List<String> StatOrder = List.of(
@@ -64,22 +62,32 @@ public class PlayerStats {
             "jobTitle"
     );
 
+    public static final Map<String, ?> StatDefaultValues = Map.ofEntries(
+            Map.entry("death_count", 0),
+            Map.entry("money", 0.0),
+            Map.entry("total_kill_count", 0),
+            Map.entry("join_count", 0),
+            Map.entry("tPoint", 0.0),
+            Map.entry("block_break_count", 0L),
+            Map.entry("level", 1),
+            Map.entry("xp", 0.0),
+            Map.entry("xp_required", 100.0),
+            Map.entry("sent_messages", 0L),
+            Map.entry("intelligence", new Random().nextInt(0, 100)),
+            Map.entry("jobTitle", "")
+    );
+
     private final JavaPlugin plugin;
     private final PersistentDataContainer dataContainer;
 
     public PlayerStats(JavaPlugin plugin, Player player) {
         this.plugin = plugin;
         this.dataContainer = player.getPersistentDataContainer();
-        if (!hasExactStat("titles")) {
-            setStat("titles", new Gson().toJson(new ArrayList<String>().toArray()));
-        }
-        if (!hasExactStat("homes")) {
-            setStat("homes", new Gson().toJson(Map.of(
-                    "home", "0 100 0"
-            )));
-        }
-        if (!hasExactStat("intelligence")) {
-            setStat("intelligence", new Random().nextInt(0, 100));
+        // Initialize default stats if they do not exist
+        for (String stat : StatOrder) {
+            if (!hasExactStat(stat)) {
+                setStat(stat, StatDefaultValues.get(stat));
+            }
         }
     }
 
@@ -89,6 +97,20 @@ public class PlayerStats {
 
     public Object getStat(String stat) {
         PersistentDataType type = Stats.get(stat);
+        if (!hasExactStat(stat)){
+            if (type == INTEGER) {
+                return 0;
+            } else if (type == PersistentDataType.DOUBLE) {
+                return 0.0;
+            } else if (type == LONG) {
+                return 0L;
+            } else if (type == STRING) {
+                return "";
+            } else {
+                GrimmsServer.logger.warning("Stat " + stat + " does not have a default value.");
+                return null;
+            }
+        }
         if (type == null) {
             GrimmsServer.logger.warning("Stat " + stat + " does not exist.");
             return null;
@@ -115,24 +137,24 @@ public class PlayerStats {
             GrimmsServer.logger.warning("Stat " + stat + " does not exist.");
             return;
         }
-        if (type == PersistentDataType.INTEGER) {
-            Integer currentStat = dataContainer.get(new NamespacedKey(plugin, stat), PersistentDataType.INTEGER);
+        if (type == INTEGER) {
+            Integer currentStat = dataContainer.get(new NamespacedKey(plugin, stat), INTEGER);
             if (currentStat == null) {
                 currentStat = 0;
             }
-            dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.INTEGER, currentStat + amount);
+            dataContainer.set(new NamespacedKey(plugin, stat), INTEGER, currentStat + amount);
         } else if (type == PersistentDataType.DOUBLE) {
             Double currentStat = dataContainer.get(new NamespacedKey(plugin, stat), PersistentDataType.DOUBLE);
             if (currentStat == null) {
                 currentStat = 0.0;
             }
             dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.DOUBLE, currentStat + amount);
-        } else if (type == PersistentDataType.LONG) {
-            Long currentStat = dataContainer.get(new NamespacedKey(plugin, stat), PersistentDataType.LONG);
+        } else if (type == LONG) {
+            Long currentStat = dataContainer.get(new NamespacedKey(plugin, stat), LONG);
             if (currentStat == null) {
                 currentStat = 0L;
             }
-            dataContainer.set(new NamespacedKey(plugin, stat), PersistentDataType.LONG, currentStat + amount);
+            dataContainer.set(new NamespacedKey(plugin, stat), LONG, currentStat + amount);
         }
     }
 }

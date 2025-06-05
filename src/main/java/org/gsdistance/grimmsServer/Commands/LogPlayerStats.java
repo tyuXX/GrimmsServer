@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
+import static org.gsdistance.grimmsServer.Shared.formatNumber;
+
 public class LogPlayerStats implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -25,7 +27,7 @@ public class LogPlayerStats implements CommandExecutor {
             for (String stat : PlayerStats.StatOrder) {
                 Object value = stats.getStat(stat);
                 if (value instanceof Double) {
-                    sender.sendMessage("|" + PlayerStats.StatNames.get(stat) + ": " + Math.round((Double) value));
+                    sender.sendMessage("|" + PlayerStats.StatNames.get(stat) + ": " + formatNumber((Double) value));
                 } else {
                     sender.sendMessage("|" + PlayerStats.StatNames.get(stat) + ": " + value.toString());
                 }

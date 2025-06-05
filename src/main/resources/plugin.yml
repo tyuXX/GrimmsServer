@@ -2,7 +2,7 @@ name: GrimmsServer
 author: Grimm&tyuXX
 description: A spigot plugin made by Grimm and tyuXX, it adds player leveling, a market, money, and more.
 website: www.gsdistance.org
-prefix: Grimm
+prefix: Grimm's
 main: org.gsdistance.grimmsServer.GrimmsServer
 version: ${version}
 api-version: 1.20
@@ -119,6 +119,10 @@ commands:
     description: Reloads the GrimmsServer configuration.
     usage: /reloadGrimmsConfig
     permission: grimmsserver.reloadConfig
+  home:
+    description: Home commands
+    usage: /home <command> <args>
+    permission: grimmsserver.home
 permissions:
   grimmsserver.logSelfStats:
     description: Allows a player to log their own stats
@@ -177,6 +181,9 @@ permissions:
   grimmsserver.multiHome:
     description: Allows multiple homes to be set
     default: op
+  grimmsserver.home:
+    description: Allows a player to use home commands
+    default: true
   grimmsserver.logJobs:
     description: Allows a player to log available jobs
     default: true

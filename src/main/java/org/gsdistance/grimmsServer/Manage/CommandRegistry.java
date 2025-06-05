@@ -1,7 +1,10 @@
 package org.gsdistance.grimmsServer.Manage;
 
 import org.gsdistance.grimmsServer.Commands.*;
+import org.gsdistance.grimmsServer.Commands.HomeCommand.HomeBaseCommand;
+import org.gsdistance.grimmsServer.Commands.HomeCommand.HomeTabCompleter;
 import org.gsdistance.grimmsServer.Config.ActiveConfig;
+import org.gsdistance.grimmsServer.Data.ConfigRequirements;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 public class CommandRegistry {
@@ -34,6 +37,8 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("buyTp").setExecutor(new BuyTp());
         GrimmsServer.instance.getCommand("removeTitle").setExecutor(new RemoveTitle());
         GrimmsServer.instance.getCommand("reloadGrimmsConfig").setExecutor(new ReloadConfig());
+        GrimmsServer.instance.getCommand("home").setExecutor(new HomeBaseCommand());
+        GrimmsServer.instance.getCommand("home").setTabCompleter(new HomeTabCompleter());
     }
 
     public static boolean CanExecute(String command) {
@@ -42,6 +47,6 @@ public class CommandRegistry {
                 return false;
             }
         }
-        return true;
+        return ConfigRequirements.isCommandEnabled(command);
     }
 }

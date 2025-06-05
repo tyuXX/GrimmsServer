@@ -12,10 +12,9 @@ import java.util.logging.Level;
 
 public class ConfigLoader {
     private static FileConfiguration config;
-    private static File configFile;
 
     public static void initialize(JavaPlugin plugin) {
-        configFile = new File(plugin.getDataFolder(), "config.yml");
+        File configFile = new File(plugin.getDataFolder(), "config.yml");
         if (!configFile.exists()) {
             plugin.saveDefaultConfig();
         }
@@ -23,30 +22,27 @@ public class ConfigLoader {
     }
 
     public static void loadConfigFromFile() {
-        if (config == null) return;
+        GrimmsServer.logger.info("Loading GrimmsServer config...");
+        if (config == null) {
+            GrimmsServer.logger.warning("Config somehow not initialized.");
+            return;
+        }
 
         boolean module_Jobs = config.getBoolean("module_Jobs", true);
         boolean module_Factions = config.getBoolean("module_Factions", true);
         boolean module_Market = config.getBoolean("module_Market", true);
         boolean module_Leaderboard = config.getBoolean("module_Leaderboard", true);
         List<String> disabledCommands = config.getStringList("disabledCommands");
+        boolean module_Chat = config.getBoolean("module_Chat", true);
+        boolean module_Homes = config.getBoolean("module_Homes", true);
+        boolean module_Leveling = config.getBoolean("module_Leveling", true);
+        boolean module_Titles = config.getBoolean("module_Titles", true);
+        boolean module_Relics = config.getBoolean("module_Relics", true);
+        boolean module_Events = config.getBoolean("module_Events", true);
+        boolean module_Utils = config.getBoolean("module_Utils", true);
+        boolean module_Ranks = config.getBoolean("module_Ranks", true);
 
-        ActiveConfig.updateConfig(module_Jobs, module_Factions, module_Market, module_Leaderboard, disabledCommands);
-    }
-
-    public static void saveConfigFromActive() {
-        if (config == null) return;
-
-        config.set("module_Jobs", ActiveConfig.module_Jobs);
-        config.set("module_Factions", ActiveConfig.module_Factions);
-        config.set("module_Market", ActiveConfig.module_Market);
-        config.set("module_Leaderboard", ActiveConfig.module_Leaderboard);
-        config.set("disabledCommands", List.of(ActiveConfig.disabledCommands));
-
-        try {
-            config.save(configFile);
-        } catch (IOException e) {
-            GrimmsServer.logger.log(Level.WARNING, "Failed to save config file: " + e.getMessage());
-        }
+        ActiveConfig.updateConfig(module_Jobs, module_Factions, module_Market, module_Leaderboard, disabledCommands, module_Chat, module_Homes, module_Leveling, module_Titles, module_Relics, module_Events, module_Utils, module_Ranks);
+        GrimmsServer.logger.info("GrimmsServer config loaded successfully.");
     }
 }

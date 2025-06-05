@@ -12,8 +12,8 @@ import java.lang.reflect.Type;
 import java.util.logging.Level;
 
 public class PluginDataStorage {
-    private JavaPlugin plugin;
-    private Gson jsonParser;
+    private final JavaPlugin plugin;
+    private final Gson jsonParser;
 
     public PluginDataStorage(JavaPlugin plugin) {
         jsonParser = new Gson();

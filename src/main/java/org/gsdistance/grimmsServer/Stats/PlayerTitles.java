@@ -2,13 +2,13 @@ package org.gsdistance.grimmsServer.Stats;
 
 import com.google.gson.Gson;
 import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Data.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.PlayerTitleManager;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.Map;
 
 public class PlayerTitles {
-    private final String[] playerTitles;
     public static final Map<String, String> titles = Map.ofEntries(
             Map.entry("Dictator", "The title of a dictator, not to be messed with."),
             Map.entry("Executioner", "The title and power of execution."),
@@ -34,7 +34,6 @@ public class PlayerTitles {
 
     public PlayerTitles(Player player) {
         this.player = player;
-        this.playerTitles = new Gson().fromJson((String) PlayerStats.getPlayerStats(player).getStat("titles"), String[].class);
     }
 
     public static PlayerTitles getPlayerTitles(Player player) {
@@ -42,37 +41,42 @@ public class PlayerTitles {
     }
 
     public String[] getTitles() {
-        return playerTitles;
+        return PlayerMetadata.getPlayerMetadata(player).titles;
     }
 
     public void addTitle(String title) {
+        PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(player);
         if (!hasTitle(title)) {
-            String[] newTitles = new String[playerTitles.length + 1];
-            System.arraycopy(playerTitles, 0, newTitles, 0, playerTitles.length);
-            newTitles[playerTitles.length] = title;
-            PlayerStats.getPlayerStats(player).setStat("titles", new Gson().toJson(newTitles));
+            String[] newTitles = new String[metadata.titles.length + 1];
+            System.arraycopy(metadata.titles, 0, newTitles, 0, metadata.titles.length);
+            newTitles[metadata.titles.length] = title;
+            metadata.titles = newTitles;
             GrimmsServer.instance.getServer().broadcastMessage("Title " + title + " was bestowed upon " + player.getDisplayName() + ".");
             PlayerTitleManager.checkTitles(player);
+            metadata.saveToPDS();
         }
     }
 
     public void removeTitle(String title) {
+        PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(player);
         if (hasTitle(title)) {
-            String[] newTitles = new String[playerTitles.length - 1];
+            String[] newTitles = new String[metadata.titles.length - 1];
             int index = 0;
-            for (String playerTitle : playerTitles) {
+            for (String playerTitle : metadata.titles) {
                 if (!playerTitle.equals(title)) {
                     newTitles[index++] = playerTitle;
                 }
             }
-            PlayerStats.getPlayerStats(player).setStat("titles", new Gson().toJson(newTitles));
+            metadata.titles = newTitles;
             GrimmsServer.instance.getServer().broadcastMessage("Title " + title + " was revoked from " + player.getDisplayName() + ".");
             PlayerTitleManager.checkTitles(player);
+            metadata.saveToPDS();
         }
     }
 
     public boolean hasTitle(String title) {
-        for (String playerTitle : playerTitles) {
+        PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(player);
+        for (String playerTitle : metadata.titles) {
             if (playerTitle.equals(title)) {
                 return true;
             }

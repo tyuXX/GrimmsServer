@@ -1,7 +1,7 @@
 package org.gsdistance.grimmsServer.Events;
 
-import org.gsdistance.grimmsServer.Manage.CommandRegistry;
 import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Manage.CommandRegistry;
 
 import java.util.logging.Level;
 
