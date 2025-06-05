@@ -39,6 +39,7 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("reloadGrimmsConfig").setExecutor(new ReloadConfig());
         GrimmsServer.instance.getCommand("home").setExecutor(new HomeBaseCommand());
         GrimmsServer.instance.getCommand("home").setTabCompleter(new HomeTabCompleter());
+        GrimmsServer.instance.getCommand("nick").setExecutor(new Nick());
     }
 
     public static boolean CanExecute(String command) {

@@ -43,6 +43,10 @@ public class PlayerMetadata {
                 metadata = new PlayerMetadata(player);
             }
             PerSessionDataStorage.dataStore.put("metadata-" + player.getUniqueId(), Map.of(metadata, PlayerMetadata.class));
+            // Set display name to nickname if different
+            if (metadata.nickname != null && !metadata.nickname.equals(player.getDisplayName())) {
+                player.setDisplayName(metadata.nickname);
+            }
             return metadata;
         }
         else {
@@ -52,4 +56,3 @@ public class PlayerMetadata {
         }
     }
 }
-

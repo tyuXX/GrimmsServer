@@ -123,6 +123,10 @@ commands:
     description: Home commands
     usage: /home <command> <args>
     permission: grimmsserver.home
+  nick:
+    description: Change your nickname or, if admin, set another player's nickname.
+    usage: /nick <nickname> OR /nick <player> <nickname>
+    permission: grimmsserver.nick
 permissions:
   grimmsserver.logSelfStats:
     description: Allows a player to log their own stats
@@ -213,4 +217,10 @@ permissions:
     default: op
   grimmsserver.reloadConfig:
     description: Allows a player to reload the GrimmsServer configuration
+    default: op
+  grimmsserver.nick:
+    description: Allows a player to change their own nickname
+    default: true
+  grimmsserver.nick.others:
+    description: Allows a player to change other players' nicknames
     default: op

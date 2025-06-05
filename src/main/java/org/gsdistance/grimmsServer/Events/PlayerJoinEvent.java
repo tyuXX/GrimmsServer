@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Events;
 
+import com.google.gson.Gson;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.Data.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.PlayerTitleManager;
@@ -21,5 +22,6 @@ public class PlayerJoinEvent {
         // Initialize player metadata if not already done
         PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(event.getPlayer());
         metadata.softSave();
+        GrimmsServer.logger.info("Player Metadata for " + event.getPlayer().getName() + ":" + new Gson().toJson(metadata));
     }
 }

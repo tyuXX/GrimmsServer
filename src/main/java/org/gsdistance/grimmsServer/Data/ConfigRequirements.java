@@ -33,7 +33,8 @@ public class ConfigRequirements {
             Map.entry("acceptRequest", "default"),
             Map.entry("buyTp", "market"),
             Map.entry("reloadGrimmsConfig", "default"),
-            Map.entry("home", "homes")
+            Map.entry("home", "homes"),
+            Map.entry("nick", "chat")
     );
     public static boolean isCommandEnabled(String command) {
         return switch (CommandRequirements.getOrDefault(command, "default")) {
