@@ -3,7 +3,7 @@ package org.gsdistance.grimmsServer.Events;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.PlayerLevelHandler;
-import org.gsdistance.grimmsServer.Data.PlayerTitleManager;
+import org.gsdistance.grimmsServer.Data.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
 import org.gsdistance.grimmsServer.Stats.WorldStats;
@@ -26,10 +26,10 @@ public class EntityDeathEvent {
                     playerStats.changeStat("tPoint", (int) Math.round(50 * PlayerLevelHandler.getLevelHandler(event.getEntity().getKiller()).getMoneyMultiplier()));
                     worldStats.changeStat("wPoint", 110);
                     PlayerLevelHandler.getLevelHandler(event.getEntity().getKiller()).addExp(150);
-                    PlayerTitleManager.killedPlayer(event.getEntity().getKiller());
-                    PlayerTitleManager.gotKilledByPlayer((Player) event.getEntity());
+                    PlayerTitleChecker.killedPlayer(event.getEntity().getKiller());
+                    PlayerTitleChecker.gotKilledByPlayer((Player) event.getEntity());
                 } else if (event.getEntity().getType() == EntityType.ENDER_DRAGON) {
-                    PlayerTitleManager.killedDragon(event.getEntity().getKiller());
+                    PlayerTitleChecker.killedDragon(event.getEntity().getKiller());
                 }
             }
         }

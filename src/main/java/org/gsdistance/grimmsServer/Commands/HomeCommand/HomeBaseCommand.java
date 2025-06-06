@@ -20,7 +20,7 @@ public class HomeBaseCommand implements CommandExecutor {
         String sub = args[0].toLowerCase();
         switch (sub) {
             case "sethome":
-                return Sethome.SubCommand(player, args);
+                return SetHome.SubCommand(player, args);
             case "tp":
                 return TpHome.SubCommand(player, args);
             case "homes":

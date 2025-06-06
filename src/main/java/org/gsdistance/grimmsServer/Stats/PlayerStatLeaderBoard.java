@@ -3,7 +3,7 @@ package org.gsdistance.grimmsServer.Stats;
 import com.google.gson.Gson;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.LeaderboardEntry;
-import org.gsdistance.grimmsServer.Data.PlayerTitleManager;
+import org.gsdistance.grimmsServer.Data.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.lang.reflect.Type;
@@ -66,7 +66,7 @@ public class PlayerStatLeaderBoard {
             for (String stat : overtakes) {
                 GrimmsServer.instance.getServer().broadcastMessage("The leader of stat " + PlayerStats.StatNames.get(stat) + " is now " + player.getDisplayName());
             }
-            PlayerTitleManager.gotOnLeaderboard(player);
+            PlayerTitleChecker.gotOnLeaderboard(player);
         }
         return pass;
     }

@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 
-public class PlayerTitleManager {
+public class PlayerTitleChecker {
     public static void killedPlayer(Player player) {
         PlayerTitles.getPlayerTitles(player).addTitle("Murderer");
     }

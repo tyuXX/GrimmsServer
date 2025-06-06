@@ -2,7 +2,7 @@ package org.gsdistance.grimmsServer.Events;
 
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Data.JobTitlesBaseValues;
-import org.gsdistance.grimmsServer.Data.PlayerTitleManager;
+import org.gsdistance.grimmsServer.Data.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStatLeaderBoard;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
@@ -15,10 +15,10 @@ public class ServerTickEvent {
         if (ticks % 1000 == 0) {
             for (Player player : GrimmsServer.instance.getServer().getOnlinePlayers()) {
                 PlayerStatLeaderBoard.getPlayerStatLeaderBoard().checkPlayer(player);
-                PlayerTitleManager.checkForMoney(player);
-                PlayerTitleManager.checkTitles(player);
-                PlayerTitleManager.checkForBlockBreaks(player);
-                PlayerTitleManager.checkForTotalKills(player);
+                PlayerTitleChecker.checkForMoney(player);
+                PlayerTitleChecker.checkTitles(player);
+                PlayerTitleChecker.checkForBlockBreaks(player);
+                PlayerTitleChecker.checkForTotalKills(player);
             }
         }
         if (ticks % 24000 == 0) {

@@ -1,9 +1,8 @@
 package org.gsdistance.grimmsServer.Stats;
 
-import com.google.gson.Gson;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Data.PlayerMetadata;
-import org.gsdistance.grimmsServer.Data.PlayerTitleManager;
+import org.gsdistance.grimmsServer.Data.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.Map;
@@ -52,7 +51,7 @@ public class PlayerTitles {
             newTitles[metadata.titles.length] = title;
             metadata.titles = newTitles;
             GrimmsServer.instance.getServer().broadcastMessage("Title " + title + " was bestowed upon " + player.getDisplayName() + ".");
-            PlayerTitleManager.checkTitles(player);
+            PlayerTitleChecker.checkTitles(player);
             metadata.saveToPDS();
         }
     }
@@ -69,7 +68,7 @@ public class PlayerTitles {
             }
             metadata.titles = newTitles;
             GrimmsServer.instance.getServer().broadcastMessage("Title " + title + " was revoked from " + player.getDisplayName() + ".");
-            PlayerTitleManager.checkTitles(player);
+            PlayerTitleChecker.checkTitles(player);
             metadata.saveToPDS();
         }
     }
