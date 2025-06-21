@@ -8,11 +8,10 @@ import org.bukkit.entity.Player;
 public class HomeBaseCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("Only players can use this command.");
             return true;
         }
-        Player player = (Player) sender;
         if (args.length == 0) {
             player.sendMessage("Usage: /home <sethome|tp|homes|delhome> [name]");
             return true;
@@ -20,7 +19,7 @@ public class HomeBaseCommand implements CommandExecutor {
         String sub = args[0].toLowerCase();
         switch (sub) {
             case "sethome":
-                return SetHome.SubCommand(player, args);
+                return Sethome.SubCommand(player, args);
             case "tp":
                 return TpHome.SubCommand(player, args);
             case "homes":

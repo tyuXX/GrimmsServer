@@ -21,7 +21,7 @@ public class PluginDataStorage {
     }
 
     public boolean exists(String fileName, String addedPath) {
-        File readFolder = new File(plugin.getDataFolder().getPath() + addedPath);
+        File readFolder = new File(plugin.getDataFolder().getPath() + File.separatorChar + addedPath);
         File readFile = new File(readFolder.getPath() + File.separatorChar + fileName);
         return readFile.exists();
     }
@@ -49,7 +49,7 @@ public class PluginDataStorage {
     }
 
     public Object retrieveData(String fileName, Type objectType, String addedPath) {
-        File readFolder = new File(plugin.getDataFolder().getPath() + addedPath);
+        File readFolder = new File(plugin.getDataFolder().getPath() + File.separatorChar + addedPath);
         File readFile = new File(readFolder.getPath() + File.separatorChar + fileName);
         if (!readFile.exists()) {
             return null;

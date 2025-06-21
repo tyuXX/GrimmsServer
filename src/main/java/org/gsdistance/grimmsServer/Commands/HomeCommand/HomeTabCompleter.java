@@ -3,7 +3,7 @@ package org.gsdistance.grimmsServer.Commands.HomeCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Data.PlayerMetadata;
+import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
 
 import java.util.ArrayList;
 import java.util.Arrays;

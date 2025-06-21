@@ -4,13 +4,12 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 import java.util.function.Function;
 
 public class Request {
-    private final UUID uuid;
     private final String forPlayer;
     public String forPurpose;
     private Function<Object, ?> onAccept;
@@ -18,7 +17,6 @@ public class Request {
     private final Object requestData;
 
     public Request(Function<Object, ?> onAccept, Player forPlayer, String forPurpose, Object requestData) {
-        uuid = UUID.randomUUID();
         this.onAccept = onAccept;
         this.forPlayer = forPlayer.getName();
         this.forPurpose = forPurpose;
@@ -35,6 +33,10 @@ public class Request {
         forPlayer.sendMessage("You have a new request: " + forPurpose);
         forPlayer.sendMessage("Accept with /acceptRequest " + requestId);
         PerSessionDataStorage.dataStore.put("request-" + requestId, Map.of(request, Request.class));
+
+        ArrayList<Integer> requestDataList = (ArrayList<Integer>) PerSessionDataStorage.dataStore.get("requestData-" + forPlayer.getName()).keySet().toArray()[0];
+        requestDataList.add(requestId);
+        PerSessionDataStorage.dataStore.put("requestData-" + forPlayer.getName(), Map.of(requestDataList, ArrayList.class));
     }
 
     public boolean canAccept(Player player) {
@@ -44,7 +46,10 @@ public class Request {
     public boolean acceptRequest(Player player) {
         if (canAccept(player)) {
             onAccept.apply(requestData);
-            onAccept = (Object object) -> object;
+            PerSessionDataStorage.dataStore.remove("request-" + player.getName());
+            ArrayList<Integer> requestDataList = (ArrayList<Integer>) PerSessionDataStorage.dataStore.get("requestData-" + player.getName()).keySet().toArray()[0];
+            requestDataList.removeIf(id -> id.equals(Integer.parseInt(forPurpose)));
+            PerSessionDataStorage.dataStore.put("requestData-" + player.getName(), Map.of(requestDataList, ArrayList.class));
             return true;
         }
         return false;

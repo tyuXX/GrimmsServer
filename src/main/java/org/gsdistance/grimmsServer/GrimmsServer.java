@@ -14,8 +14,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.gsdistance.grimmsServer.Shared.deleteDirectoryRecursively;
-import static org.gsdistance.grimmsServer.Shared.saveResourceIfNotExists;
+import static org.gsdistance.grimmsServer.Shared.*;
 
 public final class GrimmsServer extends JavaPlugin {
     public static JavaPlugin instance;
@@ -60,10 +59,9 @@ public final class GrimmsServer extends JavaPlugin {
                 logger.log(Level.WARNING, "Error comparing version.embed files", e);
             }
             if (Do) {
-                File embedFolder = new File(getDataFolder(), "embed");
-                deleteDirectoryRecursively(embedFolder);
-                saveResourceIfNotExists("embed", true); // Copy the embed folder from the jar
-                logger.log(Level.INFO, "Updated embed folder from jar.");
+                updateResource("embed", true);
+                updateResource("dimensions", true);
+                logger.log(Level.INFO, "Updated resources from jar.");
             }
         } else {
             // If it does not exist, copy the embed folder from the jar

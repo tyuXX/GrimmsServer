@@ -1,6 +1,5 @@
 package org.gsdistance.grimmsServer.Stats;
 
-import com.google.gson.Gson;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -97,7 +96,7 @@ public class PlayerStats {
 
     public Object getStat(String stat) {
         PersistentDataType type = Stats.get(stat);
-        if (!hasExactStat(stat)){
+        if (!hasExactStat(stat)) {
             if (type == INTEGER) {
                 return 0;
             } else if (type == PersistentDataType.DOUBLE) {

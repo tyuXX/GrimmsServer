@@ -35,37 +35,37 @@ public class ActiveConfig {
         ActiveConfig.module_Ranks = module_Ranks;
 
         // Log the status of each module
-        if (!module_Jobs){
+        if (!module_Jobs) {
             GrimmsServer.logger.info("Jobs module is disabled by config.");
         }
-        if (!module_Factions){
+        if (!module_Factions) {
             GrimmsServer.logger.info("Factions module is disabled by config.");
         }
-        if (!module_Market){
+        if (!module_Market) {
             GrimmsServer.logger.info("Market module is disabled by config.");
         }
-        if (!module_Leaderboard){
+        if (!module_Leaderboard) {
             GrimmsServer.logger.info("Leaderboard module is disabled by config.");
         }
-        if (!module_Chat){
+        if (!module_Chat) {
             GrimmsServer.logger.info("Chat module is disabled by config.");
         }
-        if (!module_Homes){
+        if (!module_Homes) {
             GrimmsServer.logger.info("Homes module is disabled by config.");
         }
-        if (!module_Leveling){
+        if (!module_Leveling) {
             GrimmsServer.logger.info("Leveling module is disabled by config.");
         }
-        if (!module_Titles){
+        if (!module_Titles) {
             GrimmsServer.logger.info("Titles module is disabled by config.");
         }
-        if (!module_Relics){
+        if (!module_Relics) {
             GrimmsServer.logger.info("Relics module is disabled by config.");
         }
-        if (!module_Events){
+        if (!module_Events) {
             GrimmsServer.logger.info("Events module is disabled by config.");
         }
-        if (!module_Utils){
+        if (!module_Utils) {
             GrimmsServer.logger.info("Utils module is disabled by config.");
         }
         if (disabledCommands.isEmpty()) {
@@ -73,7 +73,7 @@ public class ActiveConfig {
         } else {
             GrimmsServer.logger.info("Disabled commands: " + String.join(", ", disabledCommands));
         }
-        if (!module_Ranks){
+        if (!module_Ranks) {
             GrimmsServer.logger.info("Ranks module is disabled by config.");
         }
     }

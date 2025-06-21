@@ -4,7 +4,7 @@ module_Factions: true
 module_Market: true
 module_Leaderboard: true
 disabledCommands: []
-module_Chat: false
+module_Chat: true
 module_Homes: true
 module_Leveling: true
 module_Titles: true

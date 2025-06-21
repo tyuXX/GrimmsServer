@@ -1,10 +1,10 @@
 package org.gsdistance.grimmsServer.Commands.HomeCommand;
 
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Data.PlayerMetadata;
 import org.gsdistance.grimmsServer.Constructable.Location;
+import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
 
-public class SetHome {
+public class Sethome {
     public static boolean SubCommand(Player player, String[] args) {
         String homeName = "home";
         if (args.length > 1) {

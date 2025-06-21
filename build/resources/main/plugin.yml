@@ -127,6 +127,10 @@ commands:
     description: Change your nickname or, if admin, set another player's nickname.
     usage: /nick <nickname> OR /nick <player> <nickname>
     permission: grimmsserver.nick
+  market:
+    description: Market commands
+    usage: /market <get|stock|ripoff|enchant|tp> [args]
+    permission: grimmsserver.market
 permissions:
   grimmsserver.logSelfStats:
     description: Allows a player to log their own stats
@@ -224,3 +228,21 @@ permissions:
   grimmsserver.nick.others:
     description: Allows a player to change other players' nicknames
     default: op
+  grimmsserver.market:
+    description: Allows a player to use market commands
+    default: true
+  grimmsserver.market.get:
+    description: Allows a player to get market information
+    default: true
+  grimmsserver.market.stock:
+    description: Allows a player to get market stock
+    default: true
+  grimmsserver.market.ripoff:
+    description: Allows a player to buy items at 10x base price
+    default: true
+  grimmsserver.market.enchant:
+    description: Allows a player to view enchantment costs
+    default: true
+  grimmsserver.market.tp:
+    description: Allows a player to teleport to another player
+    default: true

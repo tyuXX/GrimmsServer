@@ -6,7 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Data.PlayerMetadata;
+import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
 
 public class Nick implements CommandExecutor {
     @Override
@@ -51,7 +51,7 @@ public class Nick implements CommandExecutor {
                 player.sendMessage(ChatColor.RED + "Usage: /nick <nickname> OR /nick <player> <nickname>");
                 return true;
             }
-        }else {
+        } else {
             sender.sendMessage("This command can only be run by a player.");
             return false;
         }

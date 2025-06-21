@@ -1,12 +1,16 @@
 package org.gsdistance.grimmsServer.Events;
 
 import com.google.gson.Gson;
-import org.gsdistance.grimmsServer.Data.PlayerMetadata;
+import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
+import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
 import org.gsdistance.grimmsServer.Stats.WorldStats;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class PlayerJoinEvent {
     public static void Event(org.bukkit.event.player.PlayerJoinEvent event) {
@@ -16,8 +20,9 @@ public class PlayerJoinEvent {
         PlayerTitleChecker.joinedGame(event.getPlayer());
 
         // Initialize player metadata if not already done
-        PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(event.getPlayer());
-        metadata.softSave();
-        GrimmsServer.logger.info("Player Metadata for " + event.getPlayer().getName() + ":" + new Gson().toJson(metadata));
+        PlayerMetadata.getPlayerMetadata(event.getPlayer());
+
+        // Initialize request data
+        PerSessionDataStorage.dataStore.put("requestData-" + event.getPlayer().getName(), Map.of(new ArrayList<Integer>(), ArrayList.class));
     }
 }

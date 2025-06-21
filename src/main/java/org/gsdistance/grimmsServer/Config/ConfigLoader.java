@@ -6,9 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
 
 public class ConfigLoader {
     private static FileConfiguration config;

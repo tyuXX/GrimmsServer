@@ -20,6 +20,13 @@ public class Shared {
         return number.toString();
     }
 
+    public static void updateResource(String resourcePath, boolean isDirectory) {
+        logger.info("Updating resource: " + resourcePath);
+        File embedFolder = new File(GrimmsServer.instance.getDataFolder(), resourcePath);
+        deleteDirectoryRecursively(embedFolder);
+        saveResourceIfNotExists(resourcePath, isDirectory);
+    }
+
     public static void deleteDirectoryRecursively(File directory) {
         if (directory.isDirectory()) {
             File[] files = directory.listFiles();
