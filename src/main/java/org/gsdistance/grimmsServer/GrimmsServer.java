@@ -14,7 +14,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.gsdistance.grimmsServer.Shared.*;
+import static org.gsdistance.grimmsServer.Shared.saveResourceIfNotExists;
+import static org.gsdistance.grimmsServer.Shared.updateResource;
 
 public final class GrimmsServer extends JavaPlugin {
     public static JavaPlugin instance;
@@ -60,7 +61,7 @@ public final class GrimmsServer extends JavaPlugin {
             }
             if (Do) {
                 updateResource("embed", true);
-                updateResource("dimensions", true);
+                updateResource("worldConstructors", true);
                 logger.log(Level.INFO, "Updated resources from jar.");
             }
         } else {

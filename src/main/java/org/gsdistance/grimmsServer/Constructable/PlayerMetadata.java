@@ -50,8 +50,7 @@ public class PlayerMetadata {
         if (metadata == null) {
             metadata = new PlayerMetadata(player);
             GrimmsServer.logger.info("Created new PlayerMetadata for " + player.getName());
-        }
-        else {
+        } else {
             GrimmsServer.logger.info("Retrieved PlayerMetadata for " + player.getName());
         }
         PerSessionDataStorage.dataStore.put("metadata-" + player.getUniqueId(), Map.of(metadata, PlayerMetadata.class));

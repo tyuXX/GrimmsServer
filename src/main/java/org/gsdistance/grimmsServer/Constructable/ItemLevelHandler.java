@@ -1,34 +1,25 @@
 package org.gsdistance.grimmsServer.Constructable;
 
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-import java.util.logging.Level;
-
 public class ItemLevelHandler {
     private final ItemStack item;
     private final Player player;
-    private final NamespacedKey levelKey;
-    private final NamespacedKey xpKey;
-    private final NamespacedKey levelableKey;
+    private final ItemDataHandler dataHandler;
+
+    private static final String LEVEL_KEY = "level";
+    private static final String XP_KEY = "xp";
+    private static final String LEVELABLE_KEY = "isLevelable";
 
     public ItemLevelHandler(ItemStack item, Player player, JavaPlugin plugin) {
         this.item = item;
         this.player = player;
-        this.levelKey = new NamespacedKey(plugin, "level");
-        this.xpKey = new NamespacedKey(plugin, "xp");
-        this.levelableKey = new NamespacedKey(plugin, "isLevelable");
-        MakeItemLevelable();
-    }
-
-    public static ItemLevelHandler getLevelHandler(ItemStack item, Player player) {
-        return new ItemLevelHandler(item, player, GrimmsServer.instance);
+        this.dataHandler = new ItemDataHandler(item, plugin);
+        initializeItemLevelable();
     }
 
     public static ItemLevelHandler getLevelHandler(Player player) {
@@ -36,65 +27,44 @@ public class ItemLevelHandler {
     }
 
     public static boolean isItemLevelable(ItemStack item) {
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            PersistentDataContainer data = meta.getPersistentDataContainer();
-            return data.has(new NamespacedKey(GrimmsServer.instance, "isLevelable"), PersistentDataType.BOOLEAN);
-        }
-        return false;
+        ItemDataHandler dataHandler = new ItemDataHandler(item, GrimmsServer.instance);
+        Boolean isLevelable = (Boolean) dataHandler.getItemNBTData(LEVELABLE_KEY, PersistentDataType.BOOLEAN);
+        return isLevelable != null && isLevelable;
     }
 
-    public void MakeItemLevelable() {
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            PersistentDataContainer data = meta.getPersistentDataContainer();
-            data.set(levelKey, PersistentDataType.DOUBLE, 0.0);
-            data.set(xpKey, PersistentDataType.DOUBLE, 0.0);
-            data.set(levelableKey, PersistentDataType.BOOLEAN, true);
-            item.setItemMeta(meta);
+    private void initializeItemLevelable() {
+        if (!isItemLevelable(item)) {
+            dataHandler.setItemNBTData(LEVEL_KEY, 0.0);
+            dataHandler.setItemNBTData(XP_KEY, 0.0);
+            dataHandler.setItemNBTData(LEVELABLE_KEY, true);
         }
     }
 
     public double getLevel() {
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            PersistentDataContainer data = meta.getPersistentDataContainer();
-            return data.getOrDefault(levelKey, PersistentDataType.DOUBLE, 0.0);
-        }
-        return 0.0;
+        Double level = (Double) dataHandler.getItemNBTData(LEVEL_KEY, PersistentDataType.DOUBLE);
+        return level != null ? level : 0.0;
     }
 
-    public void changeLevel(double level) {
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            PersistentDataContainer data = meta.getPersistentDataContainer();
-            double currentLevel = data.getOrDefault(levelKey, PersistentDataType.DOUBLE, 0.0);
-            GrimmsServer.logger.log(Level.INFO, "Current level: " + currentLevel);
-            data.set(levelKey, PersistentDataType.DOUBLE, currentLevel + level);
-            item.setItemMeta(meta);
-        }
+    public void changeLevel(double levelDelta) {
+        double currentLevel = getLevel();
+        dataHandler.setItemNBTData(LEVEL_KEY, currentLevel + levelDelta);
     }
 
-    // TODO - Fix this idk
-    public int addXp(double xp) {
-        double exp = xp + getXp();
+    public void addXp(double xp) {
+        double totalXp = getXp() + xp;
         int levelUps = 0;
-        while (exp > getXpToLevel()) {
-            exp -= getXpToLevel();
-            GrimmsServer.logger.log(Level.INFO, "Current level: " + getLevel());
+
+        while (totalXp >= getXpToLevel()) {
+            totalXp -= getXpToLevel();
             changeLevel(1);
-            GrimmsServer.logger.log(Level.INFO, "Current level: " + getLevel());
             levelUps++;
         }
-        GrimmsServer.logger.log(Level.INFO, "Current level: " + getLevel());
-        setXp(exp);
-        GrimmsServer.logger.log(Level.INFO, "Current level: " + getLevel());
+
+        setXp(totalXp);
+
         if (levelUps > 0) {
             player.sendMessage("Your " + item.getType().name().toLowerCase() + " has leveled up to " + getLevel() + "!");
-            GrimmsServer.logger.log(Level.INFO, "Current level: " + getLevel());
         }
-        GrimmsServer.logger.log(Level.INFO, "Current level: " + getLevel());
-        return levelUps;
     }
 
     public double getXpToLevel() {
@@ -102,20 +72,11 @@ public class ItemLevelHandler {
     }
 
     public double getXp() {
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            PersistentDataContainer data = meta.getPersistentDataContainer();
-            return data.getOrDefault(xpKey, PersistentDataType.DOUBLE, 0.0);
-        }
-        return 0.0;
+        Double xp = (Double) dataHandler.getItemNBTData(XP_KEY, PersistentDataType.DOUBLE);
+        return xp != null ? xp : 0.0;
     }
 
     public void setXp(double xp) {
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            PersistentDataContainer data = meta.getPersistentDataContainer();
-            data.set(xpKey, PersistentDataType.DOUBLE, xp);
-            item.setItemMeta(meta);
-        }
+        dataHandler.setItemNBTData(XP_KEY, xp);
     }
 }

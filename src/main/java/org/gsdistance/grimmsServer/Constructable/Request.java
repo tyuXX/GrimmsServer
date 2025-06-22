@@ -12,7 +12,7 @@ import java.util.function.Function;
 public class Request {
     private final String forPlayer;
     public String forPurpose;
-    private Function<Object, ?> onAccept;
+    private final Function<Object, ?> onAccept;
     private final LocalDateTime timestamp;
     private final Object requestData;
 

@@ -6,7 +6,10 @@ import org.bukkit.command.TabCompleter;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class RequestTabCompleter implements TabCompleter {
     @Override
@@ -16,7 +19,7 @@ public class RequestTabCompleter implements TabCompleter {
             return Collections.emptyList();
         }
 
-        return ((ArrayList<Integer>)(sessionData.keySet().toArray()[0])).stream()
+        return ((ArrayList<Integer>) (sessionData.keySet().toArray()[0])).stream()
                 .map(Object::toString) // Convert Integer to String
                 .filter(s -> s.startsWith(args.length > 0 ? args[0] : "")) // Filter by prefix
                 .toList();

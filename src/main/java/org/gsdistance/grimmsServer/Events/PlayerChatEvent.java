@@ -1,9 +1,7 @@
 package org.gsdistance.grimmsServer.Events;
 
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
-import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 import java.time.LocalDateTime;

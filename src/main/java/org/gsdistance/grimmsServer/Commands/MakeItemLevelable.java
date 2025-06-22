@@ -31,10 +31,10 @@ public class MakeItemLevelable implements CommandExecutor {
                     return false;
                 }
             }
-            return false;
         } else {
             sender.sendMessage("This command can only be run by a player.");
             return false;
         }
+        return true;
     }
 }

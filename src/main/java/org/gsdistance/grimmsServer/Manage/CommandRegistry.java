@@ -47,6 +47,8 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("nick").setExecutor(new Nick());
         GrimmsServer.instance.getCommand("market").setExecutor(new MarketBaseCommand());
         GrimmsServer.instance.getCommand("market").setTabCompleter(new MarketTabCompleter());
+        //GrimmsServer.instance.getCommand("gUtil").setExecutor(new GUtilBaseCommand());
+        //GrimmsServer.instance.getCommand("gUtil").setTabCompleter(new GUtilTabCompleter());
     }
 
     public static boolean CanExecute(String command) {

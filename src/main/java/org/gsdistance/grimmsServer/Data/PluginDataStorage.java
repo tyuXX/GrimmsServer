@@ -61,4 +61,25 @@ public class PluginDataStorage {
             return null;
         }
     }
+
+    public Object retrieveAllData(Type objectType, String addedPath) {
+        File readFolder = new File(plugin.getDataFolder().getPath() + File.separatorChar + addedPath);
+        if (!readFolder.exists()) {
+            return null;
+        }
+        File[] files = readFolder.listFiles();
+        if (files == null || files.length == 0) {
+            return new Object[0];
+        }
+
+        Object[] dataObjects = new Object[files.length];
+        for (int i = 0; i < files.length; i++) {
+            try (FileReader reader = new FileReader(files[i])) {
+                dataObjects[i] = jsonParser.fromJson(reader, objectType);
+            } catch (IOException e) {
+                GrimmsServer.logger.log(Level.WARNING, "Failed to retrieve data from " + files[i].getPath(), e);
+            }
+        }
+        return dataObjects;
+    }
 }
