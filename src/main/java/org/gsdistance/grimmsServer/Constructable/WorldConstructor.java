@@ -1,21 +1,29 @@
 package org.gsdistance.grimmsServer.Constructable;
 
+import org.bukkit.generator.BiomeProvider;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-/**
- * @param generateStructures Default to true, can be set to false if needed
- */
-public record WorldConstructor(String name, String type, boolean generateStructures) {
+import javax.annotation.Nullable;
+
+public record WorldConstructor(String name, String type, boolean generateStructures, String worldType) {
 
     public static WorldConstructor getWorldConstructor(String name) {
-        return (WorldConstructor) GrimmsServer.pds.retrieveData(name, WorldConstructor.class, "worldConstructors");
+        return (WorldConstructor) GrimmsServer.pds.retrieveData(name + ".json", WorldConstructor.class, "worldConstructors");
     }
 
     public static WorldConstructor[] getAllWorldConstructors() {
-        return (WorldConstructor[]) GrimmsServer.pds.retrieveAllData(WorldConstructor.class, "worldConstructors");
+        Object[] rawData = GrimmsServer.pds.retrieveAllData(WorldConstructor.class, "worldConstructors");
+        if (rawData == null) {
+            return new WorldConstructor[0];
+        }
+        WorldConstructor[] worldConstructors = new WorldConstructor[rawData.length];
+        for (int i = 0; i < rawData.length; i++) {
+            worldConstructors[i] = (WorldConstructor) rawData[i];
+        }
+        return worldConstructors;
     }
 
     public static void saveWorldConstructor(WorldConstructor worldConstructor) {
-        GrimmsServer.pds.saveData(worldConstructor, WorldConstructor.class, worldConstructor.name, "worldConstructors");
+        GrimmsServer.pds.saveData(worldConstructor, WorldConstructor.class, worldConstructor.name + ".json", "worldConstructors");
     }
 }

@@ -81,7 +81,7 @@ commands:
     permission: grimmsserver.market
   gLog:
     description: For seeing statistics.
-    usage: /gLog stats|leaderboard|selfStats|playerStats|selfTitles|playerTitles|enchantmentCosts|jobs
+    usage: /gLog self_stats|other_stats|self_titles|other_titles|world
     permission: grimmsserver.log
   gDim:
     description: Dimension utilities.

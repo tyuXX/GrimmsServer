@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.LeaderboardEntry;
 import org.gsdistance.grimmsServer.Data.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Shared;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class PlayerStatLeaderBoard {
         }
         if (pass) {
             for (String stat : overtakes) {
-                GrimmsServer.instance.getServer().broadcastMessage("The leader of stat " + PlayerStats.StatNames.get(stat) + " is now " + player.getDisplayName());
+                Shared.Broadcast("The leader of stat " + PlayerStats.StatNames.get(stat) + " is now " + player.getDisplayName(), null);
             }
             PlayerTitleChecker.gotOnLeaderboard(player);
         }

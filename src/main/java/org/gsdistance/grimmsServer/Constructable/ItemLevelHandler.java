@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemLevelHandler {
     private final ItemStack item;
@@ -50,7 +51,7 @@ public class ItemLevelHandler {
     public void changeLevel(double levelDelta) {
         double currentLevel = getLevel();
         dataHandler.setItemNBTData(LEVEL_KEY, currentLevel + levelDelta);
-        dataHandler.setItemLoreData(new ArrayList<>());
+        dataHandler.setItemLoreData(List.of("Level: " + (currentLevel + levelDelta), "XP: " + Math.round(getXp()) + "/" + Math.round(getXpToLevel())));
     }
 
     public void addXp(double xp) {

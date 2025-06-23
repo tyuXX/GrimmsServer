@@ -1,8 +1,11 @@
 package org.gsdistance.grimmsServer;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.util.List;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 
@@ -10,6 +13,10 @@ import static org.gsdistance.grimmsServer.GrimmsServer.logger;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class Shared {
+    public static void Broadcast(String message, @Nullable String prefix) {
+        GrimmsServer.instance.getServer().broadcastMessage(("[" + GrimmsServer.instance.getDescription().getPrefix() + "-BC]: ") + (prefix == null ? "" : prefix) + message);
+    }
+
     public static String formatNumber(Double number) {
         if (number < 1000) {
             return String.format("%.2f", number);
@@ -80,7 +87,7 @@ public class Shared {
         }
     }
 
-    public static Player getClosestPlayer(org.bukkit.Location location, Player[] players) {
+    public static Player getClosestPlayer(Location location, List<Player> players) {
         Player closestPlayer = null;
         double closestDistance = Double.MAX_VALUE;
 

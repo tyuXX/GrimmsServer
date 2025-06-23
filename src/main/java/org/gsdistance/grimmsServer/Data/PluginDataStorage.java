@@ -62,7 +62,7 @@ public class PluginDataStorage {
         }
     }
 
-    public Object retrieveAllData(Type objectType, String addedPath) {
+    public Object[] retrieveAllData(Type objectType, String addedPath) {
         File readFolder = new File(plugin.getDataFolder().getPath() + File.separatorChar + addedPath);
         if (!readFolder.exists()) {
             return null;
@@ -81,5 +81,17 @@ public class PluginDataStorage {
             }
         }
         return dataObjects;
+    }
+
+    public void deleteData(String fileName, String addedPath) {
+        File deleteFolder = new File(plugin.getDataFolder().getPath() + File.separatorChar + addedPath);
+        File deleteFile = new File(deleteFolder.getPath() + File.separatorChar + fileName);
+        if (deleteFile.exists()) {
+            if (!deleteFile.delete()) {
+                GrimmsServer.logger.log(Level.WARNING, "Failed to delete data file: " + deleteFile.getPath());
+            }
+        } else {
+            GrimmsServer.logger.log(Level.WARNING, "Data file does not exist: " + deleteFile.getPath());
+        }
     }
 }

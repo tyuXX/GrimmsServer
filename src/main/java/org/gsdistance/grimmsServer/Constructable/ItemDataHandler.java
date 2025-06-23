@@ -8,6 +8,7 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemDataHandler {
     private final ItemStack item;
@@ -62,7 +63,7 @@ public class ItemDataHandler {
         }
     }
 
-    public void setItemLoreData(ArrayList<String> lore) {
+    public void setItemLoreData(List<String> lore) {
         if (item.getItemMeta() != null) {
             var meta = item.getItemMeta(); // Get the ItemMeta
             meta.setLore(lore);

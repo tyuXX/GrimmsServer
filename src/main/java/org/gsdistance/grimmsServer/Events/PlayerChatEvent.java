@@ -2,6 +2,7 @@ package org.gsdistance.grimmsServer.Events;
 
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
+import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 import java.time.LocalDateTime;
@@ -24,7 +25,9 @@ public class PlayerChatEvent {
                 .replace("&player", event.getPlayer().getName())
                 .replace("&uuid", event.getPlayer().getUniqueId().toString())
                 .replace("&date", LocalDateTime.now().toLocalDate().toString())
-                .replace("&time", LocalDateTime.now().toLocalTime().toString());
+                .replace("&time", LocalDateTime.now().toLocalTime().toString())
+                .replace("&nickname", nickname)
+                .replace("&day", String.valueOf(event.getPlayer().getWorld().getTime() / 24000));
 
         // Set the formatted message
         event.setFormat(formattedMessage);

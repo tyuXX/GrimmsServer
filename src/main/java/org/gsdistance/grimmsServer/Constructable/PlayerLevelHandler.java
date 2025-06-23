@@ -2,6 +2,7 @@ package org.gsdistance.grimmsServer.Constructable;
 
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class PlayerLevelHandler {
@@ -62,7 +63,7 @@ public class PlayerLevelHandler {
         playerStats.setStat("xp_required", getXpToLevel());
         if (lvlups > 0) {
             playerStats.setStat("money", (Double) playerStats.getStat("money") + tMoney);
-            GrimmsServer.instance.getServer().broadcastMessage("[" + player.getDisplayName() + "] " + "Has leveled up to " + getLevel() + "!");
+            Shared.Broadcast("[" + player.getDisplayName() + "] " + "Has leveled up to " + getLevel() + "!", null);
             player.sendMessage("By leveling up " + lvlups + " times, you have gained " + Math.round(tMoney) + " money!");
         }
     }

@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Shared;
 
 import java.util.Map;
 
@@ -50,7 +51,7 @@ public class PlayerTitles {
             System.arraycopy(metadata.titles, 0, newTitles, 0, metadata.titles.length);
             newTitles[metadata.titles.length] = title;
             metadata.titles = newTitles;
-            GrimmsServer.instance.getServer().broadcastMessage("Title " + title + " was bestowed upon " + player.getDisplayName() + ".");
+            Shared.Broadcast("Title " + title + " was bestowed upon " + player.getDisplayName() + ".", null);
             PlayerTitleChecker.checkTitles(player);
             metadata.saveToPDS();
         }
@@ -67,7 +68,7 @@ public class PlayerTitles {
                 }
             }
             metadata.titles = newTitles;
-            GrimmsServer.instance.getServer().broadcastMessage("Title " + title + " was revoked from " + player.getDisplayName() + ".");
+            Shared.Broadcast("Title " + title + " was revoked from " + player.getDisplayName() + ".", null);
             PlayerTitleChecker.checkTitles(player);
             metadata.saveToPDS();
         }
