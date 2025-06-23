@@ -5,6 +5,7 @@ import org.gsdistance.grimmsServer.Constructable.Location;
 import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
 
 public class Sethome {
+    @SuppressWarnings("SameReturnValue")
     public static boolean SubCommand(Player player, String[] args) {
         String homeName = "home";
         if (args.length > 1) {
