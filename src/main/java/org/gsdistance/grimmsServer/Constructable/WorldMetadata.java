@@ -3,10 +3,10 @@ package org.gsdistance.grimmsServer.Constructable;
 import org.bukkit.World;
 
 public class WorldMetadata {
-    public String name;
-    public String worldType;
-    public long seed;
-    public int dimension;
+    public final String name;
+    public final String worldType;
+    public final long seed;
+    public final int dimension;
 
     public WorldMetadata(World world) {
         this.name = world.getName();

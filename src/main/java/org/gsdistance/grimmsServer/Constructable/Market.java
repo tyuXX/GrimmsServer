@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Market {
-    public Map<String, Long> items;
+    public final Map<String, Long> items;
 
     public Market() {
         items = new HashMap<>();

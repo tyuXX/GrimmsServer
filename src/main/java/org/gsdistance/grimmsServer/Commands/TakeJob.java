@@ -21,18 +21,18 @@ public class TakeJob implements CommandExecutor {
                 return false;
             }
             PlayerStats playerStats = PlayerStats.getPlayerStats(player);
-            if ((int) playerStats.getStat("intelligence") < jobTitle.intelligenceRequirement) {
+            if ((int) playerStats.getStat("intelligence") < jobTitle.intelligenceRequirement()) {
                 sender.sendMessage("Not smart enough!");
                 return false;
             }
-            if (!jobTitle.additionalRequirement.apply(player)) {
+            if (!jobTitle.additionalRequirement().apply(player)) {
                 sender.sendMessage("Secondary requirement not met!");
                 return false;
             }
             playerStats.setStat("jobTitle", args[0]);
-            sender.sendMessage("Job taken: " + jobTitle.jobName);
-            sender.sendMessage("Paycheck: " + jobTitle.paycheckSize);
-            sender.sendMessage("Description: " + jobTitle.jobDescription);
+            sender.sendMessage("Job taken: " + jobTitle.jobName());
+            sender.sendMessage("Paycheck: " + jobTitle.paycheckSize());
+            sender.sendMessage("Description: " + jobTitle.jobDescription());
             return true;
         } else {
             sender.sendMessage("This command can only be run by a player.");

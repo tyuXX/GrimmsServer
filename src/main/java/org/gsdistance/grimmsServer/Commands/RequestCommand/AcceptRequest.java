@@ -27,10 +27,9 @@ public class AcceptRequest implements CommandExecutor {
                 sender.sendMessage("Successfully accepted request that was for: " + request.forPurpose);
                 return true;
             }
-            return false;
         } else {
             sender.sendMessage("This command can only be run by a player.");
-            return false;
         }
+        return false;
     }
 }

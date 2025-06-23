@@ -12,24 +12,18 @@ public class MarketBaseCommand implements CommandExecutor {
             return false;
         }
 
-        switch (args[0].toLowerCase()) {
-            case "get":
-                return GetMarket.SubCommand(sender, args);
-            case "stock":
-                return GetMarketStock.SubCommand(sender, args);
-            case "ripoff":
-                return BuyRipoff.SubCommand(sender, args);
-            case "enchant":
-                return BuyEnchantment.SubCommand(sender, args);
-            case "tp":
-                return BuyTp.SubCommand(sender, args);
-            case "sell":
-                return SellItem.SubCommand(sender, args);
-            case "buy":
-                return BuyItem.SubCommand(sender, args);
-            default:
+        return switch (args[0].toLowerCase()) {
+            case "get" -> GetMarket.SubCommand(sender, args);
+            case "stock" -> GetMarketStock.SubCommand(sender, args);
+            case "ripoff" -> BuyRipoff.SubCommand(sender, args);
+            case "enchant" -> BuyEnchantment.SubCommand(sender, args);
+            case "tp" -> BuyTp.SubCommand(sender, args);
+            case "sell" -> SellItem.SubCommand(sender, args);
+            case "buy" -> BuyItem.SubCommand(sender, args);
+            default -> {
                 sender.sendMessage("Unknown subcommand. Usage: /market <get|stock|ripoff|enchant|tp|sell|buy> [args]");
-                return false;
-        }
+                yield false;
+            }
+        };
     }
 }

@@ -62,4 +62,9 @@ public class EventRegistry implements Listener {
     public void onWorldLoad(org.bukkit.event.world.WorldLoadEvent event) {
         org.gsdistance.grimmsServer.Events.WorldLoadEvent.Event(event);
     }
+
+    @EventHandler
+    public void onWorldSave(org.bukkit.event.world.WorldSaveEvent event) {
+        org.gsdistance.grimmsServer.Events.OnWorldSaveEvent.Event(event);
+    }
 }

@@ -24,7 +24,7 @@ public class SetPlayerStat implements CommandExecutor {
             PlayerStats playerStats = PlayerStats.getPlayerStats(targetPlayer);
             String stat = args[1];
             String value = args[2];
-            PersistentDataType dataType = PlayerStats.Stats.get(stat);
+            PersistentDataType<?, ?> dataType = PlayerStats.Stats.get(stat);
             Object dataValue;
             if (dataType == null) {
                 sender.sendMessage("Invalid stat name: " + stat);

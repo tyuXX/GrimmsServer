@@ -1,16 +1,18 @@
 package org.gsdistance.grimmsServer.Constructable;
 
+import java.util.Objects;
+
 public class Location {
-    public double x;
-    public double y;
-    public double z;
-    public String world;
+    public final double x;
+    public final double y;
+    public final double z;
+    public final String world;
 
     public Location(org.bukkit.Location location) {
         this.x = location.getX();
         this.y = location.getY();
         this.z = location.getZ();
-        this.world = location.getWorld().getName();
+        this.world = Objects.requireNonNull(location.getWorld()).getName();
     }
 
     public org.bukkit.Location toBukkitLocation() {

@@ -2,9 +2,11 @@ package org.gsdistance.grimmsServer.Commands.HomeCommand;
 
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
+import org.jetbrains.annotations.NotNull;
 
 public class DelHome {
-    public static boolean SubCommand(Player player, String[] args) {
+    @SuppressWarnings("SameReturnValue")
+    public static boolean SubCommand(Player player, @NotNull String[] args) {
         String homeName = "home";
         if (args.length > 1) {
             homeName = args[1].toLowerCase();

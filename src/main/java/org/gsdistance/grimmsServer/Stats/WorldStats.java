@@ -10,6 +10,7 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class WorldStats {
     public static final Dictionary<String, PersistentDataType<?, ?>> Stats = new Hashtable<>();
 

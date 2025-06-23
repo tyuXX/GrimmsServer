@@ -18,7 +18,10 @@ public class PlayerJoinEvent {
         PlayerTitleChecker.joinedGame(event.getPlayer());
 
         // Initialize player metadata if not already done
-        PlayerMetadata.getPlayerMetadata(event.getPlayer());
+        PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(event.getPlayer());
+        if(!event.getPlayer().getName().equals(metadata.lastKnownNames.getLast())) {
+            metadata.lastKnownNames.add(event.getPlayer().getName());
+        }
 
         // Initialize request data
         PerSessionDataStorage.dataStore.put("requestData-" + event.getPlayer().getName(), Map.of(new ArrayList<Integer>(), ArrayList.class));

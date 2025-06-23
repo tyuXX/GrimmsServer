@@ -17,18 +17,15 @@ public class HomeBaseCommand implements CommandExecutor {
             return true;
         }
         String sub = args[0].toLowerCase();
-        switch (sub) {
-            case "sethome":
-                return Sethome.SubCommand(player, args);
-            case "tp":
-                return TpHome.SubCommand(player, args);
-            case "homes":
-                return Homes.SubCommand(player, args);
-            case "delhome":
-                return DelHome.SubCommand(player, args);
-            default:
+        return switch (sub) {
+            case "sethome" -> Sethome.SubCommand(player, args);
+            case "tp" -> TpHome.SubCommand(player, args);
+            case "homes" -> Homes.SubCommand(player, args);
+            case "delhome" -> DelHome.SubCommand(player, args);
+            default -> {
                 player.sendMessage("Unknown subcommand. Use /home <sethome|tp|homes|delhome> [name]");
-                return true;
-        }
+                yield true;
+            }
+        };
     }
 }

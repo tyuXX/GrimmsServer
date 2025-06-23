@@ -19,6 +19,7 @@ public class RequestTabCompleter implements TabCompleter {
             return Collections.emptyList();
         }
 
+        //noinspection unchecked
         return ((ArrayList<Integer>) (sessionData.keySet().toArray()[0])).stream()
                 .map(Object::toString) // Convert Integer to String
                 .filter(s -> s.startsWith(args.length > 0 ? args[0] : "")) // Filter by prefix

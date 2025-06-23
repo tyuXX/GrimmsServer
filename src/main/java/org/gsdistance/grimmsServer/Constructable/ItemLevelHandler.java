@@ -6,6 +6,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
+import java.util.ArrayList;
+
 public class ItemLevelHandler {
     private final ItemStack item;
     private final Player player;
@@ -48,6 +50,7 @@ public class ItemLevelHandler {
     public void changeLevel(double levelDelta) {
         double currentLevel = getLevel();
         dataHandler.setItemNBTData(LEVEL_KEY, currentLevel + levelDelta);
+        dataHandler.setItemLoreData(new ArrayList<>());
     }
 
     public void addXp(double xp) {

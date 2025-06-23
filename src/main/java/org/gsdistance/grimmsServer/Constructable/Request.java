@@ -9,12 +9,14 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 
+@SuppressWarnings("unchecked")
 public class Request {
     private final String forPlayer;
-    public String forPurpose;
+    public final String forPurpose;
     private final Function<Object, ?> onAccept;
     private final LocalDateTime timestamp;
     private final Object requestData;
+    private int requestId;
 
     public Request(Function<Object, ?> onAccept, Player forPlayer, String forPurpose, Object requestData) {
         this.onAccept = onAccept;
@@ -22,20 +24,20 @@ public class Request {
         this.forPurpose = forPurpose;
         this.requestData = requestData;
         this.timestamp = LocalDateTime.now();
+        do {
+            requestId = new Random().nextInt(1000000, 9999999);
+        } while (PerSessionDataStorage.dataStore.containsKey("request-" + requestId));
     }
 
     public static void newRequest(Function<Object, ?> onAccept, Player forPlayer, String forPurpose, Object requestData) {
         Request request = new Request(onAccept, forPlayer, forPurpose, requestData);
-        int requestId = new Random().nextInt(1000000, 9999999);
-        while (PerSessionDataStorage.dataStore.containsKey("request-" + requestId)) {
-            requestId = new Random().nextInt(1000000, 9999999);
-        }
+
         forPlayer.sendMessage("You have a new request: " + forPurpose);
-        forPlayer.sendMessage("Accept with /acceptRequest " + requestId);
-        PerSessionDataStorage.dataStore.put("request-" + requestId, Map.of(request, Request.class));
+        forPlayer.sendMessage("Accept with /acceptRequest " + request.requestId);
+        PerSessionDataStorage.dataStore.put("request-" + request.requestId, Map.of(request, Request.class));
 
         ArrayList<Integer> requestDataList = (ArrayList<Integer>) PerSessionDataStorage.dataStore.get("requestData-" + forPlayer.getName()).keySet().toArray()[0];
-        requestDataList.add(requestId);
+        requestDataList.add(request.requestId);
         PerSessionDataStorage.dataStore.put("requestData-" + forPlayer.getName(), Map.of(requestDataList, ArrayList.class));
     }
 
@@ -46,9 +48,12 @@ public class Request {
     public boolean acceptRequest(Player player) {
         if (canAccept(player)) {
             onAccept.apply(requestData);
-            PerSessionDataStorage.dataStore.remove("request-" + player.getName());
-            ArrayList<Integer> requestDataList = (ArrayList<Integer>) PerSessionDataStorage.dataStore.get("requestData-" + player.getName()).keySet().toArray()[0];
-            requestDataList.removeIf(id -> id.equals(Integer.parseInt(forPurpose)));
+            PerSessionDataStorage.dataStore.remove("request-" + requestId);
+            ArrayList<Integer> requestDataList = (ArrayList<Integer>) PerSessionDataStorage.dataStore
+                    .get("requestData-" + player.getName())
+                    .keySet()
+                    .toArray()[0];
+            requestDataList.removeIf(id -> id.equals(requestId));
             PerSessionDataStorage.dataStore.put("requestData-" + player.getName(), Map.of(requestDataList, ArrayList.class));
             return true;
         }

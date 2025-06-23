@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class ItemDataHandler {
     private final ItemStack item;
@@ -44,6 +45,27 @@ public class ItemDataHandler {
         if (item.getItemMeta() != null) {
             var meta = item.getItemMeta(); // Get the ItemMeta
             meta.getPersistentDataContainer().set(new NamespacedKey(plugin, key), PersistentDataType.STRING, value);
+            item.setItemMeta(meta); // Set the modified ItemMeta back to the ItemStack
+        }
+    }
+
+    public void addItemLoreData(String lore) {
+        if (item.getItemMeta() != null) {
+            var meta = item.getItemMeta(); // Get the ItemMeta
+            var loreList = meta.getLore();
+            if (loreList == null) {
+                loreList = new ArrayList<>();
+            }
+            loreList.add(lore);
+            meta.setLore(loreList);
+            item.setItemMeta(meta); // Set the modified ItemMeta back to the ItemStack
+        }
+    }
+
+    public void setItemLoreData(ArrayList<String> lore) {
+        if (item.getItemMeta() != null) {
+            var meta = item.getItemMeta(); // Get the ItemMeta
+            meta.setLore(lore);
             item.setItemMeta(meta); // Set the modified ItemMeta back to the ItemStack
         }
     }

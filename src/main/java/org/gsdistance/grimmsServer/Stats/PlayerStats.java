@@ -11,6 +11,7 @@ import java.util.*;
 
 import static org.bukkit.persistence.PersistentDataType.*;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class PlayerStats {
     public static final Dictionary<String, PersistentDataType<?, ?>> Stats = new Hashtable<>();
 

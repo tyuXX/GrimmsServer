@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.gsdistance.grimmsServer.Constructable.Market;
 
 public class GetMarket {
+    @SuppressWarnings("SameReturnValue")
     public static boolean SubCommand(CommandSender sender, String[] args) {
         if (!sender.hasPermission("grimmsserver.market.get")) {
             sender.sendMessage("You do not have permission to use this command.");

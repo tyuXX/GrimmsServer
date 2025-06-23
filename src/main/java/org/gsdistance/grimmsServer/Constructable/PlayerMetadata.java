@@ -7,21 +7,22 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class PlayerMetadata {
-    public Map<String, Location> homes;
+    public final Map<String, Location> homes;
     public String nickname;
-    public String lastKnownName;
-    public UUID uuid;
+    public List<String> lastKnownNames;
+    public final UUID uuid;
     public Location exitLocation;
     public String[] titles;
-    public String timestamp;
+    public final String timestamp;
 
     public PlayerMetadata(Player player) {
         this.nickname = player.getDisplayName();
-        this.lastKnownName = player.getName();
+        this.lastKnownNames = List.of(player.getName());
         this.uuid = player.getUniqueId();
         this.exitLocation = new Location(player.getLocation());
         homes = new HashMap<>();
@@ -30,7 +31,7 @@ public class PlayerMetadata {
     }
 
     public void logMetadata() {
-        GrimmsServer.logger.info("Player Metadata for " + lastKnownName + ":" + new Gson().toJson(this));
+        GrimmsServer.logger.info("Player Metadata for " + uuid + ":" + new Gson().toJson(this));
     }
 
     public void softSave() {

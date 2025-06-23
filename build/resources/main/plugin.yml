@@ -16,22 +16,6 @@ commands:
     description: Displays the world stats including total deaths, total kills, and total money.
     usage: /logWorldStats
     permission: grimmsserver.logWorldStats
-  sellItem:
-    description: Sells the main hand for a certain amount of money.
-    usage: /sellItem
-    permission: grimmsserver.sellItem
-  buyItem:
-    description: Buys an item for a certain amount of money.
-    usage: /buyItem <item> <amount>
-    permission: grimmsserver.buyItem
-  getMarketStock:
-    description: Displays the market stock of a specified item.
-    usage: /getMarketStock <item>
-    permission: grimmsserver.getMarketStock
-  getMarket:
-    description: Dumps the whole market information.
-    usage: /getMarket
-    permission: grimmsserver.getMarket
   logLeaderboard:
     description: Displays the leaderboard of players with the most kills.
     usage: /logLeaderboard
@@ -40,10 +24,6 @@ commands:
     description: Sends money to another player.
     usage: /sendMoney <player> <amount>
     permission: grimmsserver.sendMoney
-  buyRipoff:
-    description: Buys the item for 10x base price, but can be bought when not available.
-    usage: /buyRipoff <item> <amount>
-    permission: grimmsserver.buyRipoff
   makeItemLevelable:
     description: Makes the main hand item levelable for 3500 money, requires level 10.
     usage: /makeItemLevelable
@@ -72,10 +52,6 @@ commands:
     description: Executes a player, requires title Executioner.
     usage: /executePlayer <player>
     permission: grimmsserver.executePlayer
-  buyEnchantment:
-    description: Buys 1 level of <enchant> for money
-    usage: /buyEnchantment <enchantId>
-    permission: grimmsserver.buyEnchantment
   logEnchantmentCosts:
     description: Displays the costs of all available
     usage: /logEnchantmentCosts
@@ -103,10 +79,6 @@ commands:
     description: Accepts a request.
     usage: /acceptRequest
     permission: grimmsserver.acceptRequest
-  buyTp:
-    description: Request to teleport to someone for 500 money, this increases every time you use it.
-    usage: /buyTp
-    permission: grimmsserver.buyTp
   removeTitle:
     description: Removes a title from a player.
     usage: /removeTitle <player> <title>
@@ -131,6 +103,18 @@ commands:
     description: Market commands
     usage: /market <get|stock|ripoff|enchant|tp> [args]
     permission: grimmsserver.market
+  gLog:
+    description: For seeing statistics.
+    usage: /gLog stats|leaderboard|selfStats|playerStats|selfTitles|playerTitles|enchantmentCosts|jobs
+    permission: grimmsserver.log
+  gDim:
+    description: Dimension utilities.
+    usage: /gDim <command> [args]
+    permission: grimmsserver.dimensions
+  gUtil:
+    description: Utility commands.
+    usage: /gUtil <command> [args]
+    permission: grimmsserver.util
 permissions:
   grimmsserver.logSelfStats:
     description: Allows a player to log their own stats
@@ -246,3 +230,18 @@ permissions:
   grimmsserver.market.tp:
     description: Allows a player to teleport to another player
     default: true
+  grimmsserver.log:
+    description: Allows a player to use logging commands
+    default: true
+  grimmsserver.log.self:
+    description: Allows a player to log their own stats
+    default: true
+  grimmsserver.log.other:
+    description: Allows a player to log another player's stats
+    default: op
+  grimmsserver.dimensions:
+    description: Allows a player to use dimension commands
+    default: op
+  grimmsserver.util:
+    description: Allows a player to use utility commands
+    default: op

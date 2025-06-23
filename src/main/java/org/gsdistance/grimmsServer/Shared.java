@@ -1,11 +1,14 @@
 package org.gsdistance.grimmsServer;
 
+import org.bukkit.entity.Player;
+
 import java.io.*;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 
 import static org.gsdistance.grimmsServer.GrimmsServer.logger;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class Shared {
     public static String formatNumber(Double number) {
         if (number < 1000) {
@@ -56,7 +59,7 @@ public class Shared {
                     }
                 } catch (IOException e) {
                     logger.warning("Failed to copy directory: " + resourcePath);
-                    e.printStackTrace();
+                    logger.warning("Error: " + e.getMessage());
                 }
             } else {
                 try (InputStream in = GrimmsServer.instance.getClass().getClassLoader().getResourceAsStream(resourcePath);
@@ -75,5 +78,19 @@ public class Shared {
                 }
             }
         }
+    }
+
+    public static Player getClosestPlayer(org.bukkit.Location location, Player[] players) {
+        Player closestPlayer = null;
+        double closestDistance = Double.MAX_VALUE;
+
+        for (Player player : players) {
+            double distance = player.getLocation().distance(location);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestPlayer = player;
+            }
+        }
+        return closestPlayer;
     }
 }

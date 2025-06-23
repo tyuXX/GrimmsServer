@@ -23,7 +23,7 @@ public class PlayerStatLeaderBoard {
             "level", Integer.class,
             "sent_messages", Long.class
     );
-    public Map<String, LeaderboardEntry> leaderboard;
+    public final Map<String, LeaderboardEntry> leaderboard;
 
     public PlayerStatLeaderBoard() {
         leaderboard = new HashMap<>();
@@ -46,7 +46,7 @@ public class PlayerStatLeaderBoard {
         ServerStats.getServerStats().setStat("leaderboard", new Gson().toJson(this));
     }
 
-    public boolean checkPlayer(Player player) {
+    public void checkPlayer(Player player) {
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
         boolean pass = false;
         List<String> overtakes = new ArrayList<>();
@@ -68,6 +68,5 @@ public class PlayerStatLeaderBoard {
             }
             PlayerTitleChecker.gotOnLeaderboard(player);
         }
-        return pass;
     }
 }

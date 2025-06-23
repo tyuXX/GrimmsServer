@@ -48,7 +48,7 @@ public class PlayerLevelHandler {
         return Math.max(1, Math.floor(Math.sqrt((double) getLevel() / 2)));
     }
 
-    public int addExp(double xp) {
+    public void addExp(double xp) {
         double exp = xp + getXp();
         int lvlups = 0;
         double tMoney = 0;
@@ -65,6 +65,5 @@ public class PlayerLevelHandler {
             GrimmsServer.instance.getServer().broadcastMessage("[" + player.getDisplayName() + "] " + "Has leveled up to " + getLevel() + "!");
             player.sendMessage("By leveling up " + lvlups + " times, you have gained " + Math.round(tMoney) + " money!");
         }
-        return lvlups;
     }
 }

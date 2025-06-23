@@ -9,7 +9,7 @@ public class ChunkLoadEvent {
         PluginDataStorage pluginDataStorage = new PluginDataStorage(GrimmsServer.instance);
         String name = event.getChunk().getWorld().getName() + "_" + event.getChunk().getX() + "_" + event.getChunk().getZ() + ".json";
         if (!pluginDataStorage.exists(name, "chunkMetadata")) {
-            pluginDataStorage.saveData(new ChunkMetadata(event.getChunk(), null), ChunkMetadata.class, name,
+            pluginDataStorage.saveData(new ChunkMetadata(event.getChunk(), null, event.getChunk().getPlayersSeeingChunk().iterator().next()), ChunkMetadata.class, name,
                     "chunkMetadata");
         }
     }

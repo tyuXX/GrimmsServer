@@ -2,9 +2,7 @@ package org.gsdistance.grimmsServer.Stats;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.Constructable.Market;
-import org.gsdistance.grimmsServer.Data.PluginDataStorage;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.lang.reflect.Type;
@@ -31,20 +29,19 @@ public class ServerStats {
         StatNames.put("leaderboard", "Leaderboard");
     }
 
-    private final PluginDataStorage dataStorage;
     private Map<String, Object> stats;
 
-    public ServerStats(JavaPlugin plugin) {
-        this.dataStorage = new PluginDataStorage(plugin);
+    public ServerStats() {
         loadStats();
     }
 
     public static ServerStats getServerStats() {
-        return new ServerStats(GrimmsServer.instance);
+        return new ServerStats();
     }
 
     private void loadStats() {
-        stats = (Map<String, Object>) dataStorage.retrieveData("server_stats.json", new TypeToken<Map<String, Object>>() {
+        //noinspection unchecked
+        stats = (Map<String, Object>) GrimmsServer.pds.retrieveData("server_stats.json", new TypeToken<Map<String, Object>>() {
         }.getType(), "");
         if (stats == null) {
             stats = new Hashtable<>();
@@ -62,7 +59,7 @@ public class ServerStats {
     }
 
     private void saveStats() {
-        dataStorage.saveData(stats, new TypeToken<Map<String, Object>>() {
+        GrimmsServer.pds.saveData(stats, new TypeToken<Map<String, Object>>() {
         }.getType(), "server_stats.json", "");
     }
 

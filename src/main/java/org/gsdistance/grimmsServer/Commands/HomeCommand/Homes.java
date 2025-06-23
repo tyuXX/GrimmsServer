@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
 
 public class Homes {
+    @SuppressWarnings("SameReturnValue")
     public static boolean SubCommand(Player player, String[] args) {
         PlayerMetadata meta = PlayerMetadata.getPlayerMetadata(player);
         if (meta.homes.isEmpty()) {

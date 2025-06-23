@@ -29,7 +29,7 @@ public class WithdrawMoney implements CommandExecutor {
                 return false;
             }
             if (args.length > 1) {
-                Double banknoteValue = (Double.parseDouble(args[0]) / Integer.parseInt(args[1]));
+                double banknoteValue = (Double.parseDouble(args[0]) / Integer.parseInt(args[1]));
                 if (banknoteValue < 25) {
                     sender.sendMessage("Smallest banknote is 25 money.");
                     return false;
