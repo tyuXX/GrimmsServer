@@ -8,18 +8,6 @@ version: 1.1
 api-version: 1.20
 load: STARTUP
 commands:
-  logSelfStats:
-    description: Displays the player's own stats including death count, money, and total kills.
-    usage: /logSelfStats
-    permission: grimmsserver.logSelfStats
-  logWorldStats:
-    description: Displays the world stats including total deaths, total kills, and total money.
-    usage: /logWorldStats
-    permission: grimmsserver.logWorldStats
-  logLeaderboard:
-    description: Displays the leaderboard of players with the most kills.
-    usage: /logLeaderboard
-    permission: grimmsserver.logLeaderboard
   sendMoney:
     description: Sends money to another player.
     usage: /sendMoney <player> <amount>
@@ -32,18 +20,6 @@ commands:
     description: Set a player's stats.
     usage: /setPlayerStat <player> <statId> <value>
     permission: grimmsserver.setPlayerStat
-  logPlayerStats:
-    description: Displays the stats of a specified player.
-    usage: /logPlayerStats <player>
-    permission: grimmsserver.logPlayerStats
-  logSelfTitles:
-    description: Displays the titles of the player.
-    usage: /logSelfTitles
-    permission: grimmsserver.logSelfTitles
-  logPlayerTitles:
-    description: Displays the titles of a specified player.
-    usage: /logPlayerTitles <player>
-    permission: grimmsserver.logPlayerTitles
   addTitle:
     description: Adds a title to a player.
     usage: /addTitle <player> <title>
@@ -116,32 +92,8 @@ commands:
     usage: /gUtil <command> [args]
     permission: grimmsserver.util
 permissions:
-  grimmsserver.logSelfStats:
-    description: Allows a player to log their own stats
-    default: true
-  grimmsserver.logWorldStats:
-    description: Allows a player to log world stats
-    default: true
-  grimmsserver.sellItem:
-    description: Allows a player to sell an item
-    default: true
-  grimmsserver.buyItem:
-    description: Allows a player to buy an item
-    default: true
-  grimmsserver.getMarketStock:
-    description: Allows a player to get market stock
-    default: true
-  grimmsserver.getMarket:
-    description: Allows a player to get market information
-    default: true
-  grimmsserver.logLeaderboard:
-    description: Allows a player to log the leaderboard
-    default: true
   grimmsserver.sendMoney:
     description: Allows a player to send money to another player
-    default: true
-  grimmsserver.buyRipoff:
-    description: Allows a player to buy an item at a higher price
     default: true
   grimmsserver.makeItemLevelable:
     description: Allows a player to make an item levelable
@@ -149,23 +101,11 @@ permissions:
   grimmsserver.setPlayerStat:
     description: Allows a player to set another player's stats
     default: op
-  grimmsserver.logPlayerStats:
-    description: Allows a player to log another player's stats
-    default: op
-  grimmsserver.logSelfTitles:
-    description: Allows a player to log their own titles
-    default: true
-  grimmsserver.logPlayerTitles:
-    description: Allows a player to log another player's titles
-    default: true
   grimmsserver.addTitle:
     description: Allows a player to add a title to another player
     default: op
   grimmsserver.executePlayer:
     description: Allows a player to execute another player
-    default: true
-  grimmsserver.buyEnchantment:
-    description: Allows a player to buy an enchantment
     default: true
   grimmsserver.logEnchantmentCosts:
     description: Allows a player to log enchantment costs
@@ -190,9 +130,6 @@ permissions:
     default: true
   grimmsserver.acceptRequest:
     description: Allows a player to accept a request
-    default: true
-  grimmsserver.buyTp:
-    description: Allows a player to buy a teleport request
     default: true
   grimmsserver.removeTitle:
     description: Allows a player to remove a title from another player

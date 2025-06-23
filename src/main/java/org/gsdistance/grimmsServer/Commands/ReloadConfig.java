@@ -11,8 +11,10 @@ import java.util.logging.Level;
 public class ReloadConfig implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        sender.sendMessage("Reloading config...");
         ConfigLoader.loadConfigFromFile();
         GrimmsServer.logger.log(Level.INFO, "Config reloaded.");
+        sender.sendMessage("Config reloaded successfully.");
         return true;
     }
 }

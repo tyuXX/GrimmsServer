@@ -18,8 +18,10 @@ public class ActiveConfig {
     public static boolean module_Events = true;
     public static boolean module_Utils = true;
     public static boolean module_Ranks = true;
+    public static boolean joinMessage = true;
+    public static boolean module_Dimensions = true;
 
-    public static void updateConfig(boolean module_Jobs, boolean module_Factions, boolean module_Market, boolean module_Leaderboard, List<String> disabledCommands, boolean module_Chat, boolean module_Homes, boolean module_Leveling, boolean module_Titles, boolean module_Relics, boolean module_Events, boolean module_Utils, boolean module_Ranks) {
+    public static void updateConfig(boolean module_Jobs, boolean module_Factions, boolean module_Market, boolean module_Leaderboard, List<String> disabledCommands, boolean module_Chat, boolean module_Homes, boolean module_Leveling, boolean module_Titles, boolean module_Relics, boolean module_Events, boolean module_Utils, boolean module_Ranks, boolean joinMessage, boolean module_Dimensions) {
         ActiveConfig.module_Jobs = module_Jobs;
         ActiveConfig.module_Factions = module_Factions;
         ActiveConfig.module_Market = module_Market;
@@ -33,6 +35,8 @@ public class ActiveConfig {
         ActiveConfig.module_Events = module_Events;
         ActiveConfig.module_Utils = module_Utils;
         ActiveConfig.module_Ranks = module_Ranks;
+        ActiveConfig.joinMessage = joinMessage;
+        ActiveConfig.module_Dimensions = module_Dimensions;
 
         // Log the status of each module
         if (!module_Jobs) {
@@ -75,6 +79,12 @@ public class ActiveConfig {
         }
         if (!module_Ranks) {
             GrimmsServer.logger.info("Ranks module is disabled by config.");
+        }
+        if (!joinMessage) {
+            GrimmsServer.logger.info("Join message is disabled by config.");
+        }
+        if (!module_Dimensions) {
+            GrimmsServer.logger.info("Dimensions module is disabled by config.");
         }
     }
 }

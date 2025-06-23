@@ -12,3 +12,5 @@ module_Relics: true
 module_Events: true
 module_Utils: true
 module_Ranks: true
+joinMessage: true
+module_Dimensions: true

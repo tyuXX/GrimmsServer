@@ -6,19 +6,13 @@ import java.util.Map;
 
 public class ConfigRequirements {
     public static final Map<String, String> CommandRequirements = Map.ofEntries(
-            Map.entry("sellItem", "market"),
-            Map.entry("buyItem", "market"),
-            Map.entry("getMarketStock", "market"),
-            Map.entry("getMarket", "market"),
             Map.entry("logLeaderboard", "leaderboard"),
             Map.entry("sendMoney", "market"),
-            Map.entry("buyRipoff", "market"),
             Map.entry("makeItemLevelable", "leveling"),
             Map.entry("setPlayerStat", "stats"),
             Map.entry("logPlayerStats", "stats"),
             Map.entry("logSelfStats", "stats"),
             Map.entry("logWorldStats", "stats"),
-            Map.entry("buyEnchantment", "market"),
             Map.entry("logEnchantmentCosts", "market"),
             Map.entry("logJobs", "job"),
             Map.entry("takeJob", "job"),
@@ -27,15 +21,12 @@ public class ConfigRequirements {
             Map.entry("addTitle", "titles"),
             Map.entry("removeTitle", "titles"),
             Map.entry("executePlayer", "titles"),
-            Map.entry("grimmsServerCommands", "default"),
             Map.entry("withdrawMoney", "market"),
             Map.entry("depositMoney", "market"),
-            Map.entry("acceptRequest", "default"),
-            Map.entry("buyTp", "market"),
-            Map.entry("reloadGrimmsConfig", "default"),
             Map.entry("home", "homes"),
             Map.entry("nick", "chat"),
-            Map.entry("market", "market")
+            Map.entry("market", "market"),
+            Map.entry("gDim", "dimensions")
     );
 
     public static boolean isCommandEnabled(String command) {
@@ -52,6 +43,7 @@ public class ConfigRequirements {
             case "factions" -> ActiveConfig.module_Factions;
             case "relics" -> ActiveConfig.module_Relics;
             case "events" -> ActiveConfig.module_Events;
+            case "dimensions" -> ActiveConfig.module_Dimensions;
             case "default" -> true; // Default commands are always enabled
             default -> true; // Unknown command category
         };

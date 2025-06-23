@@ -1,6 +1,12 @@
 package org.gsdistance.grimmsServer.Manage;
 
 import org.gsdistance.grimmsServer.Commands.*;
+import org.gsdistance.grimmsServer.Commands.GDimensionCommand.GDimBaseCommand;
+import org.gsdistance.grimmsServer.Commands.GDimensionCommand.GDimTabCompleter;
+import org.gsdistance.grimmsServer.Commands.GLogCommand.GLogBaseCommand;
+import org.gsdistance.grimmsServer.Commands.GLogCommand.GLogTabCompleter;
+import org.gsdistance.grimmsServer.Commands.GUtilCommand.GUtilBaseCommand;
+import org.gsdistance.grimmsServer.Commands.GUtilCommand.GUtilTabCompleter;
 import org.gsdistance.grimmsServer.Commands.HomeCommand.HomeBaseCommand;
 import org.gsdistance.grimmsServer.Commands.HomeCommand.HomeTabCompleter;
 import org.gsdistance.grimmsServer.Commands.MarketComand.MarketBaseCommand;
@@ -15,15 +21,9 @@ public class CommandRegistry {
     @SuppressWarnings("DataFlowIssue")
     public static void registerCommands() {
         // Register all commands here
-        GrimmsServer.instance.getCommand("logSelfStats").setExecutor(new LogSelfStats());
-        GrimmsServer.instance.getCommand("logWorldStats").setExecutor(new LogWorldStats());
-        GrimmsServer.instance.getCommand("logLeaderboard").setExecutor(new LogLeaderBoard());
         GrimmsServer.instance.getCommand("sendMoney").setExecutor(new SendMoney());
         GrimmsServer.instance.getCommand("makeItemLevelable").setExecutor(new MakeItemLevelable());
         GrimmsServer.instance.getCommand("setPlayerStat").setExecutor(new SetPlayerStat());
-        GrimmsServer.instance.getCommand("logPlayerStats").setExecutor(new LogPlayerStats());
-        GrimmsServer.instance.getCommand("logSelfTitles").setExecutor(new LogSelfTitles());
-        GrimmsServer.instance.getCommand("logPlayerTitles").setExecutor(new LogPlayerTitles());
         GrimmsServer.instance.getCommand("addTitle").setExecutor(new AddTitle());
         GrimmsServer.instance.getCommand("executePlayer").setExecutor(new ExecutePlayer());
         GrimmsServer.instance.getCommand("logEnchantmentCosts").setExecutor(new LogEnchantmentCosts());
@@ -41,8 +41,12 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("nick").setExecutor(new Nick());
         GrimmsServer.instance.getCommand("market").setExecutor(new MarketBaseCommand());
         GrimmsServer.instance.getCommand("market").setTabCompleter(new MarketTabCompleter());
-        //GrimmsServer.instance.getCommand("gUtil").setExecutor(new GUtilBaseCommand());
-        //GrimmsServer.instance.getCommand("gUtil").setTabCompleter(new GUtilTabCompleter());
+        GrimmsServer.instance.getCommand("gUtil").setExecutor(new GUtilBaseCommand());
+        GrimmsServer.instance.getCommand("gUtil").setTabCompleter(new GUtilTabCompleter());
+        GrimmsServer.instance.getCommand("gLog").setExecutor(new GLogBaseCommand());
+        GrimmsServer.instance.getCommand("gLog").setTabCompleter(new GLogTabCompleter());
+        GrimmsServer.instance.getCommand("gDim").setExecutor(new GDimBaseCommand());
+        GrimmsServer.instance.getCommand("gDim").setTabCompleter(new GDimTabCompleter());
     }
 
     public static boolean CanExecute(String command) {

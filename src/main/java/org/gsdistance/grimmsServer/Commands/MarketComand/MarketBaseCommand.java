@@ -8,7 +8,6 @@ public class MarketBaseCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage("Usage: /market <get|stock|ripoff|enchant|tp|sell|buy> [args]");
             return false;
         }
 
@@ -20,10 +19,7 @@ public class MarketBaseCommand implements CommandExecutor {
             case "tp" -> BuyTp.SubCommand(sender, args);
             case "sell" -> SellItem.SubCommand(sender, args);
             case "buy" -> BuyItem.SubCommand(sender, args);
-            default -> {
-                sender.sendMessage("Unknown subcommand. Usage: /market <get|stock|ripoff|enchant|tp|sell|buy> [args]");
-                yield false;
-            }
+            default -> false;
         };
     }
 }
