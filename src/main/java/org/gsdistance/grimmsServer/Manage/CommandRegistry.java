@@ -65,6 +65,7 @@ public class CommandRegistry {
             return false;
         }
         // Retrieve the disabled commands as a List
+        @SuppressWarnings("unchecked")
         List<String> disabledCommands = getConfigValue(ConfigKey.DISABLED_COMMANDS, List.class);
         if (disabledCommands != null) {
             for (String disabledCommand : disabledCommands) {

@@ -18,7 +18,7 @@ public class AcceptRequest implements CommandExecutor {
                 sender.sendMessage("No such request found.");
                 return false;
             }
-            Request request = (Request) PerSessionDataStorage.dataStore.get("request-" + args[0]).keySet().toArray()[0];
+            Request request = (Request) PerSessionDataStorage.dataStore.get("request-" + args[0]).key;
             if (!request.canAccept((Player) sender)) {
                 sender.sendMessage("You cannot accept this request.");
                 return false;

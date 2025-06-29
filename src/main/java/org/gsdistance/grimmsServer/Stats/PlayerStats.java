@@ -118,6 +118,7 @@ public class PlayerStats {
         return dataContainer.getOrDefault(new NamespacedKey(plugin, stat), type, 0);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean hasExactStat(String stat) {
         return dataContainer.has(new NamespacedKey(plugin, stat), Stats.get(stat));
     }

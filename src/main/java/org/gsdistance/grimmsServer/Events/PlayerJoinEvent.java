@@ -1,6 +1,5 @@
 package org.gsdistance.grimmsServer.Events;
 
-import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.Data.PlayerTitleChecker;

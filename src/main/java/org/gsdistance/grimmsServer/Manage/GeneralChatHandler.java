@@ -43,6 +43,7 @@ public class GeneralChatHandler {
                 .replace("&time", LocalDateTime.now().toLocalTime().toString())
                 .replace("&nickname", nickname)
                 .replace("&day", String.valueOf(player.getWorld().getTime() / 24000));
+        @SuppressWarnings("unchecked")
         List<String> bannedWords = getConfigValue(ConfigKey.BANNED_WORDS, List.class);
         if (bannedWords != null) {
             String regex = "[ .-_,:;!?()\\[\\]{}\"'`~@#$%^&*+=|<>/\\\\]+";

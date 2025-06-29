@@ -18,12 +18,13 @@ public class Faction {
         this.members = members;
     }
 
-    public static Faction loadFromFile(UUID uuid) {
-        return GrimmsServer.pds.retrieveData(uuid.toString() + ".json", "factions", Faction.class);
+    public static Faction getFaction(UUID uuid) {
+        Faction faction = GrimmsServer.pds.retrieveData(uuid.toString() + ".json", "factions", Faction.class);
+        return
     }
 
     public void saveToFile() {
-        GrimmsServer.pds.saveData(this, Faction.class, uuid.toString() + ".json", "factions");
+        GrimmsServer.pds.saveData(this, Faction.class, uuid + ".json", "factions");
     }
 
     public void addMember(UUID memberId, FactionRank rank) {
