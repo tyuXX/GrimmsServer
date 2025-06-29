@@ -59,14 +59,10 @@ commands:
     description: Removes a title from a player.
     usage: /removeTitle <player> <title>
     permission: grimmsserver.removeTitle
-  faction:
+  gFaction:
     description: Faction commands
-    usage: /faction <command> <args>
+    usage: /gFaction <command> <args>
     permission: grimmsserver.faction
-  reloadGrimmsConfig:
-    description: Reloads the GrimmsServer configuration.
-    usage: /reloadGrimmsConfig
-    permission: grimmsserver.reloadConfig
   home:
     description: Home commands
     usage: /home <command> <args>
@@ -91,6 +87,10 @@ commands:
     description: Utility commands.
     usage: /gUtil <command> [args]
     permission: grimmsserver.util
+  gConfig:
+    description: Configuration commands.
+    usage: /gConfig <command> [args]
+    permission: grimmsserver.config
 permissions:
   grimmsserver.sendMoney:
     description: Allows a player to send money to another player
@@ -140,9 +140,6 @@ permissions:
   grimmsserver.factionAdmin:
     description: Allows a player to use faction admin commands
     default: op
-  grimmsserver.reloadConfig:
-    description: Allows a player to reload the GrimmsServer configuration
-    default: op
   grimmsserver.nick:
     description: Allows a player to change their own nickname
     default: true
@@ -181,4 +178,7 @@ permissions:
     default: op
   grimmsserver.util:
     description: Allows a player to use utility commands
+    default: op
+  grimmsserver.config:
+    description: Allows a player to use configuration commands
     default: op

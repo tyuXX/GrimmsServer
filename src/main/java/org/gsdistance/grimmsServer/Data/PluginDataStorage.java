@@ -48,14 +48,14 @@ public class PluginDataStorage {
         }
     }
 
-    public Object retrieveData(String fileName, Type objectType, String addedPath) {
+    public <T> T retrieveData(String fileName, String addedPath, Class<T> ignoredType) {
         File readFolder = new File(plugin.getDataFolder().getPath() + File.separatorChar + addedPath);
         File readFile = new File(readFolder.getPath() + File.separatorChar + fileName);
         if (!readFile.exists()) {
             return null;
         }
         try (FileReader reader = new FileReader(readFile)) {
-            return jsonParser.fromJson(reader, objectType);
+            return jsonParser.fromJson(reader, ignoredType);
         } catch (IOException e) {
             GrimmsServer.logger.log(Level.WARNING, "Failed to retrieve data from " + readFile.getPath(), e);
             return null;

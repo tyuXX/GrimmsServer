@@ -10,7 +10,7 @@ public class LogLeaderboard {
         leaderBoard.checkPlayer(player);
         player.sendMessage("__Leaderboard:");
         for (String stat : leaderBoard.leaderboard.keySet()) {
-            player.sendMessage("|Leader of stat " + PlayerStats.StatNames.get(stat) + " is " + leaderBoard.leaderboard.get(stat).getPlayerName() + " with " + leaderBoard.leaderboard.get(stat).getStatValue());
+            player.sendMessage("|Leader of stat " + PlayerStats.StatNames.get(stat) + " is " + leaderBoard.leaderboard.get(stat).playerName() + " with " + leaderBoard.leaderboard.get(stat).statValue());
         }
         return true;
     }

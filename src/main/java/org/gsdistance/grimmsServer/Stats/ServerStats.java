@@ -41,8 +41,7 @@ public class ServerStats {
 
     private void loadStats() {
         //noinspection unchecked
-        stats = (Map<String, Object>) GrimmsServer.pds.retrieveData("server_stats.json", new TypeToken<Map<String, Object>>() {
-        }.getType(), "");
+        stats = (Map<String, Object>) GrimmsServer.pds.retrieveData("server_stats.json", "", Map.class);
         if (stats == null) {
             stats = new Hashtable<>();
             stats.put("market", new Gson().toJson(new Market())); // Initialize market stat

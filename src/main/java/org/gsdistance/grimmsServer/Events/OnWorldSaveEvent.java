@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Events;
 
+import com.google.common.base.Stopwatch;
 import org.bukkit.Bukkit;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
@@ -20,6 +21,7 @@ public class OnWorldSaveEvent {
     }
 
     public static void saveData(){
+        Stopwatch sw = Stopwatch.createStarted();
         // Save all temporary data
         GrimmsServer.logger.info("Saving temporary data...");
         for (Map<Object, Type> data : PerSessionDataStorage.dataStore.values()) {
@@ -28,6 +30,6 @@ public class OnWorldSaveEvent {
                 ((PlayerMetadata) data.keySet().iterator().next()).saveToPDS();
             }
         }
-        GrimmsServer.logger.info("Done");
+        GrimmsServer.logger.info("Done (" + sw.stop() + ")");
     }
 }

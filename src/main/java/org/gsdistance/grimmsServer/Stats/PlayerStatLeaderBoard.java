@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.LeaderboardEntry;
 import org.gsdistance.grimmsServer.Data.PlayerTitleChecker;
-import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Shared;
 
 import java.lang.reflect.Type;
@@ -53,9 +52,9 @@ public class PlayerStatLeaderBoard {
         List<String> overtakes = new ArrayList<>();
         for (String stat : leaderboard.keySet()) {
             Number playerStatValue = (Number) playerStats.getStat(stat);
-            Number leaderboardStatValue = leaderboard.get(stat).getStatValue();
+            Number leaderboardStatValue = leaderboard.get(stat).statValue();
             if (playerStatValue != null && playerStatValue.doubleValue() > leaderboardStatValue.doubleValue()) {
-                if (!player.getName().equalsIgnoreCase(leaderboard.get(stat).getPlayerName())) {
+                if (!player.getName().equalsIgnoreCase(leaderboard.get(stat).playerName())) {
                     overtakes.add(stat);
                 }
                 leaderboard.put(stat, new LeaderboardEntry(player.getName(), playerStatValue.intValue()));

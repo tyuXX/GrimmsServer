@@ -26,7 +26,7 @@ public class ServerTickEvent {
                 PlayerStats playerStats = PlayerStats.getPlayerStats(player);
                 String jobTitleId = (String) playerStats.getStat("jobTitle");
                 if (jobTitleId != null && !jobTitleId.isEmpty()) {
-                    double payCheck = Math.ceil(JobTitlesBaseValues.jobTitleBaseValues.getOrDefault(jobTitleId, null).paycheckSize() * (1 + (Math.pow((double) playerStats.getStat("level"),2))/100));
+                    double payCheck = Math.ceil(JobTitlesBaseValues.jobTitleBaseValues.getOrDefault(jobTitleId, null).paycheckSize() * (1 + (Math.pow((Double) playerStats.getStat("level"),2))/100));
                     playerStats.setStat("money", (Double) playerStats.getStat("money") + payCheck);
                     player.sendMessage("You have received your paycheck: " + payCheck);
                 }

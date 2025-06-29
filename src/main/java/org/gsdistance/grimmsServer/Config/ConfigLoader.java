@@ -1,12 +1,12 @@
 package org.gsdistance.grimmsServer.Config;
 
+import com.google.common.base.Stopwatch;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.io.File;
-import java.util.List;
 
 public class ConfigLoader {
     private static FileConfiguration config;
@@ -20,28 +20,18 @@ public class ConfigLoader {
     }
 
     public static void loadConfigFromFile() {
+        Stopwatch sw = Stopwatch.createStarted();
         GrimmsServer.logger.info("Loading GrimmsServer config...");
         if (config == null) {
-            GrimmsServer.logger.warning("Config somehow not initialized.");
+            GrimmsServer.logger.warning("Config somehow not initialized. (" + sw.stop() + ")");
             return;
         }
-        ActiveConfig.updateConfig(
-                config.getBoolean("module_Jobs", true),
-                config.getBoolean("module_Factions", true),
-                config.getBoolean("module_Market", true),
-                config.getBoolean("module_Leaderboard", true),
-                config.getStringList("disabledCommands"),
-                config.getBoolean("module_Chat", true),
-                config.getBoolean("module_Homes", true),
-                config.getBoolean("module_Leveling", true),
-                config.getBoolean("module_Titles", true),
-                config.getBoolean("module_Relics", true),
-                config.getBoolean("module_Events", true),
-                config.getBoolean("module_Utils", true),
-                config.getBoolean("module_Ranks", true),
-                config.getBoolean("joinMessage", true),
-                config.getBoolean("module_Dimensions", true)
-        );
-        GrimmsServer.logger.info("GrimmsServer config loaded successfully.");
+
+        for (ConfigKey key : ConfigKey.values()) {
+            Object value = config.get(key.getKey(), key.getDefaultValue());
+            ActiveConfig.setConfigValue(key, value);
+        }
+
+        GrimmsServer.logger.info("GrimmsServer config loaded successfully. (" + sw.stop() + ")");
     }
 }

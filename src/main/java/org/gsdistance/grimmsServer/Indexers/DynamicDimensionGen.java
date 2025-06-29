@@ -1,11 +1,17 @@
 package org.gsdistance.grimmsServer.Indexers;
 
+import com.google.common.base.Stopwatch;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
+import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Constructable.WorldConstructor;
 import org.gsdistance.grimmsServer.GrimmsServer;
+
+import java.util.List;
+
+import static org.gsdistance.grimmsServer.Config.ActiveConfig.getConfigValue;
 
 public class DynamicDimensionGen {
     public static void newDimension(WorldConstructor worldConstructor) {
@@ -46,5 +52,20 @@ public class DynamicDimensionGen {
                 newDimension(worldConstructor);
             }
         }
+    }
+
+    public static void unLoadWorlds(){
+        Stopwatch sw = Stopwatch.createStarted();
+        GrimmsServer.logger.info("Unloading worlds...");
+        for (String worldName : (List<String>)getConfigValue(ConfigKey.DISABLED_DIMENSIONS, List.class)){
+            World world = Bukkit.getWorld(worldName);
+            if (world != null) {
+                GrimmsServer.logger.info("Unloading world: " + worldName);
+                Bukkit.unloadWorld(world, false);
+            } else {
+                GrimmsServer.logger.warning("World with name '" + worldName + "' does not exist or is already unloaded.");
+            }
+        }
+        GrimmsServer.logger.info("Unloaded worlds (" + sw.stop() + ")");
     }
 }

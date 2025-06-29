@@ -1,6 +1,10 @@
 package org.gsdistance.grimmsServer.Manage;
 
 import org.gsdistance.grimmsServer.Commands.*;
+import org.gsdistance.grimmsServer.Commands.GConfigCommand.GConfigBaseCommand;
+import org.gsdistance.grimmsServer.Commands.GConfigCommand.GConfigTabCompleter;
+import org.gsdistance.grimmsServer.Commands.GFactionCommand.GFactionBaseCommand;
+import org.gsdistance.grimmsServer.Commands.GFactionCommand.GFactionTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GDimensionCommand.GDimBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GDimensionCommand.GDimTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GLogCommand.GLogBaseCommand;
@@ -13,9 +17,13 @@ import org.gsdistance.grimmsServer.Commands.MarketComand.MarketBaseCommand;
 import org.gsdistance.grimmsServer.Commands.MarketComand.MarketTabCompleter;
 import org.gsdistance.grimmsServer.Commands.RequestCommand.AcceptRequest;
 import org.gsdistance.grimmsServer.Commands.RequestCommand.RequestTabCompleter;
-import org.gsdistance.grimmsServer.Config.ActiveConfig;
+import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Data.ConfigRequirements;
 import org.gsdistance.grimmsServer.GrimmsServer;
+
+import java.util.List;
+
+import static org.gsdistance.grimmsServer.Config.ActiveConfig.getConfigValue;
 
 public class CommandRegistry {
     @SuppressWarnings("DataFlowIssue")
@@ -35,7 +43,6 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("acceptRequest").setExecutor(new AcceptRequest());
         GrimmsServer.instance.getCommand("acceptRequest").setTabCompleter(new RequestTabCompleter());
         GrimmsServer.instance.getCommand("removeTitle").setExecutor(new RemoveTitle());
-        GrimmsServer.instance.getCommand("reloadGrimmsConfig").setExecutor(new ReloadConfig());
         GrimmsServer.instance.getCommand("home").setExecutor(new HomeBaseCommand());
         GrimmsServer.instance.getCommand("home").setTabCompleter(new HomeTabCompleter());
         GrimmsServer.instance.getCommand("nick").setExecutor(new Nick());
@@ -47,15 +54,23 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("gLog").setTabCompleter(new GLogTabCompleter());
         GrimmsServer.instance.getCommand("gDim").setExecutor(new GDimBaseCommand());
         GrimmsServer.instance.getCommand("gDim").setTabCompleter(new GDimTabCompleter());
+        GrimmsServer.instance.getCommand("gFaction").setExecutor(new GFactionBaseCommand());
+        GrimmsServer.instance.getCommand("gFaction").setTabCompleter(new GFactionTabCompleter());
+        GrimmsServer.instance.getCommand("gConfig").setExecutor(new GConfigBaseCommand());
+        GrimmsServer.instance.getCommand("gConfig").setTabCompleter(new GConfigTabCompleter());
     }
 
     public static boolean CanExecute(String command) {
         if (command == null || command.isEmpty()) {
             return false;
         }
-        for (String disabledCommand : ActiveConfig.disabledCommands) {
-            if (disabledCommand.equalsIgnoreCase(command)) {
-                return false;
+        // Retrieve the disabled commands as a List
+        List<String> disabledCommands = getConfigValue(ConfigKey.DISABLED_COMMANDS, List.class);
+        if (disabledCommands != null) {
+            for (String disabledCommand : disabledCommands) {
+                if (disabledCommand.equalsIgnoreCase(command)) {
+                    return false;
+                }
             }
         }
         return ConfigRequirements.isCommandEnabled(command);

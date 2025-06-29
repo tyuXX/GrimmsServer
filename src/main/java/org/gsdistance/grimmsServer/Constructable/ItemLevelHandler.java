@@ -51,7 +51,6 @@ public class ItemLevelHandler {
     public void changeLevel(double levelDelta) {
         double currentLevel = getLevel();
         dataHandler.setItemNBTData(LEVEL_KEY, currentLevel + levelDelta);
-        dataHandler.setItemLoreData(List.of("Level: " + (currentLevel + levelDelta), "XP: " + Math.round(getXp()) + "/" + Math.round(getXpToLevel())));
     }
 
     public void addXp(double xp) {
@@ -65,6 +64,7 @@ public class ItemLevelHandler {
         }
 
         setXp(totalXp);
+        dataHandler.setItemLoreData(List.of("Level: " + (getLevel()), "XP: " + Math.round(getXp()) + "/" + Math.round(getXpToLevel())));
 
         if (levelUps > 0) {
             player.sendMessage("Your " + item.getType().name().toLowerCase() + " has leveled up to " + getLevel() + "!");

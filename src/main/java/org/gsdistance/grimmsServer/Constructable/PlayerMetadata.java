@@ -47,7 +47,7 @@ public class PlayerMetadata {
         if (PerSessionDataStorage.dataStore.containsKey("metadata-" + player.getUniqueId())) {
             return (PlayerMetadata) PerSessionDataStorage.dataStore.get("metadata-" + player.getUniqueId()).keySet().toArray()[0];
         }
-        PlayerMetadata metadata = (PlayerMetadata) GrimmsServer.pds.retrieveData(player.getUniqueId() + ".json", PlayerMetadata.class, "playerMetadata");
+        PlayerMetadata metadata = GrimmsServer.pds.retrieveData(player.getUniqueId() + ".json", "playerMetadata", PlayerMetadata.class);
         if (metadata == null) {
             metadata = new PlayerMetadata(player);
             GrimmsServer.logger.info("Created new PlayerMetadata for " + player.getName());

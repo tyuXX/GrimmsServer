@@ -15,7 +15,7 @@ public class Delete {
         }
 
         GrimmsServer.instance.getServer().unloadWorld(worldName, true);
-        GrimmsServer.pds.deleteData(worldName, "worldConstructors");
+        GrimmsServer.pds.deleteData(worldName + ".json", "worldConstructors");
         player.sendMessage("World '" + worldName + "' has been deleted.");
         return true;
     }

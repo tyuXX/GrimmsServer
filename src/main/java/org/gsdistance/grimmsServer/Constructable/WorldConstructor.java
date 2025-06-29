@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 public record WorldConstructor(String name, String type, boolean generateStructures, String worldType) {
 
     public static WorldConstructor getWorldConstructor(String name) {
-        return (WorldConstructor) GrimmsServer.pds.retrieveData(name + ".json", WorldConstructor.class, "worldConstructors");
+        return GrimmsServer.pds.retrieveData(name + ".json", "worldConstructors", WorldConstructor.class);
     }
 
     public static WorldConstructor[] getAllWorldConstructors() {

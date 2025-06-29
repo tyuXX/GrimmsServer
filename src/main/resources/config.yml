@@ -14,3 +14,5 @@ module_Utils: true
 module_Ranks: true
 joinMessage: true
 module_Dimensions: true
+disabledDimensions: []
+forceDisableBroadcasts: false
