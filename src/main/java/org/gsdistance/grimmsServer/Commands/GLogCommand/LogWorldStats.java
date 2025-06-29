@@ -6,7 +6,7 @@ import org.gsdistance.grimmsServer.Stats.WorldStats;
 import java.util.Enumeration;
 
 public class LogWorldStats {
-    public static boolean subCommand(Player player){
+    public static boolean subCommand(Player player) {
         WorldStats stats = WorldStats.getWorldStats((player).getWorld());
         player.sendMessage("__World stats:");
         for (Enumeration<String> keys = WorldStats.Stats.keys(); keys.hasMoreElements(); ) {

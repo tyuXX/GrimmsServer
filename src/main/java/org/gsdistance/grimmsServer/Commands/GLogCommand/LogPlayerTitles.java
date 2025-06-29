@@ -5,8 +5,8 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 
 public class LogPlayerTitles {
-    public static boolean subCommand(Player player, String[] args){
-        if(!player.hasPermission("grimmsserver.log.other")) {
+    public static boolean subCommand(Player player, String[] args) {
+        if (!player.hasPermission("grimmsserver.log.other")) {
             return false;
         }
         if (args.length < 2) {

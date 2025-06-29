@@ -7,7 +7,7 @@ import static org.gsdistance.grimmsServer.Shared.formatNumber;
 
 public class LogSelfStats {
     public static boolean subCommand(Player player) {
-        if(!player.hasPermission("grimmsserver.log.self")) {
+        if (!player.hasPermission("grimmsserver.log.self")) {
             return false;
         }
         PlayerStats stats = PlayerStats.getPlayerStats(player);

@@ -12,7 +12,7 @@ public class Tp {
         }
         String worldName;
         Player targetPlayer = player;
-        if(args.length > 3) {
+        if (args.length > 3) {
             worldName = args[2];
             Player tmp = player.getServer().getPlayer(args[1]);
             targetPlayer = tmp != null ? tmp : player;

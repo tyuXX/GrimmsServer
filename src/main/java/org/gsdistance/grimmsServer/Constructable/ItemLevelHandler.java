@@ -6,7 +6,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemLevelHandler {

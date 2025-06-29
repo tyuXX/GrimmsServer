@@ -15,13 +15,13 @@ import java.util.List;
 public class GLogTabCompleter implements TabCompleter {
 
     private static final List<String> SUBCOMMANDS = Arrays.asList(
-        "self_stats",
-        "other_stats",
-        "self_titles",
-        "other_titles",
-        "world",
-        "leaderboard",
-        "commands"
+            "self_stats",
+            "other_stats",
+            "self_titles",
+            "other_titles",
+            "world",
+            "leaderboard",
+            "commands"
     );
 
     @Nullable

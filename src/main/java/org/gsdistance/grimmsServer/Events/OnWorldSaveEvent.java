@@ -12,15 +12,16 @@ import java.util.Map;
 
 public class OnWorldSaveEvent {
     public static int i = 0;
+
     public static void Event(WorldSaveEvent event) {
         i++;
-        if(i >= Bukkit.getWorlds().size()){
+        if (i >= Bukkit.getWorlds().size()) {
             saveData();
             i = 0; // Reset counter after all worlds triggered the save event
         }
     }
 
-    public static void saveData(){
+    public static void saveData() {
         Stopwatch sw = Stopwatch.createStarted();
         // Save all temporary data
         GrimmsServer.logger.info("Saving temporary data...");

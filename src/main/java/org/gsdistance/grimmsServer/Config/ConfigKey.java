@@ -1,7 +1,6 @@
 package org.gsdistance.grimmsServer.Config;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public enum ConfigKey {
     MODULE_JOBS("module_Jobs", true),
@@ -20,6 +19,7 @@ public enum ConfigKey {
     JOIN_MESSAGE("joinMessage", true),
     MODULE_DIMENSIONS("module_Dimensions", true),
     DISABLED_DIMENSIONS("disabledDimensions", new ArrayList<String>()),
+    BANNED_WORDS("bannedWords", new ArrayList<String>()),
     FORCE_DISABLE_BC("forceDisableBroadcasts", false);
 
     private final String key;

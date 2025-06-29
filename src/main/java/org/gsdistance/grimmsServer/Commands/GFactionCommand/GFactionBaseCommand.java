@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class GFactionBaseCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player player)){
+        if (!(sender instanceof Player player)) {
             return false;
         }
         if (args.length == 0) {
@@ -21,7 +21,7 @@ public class GFactionBaseCommand implements CommandExecutor {
             case "join" -> Join.subCommand(player, args);
             case "leave" -> Leave.subCommand(player, args);
             case "kick" -> Kick.subCommand(player, args);
-            case "info" -> Info.subCommand(player, args);
+            case "info" -> Info.subCommand(player);
             case "new" -> New.subCommand(player, args);
             default -> false;
         };

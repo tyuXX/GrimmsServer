@@ -5,7 +5,7 @@ import org.gsdistance.grimmsServer.Stats.PlayerStatLeaderBoard;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class LogLeaderboard {
-    public static boolean subCommand(Player player){
+    public static boolean subCommand(Player player) {
         PlayerStatLeaderBoard leaderBoard = PlayerStatLeaderBoard.getPlayerStatLeaderBoard();
         leaderBoard.checkPlayer(player);
         player.sendMessage("__Leaderboard:");

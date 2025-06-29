@@ -26,7 +26,8 @@ public class PluginDataStorage {
         return readFile.exists();
     }
 
-    public void saveData(Object object, Type objectType, String fileName, String addedPath) {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public <T> void saveData(T object, Class<T> objectType, String fileName, String addedPath) {
         File writeFolder = new File(plugin.getDataFolder().getPath() + File.separatorChar + addedPath);
         File writeFile = new File(writeFolder.getPath() + File.separatorChar + fileName);
         if (!writeFolder.exists()) {
@@ -62,17 +63,19 @@ public class PluginDataStorage {
         }
     }
 
-    public Object[] retrieveAllData(Type objectType, String addedPath) {
+    @SuppressWarnings("unchecked")
+    public <T> T[] retrieveAllData(Class<T> objectType, String addedPath) {
         File readFolder = new File(plugin.getDataFolder().getPath() + File.separatorChar + addedPath);
         if (!readFolder.exists()) {
             return null;
         }
         File[] files = readFolder.listFiles();
         if (files == null || files.length == 0) {
-            return new Object[0];
+
+            return (T[]) java.lang.reflect.Array.newInstance(objectType, 0);
         }
 
-        Object[] dataObjects = new Object[files.length];
+        T[] dataObjects = (T[]) java.lang.reflect.Array.newInstance(objectType, files.length);
         for (int i = 0; i < files.length; i++) {
             try (FileReader reader = new FileReader(files[i])) {
                 dataObjects[i] = jsonParser.fromJson(reader, objectType);

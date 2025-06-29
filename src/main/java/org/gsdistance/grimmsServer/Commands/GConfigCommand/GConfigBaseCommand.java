@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class GConfigBaseCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(args.length < 1) {
+        if (args.length < 1) {
             return false;
         }
         return switch (args[0].toLowerCase()) {

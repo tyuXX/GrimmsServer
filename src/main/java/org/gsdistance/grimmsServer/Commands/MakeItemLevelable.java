@@ -22,12 +22,12 @@ public class MakeItemLevelable implements CommandExecutor {
                             playerStats.changeStat("money", -3500);
                             ItemLevelHandler.getLevelHandler((Player) sender);
                         } else {
-                            sender.sendMessage("You need 3500 money to make an item levelable.");
+                            sender.sendMessage("You need over 3500 money to make an item levelable.");
                             return false;
                         }
                     }
                 } else {
-                    sender.sendMessage("You need to be level 10 to make an item levelable.");
+                    sender.sendMessage("You need to be over level 10 to make an item levelable.");
                     return false;
                 }
             }

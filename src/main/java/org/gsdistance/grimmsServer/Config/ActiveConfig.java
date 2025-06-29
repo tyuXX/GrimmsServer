@@ -21,7 +21,8 @@ public class ActiveConfig {
             GrimmsServer.logger.warning("Config value for " + key.getKey() + " is not of type " + ignoredType.getSimpleName() + ". Message: " + e.getMessage());
             try {
                 return ignoredType.getDeclaredConstructor().newInstance();
-            } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException ex) {
+            } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
+                     InstantiationException ex) {
                 GrimmsServer.logger.warning("Failed to instantiate default value for " + key.getKey() + ". Message: " + ex.getMessage());
                 return null;
             }

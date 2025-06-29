@@ -1,7 +1,6 @@
 package org.gsdistance.grimmsServer.Constructable;
 
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 

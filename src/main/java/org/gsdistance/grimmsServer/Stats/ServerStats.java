@@ -58,8 +58,7 @@ public class ServerStats {
     }
 
     private void saveStats() {
-        GrimmsServer.pds.saveData(stats, new TypeToken<Map<String, Object>>() {
-        }.getType(), "server_stats.json", "");
+        GrimmsServer.pds.saveData(stats, Map.class, "server_stats.json", "");
     }
 
     public Object getStat(String stat) {

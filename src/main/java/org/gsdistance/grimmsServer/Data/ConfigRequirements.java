@@ -28,7 +28,7 @@ public class ConfigRequirements {
 
     public static boolean isCommandEnabled(String command) {
         return switch (CommandRequirements.getOrDefault(command, "default")) {
-            case "market" -> getConfigValue(ConfigKey.MODULE_MARKET,Boolean.class);
+            case "market" -> getConfigValue(ConfigKey.MODULE_MARKET, Boolean.class);
             case "leaderboard" -> getConfigValue(ConfigKey.MODULE_LEADERBOARD, Boolean.class);
             case "job" -> getConfigValue(ConfigKey.MODULE_JOBS, Boolean.class);
             case "stats" -> getConfigValue(ConfigKey.MODULE_LEVELING, Boolean.class);

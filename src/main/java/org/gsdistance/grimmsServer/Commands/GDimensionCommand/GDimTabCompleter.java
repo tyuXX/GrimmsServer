@@ -39,7 +39,8 @@ public class GDimTabCompleter implements TabCompleter {
                                 .map(World::getName)
                                 .filter(name -> name.startsWith(args[1].toLowerCase()))
                                 .collect(Collectors.toList());
-                case "delete" -> Arrays.stream(WorldConstructor.getAllWorldConstructors()).map(WorldConstructor::name).toList();
+                case "delete" ->
+                        Arrays.stream(WorldConstructor.getAllWorldConstructors()).map(WorldConstructor::name).toList();
                 default -> List.of();
             };
         }
@@ -63,6 +64,14 @@ public class GDimTabCompleter implements TabCompleter {
             return Stream.of("normal", "flat", "amplified", "large_biomes")
                     .filter(env -> env.startsWith(args[4].toUpperCase()))
                     .collect(Collectors.toList());
+        }
+        if (args.length == 6 && args[0].equalsIgnoreCase("create")) {
+            // Suggest a seed for the "create" command
+            return List.of("<seed>");
+        }
+        if (args.length == 7 && args[0].equalsIgnoreCase("create")) {
+            // Suggest generator settings for the "create" command
+            return List.of("<generatorSettings>");
         }
 
         if (args.length == 3 && args[0].equalsIgnoreCase("tp")) {

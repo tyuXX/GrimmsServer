@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 
 public class LogSelfTitles {
-    public static boolean subCommand(Player player){
-        if(!player.hasPermission("grimmsserver.log.self")) {
+    public static boolean subCommand(Player player) {
+        if (!player.hasPermission("grimmsserver.log.self")) {
             return false;
         }
         PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);

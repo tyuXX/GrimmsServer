@@ -7,8 +7,8 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import static org.gsdistance.grimmsServer.Shared.formatNumber;
 
 public class LogPlayerStats {
-    public static boolean subCommand(Player player, String[] args){
-        if(!player.hasPermission("grimmsserver.log.other")) {
+    public static boolean subCommand(Player player, String[] args) {
+        if (!player.hasPermission("grimmsserver.log.other")) {
             return false;
         }
         if (args.length < 2) {

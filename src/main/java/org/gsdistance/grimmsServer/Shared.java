@@ -16,7 +16,7 @@ import static org.gsdistance.grimmsServer.GrimmsServer.logger;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class Shared {
     public static void Broadcast(String message, @Nullable String prefix) {
-        if(getConfigValue(ConfigKey.FORCE_DISABLE_BC, Boolean.class)) {
+        if (getConfigValue(ConfigKey.FORCE_DISABLE_BC, Boolean.class)) {
             logger.info("Broadcast is disabled by configuration.");
             return;
         }

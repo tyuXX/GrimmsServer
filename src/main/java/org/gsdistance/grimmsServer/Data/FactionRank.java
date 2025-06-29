@@ -4,7 +4,8 @@ public enum FactionRank {
     LEADER("Leader"),
     OFFICER("Officer"),
     MEMBER("Member"),
-    RECRUIT("Recruit");
+    RECRUIT("Recruit"),
+    NONE("Not a member");
 
     private final String displayName;
 

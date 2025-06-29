@@ -19,6 +19,9 @@ public class PlayerMetadata {
     public Location exitLocation;
     public String[] titles;
     public final String timestamp;
+    public UUID factionUUID = null; // Faction UUID, if the player is in a faction
+    public double offlineMoney = 0.0; // Offline gained money.
+    public boolean firstJoin = true;
 
     public PlayerMetadata(Player player) {
         this.nickname = player.getDisplayName();
@@ -61,5 +64,12 @@ public class PlayerMetadata {
         }
         metadata.logMetadata();
         return metadata;
+    }
+
+    public static PlayerMetadata getOfflinePlayerMetadata(UUID uuid) {
+        if (PerSessionDataStorage.dataStore.containsKey("metadata-" + uuid)) {
+            return (PlayerMetadata) PerSessionDataStorage.dataStore.get("metadata-" + uuid).keySet().toArray()[0];
+        }
+        return GrimmsServer.pds.retrieveData(uuid.toString() + ".json", "playerMetadata", PlayerMetadata.class);
     }
 }

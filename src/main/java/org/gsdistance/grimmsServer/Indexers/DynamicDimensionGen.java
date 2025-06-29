@@ -35,6 +35,13 @@ public class DynamicDimensionGen {
                 // If the world type is not recognized, default to NORMAL
                 worldCreator.type(WorldType.NORMAL);
             }
+            if (worldConstructor.seed() != null) {
+                worldCreator.seed(worldConstructor.seed());
+            }
+            if(worldConstructor.generatorSettings() != null && !worldConstructor.generatorSettings().isEmpty()) {
+                worldCreator.generatorSettings(worldConstructor.generatorSettings());
+
+            }
             GrimmsServer.logger.info("World created with name: " + worldCreator.name() + ", type: " + worldCreator.type() + ", environment: " + worldCreator.environment());
             worldCreator.createWorld();
         }
@@ -54,10 +61,10 @@ public class DynamicDimensionGen {
         }
     }
 
-    public static void unLoadWorlds(){
+    public static void unLoadWorlds() {
         Stopwatch sw = Stopwatch.createStarted();
         GrimmsServer.logger.info("Unloading worlds...");
-        for (String worldName : (List<String>)getConfigValue(ConfigKey.DISABLED_DIMENSIONS, List.class)){
+        for (String worldName : (List<String>) getConfigValue(ConfigKey.DISABLED_DIMENSIONS, List.class)) {
             World world = Bukkit.getWorld(worldName);
             if (world != null) {
                 GrimmsServer.logger.info("Unloading world: " + worldName);
