@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ActiveConfig {
-    private static final Map<ConfigKey, Object> configValues = new HashMap<>();
+    public static final Map<ConfigKey, Object> configValues = new HashMap<>();
 
     public static void setConfigValue(ConfigKey key, Object value) {
         configValues.put(key, value);

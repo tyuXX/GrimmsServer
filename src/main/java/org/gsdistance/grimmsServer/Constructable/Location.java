@@ -15,6 +15,13 @@ public class Location {
         this.world = Objects.requireNonNull(location.getWorld()).getName();
     }
 
+    public Location(String world, double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.world = world;
+    }
+
     public org.bukkit.Location toBukkitLocation() {
         return new org.bukkit.Location(org.bukkit.Bukkit.getWorld(world), x, y, z);
     }

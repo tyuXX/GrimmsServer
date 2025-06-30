@@ -16,7 +16,8 @@ public class ChunkLoadEvent {
 
         if (!pluginDataStorage.exists(name, "chunkMetadata" + File.separatorChar + event.getWorld().getName())) {
             Player player = Shared.getClosestPlayer(new Location(event.getWorld(), event.getChunk().getX(), 0, event.getChunk().getZ()), event.getWorld().getPlayers());
-            pluginDataStorage.saveData(new ChunkMetadata(event.getChunk(), null, player), ChunkMetadata.class, name, "chunkMetadata" + File.separatorChar + event.getWorld().getName());
+            ChunkMetadata chunkMetadata = new ChunkMetadata(event.getChunk(), null, player);
+            chunkMetadata.saveToFile();
         }
     }
 }

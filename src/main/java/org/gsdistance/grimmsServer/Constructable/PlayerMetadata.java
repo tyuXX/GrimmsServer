@@ -3,6 +3,7 @@ package org.gsdistance.grimmsServer.Constructable;
 import com.google.gson.Gson;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
+import org.gsdistance.grimmsServer.Data.PlayerRank;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ public class PlayerMetadata {
     public UUID factionUUID = null; // Faction UUID, if the player is in a faction
     public double offlineMoney = 0.0; // Offline gained money.
     public boolean firstJoin = true;
+    public PlayerRank rank = PlayerRank.DEFAULT;
 
     public PlayerMetadata(Player player) {
         this.nickname = player.getDisplayName();
@@ -38,7 +40,7 @@ public class PlayerMetadata {
     }
 
     public void softSave() {
-        PerSessionDataStorage.dataStore.put("metadata-" + uuid, Map.of(this, PlayerMetadata.class));
+        PerSessionDataStorage.dataStore.put("metadata-" + uuid, Data.of(this, PlayerMetadata.class));
     }
 
     public void saveToPDS() {
@@ -48,7 +50,7 @@ public class PlayerMetadata {
 
     public static PlayerMetadata getPlayerMetadata(Player player) {
         if (PerSessionDataStorage.dataStore.containsKey("metadata-" + player.getUniqueId())) {
-            return (PlayerMetadata) PerSessionDataStorage.dataStore.get("metadata-" + player.getUniqueId()).keySet().toArray()[0];
+            return (PlayerMetadata) PerSessionDataStorage.dataStore.get("metadata-" + player.getUniqueId()).key;
         }
         PlayerMetadata metadata = GrimmsServer.pds.retrieveData(player.getUniqueId() + ".json", "playerMetadata", PlayerMetadata.class);
         if (metadata == null) {
@@ -57,7 +59,7 @@ public class PlayerMetadata {
         } else {
             GrimmsServer.logger.info("Retrieved PlayerMetadata for " + player.getName());
         }
-        PerSessionDataStorage.dataStore.put("metadata-" + player.getUniqueId(), Map.of(metadata, PlayerMetadata.class));
+        PerSessionDataStorage.dataStore.put("metadata-" + player.getUniqueId(), Data.of(metadata, PlayerMetadata.class));
         // Set display name to nickname if different
         if (metadata.nickname != null && !metadata.nickname.equals(player.getDisplayName())) {
             player.setDisplayName(metadata.nickname);
@@ -68,7 +70,7 @@ public class PlayerMetadata {
 
     public static PlayerMetadata getOfflinePlayerMetadata(UUID uuid) {
         if (PerSessionDataStorage.dataStore.containsKey("metadata-" + uuid)) {
-            return (PlayerMetadata) PerSessionDataStorage.dataStore.get("metadata-" + uuid).keySet().toArray()[0];
+            return (PlayerMetadata) PerSessionDataStorage.dataStore.get("metadata-" + uuid).key;
         }
         return GrimmsServer.pds.retrieveData(uuid.toString() + ".json", "playerMetadata", PlayerMetadata.class);
     }

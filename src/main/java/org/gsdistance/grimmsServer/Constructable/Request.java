@@ -5,7 +5,6 @@ import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -34,11 +33,11 @@ public class Request {
 
         forPlayer.sendMessage("You have a new request: " + forPurpose);
         forPlayer.sendMessage("Accept with /acceptRequest " + request.requestId);
-        PerSessionDataStorage.dataStore.put("request-" + request.requestId, Map.of(request, Request.class));
+        PerSessionDataStorage.dataStore.put("request-" + request.requestId, Data.of(request, Request.class));
 
-        ArrayList<Integer> requestDataList = (ArrayList<Integer>) PerSessionDataStorage.dataStore.get("requestData-" + forPlayer.getName()).keySet().toArray()[0];
+        ArrayList<Integer> requestDataList = (ArrayList<Integer>) PerSessionDataStorage.dataStore.get("requestData-" + forPlayer.getName()).key;
         requestDataList.add(request.requestId);
-        PerSessionDataStorage.dataStore.put("requestData-" + forPlayer.getName(), Map.of(requestDataList, ArrayList.class));
+        PerSessionDataStorage.dataStore.put("requestData-" + forPlayer.getName(), Data.of(requestDataList, ArrayList.class));
     }
 
     public boolean canAccept(Player player) {
@@ -51,16 +50,11 @@ public class Request {
             PerSessionDataStorage.dataStore.remove("request-" + requestId);
             ArrayList<Integer> requestDataList = (ArrayList<Integer>) PerSessionDataStorage.dataStore
                     .get("requestData-" + player.getName())
-                    .keySet()
-                    .toArray()[0];
+                    .key;
             requestDataList.removeIf(id -> id.equals(requestId));
-            PerSessionDataStorage.dataStore.put("requestData-" + player.getName(), Map.of(requestDataList, ArrayList.class));
+            PerSessionDataStorage.dataStore.put("requestData-" + player.getName(), Data.of(requestDataList, ArrayList.class));
             return true;
         }
         return false;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
     }
 }

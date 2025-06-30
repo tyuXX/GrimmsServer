@@ -21,7 +21,8 @@ public class GLogTabCompleter implements TabCompleter {
             "other_titles",
             "world",
             "leaderboard",
-            "commands"
+            "commands",
+            "chunk"
     );
 
     @Nullable

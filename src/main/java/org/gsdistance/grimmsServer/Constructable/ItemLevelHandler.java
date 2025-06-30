@@ -2,6 +2,7 @@ package org.gsdistance.grimmsServer.Constructable;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
@@ -50,6 +51,10 @@ public class ItemLevelHandler {
     public void changeLevel(double levelDelta) {
         double currentLevel = getLevel();
         dataHandler.setItemNBTData(LEVEL_KEY, currentLevel + levelDelta);
+        Damageable damageable = (Damageable) item.getItemMeta();
+        assert damageable != null;
+        damageable.setDamage(0);
+        item.setItemMeta(damageable);
     }
 
     public void addXp(double xp) {

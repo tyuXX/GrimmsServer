@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Events;
 
+import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.Data.PlayerTitleChecker;
@@ -35,7 +36,7 @@ public class PlayerJoinEvent {
         metadata.saveToPDS();
 
         // Initialize request data
-        PerSessionDataStorage.dataStore.put("requestData-" + event.getPlayer().getName(), Map.of(new ArrayList<Integer>(), ArrayList.class));
+        PerSessionDataStorage.dataStore.put("requestData-" + event.getPlayer().getName(), Data.of(new ArrayList<Integer>(), ArrayList.class));
 
 
     }

@@ -23,7 +23,7 @@ public class GDimTabCompleter implements TabCompleter {
         if (args.length == 1) {
             // Provide subcommands for the first argument
             return Stream.of("create", "delete", "tp", "list", "info")
-                    .filter(sub -> sub.startsWith(args[0].toLowerCase()))
+                    .filter(sub -> sub.toLowerCase().startsWith(args[0].toLowerCase()))
                     .collect(Collectors.toList());
         }
 
@@ -37,7 +37,7 @@ public class GDimTabCompleter implements TabCompleter {
                     // Suggest existing world names
                         Bukkit.getWorlds().stream()
                                 .map(World::getName)
-                                .filter(name -> name.startsWith(args[1].toLowerCase()))
+                                .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
                                 .collect(Collectors.toList());
                 case "delete" ->
                         Arrays.stream(WorldConstructor.getAllWorldConstructors()).map(WorldConstructor::name).toList();
@@ -48,21 +48,21 @@ public class GDimTabCompleter implements TabCompleter {
         if (args.length == 3 && args[0].equalsIgnoreCase("create")) {
             // Suggest world types for the "create" command
             return Stream.of("NORMAL", "NETHER", "THE_END")
-                    .filter(type -> type.startsWith(args[2].toLowerCase()))
+                    .filter(type -> type.toLowerCase().startsWith(args[2].toLowerCase()))
                     .collect(Collectors.toList());
         }
 
         if (args.length == 4 && args[0].equalsIgnoreCase("create")) {
             // Suggest true/false for "generateStructures" in the "create" command
             return Stream.of("true", "false")
-                    .filter(option -> option.startsWith(args[3].toLowerCase()))
+                    .filter(option -> option.toLowerCase().startsWith(args[3].toLowerCase()))
                     .collect(Collectors.toList());
         }
 
         if (args.length == 5 && args[0].equalsIgnoreCase("create")) {
             // Suggest environment types for the "create" command
             return Stream.of("normal", "flat", "amplified", "large_biomes")
-                    .filter(env -> env.startsWith(args[4].toUpperCase()))
+                    .filter(env -> env.toUpperCase().startsWith(args[4].toUpperCase()))
                     .collect(Collectors.toList());
         }
         if (args.length == 6 && args[0].equalsIgnoreCase("create")) {
@@ -72,14 +72,6 @@ public class GDimTabCompleter implements TabCompleter {
         if (args.length == 7 && args[0].equalsIgnoreCase("create")) {
             // Suggest generator settings for the "create" command
             return List.of("<generatorSettings>");
-        }
-
-        if (args.length == 3 && args[0].equalsIgnoreCase("tp")) {
-            // Suggest player names for the "tp" command
-            return Bukkit.getOnlinePlayers().stream()
-                    .map(Player::getName)
-                    .filter(name -> name.startsWith(args[2].toLowerCase()))
-                    .collect(Collectors.toList());
         }
 
         return List.of();

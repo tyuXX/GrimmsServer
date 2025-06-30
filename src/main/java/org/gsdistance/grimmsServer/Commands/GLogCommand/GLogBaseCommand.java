@@ -1,9 +1,11 @@
 package org.gsdistance.grimmsServer.Commands.GLogCommand;
 
+import com.google.gson.Gson;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Constructable.ChunkMetadata;
 import org.jetbrains.annotations.NotNull;
 
 public class GLogBaseCommand implements CommandExecutor {
@@ -26,6 +28,10 @@ public class GLogBaseCommand implements CommandExecutor {
             case "world" -> LogWorldStats.subCommand(player);
             case "leaderboard" -> LogLeaderboard.subCommand(player);
             case "commands" -> player.performCommand("grimmsserver:grimmsServerCommands");
+            case "chunk" -> {
+                player.sendMessage(new Gson().toJson(ChunkMetadata.getChunkMetadata(player.getLocation().getChunk())));
+                yield true;
+            }
             default -> false;
         };
     }

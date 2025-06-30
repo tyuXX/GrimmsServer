@@ -17,12 +17,13 @@ public class GFactionBaseCommand implements CommandExecutor {
         }
         return switch (args[0].toLowerCase()) {
             case "invite" -> Invite.subCommand(player, args);
-            case "modify" -> Modify.subCommand(player, args);
             case "join" -> Join.subCommand(player, args);
-            case "leave" -> Leave.subCommand(player, args);
+            case "leave" -> Leave.subCommand(player);
             case "kick" -> Kick.subCommand(player, args);
             case "info" -> Info.subCommand(player);
             case "new" -> New.subCommand(player, args);
+            case "claim" -> Claim.subCommand(player);
+            case "unclaim" -> UnClaim.subCommand(player);
             default -> false;
         };
     }
