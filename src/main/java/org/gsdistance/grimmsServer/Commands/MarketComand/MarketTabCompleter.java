@@ -23,13 +23,14 @@ public class MarketTabCompleter implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             List<String> subs = new ArrayList<>();
-            if (sender.hasPermission("grimmsserver.market.get")) subs.add("get");
-            if (sender.hasPermission("grimmsserver.market.stock")) subs.add("stock");
-            if (sender.hasPermission("grimmsserver.market.ripoff")) subs.add("ripoff");
-            if (sender.hasPermission("grimmsserver.market.enchant")) subs.add("enchant");
-            if (sender.hasPermission("grimmsserver.market.tp")) subs.add("tp");
-            if (sender.hasPermission("grimmsserver.market.buy")) subs.add("buy");
-            if (sender.hasPermission("grimmsserver.market.sell")) subs.add("sell");
+            subs.add("get");
+            subs.add("stock");
+            subs.add("ripoff");
+            subs.add("enchant");
+            subs.add("tp");
+            subs.add("buy");
+            subs.add("sell");
+            subs.add("enchcosts");
             return subs.stream().filter(s -> s.startsWith(args[0].toLowerCase())).collect(Collectors.toList());
         }
         if (args.length == 2) {

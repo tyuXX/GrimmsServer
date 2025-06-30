@@ -25,4 +25,17 @@ public class Location {
     public org.bukkit.Location toBukkitLocation() {
         return new org.bukkit.Location(org.bukkit.Bukkit.getWorld(world), x, y, z);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Location location = (Location) obj;
+        return x == location.x && y == location.y && z == location.z && Objects.equals(world, location.world);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(world, x, y, z);
+    }
 }

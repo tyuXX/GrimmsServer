@@ -45,18 +45,18 @@ public class Join {
             player.sendMessage("§cThe faction leader is not online.");
             return false;
         }
-        if(Objects.requireNonNull(targetPlayer).isOnline()){
+        if (Objects.requireNonNull(targetPlayer).isOnline()) {
             Request.newRequest((Object object) -> {
-                Data<Player, UUID> data = (Data<Player, UUID>) object;
-                Player target = data.key;
-                PlayerMetadata targetMetadata = PlayerMetadata.getPlayerMetadata(target);
-                Faction faction = Faction.getFaction(data.value);
-                target.sendMessage("You have successfully joined the faction " + faction.name + ".");
-                targetMetadata.factionUUID = faction.uuid;
-                faction.addMember(player.getUniqueId(), FactionRank.RECRUIT);
-                faction.saveToFile();
-                targetMetadata.saveToPDS();
-                return null;
+                        Data<Player, UUID> data = (Data<Player, UUID>) object;
+                        Player target = data.key;
+                        PlayerMetadata targetMetadata = PlayerMetadata.getPlayerMetadata(target);
+                        Faction faction = Faction.getFaction(data.value);
+                        target.sendMessage("You have successfully joined the faction " + faction.name + ".");
+                        targetMetadata.factionUUID = faction.uuid;
+                        faction.addMember(player.getUniqueId(), FactionRank.RECRUIT);
+                        faction.saveToFile();
+                        targetMetadata.saveToPDS();
+                        return null;
                     },
                     targetPlayer,
                     player.getName() + " wants to join your faction.",

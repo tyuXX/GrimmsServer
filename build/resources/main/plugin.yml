@@ -28,10 +28,6 @@ commands:
     description: Executes a player, requires title Executioner.
     usage: /executePlayer <player>
     permission: grimmsserver.executePlayer
-  logEnchantmentCosts:
-    description: Displays the costs of all available
-    usage: /logEnchantmentCosts
-    permission: grimmsserver.logEnchantmentCosts
   logJobs:
     description: Displays all available jobs
     usage: /logJobs
@@ -107,9 +103,6 @@ permissions:
   grimmsserver.executePlayer:
     description: Allows a player to execute another player
     default: true
-  grimmsserver.logEnchantmentCosts:
-    description: Allows a player to log enchantment costs
-    default: true
   grimmsserver.multiHome:
     description: Allows multiple homes to be set
     default: op
@@ -149,21 +142,6 @@ permissions:
   grimmsserver.market:
     description: Allows a player to use market commands
     default: true
-  grimmsserver.market.get:
-    description: Allows a player to get market information
-    default: true
-  grimmsserver.market.stock:
-    description: Allows a player to get market stock
-    default: true
-  grimmsserver.market.ripoff:
-    description: Allows a player to buy items at 10x base price
-    default: true
-  grimmsserver.market.enchant:
-    description: Allows a player to view enchantment costs
-    default: true
-  grimmsserver.market.tp:
-    description: Allows a player to teleport to another player
-    default: true
   grimmsserver.log:
     description: Allows a player to use logging commands
     default: true
@@ -181,4 +159,7 @@ permissions:
     default: op
   grimmsserver.config:
     description: Allows a player to use configuration commands
+    default: op
+  grimmsserver.faction.bypass:
+    description: Allows a player to bypass claims
     default: op

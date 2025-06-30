@@ -6,6 +6,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Shared;
 
 import java.util.List;
 
@@ -60,16 +61,13 @@ public class ItemLevelHandler {
     public void addXp(double xp) {
         double totalXp = getXp() + xp;
         int levelUps = 0;
-
         while (totalXp >= getXpToLevel()) {
             totalXp -= getXpToLevel();
             changeLevel(1);
             levelUps++;
         }
-
         setXp(totalXp);
-        dataHandler.setItemLoreData(List.of("Level: " + (getLevel()), "XP: " + Math.round(getXp()) + "/" + Math.round(getXpToLevel())));
-
+        dataHandler.setItemLoreData(List.of("Level: " + Shared.formatNumber(getLevel()), "XP: " + Shared.formatNumber(Math.floor(getXp())) + "/" + Shared.formatNumber(Math.ceil(getXpToLevel()))));
         if (levelUps > 0) {
             player.sendMessage("Your " + item.getType().name().toLowerCase() + " has leveled up to " + getLevel() + "!");
         }

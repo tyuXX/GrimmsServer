@@ -23,6 +23,11 @@ public class EventRegistry implements Listener {
     }
 
     @EventHandler
+    public void onBlockPlace(org.bukkit.event.block.BlockPlaceEvent event) {
+        org.gsdistance.grimmsServer.Events.BlockPlaceEvent.Event(event);
+    }
+
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         org.gsdistance.grimmsServer.Events.PlayerJoinEvent.Event(event);
     }

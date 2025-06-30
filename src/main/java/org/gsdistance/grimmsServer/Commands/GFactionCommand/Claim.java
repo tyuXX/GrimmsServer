@@ -5,7 +5,7 @@ import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
 
 public class Claim {
-    public static boolean subCommand(Player player){
+    public static boolean subCommand(Player player) {
         PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
         Faction faction = Faction.getFaction(playerMetadata.factionUUID);
         if (faction == null) {

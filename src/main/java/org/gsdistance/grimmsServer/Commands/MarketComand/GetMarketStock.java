@@ -6,10 +6,6 @@ import org.gsdistance.grimmsServer.Constructable.Market;
 
 public class GetMarketStock {
     public static boolean SubCommand(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("grimmsserver.market.stock")) {
-            sender.sendMessage("You do not have permission to use this command.");
-            return true;
-        }
         if (args.length < 2) {
             sender.sendMessage("Usage: /market stock <item>");
             return false;

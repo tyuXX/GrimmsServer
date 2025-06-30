@@ -28,7 +28,7 @@ public class Kick {
             player.sendMessage("§cThis player is not a member of your faction.");
             return false;
         }
-        if(faction.getMemberRank(player.getUniqueId()).weight <= faction.getMemberRank(targetPlayer.getUniqueId()).weight) {
+        if (faction.getMemberRank(player.getUniqueId()).weight <= faction.getMemberRank(targetPlayer.getUniqueId()).weight) {
             player.sendMessage("§cYou cannot kick a player with the same or higher rank.");
             return false;
         }

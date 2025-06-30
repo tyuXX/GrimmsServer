@@ -16,7 +16,7 @@ public class Info {
             player.sendMessage("§cYou are not part of any faction.");
             return false;
         }
-        for (Data<UUID, FactionRank> member: faction.members) {
+        for (Data<UUID, FactionRank> member : faction.members) {
             PlayerMetadata memberMetadata = PlayerMetadata.getOfflinePlayerMetadata(member.key);
             if (memberMetadata != null) {
                 player.sendMessage("§aMember: " + memberMetadata.nickname + " - Rank: " + member.value.toString());

@@ -2,7 +2,8 @@ package org.gsdistance.grimmsServer.Constructable;
 
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-public record WorldConstructor(String name, String type, boolean generateStructures, String worldType, Long seed, String generatorSettings) {
+public record WorldConstructor(String name, String type, boolean generateStructures, String worldType, Long seed,
+                               String generatorSettings) {
 
     public static WorldConstructor[] getAllWorldConstructors() {
         return GrimmsServer.pds.retrieveAllData(WorldConstructor.class, "worldConstructors");

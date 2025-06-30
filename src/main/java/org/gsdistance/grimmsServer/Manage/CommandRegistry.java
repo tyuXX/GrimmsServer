@@ -34,7 +34,6 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("setPlayerStat").setExecutor(new SetPlayerStat());
         GrimmsServer.instance.getCommand("addTitle").setExecutor(new AddTitle());
         GrimmsServer.instance.getCommand("executePlayer").setExecutor(new ExecutePlayer());
-        GrimmsServer.instance.getCommand("logEnchantmentCosts").setExecutor(new LogEnchantmentCosts());
         GrimmsServer.instance.getCommand("logJobs").setExecutor(new LogJobs());
         GrimmsServer.instance.getCommand("takeJob").setExecutor(new TakeJob());
         GrimmsServer.instance.getCommand("grimmsServerCommands").setExecutor(new LogGrimmsServerCommands());

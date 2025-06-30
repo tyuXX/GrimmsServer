@@ -9,10 +9,6 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class BuyRipoff {
     public static boolean SubCommand(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("grimmsserver.market.ripoff")) {
-            sender.sendMessage("You do not have permission to use this command.");
-            return true;
-        }
         if (!(sender instanceof Player player)) {
             sender.sendMessage("This command can only be run by a player.");
             return false;

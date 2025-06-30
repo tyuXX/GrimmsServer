@@ -1,6 +1,5 @@
 package org.gsdistance.grimmsServer.Constructable;
 
-import com.google.gson.Gson;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Data.FactionRank;
@@ -8,7 +7,6 @@ import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.Data.PlayerRank;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,8 +16,8 @@ public class Faction {
     public String name;
     public final String id;
     public final UUID uuid = UUID.randomUUID();
-    public final List<Data<UUID, FactionRank>> members;
-    public final List<Location> claims = new ArrayList<>(); // Assuming Location is a class you have defined elsewhere
+    public List<Data<UUID, FactionRank>> members;
+    public List<Location> claims = new ArrayList<>(); // Assuming Location is a class you have defined elsewhere
 
     public Faction(String id, List<Data<UUID, FactionRank>> members) {
         this.id = id;
@@ -28,7 +26,7 @@ public class Faction {
 
     public static Faction getFaction(UUID uuid) {
         Faction faction;
-        if(PerSessionDataStorage.dataStore.containsKey("faction-" + uuid)) {
+        if (PerSessionDataStorage.dataStore.containsKey("faction-" + uuid)) {
             faction = (Faction) PerSessionDataStorage.dataStore.get("faction-" + uuid).key;
         } else {
             faction = GrimmsServer.pds.retrieveData(uuid + ".json", "factions", Faction.class);
@@ -41,55 +39,44 @@ public class Faction {
         return faction;
     }
 
-    public void softSave(){
+    public void softSave() {
         PerSessionDataStorage.dataStore.put("faction-" + uuid, Data.of(this, Faction.class));
     }
 
     public boolean claimChunk(org.bukkit.Location location, Player player) {
-        if(claims.size() >= getClaimLimit()) {
+        if (claims.size() >= getClaimLimit()) {
             player.sendMessage("§cYou have reached the claim limit for your faction.");
             return false;
         }
-        if(getMemberRank(player.getUniqueId()).weight < FactionRank.MEMBER.weight) {
+        if (getMemberRank(player.getUniqueId()).weight < FactionRank.MEMBER.weight) {
             player.sendMessage("§cYou must be above member rank to claim a chunk.");
             return false;
         }
-        if(location.getWorld() == null) {
+        if (location.getWorld() == null) {
             player.sendMessage("§cInvalid world.");
             return false;
         }
         ChunkMetadata chunkMetadata = ChunkMetadata.getChunkMetadata(location.getChunk());
-        //Logging
-        GrimmsServer.logger.warning(chunkMetadata.x + "_" + chunkMetadata.z + ".json");
-        GrimmsServer.logger.warning("chunkMetadata" + File.separator + chunkMetadata.world);
-        GrimmsServer.logger.warning(new Gson().toJson(chunkMetadata));
-        GrimmsServer.logger.warning(new Gson().toJson(claims));
         if (chunkMetadata.factionUUID != null) {
             player.sendMessage("§cThis chunk is already claimed by a faction.");
             return false;
         }
         Location claimLocation = new Location(location.getWorld().getName(), location.getChunk().getX(), 0, location.getChunk().getZ());
-        GrimmsServer.logger.warning(new Gson().toJson(claimLocation));
         claims.add(claimLocation);
         chunkMetadata.factionUUID = uuid;
         chunkMetadata.saveToFile();
         saveToFile();
-        player.sendMessage("§aChunk (" + claimLocation.x + "-" + claimLocation.z + ") claimed successfully.");
+        player.sendMessage("§aChunk (" + claimLocation.x + "/" + claimLocation.z + ") claimed successfully.");
         return true;
     }
 
     public boolean unClaimChunk(org.bukkit.Location location, Player player) {
-        if(getMemberRank(player.getUniqueId()).weight < FactionRank.MEMBER.weight) {
+        if (getMemberRank(player.getUniqueId()).weight < FactionRank.MEMBER.weight) {
             player.sendMessage("§cYou must be the above member rank to un-claim a chunk.");
             return false;
         }
         Location claimLocation = new Location(Objects.requireNonNull(location.getWorld()).getName(), location.getChunk().getX(), 0, location.getChunk().getZ());
         ChunkMetadata chunkMetadata = ChunkMetadata.getChunkMetadata(location.getChunk());
-        GrimmsServer.logger.warning(chunkMetadata.x + "_" + chunkMetadata.z + ".json");
-        GrimmsServer.logger.warning("chunkMetadata" + File.separator + chunkMetadata.world);
-        GrimmsServer.logger.warning(new Gson().toJson(chunkMetadata));
-        GrimmsServer.logger.warning(new Gson().toJson(claims));
-        GrimmsServer.logger.warning(new Gson().toJson(claimLocation));
         if (chunkMetadata.factionUUID == null) {
             player.sendMessage("§cThis chunk is not claimed by any faction.");
             return false;
@@ -102,7 +89,7 @@ public class Faction {
         chunkMetadata.factionUUID = null;
         chunkMetadata.saveToFile();
         saveToFile();
-        player.sendMessage("§aChunk (" + claimLocation.x + "-" + claimLocation.z + ") un-claimed successfully.");
+        player.sendMessage("§aChunk (" + claimLocation.x + "/" + claimLocation.z + ") un-claimed successfully.");
         return true;
     }
 
@@ -130,8 +117,7 @@ public class Faction {
             PlayerMetadata playerMetadata = PlayerMetadata.getOfflinePlayerMetadata(member.key);
             if (playerMetadata == null || playerMetadata.rank == null) {
                 claimLimit += 100 * PlayerRank.DEFAULT.weight;
-            }
-            else{
+            } else {
                 claimLimit += 100 * playerMetadata.rank.weight;
             }
         }
@@ -146,7 +132,7 @@ public class Faction {
         GrimmsServer.pds.saveData(this, Faction.class, uuid + ".json", "factions");
     }
 
-    public void delete(){
+    public void delete() {
         unClaimAllChunks();
         GrimmsServer.pds.deleteData(uuid + ".json", "factions");
         PerSessionDataStorage.dataStore.remove("faction-" + uuid);

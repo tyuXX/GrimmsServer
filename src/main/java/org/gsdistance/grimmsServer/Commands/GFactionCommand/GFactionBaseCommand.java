@@ -24,6 +24,8 @@ public class GFactionBaseCommand implements CommandExecutor {
             case "new" -> New.subCommand(player, args);
             case "claim" -> Claim.subCommand(player);
             case "unclaim" -> UnClaim.subCommand(player);
+            case "setrank" -> SetRank.subCommand(player, args);
+            case "unclaimall" -> UnClaimAll.subCommand(player);
             default -> false;
         };
     }

@@ -5,7 +5,6 @@ import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.FactionRank;
-import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -18,7 +17,7 @@ public class Leave {
             player.sendMessage("§cThe faction you are trying to leave does not exist.");
             return false;
         }
-        if (faction.getMemberRank(player.getUniqueId()) == FactionRank.LEADER){
+        if (faction.getMemberRank(player.getUniqueId()) == FactionRank.LEADER) {
             // Disband the faction if the player is the leader
             for (Data<UUID, FactionRank> member : new ArrayList<>(faction.members)) {
                 PlayerMetadata memberMetadata = PlayerMetadata.getOfflinePlayerMetadata(member.key);

@@ -39,7 +39,7 @@ public class DynamicDimensionGen {
             if (worldConstructor.seed() != null) {
                 worldCreator.seed(worldConstructor.seed());
             }
-            if(worldConstructor.generatorSettings() != null && !worldConstructor.generatorSettings().isEmpty()) {
+            if (worldConstructor.generatorSettings() != null && !worldConstructor.generatorSettings().isEmpty()) {
                 worldCreator.generatorSettings(worldConstructor.generatorSettings());
 
             }
@@ -51,7 +51,7 @@ public class DynamicDimensionGen {
     public static void loadWorlds() {
         GrimmsServer.logger.info("Loading worlds from worldConstructors...");
         WorldConstructor[] worldConstructors = WorldConstructor.getAllWorldConstructors();
-        if (worldConstructors.length == 0) {
+        if (worldConstructors == null) {
             GrimmsServer.logger.warning("No world constructors found to load.");
             return;
         }

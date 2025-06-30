@@ -25,12 +25,12 @@ public class Invite {
             player.sendMessage("§cYou are not a member of any faction.");
             return false;
         }
-        Faction faction = Faction.getFaction(playerMetadata.factionUUID);
-        if (faction.isMember(targetPlayer.getUniqueId())) {
-            player.sendMessage("§cThe player is already a member of your faction.");
+        if (PlayerMetadata.getPlayerMetadata(targetPlayer).factionUUID != null) {
+            player.sendMessage("§cThe player you are trying to invite is already in a faction.");
             return false;
         }
-        if (faction.getMemberRank(player.getUniqueId()).weight < FactionRank.MEMBER.weight){
+        Faction faction = Faction.getFaction(playerMetadata.factionUUID);
+        if (faction.getMemberRank(player.getUniqueId()).weight < FactionRank.MEMBER.weight) {
             player.sendMessage("§cYou do not have permission to invite players to your faction.");
             return false;
         }
@@ -47,7 +47,7 @@ public class Invite {
                     return null;
                 },
                 targetPlayer,
-                "",
+                "You have been invited to join the faction " + faction.name + ".",
                 Data.of(targetPlayer, playerMetadata.factionUUID)
         );
         return true;

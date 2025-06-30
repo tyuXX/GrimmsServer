@@ -9,10 +9,6 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class BuyTp {
     public static boolean SubCommand(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("grimmsserver.market.tp")) {
-            sender.sendMessage("You do not have permission to use this command.");
-            return false;
-        }
         if (sender instanceof Player) {
             if (args.length == 0) {
                 return false;

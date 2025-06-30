@@ -19,6 +19,7 @@ public class MarketBaseCommand implements CommandExecutor {
             case "tp" -> BuyTp.SubCommand(sender, args);
             case "sell" -> SellItem.SubCommand(sender, args);
             case "buy" -> BuyItem.SubCommand(sender, args);
+            case "enchcosts" -> GetEnchantCosts.SubCommand(sender, args);
             default -> false;
         };
     }

@@ -23,7 +23,7 @@ public class PlayerStatLeaderBoard {
             "level", Integer.class,
             "sent_messages", Long.class
     );
-    public final Map<String, Data<String,Number>> leaderboard;
+    public final Map<String, Data<String, Number>> leaderboard;
 
     public PlayerStatLeaderBoard() {
         leaderboard = new HashMap<>();

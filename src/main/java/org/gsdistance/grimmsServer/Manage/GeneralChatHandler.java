@@ -50,6 +50,7 @@ public class GeneralChatHandler {
             String normalizedMessage = message.replaceAll(regex, "").toLowerCase();
             for (String word : bannedWords) {
                 if (normalizedMessage.contains(word.replaceAll(regex, "").toLowerCase())) {
+                    GrimmsServer.logger.info("Message interrupted: '" + message + "' by player: " + player.getName() + ". Contains banned word: " + word);
                     return String.format("<%s>: %s", nickname, "§c[REDACTED]");
                 }
             }
@@ -57,18 +58,17 @@ public class GeneralChatHandler {
         return formattedMessage;
     }
 
-    public static void joinMessage(Player player){
-        if(Boolean.FALSE.equals(getConfigValue(ConfigKey.JOIN_MESSAGE, Boolean.class))){
+    public static void joinMessage(Player player) {
+        if (Boolean.FALSE.equals(getConfigValue(ConfigKey.JOIN_MESSAGE, Boolean.class))) {
             return;
         }
         PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(player);
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
-        if(metadata.firstJoin){
+        if (metadata.firstJoin) {
             player.sendMessage("Welcome to the server, " + player.getName() + ".");
             player.sendMessage("This server is running on GMSv" + GrimmsServer.instance.getDescription().getVersion() + ".");
             player.sendMessage("Use /gLog commands to see a list of available commands.");
-        }
-        else{
+        } else {
             player.sendMessage("Welcome back, " + metadata.nickname + ".");
             player.sendMessage("You have gained " + Shared.formatNumber(metadata.offlineMoney) + " money while you were offline.");
             player.sendMessage("Your current balance is " + Shared.formatNumber((Double) playerStats.getStat("money")) + ".");

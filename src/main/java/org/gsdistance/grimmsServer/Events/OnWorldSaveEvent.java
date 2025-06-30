@@ -10,7 +10,6 @@ import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.lang.reflect.Type;
-import java.util.Map;
 
 public class OnWorldSaveEvent {
     public static int i = 0;

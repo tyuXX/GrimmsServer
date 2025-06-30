@@ -10,7 +10,6 @@ import org.gsdistance.grimmsServer.Stats.ServerStats;
 import org.gsdistance.grimmsServer.Stats.WorldStats;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class PlayerJoinEvent {
     public static void Event(org.bukkit.event.player.PlayerJoinEvent event) {
@@ -27,7 +26,7 @@ public class PlayerJoinEvent {
             metadata.lastKnownNames.add(event.getPlayer().getName());
         }
 
-        playerStats.setStat("money", (Double)playerStats.getStat("money") + metadata.offlineMoney);
+        playerStats.setStat("money", (Double) playerStats.getStat("money") + metadata.offlineMoney);
 
         GeneralChatHandler.joinMessage(event.getPlayer());
         metadata.firstJoin = false; // Set first join to false after the first join

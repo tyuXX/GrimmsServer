@@ -30,7 +30,7 @@ public class PluginDataStorage {
         File writeFolder = new File(plugin.getDataFolder().getPath() + File.separatorChar + addedPath);
         File writeFile = new File(writeFolder.getPath() + File.separatorChar + fileName);
         if (!writeFolder.exists()) {
-            writeFolder.mkdir();
+            writeFolder.mkdirs(); // Use mkdirs() to create the full directory structure
         }
         if (!writeFile.exists()) {
             try {
@@ -70,7 +70,6 @@ public class PluginDataStorage {
         }
         File[] files = readFolder.listFiles();
         if (files == null || files.length == 0) {
-
             return (T[]) java.lang.reflect.Array.newInstance(objectType, 0);
         }
 
