@@ -30,6 +30,10 @@ public class ItemLevelHandler {
         return new ItemLevelHandler(player.getInventory().getItemInMainHand(), player, GrimmsServer.instance);
     }
 
+    public static ItemLevelHandler getLevelHandler(ItemStack item, Player player) {
+        return new ItemLevelHandler(item, player, GrimmsServer.instance);
+    }
+
     public static boolean isItemLevelable(ItemStack item) {
         ItemDataHandler dataHandler = new ItemDataHandler(item, GrimmsServer.instance);
         Boolean isLevelable = (Boolean) dataHandler.getItemNBTData(LEVELABLE_KEY, PersistentDataType.BOOLEAN);

@@ -28,6 +28,11 @@ public class EventRegistry implements Listener {
     }
 
     @EventHandler
+    public void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent event) {
+        org.gsdistance.grimmsServer.Events.PlayerInteractEvent.Event(event);
+    }
+
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         org.gsdistance.grimmsServer.Events.PlayerJoinEvent.Event(event);
     }
