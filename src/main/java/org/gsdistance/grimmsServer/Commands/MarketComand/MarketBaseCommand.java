@@ -13,11 +13,12 @@ public class MarketBaseCommand implements CommandExecutor {
 
         return switch (args[0].toLowerCase()) {
             case "get" -> GetMarket.SubCommand(sender, args);
-            case "stock" -> GetMarketStock.SubCommand(sender, args);
+            case "stock" -> Stock.SubCommand(sender, args);
             case "ripoff" -> BuyRipoff.SubCommand(sender, args);
             case "enchant" -> BuyEnchantment.SubCommand(sender, args);
-            case "tp" -> BuyTp.SubCommand(sender, args);
-            case "sell" -> SellItem.SubCommand(sender, args);
+            case "tp" -> Tp.SubCommand(sender, args);
+            case "sell" -> Sell.SubCommand(sender, args);
+            case "sellall" -> SellAll.SubCommand(sender, args);
             case "buy" -> BuyItem.SubCommand(sender, args);
             case "enchcosts" -> GetEnchantCosts.SubCommand(sender, args);
             default -> false;

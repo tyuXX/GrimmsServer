@@ -30,6 +30,7 @@ public class MarketTabCompleter implements TabCompleter {
             subs.add("tp");
             subs.add("buy");
             subs.add("sell");
+            subs.add("sellall");
             subs.add("enchcosts");
             return subs.stream().filter(s -> s.startsWith(args[0].toLowerCase())).collect(Collectors.toList());
         }

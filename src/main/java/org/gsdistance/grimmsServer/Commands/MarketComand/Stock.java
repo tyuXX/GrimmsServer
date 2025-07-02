@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.gsdistance.grimmsServer.Constructable.Market;
 
-public class GetMarketStock {
+public class Stock {
     public static boolean SubCommand(CommandSender sender, String[] args) {
         if (args.length < 2) {
             sender.sendMessage("Usage: /market stock <item>");

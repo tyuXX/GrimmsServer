@@ -55,7 +55,7 @@ public class PlayerLevelHandler {
         while (exp > getXpToLevel()) {
             exp -= getXpToLevel();
             playerStats.changeStat("level", 1);
-            tMoney += Math.pow(getLevel(), 1.5) * 100;
+            tMoney += Math.pow(getLevel(), 1.8) * 100;
             lvlups++;
         }
         setXp(exp);
@@ -63,7 +63,7 @@ public class PlayerLevelHandler {
         if (lvlups > 0) {
             playerStats.setStat("money", (Double) playerStats.getStat("money") + tMoney);
             Shared.Broadcast("[" + player.getDisplayName() + "] " + "Has leveled up to " + getLevel() + "!", null);
-            player.sendMessage("By leveling up " + lvlups + " times, you have gained " + Math.round(tMoney) + " money!");
+            player.sendMessage("By leveling up " + lvlups + " times, you have gained " + Shared.formatNumber(Math.floor(tMoney)) + " money!");
         }
     }
 }

@@ -3,14 +3,12 @@ package org.gsdistance.grimmsServer.Constructable;
 import com.google.gson.Gson;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
+import org.gsdistance.grimmsServer.Data.PlayerCapability;
 import org.gsdistance.grimmsServer.Data.PlayerRank;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerMetadata {
     public final Map<String, Location> homes;
@@ -24,6 +22,7 @@ public class PlayerMetadata {
     public double offlineMoney = 0.0; // Offline gained money.
     public boolean firstJoin = true;
     public PlayerRank rank = PlayerRank.DEFAULT;
+    public Map<PlayerCapability, Integer> capabilities;
 
     public PlayerMetadata(Player player) {
         this.nickname = player.getDisplayName();
@@ -33,6 +32,7 @@ public class PlayerMetadata {
         homes = new HashMap<>();
         titles = new String[0];
         timestamp = LocalDateTime.now().toString();
+        capabilities = new HashMap<>();
     }
 
     public void logMetadata() {

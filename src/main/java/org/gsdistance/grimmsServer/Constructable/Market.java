@@ -28,19 +28,37 @@ public class Market {
 
     public double sell(ItemStack itemStack, Player player) {
         if (player.getInventory().contains(itemStack)) {
-            double sold = 0;
+            PlayerStats playerStats = PlayerStats.getPlayerStats(player);
             items.putIfAbsent(itemStack.getType().getKey().toString(), 0L);
+            double sold = 0.0;
             for (int i = 0; i < itemStack.getAmount(); i++) {
-                Object moneyObj = PlayerStats.getPlayerStats(player).getStat("money");
-                double money = moneyObj instanceof Integer ? ((Integer) moneyObj).doubleValue() : (double) moneyObj;
                 sold += getPrice(itemStack.getType());
-                PlayerStats.getPlayerStats(player).setStat("money", money + getPrice(itemStack.getType()));
-                items.put(itemStack.getType().getKey().toString(), items.get(itemStack.getType().getKey().toString()) + 1);
             }
+            items.put(itemStack.getType().getKey().toString(), items.get(itemStack.getType().getKey().toString()) + itemStack.getAmount());
+            playerStats.setStat("money", (Double) playerStats.getStat("money") + sold);
             player.getInventory().removeItem(itemStack);
             return sold;
         }
         return 0;
+    }
+
+    public Data<Double ,Integer> sellAll(Material item, Player player){
+        if(player.getInventory().contains(item)){
+            PlayerStats playerStats = PlayerStats.getPlayerStats(player);
+            items.putIfAbsent(item.getKey().toString(), 0L);
+            Double sold = 0.0;
+            int amount = player.getInventory().all(item).values().stream()
+                    .mapToInt(ItemStack::getAmount)
+                    .sum();
+            for (int i = 0; i < amount; i++){
+                sold += getPrice(item);
+            }
+            items.put(item.getKey().toString(), items.get(item.getKey().toString()) + amount);
+            playerStats.setStat("money", (Double) playerStats.getStat("money") + sold);
+            player.getInventory().remove(item);
+            return Data.of(sold, amount);
+        }
+        return Data.of(0.0, 0);
     }
 
     public double buy(Material item, int amount, Player player) {

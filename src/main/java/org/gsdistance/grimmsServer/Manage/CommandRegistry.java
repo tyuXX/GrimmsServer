@@ -13,6 +13,8 @@ import org.gsdistance.grimmsServer.Commands.GUtilCommand.GUtilBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GUtilCommand.GUtilTabCompleter;
 import org.gsdistance.grimmsServer.Commands.HomeCommand.HomeBaseCommand;
 import org.gsdistance.grimmsServer.Commands.HomeCommand.HomeTabCompleter;
+import org.gsdistance.grimmsServer.Commands.JobCommand.JobBaseCommand;
+import org.gsdistance.grimmsServer.Commands.JobCommand.JobTabCompleter;
 import org.gsdistance.grimmsServer.Commands.MarketComand.MarketBaseCommand;
 import org.gsdistance.grimmsServer.Commands.MarketComand.MarketTabCompleter;
 import org.gsdistance.grimmsServer.Commands.RequestCommand.AcceptRequest;
@@ -34,8 +36,6 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("setPlayerStat").setExecutor(new SetPlayerStat());
         GrimmsServer.instance.getCommand("addTitle").setExecutor(new AddTitle());
         GrimmsServer.instance.getCommand("executePlayer").setExecutor(new ExecutePlayer());
-        GrimmsServer.instance.getCommand("logJobs").setExecutor(new LogJobs());
-        GrimmsServer.instance.getCommand("takeJob").setExecutor(new TakeJob());
         GrimmsServer.instance.getCommand("grimmsServerCommands").setExecutor(new LogGrimmsServerCommands());
         GrimmsServer.instance.getCommand("withdrawMoney").setExecutor(new WithdrawMoney());
         GrimmsServer.instance.getCommand("depositMoney").setExecutor(new DepositMoney());
@@ -57,6 +57,8 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("gFaction").setTabCompleter(new GFactionTabCompleter());
         GrimmsServer.instance.getCommand("gConfig").setExecutor(new GConfigBaseCommand());
         GrimmsServer.instance.getCommand("gConfig").setTabCompleter(new GConfigTabCompleter());
+        GrimmsServer.instance.getCommand("job").setExecutor(new JobBaseCommand());
+        GrimmsServer.instance.getCommand("job").setTabCompleter(new JobTabCompleter());
     }
 
     public static boolean CanExecute(String command) {

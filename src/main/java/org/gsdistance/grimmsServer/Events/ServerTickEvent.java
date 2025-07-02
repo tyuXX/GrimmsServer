@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Data.JobTitlesBaseValues;
 import org.gsdistance.grimmsServer.Data.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStatLeaderBoard;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
@@ -29,7 +30,7 @@ public class ServerTickEvent {
                     double multiplier = 1 + (Math.pow((Integer) playerStats.getStat("level"), 2)) / 100;
                     double payCheck = Math.ceil(JobTitlesBaseValues.jobTitleBaseValues.getOrDefault(jobTitleId, null).paycheckSize() * multiplier);
                     playerStats.setStat("money", (Double) playerStats.getStat("money") + payCheck);
-                    player.sendMessage("You have received your paycheck: " + payCheck);
+                    player.sendMessage("You have received your paycheck: " + Shared.formatNumber(payCheck));
                 }
             }
         }

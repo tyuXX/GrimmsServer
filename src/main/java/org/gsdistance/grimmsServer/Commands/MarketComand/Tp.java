@@ -7,7 +7,7 @@ import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
-public class BuyTp {
+public class Tp {
     public static boolean SubCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
             if (args.length == 0) {

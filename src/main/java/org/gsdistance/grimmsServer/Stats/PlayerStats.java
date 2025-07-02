@@ -7,6 +7,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import static org.bukkit.persistence.PersistentDataType.*;
@@ -95,27 +96,22 @@ public class PlayerStats {
         return new PlayerStats(GrimmsServer.instance, player);
     }
 
-    public Object getStat(String stat) {
+    public <T> T getStat(String stat, Class<T> ignoredType) {
         PersistentDataType type = Stats.get(stat);
         if (!hasExactStat(stat)) {
-            if (type == INTEGER) {
-                return 0;
-            } else if (type == PersistentDataType.DOUBLE) {
-                return 0.0;
-            } else if (type == LONG) {
-                return 0L;
-            } else if (type == STRING) {
-                return "";
-            } else {
-                GrimmsServer.logger.warning("Stat " + stat + " does not have a default value.");
+            GrimmsServer.logger.warning("Stat " + stat + " does not have a value.");
+            try{
+                return  ignoredType.getConstructor().newInstance();
+            } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                     NoSuchMethodException e) {
+                GrimmsServer.logger.warning("Failed to create default value for stat " + stat + ": " + e.getMessage());
                 return null;
             }
         }
-        if (type == null) {
-            GrimmsServer.logger.warning("Stat " + stat + " does not exist.");
-            return null;
+        if (type.getPrimitiveType() != ignoredType){
+            GrimmsServer.logger.warning("Stat mismatch: " + stat + " expected type " + ignoredType.getSimpleName() + " but found " + type.getPrimitiveType().getSimpleName());
         }
-        return dataContainer.getOrDefault(new NamespacedKey(plugin, stat), type, 0);
+        return (T) dataContainer.getOrDefault(new NamespacedKey(plugin, stat), type, 0);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
