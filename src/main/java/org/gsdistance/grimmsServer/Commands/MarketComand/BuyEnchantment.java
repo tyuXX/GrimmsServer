@@ -4,6 +4,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.gsdistance.grimmsServer.Constructable.Item.ItemLevelHandler;
+import org.gsdistance.grimmsServer.Constructable.Item.RelicHandler;
 import org.gsdistance.grimmsServer.Data.EnchantBaseValues;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
@@ -20,18 +22,24 @@ public class BuyEnchantment {
                 return false;
             }
             ItemStack itemToApply = ((Player) sender).getInventory().getItemInMainHand();
-            if (itemToApply.getEnchantmentLevel(enchantment) >= enchantment.getMaxLevel()) {
+            int enchantBonus = Math.toIntExact(Math.min((Math.round(Math.sqrt(ItemLevelHandler.getLevelHandler(itemToApply, (Player) sender).getLevel()))), 100));
+            if (RelicHandler.isRelic(itemToApply)){
+                RelicHandler relicHandler = RelicHandler.getRelicHandler(itemToApply);
+                enchantBonus += (int) Math.min(Math.sqrt(relicHandler.getRelicGrade()) * relicHandler.getRelicTier() ,100);
+            }
+            int max = enchantment.getMaxLevel() == 1 ? 1 : enchantment.getMaxLevel() + enchantBonus;
+            if (itemToApply.getEnchantmentLevel(enchantment) >= max) {
                 sender.sendMessage("Enchantment already maxed out.");
                 return false;
             }
             PlayerStats playerStats = PlayerStats.getPlayerStats(((Player) sender));
             double cost = EnchantBaseValues.enchantBaseValues.get(enchantment) * (itemToApply.getEnchantmentLevel(enchantment) + 1);
-            if ((Double) playerStats.getStat("money") < cost) {
+            if (playerStats.getStat("money", Double.class) < cost) {
                 sender.sendMessage("Not enough money.");
                 return false;
             }
-            itemToApply.addEnchantment(enchantment, itemToApply.getEnchantmentLevel(enchantment) + 1);
-            playerStats.setStat("money", (Double) playerStats.getStat("money") - cost);
+            itemToApply.addUnsafeEnchantment(enchantment, itemToApply.getEnchantmentLevel(enchantment) + 1);
+            playerStats.setStat("money", playerStats.getStat("money", Double.class) - cost);
             sender.sendMessage("Upgraded the enchantment " + enchantment.getName() + " from level " + (itemToApply.getEnchantmentLevel(enchantment) - 1) + " to level " + itemToApply.getEnchantmentLevel(enchantment) + " for " + cost + " money.");
             return true;
         } else {

@@ -1,6 +1,6 @@
 package org.gsdistance.grimmsServer.Commands.GDimensionCommand;
 
-import org.gsdistance.grimmsServer.Constructable.WorldConstructor;
+import org.gsdistance.grimmsServer.Constructable.World.WorldConstructor;
 
 public class List {
     public static boolean subCommand(org.bukkit.entity.Player player) {

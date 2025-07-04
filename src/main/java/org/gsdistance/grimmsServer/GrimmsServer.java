@@ -3,7 +3,7 @@ package org.gsdistance.grimmsServer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.Config.ConfigLoader;
 import org.gsdistance.grimmsServer.Data.PluginDataStorage;
-import org.gsdistance.grimmsServer.Events.ServerStartupEvent;
+import org.gsdistance.grimmsServer.Events.Listeners.ServerStartupEvent;
 import org.gsdistance.grimmsServer.Manage.EventRegistry;
 
 import java.io.File;

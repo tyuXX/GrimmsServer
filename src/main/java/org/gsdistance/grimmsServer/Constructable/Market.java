@@ -35,26 +35,38 @@ public class Market {
                 sold += getPrice(itemStack.getType());
             }
             items.put(itemStack.getType().getKey().toString(), items.get(itemStack.getType().getKey().toString()) + itemStack.getAmount());
-            playerStats.setStat("money", (Double) playerStats.getStat("money") + sold);
+            playerStats.setStat("money", playerStats.getStat("money", Double.class) + sold);
             player.getInventory().removeItem(itemStack);
             return sold;
         }
         return 0;
     }
 
-    public Data<Double ,Integer> sellAll(Material item, Player player){
-        if(player.getInventory().contains(item)){
+    public double unsafeSell(ItemStack itemStack, Player player){
+        PlayerStats playerStats = PlayerStats.getPlayerStats(player);
+        items.putIfAbsent(itemStack.getType().getKey().toString(), 0L);
+        double sold = 0.0;
+        for (int i = 0; i < itemStack.getAmount(); i++) {
+            sold += getPrice(itemStack.getType());
+        }
+        items.put(itemStack.getType().getKey().toString(), items.get(itemStack.getType().getKey().toString()) + itemStack.getAmount());
+        playerStats.setStat("money", playerStats.getStat("money", Double.class) + sold);
+        return sold;
+    }
+
+    public Data<Double, Integer> sellAll(Material item, Player player) {
+        if (player.getInventory().contains(item)) {
             PlayerStats playerStats = PlayerStats.getPlayerStats(player);
             items.putIfAbsent(item.getKey().toString(), 0L);
             Double sold = 0.0;
             int amount = player.getInventory().all(item).values().stream()
                     .mapToInt(ItemStack::getAmount)
                     .sum();
-            for (int i = 0; i < amount; i++){
+            for (int i = 0; i < amount; i++) {
                 sold += getPrice(item);
             }
             items.put(item.getKey().toString(), items.get(item.getKey().toString()) + amount);
-            playerStats.setStat("money", (Double) playerStats.getStat("money") + sold);
+            playerStats.setStat("money", playerStats.getStat("money", Double.class) + sold);
             player.getInventory().remove(item);
             return Data.of(sold, amount);
         }
@@ -70,8 +82,7 @@ public class Market {
             double boughtP = 0;
             int bought = 0;
             for (int i = 0; i < amount; i++) {
-                Object moneyObj = PlayerStats.getPlayerStats(player).getStat("money");
-                double money = moneyObj instanceof Integer ? ((Integer) moneyObj).doubleValue() : (double) moneyObj;
+                Double money = PlayerStats.getPlayerStats(player).getStat("money", Double.class);
                 if (money >= getPrice(item)) {
                     PlayerStats.getPlayerStats(player).setStat("money", money - getPrice(item));
                     boughtP += getPrice(item);

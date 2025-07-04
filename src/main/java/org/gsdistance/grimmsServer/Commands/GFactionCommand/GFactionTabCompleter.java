@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Faction;
-import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
+import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.FactionRank;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.jetbrains.annotations.NotNull;

@@ -2,9 +2,11 @@ package org.gsdistance.grimmsServer.Constructable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
+import org.gsdistance.grimmsServer.Constructable.World.ChunkMetadata;
 import org.gsdistance.grimmsServer.Data.FactionRank;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
-import org.gsdistance.grimmsServer.Data.PlayerRank;
+import org.gsdistance.grimmsServer.Data.Player.PlayerRank;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.ArrayList;

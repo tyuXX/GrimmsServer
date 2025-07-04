@@ -3,7 +3,7 @@ package org.gsdistance.grimmsServer.Stats;
 import com.google.gson.Gson;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Data;
-import org.gsdistance.grimmsServer.Data.PlayerTitleChecker;
+import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.Shared;
 
 import java.lang.reflect.Type;
@@ -51,7 +51,7 @@ public class PlayerStatLeaderBoard {
         boolean pass = false;
         List<String> overtakes = new ArrayList<>();
         for (String stat : leaderboard.keySet()) {
-            Number playerStatValue = (Number) playerStats.getStat(stat);
+            Number playerStatValue = playerStats.getStat(stat, Number.class);
             Number leaderboardStatValue = leaderboard.get(stat).value;
             if (playerStatValue != null && playerStatValue.doubleValue() > leaderboardStatValue.doubleValue()) {
                 if (!player.getName().equalsIgnoreCase(leaderboard.get(stat).key)) {

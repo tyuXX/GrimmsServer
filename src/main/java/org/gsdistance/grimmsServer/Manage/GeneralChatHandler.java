@@ -2,7 +2,7 @@ package org.gsdistance.grimmsServer.Manage;
 
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
-import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
+import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
@@ -71,7 +71,7 @@ public class GeneralChatHandler {
         } else {
             player.sendMessage("Welcome back, " + metadata.nickname + ".");
             player.sendMessage("You have gained " + Shared.formatNumber(metadata.offlineMoney) + " money while you were offline.");
-            player.sendMessage("Your current balance is " + Shared.formatNumber((Double) playerStats.getStat("money")) + ".");
+            player.sendMessage("Your current balance is " + Shared.formatNumber(playerStats.getStat("money", Double.class)) + ".");
             player.sendMessage("You have no mail.");
         }
         player.sendMessage("You have joined the server in world " + player.getWorld().getName() + " at " + player.getLocation().getBlockX() + "/" + player.getLocation().getBlockZ() + ".");

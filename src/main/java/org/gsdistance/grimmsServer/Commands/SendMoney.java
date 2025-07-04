@@ -23,7 +23,7 @@ public class SendMoney implements CommandExecutor {
                 return false;
             }
             PlayerStats sending = PlayerStats.getPlayerStats((Player) sender);
-            if ((Double) sending.getStat("money") < Double.parseDouble(args[1])) {
+            if (sending.getStat("money", Double.class) < Double.parseDouble(args[1])) {
                 sender.sendMessage("You do not have enough money.");
                 return false;
             }

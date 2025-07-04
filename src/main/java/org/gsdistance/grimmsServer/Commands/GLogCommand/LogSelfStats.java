@@ -13,7 +13,7 @@ public class LogSelfStats {
         PlayerStats stats = PlayerStats.getPlayerStats(player);
         player.sendMessage("__Your stats:");
         for (String stat : PlayerStats.StatOrder) {
-            Object value = stats.getStat(stat);
+            Object value = stats.getStat(stat, Object.class);
             if (value instanceof Double) {
                 player.sendMessage("|" + PlayerStats.StatNames.get(stat) + ": " + formatNumber((Double) value));
             } else {

@@ -1,7 +1,7 @@
 package org.gsdistance.grimmsServer.Commands.HomeCommand;
 
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
+import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.jetbrains.annotations.NotNull;
 
 public class DelHome {

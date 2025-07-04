@@ -4,7 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Constructable.ItemLevelHandler;
+import org.gsdistance.grimmsServer.Constructable.Item.ItemLevelHandler;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class MakeItemLevelable implements CommandExecutor {
@@ -13,12 +13,12 @@ public class MakeItemLevelable implements CommandExecutor {
         if (sender instanceof Player) {
             PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
             if (((Player) sender).getInventory().getItemInMainHand().getType().getMaxDurability() > 1) {
-                if ((int) playerStats.getStat("level") > 10) {
+                if (playerStats.getStat("level", Integer.class) > 10) {
                     if (ItemLevelHandler.isItemLevelable(((Player) sender).getInventory().getItemInMainHand())) {
                         sender.sendMessage("This item is already levelable.");
                         return false;
                     } else {
-                        if ((Double) playerStats.getStat("money") > 3500) {
+                        if (playerStats.getStat("money", Double.class) > 3500) {
                             playerStats.changeStat("money", -3500);
                             ItemLevelHandler.getLevelHandler((Player) sender);
                         } else {

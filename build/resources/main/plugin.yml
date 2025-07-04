@@ -28,14 +28,6 @@ commands:
     description: Executes a player, requires title Executioner.
     usage: /executePlayer <player>
     permission: grimmsserver.executePlayer
-  logJobs:
-    description: Displays all available jobs
-    usage: /logJobs
-    permission: grimmsserver.logJobs
-  takeJob:
-    description: Take a job if you meet it's requirements
-    usage: /takeJob <jobId>
-    permission: grimmsserver.takeJob
   grimmsServerCommands:
     description: Displays all existing GrimmsServer commands
     usage: /grimmsServerCommands
@@ -87,6 +79,10 @@ commands:
     description: Configuration commands.
     usage: /gConfig <command> [args]
     permission: grimmsserver.config
+  job:
+    description: Job commands.
+    usage: /job <command> [args]
+    permission: grimmsserver.job
 permissions:
   grimmsserver.sendMoney:
     description: Allows a player to send money to another player
@@ -108,12 +104,6 @@ permissions:
     default: op
   grimmsserver.home:
     description: Allows a player to use home commands
-    default: true
-  grimmsserver.logJobs:
-    description: Allows a player to log available jobs
-    default: true
-  grimmsserver.takeJob:
-    description: Allows a player to acquire a job title
     default: true
   grimmsserver.withdrawMoney:
     description: Allows a player to withdraw money into a banknote
@@ -156,6 +146,9 @@ permissions:
     default: op
   grimmsserver.util:
     description: Allows a player to use utility commands
+    default: true
+  grimmsserver.util.admin:
+    description: Allows a player to use admin utility commands
     default: op
   grimmsserver.config:
     description: Allows a player to use configuration commands
@@ -163,3 +156,6 @@ permissions:
   grimmsserver.faction.bypass:
     description: Allows a player to bypass claims
     default: op
+  grimmsserver.job:
+    description: Allows a player to use job commands
+    default: true

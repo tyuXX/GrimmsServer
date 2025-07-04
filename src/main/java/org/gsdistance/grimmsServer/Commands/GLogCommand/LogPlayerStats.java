@@ -23,7 +23,7 @@ public class LogPlayerStats {
         PlayerStats stats = PlayerStats.getPlayerStats(tplayer);
         player.sendMessage("__" + tplayer.getDisplayName() + "'s stats:");
         for (String stat : PlayerStats.StatOrder) {
-            Object value = stats.getStat(stat);
+            Object value = stats.getStat(stat, Object.class);
             if (value instanceof Double) {
                 player.sendMessage("|" + PlayerStats.StatNames.get(stat) + ": " + formatNumber((Double) value));
             } else {

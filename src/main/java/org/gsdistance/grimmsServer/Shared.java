@@ -1,6 +1,7 @@
 package org.gsdistance.grimmsServer;
 
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +22,10 @@ public class Shared {
             return;
         }
         GrimmsServer.instance.getServer().broadcastMessage(("[" + GrimmsServer.instance.getDescription().getPrefix() + "-BC]: ") + (prefix == null ? "" : prefix) + message);
+    }
+
+    public static NamespacedKey getNamespacedKey(String key) {
+        return new NamespacedKey(GrimmsServer.instance, key);
     }
 
     public static String formatNumber(Double number) {

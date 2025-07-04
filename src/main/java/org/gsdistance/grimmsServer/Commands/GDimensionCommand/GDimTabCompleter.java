@@ -5,7 +5,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.gsdistance.grimmsServer.Constructable.WorldConstructor;
+import org.gsdistance.grimmsServer.Constructable.World.WorldConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

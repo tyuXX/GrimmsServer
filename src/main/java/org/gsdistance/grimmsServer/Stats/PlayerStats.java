@@ -18,14 +18,14 @@ public class PlayerStats {
 
     static {
         Stats.put("death_count", INTEGER);
-        Stats.put("money", PersistentDataType.DOUBLE);
+        Stats.put("money", DOUBLE);
         Stats.put("total_kill_count", INTEGER);
         Stats.put("join_count", INTEGER);
-        Stats.put("tPoint", PersistentDataType.DOUBLE);
+        Stats.put("tPoint", DOUBLE);
         Stats.put("block_break_count", LONG);
         Stats.put("level", INTEGER);
-        Stats.put("xp", PersistentDataType.DOUBLE);
-        Stats.put("xp_required", PersistentDataType.DOUBLE);
+        Stats.put("xp", DOUBLE);
+        Stats.put("xp_required", DOUBLE);
         Stats.put("sent_messages", LONG);
         Stats.put("intelligence", INTEGER);
         Stats.put("jobTitle", STRING);
@@ -100,16 +100,13 @@ public class PlayerStats {
         PersistentDataType type = Stats.get(stat);
         if (!hasExactStat(stat)) {
             GrimmsServer.logger.warning("Stat " + stat + " does not have a value.");
-            try{
-                return  ignoredType.getConstructor().newInstance();
+            try {
+                return ignoredType.getConstructor().newInstance();
             } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                      NoSuchMethodException e) {
                 GrimmsServer.logger.warning("Failed to create default value for stat " + stat + ": " + e.getMessage());
                 return null;
             }
-        }
-        if (type.getPrimitiveType() != ignoredType){
-            GrimmsServer.logger.warning("Stat mismatch: " + stat + " expected type " + ignoredType.getSimpleName() + " but found " + type.getPrimitiveType().getSimpleName());
         }
         return (T) dataContainer.getOrDefault(new NamespacedKey(plugin, stat), type, 0);
     }

@@ -19,7 +19,7 @@ public class Tp {
                 return false;
             }
             PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
-            if ((Double) playerStats.getStat("money") < PerSessionDataStorage.tpCost) {
+            if (playerStats.getStat("money", Double.class) < PerSessionDataStorage.tpCost) {
                 sender.sendMessage("Not enough money.");
                 return false;
             }

@@ -146,6 +146,9 @@ permissions:
     default: op
   grimmsserver.util:
     description: Allows a player to use utility commands
+    default: true
+  grimmsserver.util.admin:
+    description: Allows a player to use admin utility commands
     default: op
   grimmsserver.config:
     description: Allows a player to use configuration commands

@@ -1,7 +1,7 @@
 package org.gsdistance.grimmsServer.Commands.GDimensionCommand;
 
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Constructable.WorldConstructor;
+import org.gsdistance.grimmsServer.Constructable.World.WorldConstructor;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Indexers.DynamicDimensionGen;
 

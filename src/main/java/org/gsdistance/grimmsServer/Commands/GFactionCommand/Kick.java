@@ -3,7 +3,7 @@ package org.gsdistance.grimmsServer.Commands.GFactionCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Faction;
-import org.gsdistance.grimmsServer.Constructable.PlayerMetadata;
+import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 
 public class Kick {
     public static boolean subCommand(Player player, String[] args) {

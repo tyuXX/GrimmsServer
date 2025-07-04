@@ -7,16 +7,16 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class Take {
     public static boolean subCommand(Player player, String[] args) {
-        if (args.length == 0) {
+        if (args.length < 2) {
             return false;
         }
-        JobTitle jobTitle = JobTitlesBaseValues.jobTitleBaseValues.get(args[0]);
+        JobTitle jobTitle = JobTitlesBaseValues.jobTitleBaseValues.get(args[1]);
         if (jobTitle == null || jobTitle == JobTitlesBaseValues.jobTitleBaseValues.get("")) {
             player.sendMessage("Job doesn't exist.");
             return false;
         }
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
-        if ((int) playerStats.getStat("intelligence") < jobTitle.intelligenceRequirement()) {
+        if (playerStats.getStat("intelligence", Integer.class) < jobTitle.intelligenceRequirement()) {
             player.sendMessage("Not smart enough!");
             return false;
         }
@@ -24,7 +24,7 @@ public class Take {
             player.sendMessage("Secondary requirement not met!");
             return false;
         }
-        playerStats.setStat("jobTitle", args[0]);
+        playerStats.setStat("jobTitle", args[1]);
         player.sendMessage("Job taken: " + jobTitle.jobName());
         player.sendMessage("Paycheck: " + jobTitle.paycheckSize());
         player.sendMessage("Description: " + jobTitle.jobDescription());

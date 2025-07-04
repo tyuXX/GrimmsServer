@@ -24,7 +24,7 @@ public class WithdrawMoney implements CommandExecutor {
                 return false;
             }
             PlayerStats playerStats = PlayerStats.getPlayerStats(((Player) sender));
-            if ((Double) playerStats.getStat("money") < Double.parseDouble(args[0])) {
+            if (playerStats.getStat("money", Double.class) < Double.parseDouble(args[0])) {
                 sender.sendMessage("Not enough money.");
                 return false;
             }
@@ -49,7 +49,7 @@ public class WithdrawMoney implements CommandExecutor {
                 itemStack.setItemMeta(itemMeta);
                 ((Player) sender).getInventory().addItem(itemStack);
             }
-            playerStats.setStat("money", (Double) playerStats.getStat("money") - Double.parseDouble(args[0]));
+            playerStats.setStat("money", playerStats.getStat("money", Double.class) - Double.parseDouble(args[0]));
             sender.sendMessage("Withdrew " + args[0] + " money.");
             return true;
         } else {

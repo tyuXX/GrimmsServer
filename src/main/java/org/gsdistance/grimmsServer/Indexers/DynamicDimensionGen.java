@@ -6,7 +6,7 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
-import org.gsdistance.grimmsServer.Constructable.WorldConstructor;
+import org.gsdistance.grimmsServer.Constructable.World.WorldConstructor;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.List;
