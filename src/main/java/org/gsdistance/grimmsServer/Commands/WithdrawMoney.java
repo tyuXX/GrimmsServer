@@ -1,16 +1,19 @@
 package org.gsdistance.grimmsServer.Commands;
 
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.gsdistance.grimmsServer.Constructable.Item.ItemDataHandler;
 import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class WithdrawMoney implements CommandExecutor {
     @Override
@@ -35,18 +38,16 @@ public class WithdrawMoney implements CommandExecutor {
                     return false;
                 }
                 ItemStack itemStack = new ItemStack(Material.PAPER, Integer.parseInt(args[1]));
-                ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.getPersistentDataContainer().set(new NamespacedKey(GrimmsServer.instance, "banknoteValue"), PersistentDataType.DOUBLE, banknoteValue);
-                itemMeta.setItemName("Grimmnote - " + banknoteValue + " Money");
-                itemStack.setItemMeta(itemMeta);
+                ItemDataHandler itemDataHandler = new ItemDataHandler(itemStack, GrimmsServer.instance);
+                itemDataHandler.setItemNBTData("banknoteValue", banknoteValue, PersistentDataType.DOUBLE);
+                itemDataHandler.setItemLoreData(List.of("Grimmnote - " + Shared.formatNumber(banknoteValue) + " Money", "Minted by " + sender.getName(), "Minted at " + LocalDateTime.now()));
                 ((Player) sender).getInventory().addItem(itemStack);
                 sender.sendMessage("Gave " + args[1] + " banknotes.");
             } else {
                 ItemStack itemStack = new ItemStack(Material.PAPER, 1);
-                ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.getPersistentDataContainer().set(new NamespacedKey(GrimmsServer.instance, "banknoteValue"), PersistentDataType.DOUBLE, Double.parseDouble(args[0]));
-                itemMeta.setItemName("Grimmnote - " + args[0] + " Money");
-                itemStack.setItemMeta(itemMeta);
+                ItemDataHandler itemDataHandler = new ItemDataHandler(itemStack, GrimmsServer.instance);
+                itemDataHandler.setItemNBTData("banknoteValue", Double.parseDouble(args[0]), PersistentDataType.DOUBLE);
+                itemDataHandler.setItemLoreData(List.of("Grimmnote - " + Shared.formatNumber(Double.parseDouble(args[0])) + " Money", "Minted by " + sender.getName(), "Minted at " + LocalDateTime.now()));
                 ((Player) sender).getInventory().addItem(itemStack);
             }
             playerStats.setStat("money", playerStats.getStat("money", Double.class) - Double.parseDouble(args[0]));

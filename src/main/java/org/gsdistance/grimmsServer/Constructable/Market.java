@@ -42,7 +42,7 @@ public class Market {
         return 0;
     }
 
-    public double unsafeSell(ItemStack itemStack, Player player){
+    public void unsafeSell(ItemStack itemStack, Player player){
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
         items.putIfAbsent(itemStack.getType().getKey().toString(), 0L);
         double sold = 0.0;
@@ -51,7 +51,6 @@ public class Market {
         }
         items.put(itemStack.getType().getKey().toString(), items.get(itemStack.getType().getKey().toString()) + itemStack.getAmount());
         playerStats.setStat("money", playerStats.getStat("money", Double.class) + sold);
-        return sold;
     }
 
     public Data<Double, Integer> sellAll(Material item, Player player) {
@@ -92,7 +91,9 @@ public class Market {
                     break;
                 }
             }
-            player.getInventory().addItem(new ItemStack(item, bought));
+            if (bought > 0) { // Ensure bought is greater than 0 before creating the ItemStack
+                player.getInventory().addItem(new ItemStack(item, bought));
+            }
             return boughtP;
         }
     }

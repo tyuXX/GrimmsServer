@@ -3,6 +3,8 @@ package org.gsdistance.grimmsServer.Commands.GUtilCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,6 +24,9 @@ public class GUtilTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         List<String> subCommands = new ArrayList<>();
+        if (!(sender instanceof Player player)){
+            return List.of();
+        }
         if (sender.hasPermission("grimmsserver.gutil.admin")) {
             subCommands.addAll(adminSubCommands);
         }
@@ -37,6 +42,9 @@ public class GUtilTabCompleter implements TabCompleter {
                 }
                 case "version" -> {
                     return List.of("check", "update");
+                }
+                case "setting" -> {
+                    return PlayerMetadata.getPlayerMetadata(player).settings.stream().toList();
                 }
                 default -> {
                     return List.of();

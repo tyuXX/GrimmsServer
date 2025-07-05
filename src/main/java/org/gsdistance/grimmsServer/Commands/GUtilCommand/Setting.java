@@ -20,6 +20,7 @@ public class Setting {
             playerMetadata.settings.add(settingName);
             player.sendMessage("Added setting: " + settingName);
         }
+        playerMetadata.saveToPDS();
         return true;
     }
 }

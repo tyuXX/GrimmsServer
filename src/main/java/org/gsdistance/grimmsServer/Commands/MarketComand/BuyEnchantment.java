@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.gsdistance.grimmsServer.Constructable.Item.ItemLevelHandler;
 import org.gsdistance.grimmsServer.Constructable.Item.RelicHandler;
 import org.gsdistance.grimmsServer.Data.EnchantBaseValues;
+import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class BuyEnchantment {
@@ -40,7 +41,7 @@ public class BuyEnchantment {
             }
             itemToApply.addUnsafeEnchantment(enchantment, itemToApply.getEnchantmentLevel(enchantment) + 1);
             playerStats.setStat("money", playerStats.getStat("money", Double.class) - cost);
-            sender.sendMessage("Upgraded the enchantment " + enchantment.getName() + " from level " + (itemToApply.getEnchantmentLevel(enchantment) - 1) + " to level " + itemToApply.getEnchantmentLevel(enchantment) + " for " + cost + " money.");
+            sender.sendMessage("Upgraded the enchantment " + enchantment.getName() + " from level " + (itemToApply.getEnchantmentLevel(enchantment) - 1) + " to level " + itemToApply.getEnchantmentLevel(enchantment) + " for " + Shared.formatNumber(cost) + " money.");
             return true;
         } else {
             sender.sendMessage("This command can only be run by a player.");
