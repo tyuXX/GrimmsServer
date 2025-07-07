@@ -18,6 +18,7 @@ public class PlayerMetadata {
     public List<String> lastKnownNames;
     public final UUID uuid;
     public Location exitLocation;
+    public String lastExitTime = LocalDateTime.now().toString(); // Last time the player exited the server
     public String[] titles;
     public final String timestamp;
     public UUID factionUUID = null; // Faction UUID, if the player is in a faction

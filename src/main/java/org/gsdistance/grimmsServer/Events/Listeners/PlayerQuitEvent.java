@@ -7,6 +7,7 @@ public class PlayerQuitEvent {
     public static void Event(org.bukkit.event.player.PlayerQuitEvent event) {
         PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(event.getPlayer());
         metadata.exitLocation = new Location(event.getPlayer().getLocation());
+        metadata.lastExitTime = java.time.LocalDateTime.now().toString();
         metadata.saveToPDS();
     }
 }

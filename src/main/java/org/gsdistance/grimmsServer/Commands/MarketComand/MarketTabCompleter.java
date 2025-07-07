@@ -9,8 +9,8 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Market;
-import org.gsdistance.grimmsServer.Data.EnchantBaseValues;
-import org.gsdistance.grimmsServer.Data.MarketBaseValues;
+import org.gsdistance.grimmsServer.Data.Market.EnchantBaseValues;
+import org.gsdistance.grimmsServer.Data.Market.MarketBaseValues;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.ArrayList;

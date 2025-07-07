@@ -1,4 +1,4 @@
-package org.gsdistance.grimmsServer.Data;
+package org.gsdistance.grimmsServer.Data.Market;
 
 import org.bukkit.enchantments.Enchantment;
 

@@ -2,7 +2,7 @@ package org.gsdistance.grimmsServer.Commands.MarketComand;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
-import org.gsdistance.grimmsServer.Data.EnchantBaseValues;
+import org.gsdistance.grimmsServer.Data.Market.EnchantBaseValues;
 import org.gsdistance.grimmsServer.Shared;
 
 public class GetEnchantCosts {

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.gsdistance.grimmsServer.Data.MarketBaseValues;
+import org.gsdistance.grimmsServer.Data.Market.MarketBaseValues;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
 
