@@ -5,6 +5,8 @@ import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.FactionRank;
+import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Shared;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -19,14 +21,8 @@ public class Leave {
         }
         if (faction.getMemberRank(player.getUniqueId()) == FactionRank.LEADER) {
             // Disband the faction if the player is the leader
-            for (Data<UUID, FactionRank> member : new ArrayList<>(faction.members)) {
-                PlayerMetadata memberMetadata = PlayerMetadata.getOfflinePlayerMetadata(member.key);
-                if (memberMetadata != null) {
-                    memberMetadata.factionUUID = null;
-                    memberMetadata.saveToPDS();
-                }
-            }
             faction.delete();
+            // Remove the boss bar associated with the faction
             player.sendMessage("§aYou have successfully disbanded the faction " + faction.name + ".");
             return false;
         }

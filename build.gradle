@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'org.gsdistance'
-version = '1.1'
+version = '1.2'
 
 repositories {
     mavenCentral()
@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT") // Spigot API dependency
+    compileOnly("org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT")
 }
 
 def targetJavaVersion = 21

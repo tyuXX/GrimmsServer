@@ -1,6 +1,9 @@
 package org.gsdistance.grimmsServer.Constructable;
 
 import org.bukkit.Bukkit;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Constructable.World.ChunkMetadata;
@@ -8,6 +11,7 @@ import org.gsdistance.grimmsServer.Data.FactionRank;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.Data.Player.PlayerRank;
 import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Shared;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +30,19 @@ public class Faction {
         this.members = members;
     }
 
+    public KeyedBossBar getBossBar() {
+        KeyedBossBar bossBar = GrimmsServer.instance.getServer().getBossBar(Shared.getNamespacedKey("faction-" + id));
+        if (bossBar == null) {
+            bossBar = GrimmsServer.instance.getServer().createBossBar(
+                    Shared.getNamespacedKey("faction-" + id),
+                    name,
+                    BarColor.WHITE,
+                    BarStyle.SOLID
+            );
+        }
+        return bossBar;
+    }
+
     public static Faction getFaction(UUID uuid) {
         Faction faction;
         if (PerSessionDataStorage.dataStore.containsKey("faction-" + uuid)) {
@@ -33,7 +50,7 @@ public class Faction {
         } else {
             faction = GrimmsServer.pds.retrieveData(uuid + ".json", "factions", Faction.class);
             if (faction == null) {
-                GrimmsServer.logger.info("No faction found for UUID: " + uuid);
+                // GrimmsServer.logger.info("No faction found for UUID: " + uuid);
                 return null; // No faction found
             }
             PerSessionDataStorage.dataStore.put("faction-" + uuid, Data.of(faction, Faction.class));
@@ -46,7 +63,8 @@ public class Faction {
     }
 
     public boolean claimChunk(org.bukkit.Location location, Player player) {
-        if (claims.size() >= getClaimLimit()) {
+        int claimLimit = getClaimLimit();
+        if (claims.size() >= claimLimit) {
             player.sendMessage("§cYou have reached the claim limit for your faction.");
             return false;
         }
@@ -68,6 +86,7 @@ public class Faction {
         chunkMetadata.factionUUID = uuid;
         chunkMetadata.saveToFile();
         saveToFile();
+        getBossBar().setProgress(claims.size() / (double) claimLimit);
         player.sendMessage("§aChunk (" + claimLocation.x + "/" + claimLocation.z + ") claimed successfully.");
         return true;
     }
@@ -91,6 +110,7 @@ public class Faction {
         chunkMetadata.factionUUID = null;
         chunkMetadata.saveToFile();
         saveToFile();
+        getBossBar().setProgress(claims.size() / (double) getClaimLimit());
         player.sendMessage("§aChunk (" + claimLocation.x + "/" + claimLocation.z + ") un-claimed successfully.");
         return true;
     }
@@ -136,6 +156,14 @@ public class Faction {
 
     public void delete() {
         unClaimAllChunks();
+        for (Data<UUID, FactionRank> member : new ArrayList<>(members)) {
+            PlayerMetadata playerMetadata = PlayerMetadata.getOfflinePlayerMetadata(member.key);
+            if (playerMetadata != null) {
+                playerMetadata.factionUUID = null;
+                playerMetadata.saveToPDS();
+            }
+        }
+        GrimmsServer.instance.getServer().removeBossBar(Shared.getNamespacedKey("faction-" + id));
         GrimmsServer.pds.deleteData(uuid + ".json", "factions");
         PerSessionDataStorage.dataStore.remove("faction-" + uuid);
     }

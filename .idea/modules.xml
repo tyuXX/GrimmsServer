@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/GrimmsServer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/GrimmsServer.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Java.GrimmsServer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Java.GrimmsServer.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/_store.Java.GrimmsServer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/_store.Java.GrimmsServer.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.gsdistance.GrimmsServer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/org.gsdistance.GrimmsServer.main.iml" />
     </modules>
   </component>

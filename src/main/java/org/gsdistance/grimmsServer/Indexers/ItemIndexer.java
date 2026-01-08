@@ -22,14 +22,29 @@ public class ItemIndexer {
         // Clear previous values
         calculatedMarketValues.clear();
         skippedMarketValues.clear();
+        // Check the cache first
+        Map<Material, Double> tmp;
+        try {
+            tmp  = GrimmsServer.pds.retrieveData("calculatedMarketValues.json", "cache", Map.class);
+        } catch (Exception e) {
+            GrimmsServer.logger.warning("Failed to load cached market values: " + e.getMessage());
+            tmp = null;
+        }
+        boolean cacheExists = false;
+        if (tmp != null && !tmp.isEmpty()) {
+            GrimmsServer.logger.info("Using cached market values for items.");
+            GrimmsServer.logger.info("Loaded " + tmp.size() + " items from cache.");
+            calculatedMarketValues.putAll(tmp);
+            cacheExists = true;
+        }
         // Iterate through all materials and calculate market values
         for (Material material : Material.values()) {
-            if (material.isItem() && material != Material.AIR && !MarketBaseValues.marketBaseValues.containsKey(material)) {
+            if (material.isItem() && material != Material.AIR && !MarketBaseValues.marketBaseValues.containsKey(material) && !calculatedMarketValues.containsKey(material)) {
                 double marketValue = calculateMarketValue(material);
                 if (marketValue > 0) {
-                    calculatedMarketValues.put(material, marketValue);
+                    calculatedMarketValues.put(material, Math.floor(marketValue));
                     if (loggingEnabled) {
-                        GrimmsServer.logger.info("Calculated market value for " + material + ": " + marketValue);
+                        GrimmsServer.logger.info("Calculated market value for " + material + ": " + Math.floor(marketValue));
                     }
                 }
                 else{
@@ -38,18 +53,20 @@ public class ItemIndexer {
             }
         }
         // Retry calculating market values for skipped items
-        for (int i = 0; i < 2; i++) {
-            if (loggingEnabled) {
-                GrimmsServer.logger.info("Recalculating skipped market values, attempt " + (i + 1));
-            }
-            for (Material material : skippedMarketValues) {
-                if (material.isItem() && material != Material.AIR && !MarketBaseValues.marketBaseValues.containsKey(material)) {
-                    double marketValue = calculateMarketValue(material);
-                    if (marketValue > 0) {
-                        calculatedMarketValues.put(material, marketValue);
-                        skippedMarketValues.remove(material);
-                        if (loggingEnabled) {
-                            GrimmsServer.logger.info("Calculated market value for " + material + ": " + marketValue);
+        if(!cacheExists){
+            for (int i = 0; i < 2; i++) {
+                if (loggingEnabled) {
+                    GrimmsServer.logger.info("Recalculating skipped market values, attempt " + (i + 1));
+                }
+                for (Material material : skippedMarketValues) {
+                    if (material.isItem() && material != Material.AIR && !MarketBaseValues.marketBaseValues.containsKey(material)) {
+                        double marketValue = calculateMarketValue(material);
+                        if (marketValue > 0) {
+                            calculatedMarketValues.put(material, marketValue);
+                            skippedMarketValues.remove(material);
+                            if (loggingEnabled) {
+                                GrimmsServer.logger.info("Calculated market value for " + material + ": " + marketValue);
+                            }
                         }
                     }
                 }
@@ -57,6 +74,10 @@ public class ItemIndexer {
         }
         GrimmsServer.logger.info("Indexed " + calculatedMarketValues.size() + " items in (" + stopwatch.stop() + ").");
         GrimmsServer.logger.info("Skipped " + skippedMarketValues.size() + " items that could not be calculated.");
+
+        // Save the calculated market values to the cache
+        GrimmsServer.pds.saveData(calculatedMarketValues, Map.class, "calculatedMarketValues.json", "cache");
+        GrimmsServer.logger.info("Saved calculated market values to cache.");
         // Add the calculated values to the MarketBaseValues
         MarketBaseValues.marketBaseValues.putAll(calculatedMarketValues);
     }

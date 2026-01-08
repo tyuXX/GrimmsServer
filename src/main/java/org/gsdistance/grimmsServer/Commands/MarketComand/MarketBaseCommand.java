@@ -3,11 +3,16 @@ package org.gsdistance.grimmsServer.Commands.MarketComand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class MarketBaseCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
+            return false;
+        }
+
+        if (!(sender instanceof Player player)){
             return false;
         }
 
@@ -21,6 +26,7 @@ public class MarketBaseCommand implements CommandExecutor {
             case "sellall" -> SellAll.SubCommand(sender, args);
             case "buy" -> Buy.SubCommand(sender, args);
             case "enchcosts" -> GetEnchantCosts.SubCommand(sender, args);
+            case "info" -> Info.subCommand(player);
             default -> false;
         };
     }

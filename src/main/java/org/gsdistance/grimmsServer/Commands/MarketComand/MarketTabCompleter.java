@@ -32,38 +32,32 @@ public class MarketTabCompleter implements TabCompleter {
             subs.add("sell");
             subs.add("sellall");
             subs.add("enchcosts");
+            subs.add("info");
             return subs.stream().filter(s -> s.startsWith(args[0].toLowerCase())).collect(Collectors.toList());
         }
         if (args.length == 2) {
-            switch (args[0].toLowerCase()) {
-                case "stock":
-                    Market market = Market.getMarket();
-                    List<String> items = new ArrayList<>(market.items.keySet());
-                    return items.stream().filter(i -> i.toLowerCase().startsWith(args[1].toLowerCase())).collect(Collectors.toList());
-                case "ripoff":
-                    return MarketBaseValues.marketBaseValues.keySet().stream()
-                            .map(Material::name)
-                            .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
-                            .collect(Collectors.toList());
-                case "buy":
-                    Market marketBuy = Market.getMarket();
-                    return marketBuy.items.keySet().stream().toList();
-                case "enchant":
-                    return EnchantBaseValues.enchantBaseValues.keySet().stream()
-                            .map(Enchantment::getName)
-                            .map(Object::toString)
-                            .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
-                            .collect(Collectors.toList());
-                case "tp":
-                    return GrimmsServer.instance.getServer().getOnlinePlayers().stream()
-                            .map(Player::getName)
-                            .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
-                            .collect(Collectors.toList());
-                default:
-                    return Collections.emptyList();
-            }
+            return switch (args[0].toLowerCase()) {
+                case "stock", "buy" -> {
+                    Market marketStock = Market.getMarket();
+                    yield marketStock.items.keySet().stream().filter(name -> name.toLowerCase().contains(args[1].toLowerCase())).toList();
+                }
+                case "ripoff" -> MarketBaseValues.marketBaseValues.keySet().stream()
+                        .map(Material::name)
+                        .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                        .collect(Collectors.toList());
+                case "enchant" -> EnchantBaseValues.enchantBaseValues.keySet().stream()
+                        .map(Enchantment::getName)
+                        .map(Object::toString)
+                        .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                        .collect(Collectors.toList());
+                case "tp" -> GrimmsServer.instance.getServer().getOnlinePlayers().stream()
+                        .map(Player::getName)
+                        .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                        .collect(Collectors.toList());
+                default -> Collections.emptyList();
+            };
         }
-        if (args.length == 3 && args[0].equalsIgnoreCase("buy")) {
+        if (args.length == 3 && (args[0].equalsIgnoreCase("buy") || args[0].equalsIgnoreCase("ripoff"))) {
             return Collections.singletonList("<amount>");
         }
         return Collections.emptyList();

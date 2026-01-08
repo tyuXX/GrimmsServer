@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
+import org.gsdistance.grimmsServer.Constructable.Item.ItemLevelHandler;
 import org.gsdistance.grimmsServer.Constructable.Item.RelicHandler;
 
 import java.util.Random;
@@ -12,6 +13,9 @@ public class PlayerItemDamageEvent {
                 event.setCancelled(true);
                 return;
             }
+        }
+        if (ItemLevelHandler.isItemLevelable(event.getItem())){
+            ItemLevelHandler.getLevelHandler(event.getItem(), event.getPlayer()).addXp(event.getDamage());
         }
         // Handle rest
     }
