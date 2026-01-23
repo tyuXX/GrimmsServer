@@ -9,7 +9,7 @@ public class EntityPickupItemEvent {
     public static void Event(org.bukkit.event.entity.EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player player){
             PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
-            if(playerMetadata.capabilities.containsKey(PlayerCapability.AUTOSELL) && playerMetadata.settings.contains("autosell")){
+            if(playerMetadata.capabilities.containsKey(PlayerCapability.AUTOSELL) && playerMetadata.settings.contains(PlayerCapability.AUTOSELL.capabilityId)){
                 Market market = Market.getMarket();
                 market.unsafeSell(event.getItem().getItemStack(), player);
                 market.saveMarket();

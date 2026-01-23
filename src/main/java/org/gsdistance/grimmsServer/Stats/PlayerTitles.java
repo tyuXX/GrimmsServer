@@ -19,6 +19,7 @@ public class PlayerTitles {
             Map.entry("Millionaire", "Wow, that's quite a lot ya' know!"),
             Map.entry("Billionaire", "Capitalism at it's finest."),
             Map.entry("Trillionaire", "Literally insane, no comment."),
+            Map.entry("Quadrillionaire", "Why?"),
             Map.entry("Miner", "Minin' to the earths core."),
             Map.entry("Anti-block", "DEMOLISH 10000 blocks"),
             Map.entry("UltimateMiner", "Mine 100000 blocks"),

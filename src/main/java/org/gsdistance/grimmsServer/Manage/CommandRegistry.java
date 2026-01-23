@@ -7,6 +7,8 @@ import org.gsdistance.grimmsServer.Commands.GDimensionCommand.GDimBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GDimensionCommand.GDimTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GFactionCommand.GFactionBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GFactionCommand.GFactionTabCompleter;
+import org.gsdistance.grimmsServer.Commands.GHelpCommand.GHelp;
+import org.gsdistance.grimmsServer.Commands.GHelpCommand.GHelpTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GLogCommand.GLogBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GLogCommand.GLogTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GUtilCommand.GUtilBaseCommand;
@@ -59,6 +61,9 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("gConfig").setTabCompleter(new GConfigTabCompleter());
         GrimmsServer.instance.getCommand("job").setExecutor(new JobBaseCommand());
         GrimmsServer.instance.getCommand("job").setTabCompleter(new JobTabCompleter());
+        GrimmsServer.instance.getCommand("gHelp").setExecutor(new GHelp());
+        GrimmsServer.instance.getCommand("gHelp").setTabCompleter(new GHelpTabCompleter());
+
     }
 
     public static boolean CanExecute(String command) {

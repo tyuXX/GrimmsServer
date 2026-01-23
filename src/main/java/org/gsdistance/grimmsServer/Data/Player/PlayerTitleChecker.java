@@ -47,6 +47,9 @@ public class PlayerTitleChecker {
         if (money > 1000000000000.0) {
             playerTitles.addTitle("Trillionaire");
         }
+        if (money > 1000000000000000.0) {
+            playerTitles.addTitle("Trillionaire");
+        }
     }
 
     public static void checkForBlockBreaks(Player player) {

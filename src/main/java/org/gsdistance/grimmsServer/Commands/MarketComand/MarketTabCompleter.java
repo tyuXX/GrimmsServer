@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Data.Market.EnchantBaseValues;
 import org.gsdistance.grimmsServer.Data.Market.MarketBaseValues;
+import org.gsdistance.grimmsServer.Data.Market.PotionEffectBaseValues;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class MarketTabCompleter implements TabCompleter {
             subs.add("stock");
             subs.add("ripoff");
             subs.add("enchant");
+            subs.add("potioneffect");
             subs.add("tp");
             subs.add("buy");
             subs.add("sell");
@@ -41,13 +43,19 @@ public class MarketTabCompleter implements TabCompleter {
                     Market marketStock = Market.getMarket();
                     yield marketStock.items.keySet().stream().filter(name -> name.toLowerCase().contains(args[1].toLowerCase())).toList();
                 }
-                case "ripoff" -> MarketBaseValues.marketBaseValues.keySet().stream()
+                case "ripoff" -> {
+                    yield MarketBaseValues.marketBaseValues.keySet().stream()
                         .map(Material::name)
                         .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
                         .collect(Collectors.toList());
+                }
                 case "enchant" -> EnchantBaseValues.enchantBaseValues.keySet().stream()
                         .map(Enchantment::getName)
                         .map(Object::toString)
+                        .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                        .collect(Collectors.toList());
+                case "potioneffect" -> PotionEffectBaseValues.potionEffectBaseValues.keySet().stream()
+                        .map(org.bukkit.potion.PotionEffectType::getName)
                         .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
                         .collect(Collectors.toList());
                 case "tp" -> GrimmsServer.instance.getServer().getOnlinePlayers().stream()
@@ -59,6 +67,12 @@ public class MarketTabCompleter implements TabCompleter {
         }
         if (args.length == 3 && (args[0].equalsIgnoreCase("buy") || args[0].equalsIgnoreCase("ripoff"))) {
             return Collections.singletonList("<amount>");
+        }
+        if (args.length == 3 && args[0].equalsIgnoreCase("potioneffect")) {
+            return Collections.singletonList("<duration>");
+        }
+        if (args.length == 4 && args[0].equalsIgnoreCase("potioneffect")) {
+            return Collections.singletonList("<level>");
         }
         return Collections.emptyList();
     }
