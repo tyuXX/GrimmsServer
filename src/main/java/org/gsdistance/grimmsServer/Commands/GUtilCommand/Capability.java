@@ -4,12 +4,11 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.Player.PlayerCapability;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Capability {
     public static boolean subCommand(Player player, String[] args) {
-        if(!player.hasPermission("grimmsserver.util.admin")){
+        if (!player.hasPermission("grimmsserver.util.admin")) {
             player.sendMessage("You do not have permission to use this command.");
             return false;
         }

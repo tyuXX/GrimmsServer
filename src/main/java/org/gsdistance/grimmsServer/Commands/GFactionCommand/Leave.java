@@ -1,15 +1,9 @@
 package org.gsdistance.grimmsServer.Commands.GFactionCommand;
 
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.FactionRank;
-import org.gsdistance.grimmsServer.GrimmsServer;
-import org.gsdistance.grimmsServer.Shared;
-
-import java.util.ArrayList;
-import java.util.UUID;
 
 public class Leave {
     public static boolean subCommand(Player player) {

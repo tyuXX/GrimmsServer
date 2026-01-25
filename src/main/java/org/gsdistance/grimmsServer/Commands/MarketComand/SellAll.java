@@ -18,7 +18,7 @@ public class SellAll {
             }
             Data<Double, Integer> sold = market.sellAll(iS, (Player) sender);
             market.saveMarket();
-            sender.sendMessage("You sold " + sold.value + " many of " + iS.getKey() + " for " + Shared.formatNumber(Math.max(0.25D, Math.round((sold.key)))));
+            sender.sendMessage("You sold " + sold.value() + " many of " + iS.getKey() + " for " + Shared.formatNumber(Math.max(0.25D, Math.round((sold.key())))));
             return true;
         } else {
             sender.sendMessage("This command can only be run by a player.");

@@ -47,10 +47,12 @@ public class HelpStrings {
             Map.entry("job", "/job <log|take|buyedu> [args...]"),
             Map.entry("ghelp", "/ghelp <command>")
     );
+
     public static String getHelpString(String commandName) {
-        return  helpStrings.getOrDefault(commandName.toLowerCase(), "Not found.");
+        return helpStrings.getOrDefault(commandName.toLowerCase(), "Not found.");
     }
+
     public static String getHelpUsage(String commandName) {
-        return  helpUsages.getOrDefault(commandName.toLowerCase(), "Not found.");
+        return helpUsages.getOrDefault(commandName.toLowerCase(), "Not found.");
     }
 }

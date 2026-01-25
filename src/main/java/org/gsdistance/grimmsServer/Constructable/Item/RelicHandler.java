@@ -59,7 +59,7 @@ public class RelicHandler {
     }
 
     public void initRandomRelicStats() {
-        int tier = new Random().nextInt(1,  4); // Random tier between 1 and 3
+        int tier = new Random().nextInt(1, 4); // Random tier between 1 and 3
         int grade = new Random().nextInt(1, 101); // Random grade between 1 and 100
         int durabilityResistance = new Random().nextInt(1, 81); // Random grade between 1 and 100
         setRelicStats(tier, grade, durabilityResistance);
@@ -107,20 +107,21 @@ public class RelicHandler {
             default -> 0.0; // Default base toughness for unsupported items
         };
 
-        switch (getRelicType()){
+        switch (getRelicType()) {
             case "sword" -> {
-                dataHandler.setAttribute(Attribute.ATTACK_DAMAGE, new AttributeModifier(Shared.getNamespacedKey("reliic_attack_damage"), baseDamage + Math.pow(Math.max(2,(double) grade / 25) ,tier), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
-                if(tier > 1){
-                    dataHandler.setAttribute(Attribute.ATTACK_SPEED, new AttributeModifier(Shared.getNamespacedKey("reliic_attack_speed"), Math.max(1.7,Math.sqrt(grade) * tier / 10), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
+                dataHandler.setAttribute(Attribute.ATTACK_DAMAGE, new AttributeModifier(Shared.getNamespacedKey("reliic_attack_damage"), baseDamage + Math.pow(Math.max(2, (double) grade / 25), tier), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
+                if (tier > 1) {
+                    dataHandler.setAttribute(Attribute.ATTACK_SPEED, new AttributeModifier(Shared.getNamespacedKey("reliic_attack_speed"), Math.max(1.7, Math.sqrt(grade) * tier / 10), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
                 }
             }
             case "armor" -> {
-                dataHandler.setAttribute(Attribute.ARMOR, new AttributeModifier(Shared.getNamespacedKey("relic_armor"), baseArmor + Math.pow(Math.max(2,(double) grade / 25) ,tier), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ARMOR));
-                if(tier > 1){
-                    dataHandler.setAttribute(Attribute.ARMOR_TOUGHNESS, new AttributeModifier(Shared.getNamespacedKey("relic_armor_toughness"), baseToughness + Math.max(1,Math.sqrt(grade) * tier / 10), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ARMOR));
+                dataHandler.setAttribute(Attribute.ARMOR, new AttributeModifier(Shared.getNamespacedKey("relic_armor"), baseArmor + Math.pow(Math.max(2, (double) grade / 25), tier), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ARMOR));
+                if (tier > 1) {
+                    dataHandler.setAttribute(Attribute.ARMOR_TOUGHNESS, new AttributeModifier(Shared.getNamespacedKey("relic_armor_toughness"), baseToughness + Math.max(1, Math.sqrt(grade) * tier / 10), AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ARMOR));
                 }
             }
-            default -> {}
+            default -> {
+            }
         }
     }
 

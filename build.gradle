@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'org.gsdistance'
-version = '1.3r1'
+version = '1.3r2'
 
 repositories {
     mavenCentral()

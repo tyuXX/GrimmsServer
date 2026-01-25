@@ -27,11 +27,11 @@ public class OnWorldSaveEvent {
         // Save all temporary data
         GrimmsServer.logger.info("Saving temporary data...");
         for (Data<Object, Type> data : PerSessionDataStorage.dataStore.values()) {
-            Type type = data.value.getClass();
+            Type type = data.value().getClass();
             if (type.equals((PlayerMetadata.class))) {
-                ((PlayerMetadata) data.key).saveToPDS();
+                ((PlayerMetadata) data.key()).saveToPDS();
             } else if (type.equals(Faction.class)) {
-                ((Faction) data.key).saveToFile();
+                ((Faction) data.key()).saveToFile();
             }
         }
         GrimmsServer.logger.info("Done (" + sw.stop() + ")");

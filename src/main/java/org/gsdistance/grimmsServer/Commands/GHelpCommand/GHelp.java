@@ -8,7 +8,7 @@ import org.gsdistance.grimmsServer.Data.HelpStrings;
 public class GHelp implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(args.length < 1){
+        if (args.length < 1) {
             return false;
         }
         sender.sendMessage("Help string for command " + args[0] + ":");

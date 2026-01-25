@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class PlayerJoinEvent {
     public static void Event(org.bukkit.event.player.PlayerJoinEvent event) {
+        PerSessionDataStorage.softSave(false, Boolean.class, event.getPlayer().getUniqueId() + "-login");
         PlayerStats playerStats = PlayerStats.getPlayerStats(event.getPlayer());
         playerStats.changeStat("join_count", 1);
 
@@ -29,6 +30,7 @@ public class PlayerJoinEvent {
         playerStats.setStat("money", playerStats.getStat("money", Double.class) + metadata.offlineMoney);
 
         GeneralChatHandler.joinMessage(event.getPlayer());
+        GeneralChatHandler.authMessage(event.getPlayer());
         metadata.firstJoin = false; // Set first join to false after the first join
 
         metadata.offlineMoney = 0.0; // Reset offline money after applying it

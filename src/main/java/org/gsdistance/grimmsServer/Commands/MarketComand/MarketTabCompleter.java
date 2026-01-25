@@ -45,9 +45,9 @@ public class MarketTabCompleter implements TabCompleter {
                 }
                 case "ripoff" -> {
                     yield MarketBaseValues.marketBaseValues.keySet().stream()
-                        .map(Material::name)
-                        .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
-                        .collect(Collectors.toList());
+                            .map(Material::name)
+                            .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                            .collect(Collectors.toList());
                 }
                 case "enchant" -> EnchantBaseValues.enchantBaseValues.keySet().stream()
                         .map(Enchantment::getName)

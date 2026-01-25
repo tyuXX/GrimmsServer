@@ -3,8 +3,6 @@ package org.gsdistance.grimmsServer.Events.Listeners;
 import org.bukkit.boss.KeyedBossBar;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.World.ChunkMetadata;
-import org.gsdistance.grimmsServer.GrimmsServer;
-import org.gsdistance.grimmsServer.Shared;
 
 public class PlayerMoveEvent {
     public static void Event(org.bukkit.event.player.PlayerMoveEvent event) {

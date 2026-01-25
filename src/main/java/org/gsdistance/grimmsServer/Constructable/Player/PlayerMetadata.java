@@ -70,7 +70,7 @@ public class PlayerMetadata {
 
     public static PlayerMetadata getPlayerMetadata(Player player) {
         if (PerSessionDataStorage.dataStore.containsKey("metadata-" + player.getUniqueId())) {
-            return (PlayerMetadata) PerSessionDataStorage.dataStore.get("metadata-" + player.getUniqueId()).key;
+            return (PlayerMetadata) PerSessionDataStorage.dataStore.get("metadata-" + player.getUniqueId()).key();
         }
         PlayerMetadata metadata = GrimmsServer.pds.retrieveData(player.getUniqueId() + ".json", "playerMetadata", PlayerMetadata.class);
         if (metadata == null) {
@@ -92,7 +92,7 @@ public class PlayerMetadata {
 
     public static PlayerMetadata getOfflinePlayerMetadata(UUID uuid) {
         if (PerSessionDataStorage.dataStore.containsKey("metadata-" + uuid)) {
-            return (PlayerMetadata) PerSessionDataStorage.dataStore.get("metadata-" + uuid).key;
+            return (PlayerMetadata) PerSessionDataStorage.dataStore.get("metadata-" + uuid).key();
         }
         return GrimmsServer.pds.retrieveData(uuid.toString() + ".json", "playerMetadata", PlayerMetadata.class);
     }

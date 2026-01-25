@@ -48,9 +48,9 @@ public class Join {
         if (Objects.requireNonNull(targetPlayer).isOnline()) {
             Request.newRequest((Object object) -> {
                         Data<Player, UUID> data = (Data<Player, UUID>) object;
-                        Player target = data.key;
+                        Player target = data.key();
                         PlayerMetadata targetMetadata = PlayerMetadata.getPlayerMetadata(target);
-                        Faction faction = Faction.getFaction(data.value);
+                        Faction faction = Faction.getFaction(data.value());
                         target.sendMessage("You have successfully joined the faction " + faction.name + ".");
                         targetMetadata.factionUUID = faction.uuid;
                         faction.addMember(player.getUniqueId(), FactionRank.RECRUIT);

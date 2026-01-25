@@ -4,7 +4,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.GrimmsServer;
 import org.jetbrains.annotations.NotNull;
 
 public class GUtilBaseCommand implements CommandExecutor {
@@ -14,11 +13,11 @@ public class GUtilBaseCommand implements CommandExecutor {
         if (args.length < 1) {
             return false;
         }
-        if (!(sender instanceof Player player)){
+        if (!(sender instanceof Player player)) {
             sender.sendMessage("This command can only be used by players.");
             return false;
         }
-        switch (args[0].toLowerCase()){
+        switch (args[0].toLowerCase()) {
             case "version" -> {
                 return Version.subCommand(player, args);
             }

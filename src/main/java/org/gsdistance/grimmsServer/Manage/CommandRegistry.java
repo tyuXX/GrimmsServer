@@ -1,6 +1,9 @@
 package org.gsdistance.grimmsServer.Manage;
 
+import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Commands.*;
+import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
+import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GConfigCommand.GConfigBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GConfigCommand.GConfigTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GDimensionCommand.GDimBaseCommand;
@@ -23,6 +26,7 @@ import org.gsdistance.grimmsServer.Commands.RequestCommand.AcceptRequest;
 import org.gsdistance.grimmsServer.Commands.RequestCommand.RequestTabCompleter;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Data.ConfigRequirements;
+import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.List;
@@ -63,15 +67,20 @@ public class CommandRegistry {
         GrimmsServer.instance.getCommand("job").setTabCompleter(new JobTabCompleter());
         GrimmsServer.instance.getCommand("gHelp").setExecutor(new GHelp());
         GrimmsServer.instance.getCommand("gHelp").setTabCompleter(new GHelpTabCompleter());
+        GrimmsServer.instance.getCommand("gAuth").setExecutor(new GAuthBaseCommand());
+        GrimmsServer.instance.getCommand("gAuth").setTabCompleter(new GAuthTabCompleter());
 
     }
 
-    public static boolean CanExecute(String command) {
+    public static boolean CanExecute(String command, Player player) {
         if (command == null || command.isEmpty()) {
             return false;
         }
+        //Check for auth
+        if(!(GAuthBaseCommand.isLoggedIn(player) || command.equalsIgnoreCase("gAuth"))){
+            return false;
+        }
         // Retrieve the disabled commands as a List
-        @SuppressWarnings("unchecked")
         List<String> disabledCommands = getConfigValue(ConfigKey.DISABLED_COMMANDS, List.class);
         if (disabledCommands != null) {
             for (String disabledCommand : disabledCommands) {

@@ -1,7 +1,10 @@
 package org.gsdistance.grimmsServer.Commands.GLogCommand;
 
 import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Manage.GeneralChatHandler;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
+
+import java.util.ArrayList;
 
 import static org.gsdistance.grimmsServer.Shared.formatNumber;
 
@@ -11,15 +14,17 @@ public class LogSelfStats {
             return false;
         }
         PlayerStats stats = PlayerStats.getPlayerStats(player);
-        player.sendMessage("__Your stats:");
+        ArrayList<String> statsList = new ArrayList<>();
+        statsList.add("__Your stats:");
         for (String stat : PlayerStats.StatOrder) {
             Object value = stats.getStat(stat, Object.class);
             if (value instanceof Double) {
-                player.sendMessage("|" + PlayerStats.StatNames.get(stat) + ": " + formatNumber((Double) value));
+                statsList.add("|" + PlayerStats.StatNames.get(stat) + ": " + formatNumber((Double) value));
             } else {
-                player.sendMessage("|" + PlayerStats.StatNames.get(stat) + ": " + value.toString());
+                statsList.add("|" + PlayerStats.StatNames.get(stat) + ": " + value.toString());
             }
         }
+        GeneralChatHandler.sendArray(player, statsList.toArray(new String[0]));
         return true;
     }
 }

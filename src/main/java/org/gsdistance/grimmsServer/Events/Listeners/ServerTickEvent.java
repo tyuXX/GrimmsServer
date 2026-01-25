@@ -1,9 +1,8 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
+import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Data.JobTitlesBaseValues;
-import org.gsdistance.grimmsServer.Data.Player.PlayerCapability;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Shared;
@@ -14,7 +13,7 @@ public class ServerTickEvent {
     public static long ticks = 0;
 
     public static void Event() {
-        for(Player player : GrimmsServer.instance.getServer().getOnlinePlayers()) {
+        for (Player player : GrimmsServer.instance.getServer().getOnlinePlayers()) {
             PlayerTickEvent.Event(player);
         }
         PlayerTickEvent.processMagnets();
@@ -27,6 +26,10 @@ public class ServerTickEvent {
                 PlayerTitleChecker.checkTitles(player);
                 PlayerTitleChecker.checkForBlockBreaks(player);
                 PlayerTitleChecker.checkForTotalKills(player);
+                // Check for auth
+                if(!GAuthBaseCommand.isLoggedIn(player)) {
+                    player.kickPlayer("Not logged in for too long.");
+                }
             }
         }
         // Paycheck

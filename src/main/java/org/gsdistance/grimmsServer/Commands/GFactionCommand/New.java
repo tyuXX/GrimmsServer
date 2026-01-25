@@ -2,7 +2,6 @@ package org.gsdistance.grimmsServer.Commands.GFactionCommand;
 
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
 import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Data;

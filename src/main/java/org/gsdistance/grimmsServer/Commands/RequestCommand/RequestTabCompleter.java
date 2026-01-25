@@ -12,7 +12,7 @@ import java.util.List;
 public class RequestTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        Object requestData = PerSessionDataStorage.dataStore.get("requestData-" + sender.getName()).key;
+        Object requestData = PerSessionDataStorage.dataStore.get("requestData-" + sender.getName()).key();
         if (requestData == null) {
             return Collections.emptyList();
         }

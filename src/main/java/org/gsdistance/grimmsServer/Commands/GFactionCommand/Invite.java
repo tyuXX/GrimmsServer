@@ -37,8 +37,8 @@ public class Invite {
         Request.newRequest(
                 (Object object) -> {
                     Data<Player, UUID> data = (Data<Player, UUID>) object;
-                    Faction targetFaction = Faction.getFaction(data.value);
-                    Player target = data.key;
+                    Faction targetFaction = Faction.getFaction(data.value());
+                    Player target = data.key();
                     PlayerMetadata targetMetadata = PlayerMetadata.getPlayerMetadata(target);
                     targetMetadata.factionUUID = targetFaction.uuid;
                     targetMetadata.saveToPDS();

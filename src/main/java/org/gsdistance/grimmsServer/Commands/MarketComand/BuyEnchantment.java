@@ -24,9 +24,9 @@ public class BuyEnchantment {
             }
             ItemStack itemToApply = ((Player) sender).getInventory().getItemInMainHand();
             int enchantBonus = Math.toIntExact(Math.min((Math.round(Math.sqrt(ItemLevelHandler.getLevelHandler(itemToApply, (Player) sender).getLevel()))), 100));
-            if (RelicHandler.isRelic(itemToApply)){
+            if (RelicHandler.isRelic(itemToApply)) {
                 RelicHandler relicHandler = RelicHandler.getRelicHandler(itemToApply);
-                enchantBonus += (int) Math.min(Math.sqrt(relicHandler.getRelicGrade()) * relicHandler.getRelicTier() ,100);
+                enchantBonus += (int) Math.min(Math.sqrt(relicHandler.getRelicGrade()) * relicHandler.getRelicTier(), 100);
             }
             int max = enchantment.getMaxLevel() == 1 ? 1 : enchantment.getMaxLevel() + enchantBonus;
             if (itemToApply.getEnchantmentLevel(enchantment) >= max) {

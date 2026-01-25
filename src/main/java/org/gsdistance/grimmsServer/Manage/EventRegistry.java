@@ -99,7 +99,8 @@ public class EventRegistry implements Listener {
         PlayerItemDamageEvent.Event(event);
     }
 
-    @EventHandler public void onPlayerMove(org.bukkit.event.player.PlayerMoveEvent event) {
+    @EventHandler
+    public void onPlayerMove(org.bukkit.event.player.PlayerMoveEvent event) {
         PlayerMoveEvent.Event(event);
     }
 }

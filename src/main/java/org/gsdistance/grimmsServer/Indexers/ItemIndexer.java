@@ -18,21 +18,21 @@ public class ItemIndexer {
     private static final Map<Material, List<Recipe>> recipeCache = new HashMap<>();
     public static boolean loggingEnabled = true;
 
-    public static void indexWholeRegistry(){
+    public static void indexWholeRegistry() {
         GrimmsServer.logger.info("Starting to index item values...");
         Stopwatch stopwatch = Stopwatch.createStarted();
         // Clear previous values
         calculatedMarketValues.clear();
         skippedMarketValues.clear();
         recipeCache.clear();
-        
+
         // Pre-cache all recipes to avoid repeated Bukkit calls
         cacheAllRecipes();
-        
+
         // Check the cache first
         Map<Material, Double> tmp;
         try {
-            tmp  = GrimmsServer.pds.retrieveData("calculatedMarketValues.json", "cache", Map.class);
+            tmp = GrimmsServer.pds.retrieveData("calculatedMarketValues.json", "cache", Map.class);
         } catch (Exception e) {
             GrimmsServer.logger.warning("Failed to load cached market values: " + e.getMessage());
             tmp = null;
@@ -44,14 +44,14 @@ public class ItemIndexer {
             calculatedMarketValues.putAll(tmp);
             cacheExists = true;
         }
-        
+
         // Process only items that need calculation
         Set<Material> materialsToProcess = Arrays.stream(Material.values())
-            .filter(material -> material.isItem() && material != Material.AIR)
-            .filter(material -> !MarketBaseValues.marketBaseValues.containsKey(material))
-            .filter(material -> !calculatedMarketValues.containsKey(material))
-            .collect(Collectors.toSet());
-            
+                .filter(material -> material.isItem() && material != Material.AIR)
+                .filter(material -> !MarketBaseValues.marketBaseValues.containsKey(material))
+                .filter(material -> !calculatedMarketValues.containsKey(material))
+                .collect(Collectors.toSet());
+
         // First pass calculation
         Set<Material> firstPassSkipped = new HashSet<>();
         for (Material material : materialsToProcess) {
@@ -65,7 +65,7 @@ public class ItemIndexer {
                 firstPassSkipped.add(material);
             }
         }
-        
+
         // Retry logic for skipped items (only if no cache existed)
         if (!cacheExists && !firstPassSkipped.isEmpty()) {
             for (int i = 0; i < 2; i++) {
@@ -89,7 +89,7 @@ public class ItemIndexer {
             }
             skippedMarketValues.addAll(firstPassSkipped);
         }
-        
+
         GrimmsServer.logger.info("Indexed " + calculatedMarketValues.size() + " items in (" + stopwatch.stop() + ").");
         GrimmsServer.logger.info("Skipped " + skippedMarketValues.size() + " items that could not be calculated.");
 
@@ -110,9 +110,9 @@ public class ItemIndexer {
             }
         }
     }
-    
+
     private static final ThreadLocal<Set<Material>> processingMaterials = ThreadLocal.withInitial(HashSet::new);
-    
+
     public static Double calculateMarketValue(@Nullable Material item) {
         Set<Material> processingSet = processingMaterials.get();
         processingSet.clear();
@@ -143,7 +143,7 @@ public class ItemIndexer {
         if (recipes == null || recipes.isEmpty()) {
             return 0.0;
         }
-        
+
         for (Recipe recipe : recipes) {
             if (recipe == null || recipe.getResult().getType() == Material.AIR) {
                 continue; // Skip invalid recipes

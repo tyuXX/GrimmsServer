@@ -1,7 +1,10 @@
 package org.gsdistance.grimmsServer.Commands.GLogCommand;
 
 import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Manage.GeneralChatHandler;
 import org.gsdistance.grimmsServer.Stats.PlayerTitles;
+
+import java.util.ArrayList;
 
 public class LogSelfTitles {
     public static boolean subCommand(Player player) {
@@ -9,10 +12,12 @@ public class LogSelfTitles {
             return false;
         }
         PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
-        player.sendMessage("__Your Titles:");
+        ArrayList<String> titlesList = new ArrayList<String>();
+        titlesList.add("__Your Titles:");
         for (String title : playerTitles.getTitles()) {
-            player.sendMessage("|" + title + ": " + PlayerTitles.titles.get(title));
+            titlesList.add("|" + title + ": " + PlayerTitles.titles.get(title));
         }
+        GeneralChatHandler.sendArray(player, titlesList.toArray(new String[0]));
         return true;
     }
 }

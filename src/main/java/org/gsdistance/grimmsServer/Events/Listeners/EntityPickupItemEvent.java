@@ -7,9 +7,9 @@ import org.gsdistance.grimmsServer.Data.Player.PlayerCapability;
 
 public class EntityPickupItemEvent {
     public static void Event(org.bukkit.event.entity.EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof Player player){
+        if (event.getEntity() instanceof Player player) {
             PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
-            if(playerMetadata.capabilities.containsKey(PlayerCapability.AUTOSELL) && playerMetadata.settings.contains(PlayerCapability.AUTOSELL.capabilityId)){
+            if (playerMetadata.capabilities.containsKey(PlayerCapability.AUTOSELL) && playerMetadata.settings.contains(PlayerCapability.AUTOSELL.capabilityId)) {
                 Market market = Market.getMarket();
                 market.unsafeSell(event.getItem().getItemStack(), player);
                 market.saveMarket();

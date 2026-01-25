@@ -29,6 +29,8 @@ public class PlayerStats {
         Stats.put("sent_messages", LONG);
         Stats.put("intelligence", INTEGER);
         Stats.put("jobTitle", STRING);
+        Stats.put("pass", STRING);
+        Stats.put("fauth", BOOLEAN);
     }
 
     public static final Dictionary<String, String> StatNames = new Hashtable<>();
@@ -46,6 +48,8 @@ public class PlayerStats {
         StatNames.put("sent_messages", "Messages Sent");
         StatNames.put("intelligence", "Intelligence");
         StatNames.put("jobTitle", "Job");
+        StatNames.put("pass", "Password");
+        StatNames.put("fauth", "Force Auth");
     }
 
     public static final List<String> StatOrder = List.of(
@@ -75,7 +79,9 @@ public class PlayerStats {
             Map.entry("xp_required", 100.0),
             Map.entry("sent_messages", 0L),
             Map.entry("intelligence", new Random().nextInt(0, 100)),
-            Map.entry("jobTitle", "")
+            Map.entry("jobTitle", ""),
+            Map.entry("pass", ""),
+            Map.entry("fauth", false)
     );
 
     private final JavaPlugin plugin;
@@ -96,17 +102,20 @@ public class PlayerStats {
         return new PlayerStats(GrimmsServer.instance, player);
     }
 
+    public void resetStat(String stat){
+        setStat(stat, StatDefaultValues.get(stat));
+    }
+
     public <T> T getStat(String stat, Class<T> ignoredType) {
         PersistentDataType type = Stats.get(stat);
         if (!hasExactStat(stat)) {
             GrimmsServer.logger.warning("Stat " + stat + " does not have a value.");
-            try {
-                return ignoredType.getConstructor().newInstance();
-            } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
-                     NoSuchMethodException e) {
-                GrimmsServer.logger.warning("Failed to create default value for stat " + stat + ": " + e.getMessage());
-                return null;
+            T defaultValue = (T) StatDefaultValues.get(stat);
+            if (defaultValue != null) {
+                resetStat(stat);
+                return defaultValue;
             }
+            return null;
         }
         return (T) dataContainer.getOrDefault(new NamespacedKey(plugin, stat), type, 0);
     }

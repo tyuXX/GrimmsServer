@@ -88,7 +88,7 @@ public class GFactionTabCompleter implements TabCompleter {
             return List.of();
         }
         return faction.members.stream()
-                .map(data -> data.key.toString()) // Convert UUID to string
+                .map(data -> data.key().toString()) // Convert UUID to string
                 .map(uuidString -> {
                     try {
                         UUID uuid = UUID.fromString(uuidString);

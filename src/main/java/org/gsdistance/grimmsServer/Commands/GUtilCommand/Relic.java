@@ -5,8 +5,8 @@ import org.bukkit.inventory.ItemStack;
 import org.gsdistance.grimmsServer.Constructable.Item.RelicHandler;
 
 public class Relic {
-    public static boolean subCommand(Player player, String[] args){
-        if(!player.hasPermission("grimmsserver.util.admin")){
+    public static boolean subCommand(Player player, String[] args) {
+        if (!player.hasPermission("grimmsserver.util.admin")) {
             player.sendMessage("You do not have permission to use this command.");
             return false;
         }
@@ -14,10 +14,10 @@ public class Relic {
             return false;
         }
         String action = args[1].toLowerCase();
-        switch (action.toLowerCase()){
+        switch (action.toLowerCase()) {
             case "make" -> {
                 ItemStack item = player.getInventory().getItemInMainHand();
-                if(!RelicHandler.isRelic(item)){
+                if (!RelicHandler.isRelic(item)) {
                     RelicHandler.makeRelic(item);
                 }
                 player.sendMessage("Made " + item.getType() + " a relic item.");

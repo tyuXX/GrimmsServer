@@ -10,18 +10,18 @@ import java.util.List;
 
 public class PlayerTickEvent {
     private static final List<Player> magnetPlayers = new ArrayList<>();
-    
-    public static void Event(Player player){
+
+    public static void Event(Player player) {
         PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
         // Check for magnet capability and add to list if enabled
-        if(playerMetadata.capabilities.containsKey(PlayerCapability.MAGNET) && playerMetadata.settings.contains(PlayerCapability.MAGNET.capabilityId)){
+        if (playerMetadata.capabilities.containsKey(PlayerCapability.MAGNET) && playerMetadata.settings.contains(PlayerCapability.MAGNET.capabilityId)) {
             magnetPlayers.add(player);
         }
     }
-    
+
     public static void processMagnets() {
         if (magnetPlayers.isEmpty()) return;
-        
+
         // Process all items once, check against all magnet players
         for (Player magnetPlayer : magnetPlayers) {
             for (Item item : magnetPlayer.getWorld().getEntitiesByClass(Item.class)) {
@@ -31,7 +31,7 @@ public class PlayerTickEvent {
                 }
             }
         }
-        
+
         magnetPlayers.clear();
     }
 }

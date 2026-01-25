@@ -1,4 +1,4 @@
-package org.gsdistance.grimmsServer.Commands.GHelpCommand;
+package org.gsdistance.grimmsServer.Commands.GAuthCommand;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GHelpTabCompleter implements TabCompleter {
-
+public class GAuthTabCompleter implements TabCompleter {
+    public static final List<String> subCommands = List.of("register","unregister","login");
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -20,7 +20,7 @@ public class GHelpTabCompleter implements TabCompleter {
             List<String> suggestions = new ArrayList<>();
 
             // Dynamically fetch all commands from the plugin
-            for (String cmdName : GrimmsServer.instance.getDescription().getCommands().keySet()) {
+            for (String cmdName : subCommands) {
                 if (cmdName.toLowerCase().startsWith(partial)) {
                     suggestions.add(cmdName);
                 }

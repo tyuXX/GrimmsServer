@@ -17,11 +17,11 @@ public class Info {
             return false;
         }
         for (Data<UUID, FactionRank> member : faction.members) {
-            PlayerMetadata memberMetadata = PlayerMetadata.getOfflinePlayerMetadata(member.key);
+            PlayerMetadata memberMetadata = PlayerMetadata.getOfflinePlayerMetadata(member.key());
             if (memberMetadata != null) {
-                player.sendMessage("§aMember: " + memberMetadata.nickname + " - Rank: " + member.value.toString());
+                player.sendMessage("§aMember: " + memberMetadata.nickname + " - Rank: " + member.value().toString());
             } else {
-                player.sendMessage("§cMember with UUID " + member.key + " not found.");
+                player.sendMessage("§cMember with UUID " + member.key() + " not found.");
             }
         }
         player.sendMessage("§aFaction Name: " + faction.name);

@@ -46,7 +46,7 @@ public class Faction {
     public static Faction getFaction(UUID uuid) {
         Faction faction;
         if (PerSessionDataStorage.dataStore.containsKey("faction-" + uuid)) {
-            faction = (Faction) PerSessionDataStorage.dataStore.get("faction-" + uuid).key;
+            faction = (Faction) PerSessionDataStorage.dataStore.get("faction-" + uuid).key();
         } else {
             faction = GrimmsServer.pds.retrieveData(uuid + ".json", "factions", Faction.class);
             if (faction == null) {
@@ -136,7 +136,7 @@ public class Faction {
     public Integer getClaimLimit() {
         int claimLimit = 0;
         for (Data<UUID, FactionRank> member : members) {
-            PlayerMetadata playerMetadata = PlayerMetadata.getOfflinePlayerMetadata(member.key);
+            PlayerMetadata playerMetadata = PlayerMetadata.getOfflinePlayerMetadata(member.key());
             if (playerMetadata == null || playerMetadata.rank == null) {
                 claimLimit += 100 * PlayerRank.DEFAULT.weight;
             } else {
@@ -157,7 +157,7 @@ public class Faction {
     public void delete() {
         unClaimAllChunks();
         for (Data<UUID, FactionRank> member : new ArrayList<>(members)) {
-            PlayerMetadata playerMetadata = PlayerMetadata.getOfflinePlayerMetadata(member.key);
+            PlayerMetadata playerMetadata = PlayerMetadata.getOfflinePlayerMetadata(member.key());
             if (playerMetadata != null) {
                 playerMetadata.factionUUID = null;
                 playerMetadata.saveToPDS();
@@ -175,21 +175,21 @@ public class Faction {
 
     public UUID getMemberWithRank(FactionRank rank) {
         return members.stream()
-                .filter(data -> data.value == rank)
-                .map(data -> data.key)
+                .filter(data -> data.value() == rank)
+                .map(data -> data.key())
                 .findFirst()
                 .orElse(null);
     }
 
     public void removeMember(UUID memberId) {
-        members.removeIf(data -> data.key.equals(memberId));
+        members.removeIf(data -> data.key().equals(memberId));
         saveToFile();
     }
 
     public FactionRank getMemberRank(UUID memberId) {
         return members.stream()
-                .filter(data -> data.key.equals(memberId))
-                .map(data -> data.value)
+                .filter(data -> data.key().equals(memberId))
+                .map(data -> data.value())
                 .findFirst()
                 .orElse(FactionRank.NONE);
     }

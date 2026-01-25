@@ -1,22 +1,33 @@
 package org.gsdistance.grimmsServer.Manage;
 
+import org.bukkit.Server;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 
 import static org.gsdistance.grimmsServer.Config.ActiveConfig.getConfigValue;
 
 public class GeneralChatHandler {
+    public static void sendArray(CommandSender sender, String[] array) {
+        String[] formattedArray = GeneralTextFormatter.formatArray(array);
+        sender.sendMessage(formattedArray);
+    }
+
     public static boolean handleCommand(String message, Player player) {
         String command = message.split(" ")[0].substring(1);
-        if (!CommandRegistry.CanExecute(command)) {
+        if (!CommandRegistry.CanExecute(command, player)) {
             GrimmsServer.logger.log(Level.INFO, "Command interrupted: '" + message + "' by player: " + player.getName() + ". Command is disabled in the config.");
             player.sendMessage("§cThis command is disabled in the server configuration.");
             return true;
@@ -64,17 +75,37 @@ public class GeneralChatHandler {
         }
         PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(player);
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
+        ArrayList<String> message = new ArrayList<>();
         if (metadata.firstJoin) {
-            player.sendMessage("Welcome to the server, " + player.getName() + ".");
-            player.sendMessage("This server is running on GMSv" + GrimmsServer.instance.getDescription().getVersion() + ".");
-            player.sendMessage("Use /gLog commands to see a list of available commands.");
+            message.add("Welcome to the server, " + player.getName() + ".");
+            message.add("This server is running on GMSv" + GrimmsServer.instance.getDescription().getVersion() + ".");
+            message.add("Use /gLog commands to see a list of available commands.");
         } else {
-            player.sendMessage("Welcome back, " + metadata.nickname + ".");
-            player.sendMessage("You have gained " + Shared.formatNumber(metadata.offlineMoney) + " money while you were offline.");
-            player.sendMessage("Your current balance is " + Shared.formatNumber(playerStats.getStat("money", Double.class)) + ".");
-            player.sendMessage("You have no mail.");
+            message.add("Welcome back, " + metadata.nickname + ".");
+            message.add("You have gained " + Shared.formatNumber(metadata.offlineMoney) + " money while you were offline.");
+            message.add("Your current balance is " + Shared.formatNumber(playerStats.getStat("money", Double.class)) + ".");
+            message.add("You have no mail.");
         }
-        player.sendMessage("You have joined the server in world " + player.getWorld().getName() + " at " + player.getLocation().getBlockX() + "/" + player.getLocation().getBlockZ() + ".");
+        message.add("You have joined the server in world " + player.getWorld().getName() + " at " + player.getLocation().getBlockX() + "/" + player.getLocation().getBlockZ() + ".");
+        sendArray(player, message.toArray(new String[0]));
         player.sendMessage("");
+    }
+
+    public static void authMessage(Player player){
+        ArrayList<String> message = new ArrayList<>();
+        // Check if server is in offline mode
+        if(!GrimmsServer.instance.getServer().isEnforcingSecureProfiles()){
+            // Check if they have registered
+            PlayerStats playerStats = PlayerStats.getPlayerStats(player);
+            if(playerStats.getStat("pass", String.class).isEmpty()){
+                message.add("To secure your name please:");
+                message.add("Register using /gAuth register <password>");
+            }
+            else{
+                message.add("Login using /gAuth login <password> to use commands");
+                message.add("You will be kicked if you don't login");
+            }
+        }
+        sendArray(player, message.toArray(new String[0]));
     }
 }

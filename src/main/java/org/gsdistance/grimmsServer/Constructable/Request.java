@@ -35,7 +35,7 @@ public class Request {
         forPlayer.sendMessage("Accept with /acceptRequest " + request.requestId);
         PerSessionDataStorage.dataStore.put("request-" + request.requestId, Data.of(request, Request.class));
 
-        ArrayList<Integer> requestDataList = (ArrayList<Integer>) PerSessionDataStorage.dataStore.get("requestData-" + forPlayer.getName()).key;
+        ArrayList<Integer> requestDataList = (ArrayList<Integer>) PerSessionDataStorage.dataStore.get("requestData-" + forPlayer.getName()).key();
         requestDataList.add(request.requestId);
         PerSessionDataStorage.dataStore.put("requestData-" + forPlayer.getName(), Data.of(requestDataList, ArrayList.class));
     }
@@ -50,7 +50,7 @@ public class Request {
             PerSessionDataStorage.dataStore.remove("request-" + requestId);
             ArrayList<Integer> requestDataList = (ArrayList<Integer>) PerSessionDataStorage.dataStore
                     .get("requestData-" + player.getName())
-                    .key;
+                    .key();
             requestDataList.removeIf(id -> id.equals(requestId));
             PerSessionDataStorage.dataStore.put("requestData-" + player.getName(), Data.of(requestDataList, ArrayList.class));
             return true;

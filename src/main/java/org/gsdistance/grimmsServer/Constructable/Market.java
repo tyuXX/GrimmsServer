@@ -42,7 +42,7 @@ public class Market {
         return 0;
     }
 
-    public void unsafeSell(ItemStack itemStack, Player player){
+    public void unsafeSell(ItemStack itemStack, Player player) {
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
         items.putIfAbsent(itemStack.getType().getKey().toString(), 0L);
         double sold = 0.0;

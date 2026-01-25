@@ -52,9 +52,9 @@ public class PlayerStatLeaderBoard {
         List<String> overtakes = new ArrayList<>();
         for (String stat : leaderboard.keySet()) {
             Number playerStatValue = playerStats.getStat(stat, Number.class);
-            Number leaderboardStatValue = leaderboard.get(stat).value;
+            Number leaderboardStatValue = leaderboard.get(stat).value();
             if (playerStatValue != null && playerStatValue.doubleValue() > leaderboardStatValue.doubleValue()) {
-                if (!player.getName().equalsIgnoreCase(leaderboard.get(stat).key)) {
+                if (!player.getName().equalsIgnoreCase(leaderboard.get(stat).key())) {
                     overtakes.add(stat);
                 }
                 leaderboard.put(stat, Data.of(player.getName(), playerStatValue.intValue()));

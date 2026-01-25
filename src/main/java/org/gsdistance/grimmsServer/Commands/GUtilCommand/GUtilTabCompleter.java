@@ -20,23 +20,24 @@ public class GUtilTabCompleter implements TabCompleter {
             "relic",
             "capability"
     );
+
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         List<String> subCommands = new ArrayList<>();
-        if (!(sender instanceof Player player)){
+        if (!(sender instanceof Player player)) {
             return List.of();
         }
         if (sender.hasPermission("grimmsserver.gutil.admin")) {
             subCommands.addAll(adminSubCommands);
         }
         subCommands.addAll(defSubCommands);
-        if(args.length == 1) {
+        if (args.length == 1) {
             return subCommands.stream()
                     .filter(subCommand -> subCommand.startsWith(args[0].toLowerCase()))
                     .toList();
         } else if (args.length == 2) {
-            switch (args[0].toLowerCase()){
+            switch (args[0].toLowerCase()) {
                 case "relic" -> {
                     return List.of("make", "set", "recalc", "reroll");
                 }

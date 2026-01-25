@@ -7,14 +7,14 @@ import java.util.Random;
 
 public class PlayerItemDamageEvent {
     public static void Event(org.bukkit.event.player.PlayerItemDamageEvent event) {
-        if (RelicHandler.isRelic(event.getItem())){
+        if (RelicHandler.isRelic(event.getItem())) {
             RelicHandler relicHandler = RelicHandler.getRelicHandler(event.getItem());
-            if((new Random().nextInt(0, 100) < relicHandler.getRelicDurabilityResistance())){
+            if ((new Random().nextInt(0, 100) < relicHandler.getRelicDurabilityResistance())) {
                 event.setCancelled(true);
                 return;
             }
         }
-        if (ItemLevelHandler.isItemLevelable(event.getItem())){
+        if (ItemLevelHandler.isItemLevelable(event.getItem())) {
             ItemLevelHandler.getLevelHandler(event.getItem(), event.getPlayer()).addXp(event.getDamage());
         }
         // Handle rest

@@ -53,9 +53,9 @@ public class PotionEffectBaseValues {
 
     public static double getPotionEffectBaseValue(PotionEffectType potionEffectType, int time, int amplifier) {
         Integer limit = potionEffectAmplitudeLimits.get(potionEffectType);
-        if(limit != null && amplifier > limit) {
+        if (limit != null && amplifier > limit) {
             return Double.MAX_VALUE;
         }
-        return potionEffectBaseValues.get(potionEffectType) * time * Math.pow(amplifier,2);
+        return potionEffectBaseValues.get(potionEffectType) * time * Math.pow(amplifier, 2);
     }
 }
