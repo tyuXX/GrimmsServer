@@ -20,7 +20,8 @@ public enum ConfigKey {
     MODULE_DIMENSIONS("module_Dimensions", true),
     DISABLED_DIMENSIONS("disabledDimensions", new ArrayList<String>()),
     BANNED_WORDS("bannedWords", new ArrayList<String>()),
-    FORCE_DISABLE_BC("forceDisableBroadcasts", false);
+    FORCE_DISABLE_BC("forceDisableBroadcasts", false),
+    FORCE_AUTH("forceAuth", false);
 
     private final String key;
     private final Object defaultValue;

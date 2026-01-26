@@ -3,7 +3,6 @@ package org.gsdistance.grimmsServer.Commands.GAuthCommand;
 import com.google.common.hash.Hashing;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 import java.nio.charset.StandardCharsets;

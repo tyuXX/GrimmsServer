@@ -4,7 +4,7 @@ description: A spigot plugin made by Grimm and tyuXX, it adds player leveling, a
 website: www.gsdistance.org
 prefix: Grimm's
 main: org.gsdistance.grimmsServer.GrimmsServer
-version: 1.3r2
+version: 1.3r3
 api-version: 1.20
 load: STARTUP
 commands:

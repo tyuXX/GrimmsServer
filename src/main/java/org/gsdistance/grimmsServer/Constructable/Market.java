@@ -2,8 +2,11 @@ package org.gsdistance.grimmsServer.Constructable;
 
 import com.google.gson.Gson;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.gsdistance.grimmsServer.Constructable.Data;
+import org.gsdistance.grimmsServer.Data.Market.EnchantBaseValues;
 import org.gsdistance.grimmsServer.Data.Market.MarketBaseValues;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
@@ -12,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Market {
+    public double NegMarketSaturation = 0.0;
+    //public double MarketSaturation = 0.0;
     public final Map<String, Long> items;
 
     public Market() {
@@ -29,12 +34,12 @@ public class Market {
     public double sell(ItemStack itemStack, Player player) {
         if (player.getInventory().contains(itemStack)) {
             PlayerStats playerStats = PlayerStats.getPlayerStats(player);
-            items.putIfAbsent(itemStack.getType().getKey().toString(), 0L);
+            items.putIfAbsent(itemStack.getType().getKey().getKey(), 0L);
             double sold = 0.0;
             for (int i = 0; i < itemStack.getAmount(); i++) {
-                sold += getPrice(itemStack.getType());
+                sold += getISPrice(itemStack.getType(), itemStack.getEnchantments());
             }
-            items.put(itemStack.getType().getKey().toString(), items.get(itemStack.getType().getKey().toString()) + itemStack.getAmount());
+            items.put(itemStack.getType().getKey().getKey(), items.get(itemStack.getType().getKey().getKey()) + itemStack.getAmount());
             playerStats.setStat("money", playerStats.getStat("money", Double.class) + sold);
             player.getInventory().removeItem(itemStack);
             return sold;
@@ -44,19 +49,19 @@ public class Market {
 
     public void unsafeSell(ItemStack itemStack, Player player) {
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
-        items.putIfAbsent(itemStack.getType().getKey().toString(), 0L);
+        items.putIfAbsent(itemStack.getType().getKey().getKey(), 0L);
         double sold = 0.0;
         for (int i = 0; i < itemStack.getAmount(); i++) {
-            sold += getPrice(itemStack.getType());
+            sold += getISPrice(itemStack.getType(), itemStack.getEnchantments());
         }
-        items.put(itemStack.getType().getKey().toString(), items.get(itemStack.getType().getKey().toString()) + itemStack.getAmount());
+        items.put(itemStack.getType().getKey().getKey(), items.get(itemStack.getType().getKey().getKey()) + itemStack.getAmount());
         playerStats.setStat("money", playerStats.getStat("money", Double.class) + sold);
     }
 
     public Data<Double, Integer> sellAll(Material item, Player player) {
         if (player.getInventory().contains(item)) {
             PlayerStats playerStats = PlayerStats.getPlayerStats(player);
-            items.putIfAbsent(item.getKey().toString(), 0L);
+            items.putIfAbsent(item.getKey().getKey(), 0L);
             Double sold = 0.0;
             int amount = player.getInventory().all(item).values().stream()
                     .mapToInt(ItemStack::getAmount)
@@ -64,7 +69,7 @@ public class Market {
             for (int i = 0; i < amount; i++) {
                 sold += getPrice(item);
             }
-            items.put(item.getKey().toString(), items.get(item.getKey().toString()) + amount);
+            items.put(item.getKey().getKey(), items.get(item.getKey().getKey()) + amount);
             playerStats.setStat("money", playerStats.getStat("money", Double.class) + sold);
             player.getInventory().remove(item);
             return Data.of(sold, amount);
@@ -73,9 +78,9 @@ public class Market {
     }
 
     public double buy(Material item, int amount, Player player) {
-        if (items.get(item.getKey().toString()) == null) {
+        if (items.get(item.getKey().getKey()) == null) {
             return 0;
-        } else if (amount > items.get(item.getKey().toString())) {
+        } else if (amount > items.get(item.getKey().getKey())) {
             return 0;
         } else {
             double boughtP = 0;
@@ -85,7 +90,7 @@ public class Market {
                 if (money >= getPrice(item)) {
                     PlayerStats.getPlayerStats(player).setStat("money", money - getPrice(item));
                     boughtP += getPrice(item);
-                    items.put(item.getKey().toString(), items.get(item.getKey().toString()) - 1);
+                    items.put(item.getKey().getKey(), items.get(item.getKey().getKey()) - 1);
                     bought++;
                 } else {
                     break;
@@ -98,18 +103,52 @@ public class Market {
         }
     }
 
+    public double reCalcNegMarketSaturation(){
+        double totalValue = 0.0;
+        for (String string : items.keySet()) {
+            Material material = Material.matchMaterial(string);
+            if (material != null) {
+                long amount = items.get(string);
+                Double price = MarketBaseValues.marketBaseValues.get(material);
+                if (price != null) {
+                    totalValue += amount * price;
+                } else {
+                    totalValue += amount * 0.25; // Default price if not found
+                }
+            }
+        }
+        NegMarketSaturation = Math.floor(Math.sqrt(Math.sqrt(totalValue)));
+        return NegMarketSaturation;
+    }
+
+    //public double reCalcMarketSaturation(){
+    //    double rt
+    //}
+
     public double getPrice(Material item) {
-        if (items.get(item.getKey().toString()) == null) {
+        if (items.get(item.getKey().getKey()) == null) {
             return 0;
         } else {
-            long amount = items.get(item.getKey().toString());
+            long amount = items.get(item.getKey().getKey());
             double rt;
             if (MarketBaseValues.marketBaseValues.containsKey(item)) {
-                rt = Math.max(Math.max(0.25D, Math.floor(MarketBaseValues.marketBaseValues.get(item) / 100)), MarketBaseValues.marketBaseValues.get(item) - Math.sqrt(amount));
+                rt = Math.max(Math.max(0.25D, Math.floor((MarketBaseValues.marketBaseValues.get(item)) / 100)), (MarketBaseValues.marketBaseValues.get(item) + NegMarketSaturation) - Math.sqrt(amount));
             } else {
-                rt = Math.max(0.25D, 25 - Math.sqrt(amount));
+                rt = Math.max(0.25D, (NegMarketSaturation/2) - Math.sqrt(amount));
             }
+            // Account for enchantments
             return rt;
         }
+    }
+
+    public double getISPrice(Material item, Map<Enchantment, Integer> enchantments){
+        double rt = getPrice(item);
+        for (Enchantment e : enchantments.keySet()) {
+            Double enchantValue = EnchantBaseValues.enchantBaseValues.get(e);
+            if (enchantValue != null) {
+                rt += enchantValue * enchantments.get(e);
+            }
+        }
+        return rt;
     }
 }

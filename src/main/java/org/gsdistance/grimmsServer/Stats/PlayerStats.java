@@ -7,7 +7,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import static org.bukkit.persistence.PersistentDataType.*;
@@ -30,7 +29,7 @@ public class PlayerStats {
         Stats.put("intelligence", INTEGER);
         Stats.put("jobTitle", STRING);
         Stats.put("pass", STRING);
-        Stats.put("fauth", BOOLEAN);
+        Stats.put("autologin", BOOLEAN);
     }
 
     public static final Dictionary<String, String> StatNames = new Hashtable<>();
@@ -49,7 +48,7 @@ public class PlayerStats {
         StatNames.put("intelligence", "Intelligence");
         StatNames.put("jobTitle", "Job");
         StatNames.put("pass", "Password");
-        StatNames.put("fauth", "Force Auth");
+        StatNames.put("autologin", "Login Automatically");
     }
 
     public static final List<String> StatOrder = List.of(
@@ -81,7 +80,7 @@ public class PlayerStats {
             Map.entry("intelligence", new Random().nextInt(0, 100)),
             Map.entry("jobTitle", ""),
             Map.entry("pass", ""),
-            Map.entry("fauth", false)
+            Map.entry("autologin", false)
     );
 
     private final JavaPlugin plugin;

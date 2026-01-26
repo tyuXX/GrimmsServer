@@ -16,7 +16,8 @@ public class Stock {
             return false;
         }
         Market market = Market.getMarket();
-        sender.sendMessage(args[1] + ": " + market.items.get(mat.getKey().toString()) + " with the price of " + Math.max(0.25D, Math.round((market.getPrice(mat)))));
+        Long stock = market.items.get(mat.getKey().getKey());
+        sender.sendMessage(args[1] + ": " + (stock != null ? stock : 0) + " with the price of " + Math.max(0.25D, Math.round((market.getPrice(mat)))));
         return true;
     }
 }

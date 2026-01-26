@@ -41,16 +41,16 @@ public class MarketTabCompleter implements TabCompleter {
             return switch (args[0].toLowerCase()) {
                 case "stock", "buy" -> {
                     Market marketStock = Market.getMarket();
-                    yield marketStock.items.keySet().stream().filter(name -> name.toLowerCase().contains(args[1].toLowerCase())).toList();
-                }
-                case "ripoff" -> {
-                    yield MarketBaseValues.marketBaseValues.keySet().stream()
-                            .map(Material::name)
-                            .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                    yield marketStock.items.keySet().stream()
+                            .filter(name -> name.toLowerCase().contains(args[1].toLowerCase()))
                             .collect(Collectors.toList());
                 }
+                case "ripoff" -> MarketBaseValues.marketBaseValues.keySet().stream()
+                            .map(key -> key.getKey().getKey())
+                            .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                            .collect(Collectors.toList());
                 case "enchant" -> EnchantBaseValues.enchantBaseValues.keySet().stream()
-                        .map(Enchantment::getName)
+                        .map(enchantment ->  enchantment.getKey().getKey())
                         .map(Object::toString)
                         .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
                         .collect(Collectors.toList());

@@ -51,6 +51,13 @@ public class SetPlayerStat implements CommandExecutor {
                     sender.sendMessage("Invalid value for stat " + stat + ". Expected a long.");
                     return false;
                 }
+            } else if (dataType.equals(PersistentDataType.BOOLEAN)){
+                try {
+                    dataValue = Boolean.parseBoolean(value);
+                } catch (IllegalArgumentException e) {
+                    sender.sendMessage("Invalid value for stat " + stat + ". Expected a boolean.");
+                    return false;
+                }
             } else if (dataType.equals(PersistentDataType.STRING)) {
                 dataValue = value;
             } else {

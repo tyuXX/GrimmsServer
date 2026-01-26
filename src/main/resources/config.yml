@@ -16,3 +16,4 @@ module_Dimensions: true
 disabledDimensions: [ ]
 forceDisableBroadcasts: false
 bannedWords: [ ]
+enforceAuth: false

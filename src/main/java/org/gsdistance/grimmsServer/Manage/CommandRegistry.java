@@ -26,7 +26,6 @@ import org.gsdistance.grimmsServer.Commands.RequestCommand.AcceptRequest;
 import org.gsdistance.grimmsServer.Commands.RequestCommand.RequestTabCompleter;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Data.ConfigRequirements;
-import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.List;
@@ -81,6 +80,7 @@ public class CommandRegistry {
             return false;
         }
         // Retrieve the disabled commands as a List
+        @SuppressWarnings("unchecked")
         List<String> disabledCommands = getConfigValue(ConfigKey.DISABLED_COMMANDS, List.class);
         if (disabledCommands != null) {
             for (String disabledCommand : disabledCommands) {

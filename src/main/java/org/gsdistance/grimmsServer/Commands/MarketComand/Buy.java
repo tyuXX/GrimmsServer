@@ -30,7 +30,8 @@ public class Buy {
             }
             // Check if the item is in stock
             Market market = Market.getMarket();
-            if (market.items.get(Material.matchMaterial(args[1]).getKey().toString()) <= amount) {
+            Long stock = market.items.get(Material.matchMaterial(args[1]).getKey().getKey());
+            if (stock == null || stock < amount) {
                 sender.sendMessage("Not enough stock of " + args[1] + " in the market.");
                 return false;
             }

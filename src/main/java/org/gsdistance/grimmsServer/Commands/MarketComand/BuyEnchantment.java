@@ -17,7 +17,7 @@ public class BuyEnchantment {
                 sender.sendMessage("Usage: /market enchant <enchantment>");
                 return false;
             }
-            Enchantment enchantment = Enchantment.getByName(args[1].toLowerCase());
+            Enchantment enchantment = Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft(args[1].toLowerCase()));
             if (enchantment == null || !EnchantBaseValues.enchantBaseValues.containsKey(enchantment)) {
                 sender.sendMessage("Enchantment not listed or nonexistent.");
                 return false;
@@ -39,9 +39,11 @@ public class BuyEnchantment {
                 sender.sendMessage("Not enough money.");
                 return false;
             }
-            itemToApply.addUnsafeEnchantment(enchantment, itemToApply.getEnchantmentLevel(enchantment) + 1);
+            int oldLevel = itemToApply.getEnchantmentLevel(enchantment);
+            int newLevel = oldLevel + 1;
+            itemToApply.addUnsafeEnchantment(enchantment, newLevel);
             playerStats.setStat("money", playerStats.getStat("money", Double.class) - cost);
-            sender.sendMessage("Upgraded the enchantment " + enchantment.getName() + " from level " + (itemToApply.getEnchantmentLevel(enchantment) - 1) + " to level " + itemToApply.getEnchantmentLevel(enchantment) + " for " + Shared.formatNumber(cost) + " money.");
+            sender.sendMessage("Upgraded the enchantment " + enchantment.getKey().getKey() + " from level " + oldLevel + " to level " + newLevel + " for " + Shared.formatNumber(cost) + " money.");
             return true;
         } else {
             sender.sendMessage("This command can only be run by a player.");

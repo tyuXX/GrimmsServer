@@ -2,6 +2,7 @@ package org.gsdistance.grimmsServer.Events.Listeners;
 
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
+import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Data.JobTitlesBaseValues;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.GrimmsServer;
@@ -31,6 +32,9 @@ public class ServerTickEvent {
                     player.kickPlayer("Not logged in for too long.");
                 }
             }
+            Market market = Market.getMarket();
+            market.reCalcNegMarketSaturation();
+            market.saveMarket();
         }
         // Paycheck
         if (ticks % 24000 == 0) {

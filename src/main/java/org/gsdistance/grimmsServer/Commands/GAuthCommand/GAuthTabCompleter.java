@@ -3,7 +3,6 @@ package org.gsdistance.grimmsServer.Commands.GAuthCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.gsdistance.grimmsServer.GrimmsServer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GAuthTabCompleter implements TabCompleter {
-    public static final List<String> subCommands = List.of("register","unregister","login");
+    public static final List<String> subCommands = List.of("register","unregister","login","autologin");
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

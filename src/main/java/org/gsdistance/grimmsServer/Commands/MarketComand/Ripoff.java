@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Data.Market.MarketBaseValues;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
@@ -22,13 +23,19 @@ public class Ripoff {
             sender.sendMessage("Invalid or unavailable item: " + args[1]);
             return false;
         }
-        int amount = Integer.parseInt(args[2]);
-        if (amount < 1) {
-            sender.sendMessage("You must buy at least 1 item.");
+        int amount;
+        try {
+            amount = Integer.parseInt(args[2]);
+            if (amount < 1) {
+                sender.sendMessage("You must buy at least 1 item.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            sender.sendMessage("Invalid amount: " + args[2]);
             return false;
         }
         PlayerStats stats = PlayerStats.getPlayerStats(player);
-        double price = MarketBaseValues.marketBaseValues.get(material) * 10;
+        double price = MarketBaseValues.marketBaseValues.get(material) * 10 + Market.getMarket().NegMarketSaturation;
         int bought = 0;
         for (int i = 0; i < amount; i++) {
             if (stats.getStat("money", Double.class) >= price) {
