@@ -3,6 +3,7 @@ package org.gsdistance.grimmsServer.Commands.HomeCommand;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Location;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
+import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class Sethome {
     @SuppressWarnings("SameReturnValue")
@@ -12,12 +13,13 @@ public class Sethome {
             homeName = args[1].toLowerCase();
         }
         PlayerMetadata meta = PlayerMetadata.getPlayerMetadata(player);
+        PlayerStats playerStats = PlayerStats.getPlayerStats(player);
 
         // Check multiHome permission
         boolean hasMultiHome = player.hasPermission("grimmsserver.multiHome");
         if (!hasMultiHome) {
             // Only allow one home (named "home" or the first set)
-            if (!meta.homes.isEmpty() && !meta.homes.containsKey(homeName)) {
+            if (meta.homes.size() >= Math.round(Math.cbrt(playerStats.getStat("level", Integer.class))) && !meta.homes.containsKey(homeName)) {
                 player.sendMessage("You do not have permission to set multiple homes.");
                 return true;
             }

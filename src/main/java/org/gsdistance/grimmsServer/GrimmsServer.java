@@ -11,6 +11,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +23,7 @@ public final class GrimmsServer extends JavaPlugin {
     public static JavaPlugin instance;
     public static Logger logger;
     public static PluginDataStorage pds;
+    public static List<Function<JavaPlugin,String>> hotReloadFuncs;
 
     @Override
     public void onEnable() {
@@ -38,6 +41,14 @@ public final class GrimmsServer extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public String[] fullHotReload(){
+        String[] rt = new String[hotReloadFuncs.size()];
+        for (int i = 0; i < hotReloadFuncs.size(); i++) {
+            rt[i] = hotReloadFuncs.get(i).apply(instance);
+        }
+        return rt;
     }
 
     public void copyResourceFiles() {

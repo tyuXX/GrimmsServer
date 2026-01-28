@@ -3,6 +3,7 @@ package org.gsdistance.grimmsServer.Manage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
+import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Shared;
@@ -11,6 +12,7 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 
 import static org.gsdistance.grimmsServer.Config.ActiveConfig.getConfigValue;
@@ -35,6 +37,12 @@ public class GeneralChatHandler {
         // Retrieve player metadata
         PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(player);
         String nickname = metadata != null ? metadata.nickname : player.getName();
+        // Add faction name to nickname
+        PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
+        Faction faction = Faction.getFaction(playerMetadata.factionUUID);
+        if(faction != null) {
+            nickname = "["+faction.name+"]" + nickname;
+        }
 
         // Format the chat message
         String formattedMessage = String.format(
