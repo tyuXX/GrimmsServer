@@ -5,16 +5,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Constructable.World.WorldConstructor;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static org.gsdistance.grimmsServer.Config.ActiveConfig.getConfigValue;
 
 public class DynamicDimensionGen {
+    public static final List<UUID> dynamicDimensions = new ArrayList<>();
+
     public static void newDimension(WorldConstructor worldConstructor) {
         GrimmsServer.logger.info("Creating new world: " + worldConstructor.name() + " with type: " + worldConstructor.type());
         if (Bukkit.getWorld(worldConstructor.name()) != null) {
@@ -44,7 +49,10 @@ public class DynamicDimensionGen {
 
             }
             GrimmsServer.logger.info("World created with name: " + worldCreator.name() + ", type: " + worldCreator.type() + ", environment: " + worldCreator.environment());
-            worldCreator.createWorld();
+            World world = worldCreator.createWorld();
+            if (world != null){
+                dynamicDimensions.add(world.getUID());
+            }
         }
     }
 

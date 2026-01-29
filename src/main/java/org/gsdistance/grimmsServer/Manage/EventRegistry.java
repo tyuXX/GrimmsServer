@@ -8,8 +8,10 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.gsdistance.grimmsServer.Events.Listeners.*;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
@@ -21,6 +23,11 @@ public class EventRegistry implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         org.gsdistance.grimmsServer.Events.Listeners.EntityDeathEvent.Event(event);
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        org.gsdistance.grimmsServer.Events.Listeners.PlayerDeathEvent.Event(event);
     }
 
     @EventHandler
@@ -41,6 +48,11 @@ public class EventRegistry implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         org.gsdistance.grimmsServer.Events.Listeners.PlayerJoinEvent.Event(event);
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        org.gsdistance.grimmsServer.Events.Listeners.PlayerRespawnEvent.Event(event);
     }
 
     @EventHandler

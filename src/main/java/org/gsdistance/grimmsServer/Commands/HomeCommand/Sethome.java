@@ -20,7 +20,7 @@ public class Sethome {
         if (!hasMultiHome) {
             // Only allow one home (named "home" or the first set)
             if (meta.homes.size() >= Math.round(Math.cbrt(playerStats.getStat("level", Integer.class))) && !meta.homes.containsKey(homeName)) {
-                player.sendMessage("You do not have permission to set multiple homes.");
+                player.sendMessage("You do not have permission to set multiple homes and your level isn't enough.");
                 return true;
             }
         }
