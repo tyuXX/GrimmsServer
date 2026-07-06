@@ -4,7 +4,7 @@ description: A spigot plugin made by Grimm and tyuXX, it adds player leveling, a
 website: www.gsdistance.org
 prefix: Grimm's
 main: org.gsdistance.grimmsServer.GrimmsServer
-version: 1.3
+version: 1.4r1
 api-version: 1.20
 load: STARTUP
 commands:
@@ -91,6 +91,10 @@ commands:
     description: Offline mode authentication
     usage: /gAuth unregister|register|login <password>
     permission: grimmsserver.gauth
+  gDeco:
+    description: Player decoration options
+    usage: /gDeco setdecotitle|cleardecotitle
+    permission: grimmsserver.gdeco
 permissions:
   grimmsserver.sendMoney:
     description: Allows a player to send money to another player
@@ -172,4 +176,7 @@ permissions:
     default: true
   grimmsserver.gauth:
     description: Offline mode authentication
+    default: true
+  grimmsserver.gdeco:
+    description: Player decorations
     default: true

@@ -9,30 +9,50 @@ import org.gsdistance.grimmsServer.Constructable.World.ChunkMetadata;
 import org.jetbrains.annotations.NotNull;
 
 public class GLogBaseCommand implements CommandExecutor {
+   public GLogBaseCommand() {
+   }
 
-    @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command.");
-            return true;
-        }
-        if (args.length == 0) {
+   public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+      if (sender instanceof Player player) {
+         if (args.length == 0) {
             return false;
-        }
-        String sub = args[0].toLowerCase();
-        return switch (sub) {
-            case "self_stats" -> LogSelfStats.subCommand(player);
-            case "other_stats" -> LogPlayerStats.subCommand(player, args);
-            case "self_titles" -> LogSelfTitles.subCommand(player);
-            case "other_titles" -> LogPlayerTitles.subCommand(player, args);
-            case "world" -> LogWorldStats.subCommand(player);
-            case "leaderboard" -> LogLeaderboard.subCommand(player);
-            case "commands" -> player.performCommand("grimmsserver:grimmsServerCommands");
-            case "chunk" -> {
-                player.sendMessage(new Gson().toJson(ChunkMetadata.getChunkMetadata(player.getLocation().getChunk())));
-                yield true;
+         } else {
+            boolean var10000;
+            switch (args[0].toLowerCase()) {
+               case "self_stats":
+                  var10000 = LogSelfStats.subCommand(player);
+                  break;
+               case "other_stats":
+                  var10000 = LogPlayerStats.subCommand(player, args);
+                  break;
+               case "self_titles":
+                  var10000 = LogSelfTitles.subCommand(player);
+                  break;
+               case "other_titles":
+                  var10000 = LogPlayerTitles.subCommand(player, args);
+                  break;
+               case "world":
+                  var10000 = LogWorldStats.subCommand(player);
+                  break;
+               case "leaderboard":
+                  var10000 = LogLeaderboard.subCommand(player);
+                  break;
+               case "commands":
+                  var10000 = player.performCommand("grimmsserver:grimmsServerCommands");
+                  break;
+               case "chunk":
+                  player.sendMessage((new Gson()).toJson(ChunkMetadata.getChunkMetadata(player.getLocation().getChunk())));
+                  var10000 = true;
+                  break;
+               default:
+                  var10000 = false;
             }
-            default -> false;
-        };
-    }
+
+            return var10000;
+         }
+      } else {
+         sender.sendMessage("Only players can use this command.");
+         return true;
+      }
+   }
 }

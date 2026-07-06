@@ -6,19 +6,22 @@ import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.FactionRank;
 
 public class UnClaimAll {
-    public static boolean subCommand(Player player) {
-        PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
-        Faction faction = Faction.getFaction(playerMetadata.factionUUID);
-        if (faction == null) {
-            player.sendMessage("§cYou are not in a faction.");
-            return false;
-        }
-        if (faction.getMemberRank(player.getUniqueId()) != FactionRank.LEADER) {
-            player.sendMessage("§cYou must be the leader of the faction to unclaim all land.");
-            return false;
-        }
-        faction.unClaimAllChunks();
-        player.sendMessage("§aYou have successfully unclaimed all land for your faction.");
-        return true;
-    }
+   public UnClaimAll() {
+   }
+
+   public static boolean subCommand(Player player) {
+      PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
+      Faction faction = Faction.getFaction(playerMetadata.factionUUID);
+      if (faction == null) {
+         player.sendMessage("§cYou are not in a faction.");
+         return false;
+      } else if (faction.getMemberRank(player.getUniqueId()) != FactionRank.LEADER) {
+         player.sendMessage("§cYou must be the leader of the faction to unclaim all land.");
+         return false;
+      } else {
+         faction.unClaimAllChunks();
+         player.sendMessage("§aYou have successfully unclaimed all land for your faction.");
+         return true;
+      }
+   }
 }

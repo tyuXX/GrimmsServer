@@ -6,17 +6,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class MarketBaseCommand implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0) {
-            return false;
-        }
+   public MarketBaseCommand() {
+   }
 
-        if (!(sender instanceof Player player)) {
-            return false;
-        }
-
-        return switch (args[0].toLowerCase()) {
+   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+      if (args.length == 0) {
+         return false;
+      } else if (sender instanceof Player) {
+         Player player = (Player)sender;
+         return switch (args[0].toLowerCase()) {
             case "get" -> GetMarket.SubCommand(sender, args);
             case "stock" -> Stock.SubCommand(sender, args);
             case "ripoff" -> Ripoff.SubCommand(sender, args);
@@ -29,6 +27,9 @@ public class MarketBaseCommand implements CommandExecutor {
             case "enchcosts" -> GetEnchantCosts.SubCommand(sender, args);
             case "info" -> Info.subCommand(player);
             default -> false;
-        };
-    }
+         };
+      } else {
+         return false;
+      }
+   }
 }

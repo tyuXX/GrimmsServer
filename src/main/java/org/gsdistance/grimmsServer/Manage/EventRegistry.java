@@ -4,115 +4,145 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.gsdistance.grimmsServer.Events.Listeners.*;
+import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.world.WorldSaveEvent;
 import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Events.Listeners.CustomEntityDamageByEntityEvent;
+import org.gsdistance.grimmsServer.Events.Listeners.CustomEntityDeathEvent;
+import org.gsdistance.grimmsServer.Events.Listeners.OnWorldSaveEvent;
+import org.gsdistance.grimmsServer.Events.Listeners.PlayerChatEvent;
+import org.gsdistance.grimmsServer.Events.Listeners.PlayerLevelUpEvent;
+import org.gsdistance.grimmsServer.Events.Registers.CustomEntityDamageByEntityRegister;
+import org.gsdistance.grimmsServer.Events.Registers.CustomEntityDeathRegister;
+import org.gsdistance.grimmsServer.Events.Registers.PlayerLevelUpRegister;
 
 public class EventRegistry implements Listener {
-    public static void callEvent(Event event) {
-        GrimmsServer.instance.getServer().getPluginManager().callEvent(event);
-    }
+   public EventRegistry() {
+   }
 
-    @EventHandler
-    public void onEntityDeath(EntityDeathEvent event) {
-        org.gsdistance.grimmsServer.Events.Listeners.EntityDeathEvent.Event(event);
-    }
+   public static void callEvent(Event event) {
+      GrimmsServer.instance.getServer().getPluginManager().callEvent(event);
+   }
 
-    @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        org.gsdistance.grimmsServer.Events.Listeners.PlayerDeathEvent.Event(event);
-    }
+   @EventHandler
+   public void onEntityDeath(EntityDeathEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.EntityDeathEvent.Event(event);
+      callEvent(new CustomEntityDeathRegister(event.getEntity()));
+   }
 
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
-        org.gsdistance.grimmsServer.Events.Listeners.BlockBreakEvent.Event(event);
-    }
+   @EventHandler
+   public void onCustomEntityDeath(CustomEntityDeathRegister event) {
+      CustomEntityDeathEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onBlockPlace(org.bukkit.event.block.BlockPlaceEvent event) {
-        BlockPlaceEvent.Event(event);
-    }
+   @EventHandler
+   public void onCustomEntityDamageByEntity(CustomEntityDamageByEntityRegister event) {
+      CustomEntityDamageByEntityEvent.Event(event);
+      callEvent(new CustomEntityDamageByEntityRegister());
+   }
 
-    @EventHandler
-    public void onPlayerInteract(org.bukkit.event.player.PlayerInteractEvent event) {
-        PlayerInteractEvent.Event(event);
-    }
+   @EventHandler
+   public void onPlayerDeath(PlayerDeathEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.PlayerDeathEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        org.gsdistance.grimmsServer.Events.Listeners.PlayerJoinEvent.Event(event);
-    }
+   @EventHandler
+   public void onBlockBreak(BlockBreakEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.BlockBreakEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onPlayerRespawn(PlayerRespawnEvent event) {
-        org.gsdistance.grimmsServer.Events.Listeners.PlayerRespawnEvent.Event(event);
-    }
+   @EventHandler
+   public void onBlockPlace(BlockPlaceEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.BlockPlaceEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onPlayerQuit(org.bukkit.event.player.PlayerQuitEvent event) {
-        PlayerQuitEvent.Event(event);
-    }
+   @EventHandler
+   public void onPlayerInteract(PlayerInteractEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.PlayerInteractEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onEntityDamage(EntityDamageEvent event) {
-        org.gsdistance.grimmsServer.Events.Listeners.EntityDamageEvent.Event(event);
-    }
+   @EventHandler
+   public void onPlayerJoin(PlayerJoinEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.PlayerJoinEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        org.gsdistance.grimmsServer.Events.Listeners.EntityDamageByEntityEvent.Event(event);
-    }
+   @EventHandler
+   public void onPlayerRespawn(PlayerRespawnEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.PlayerRespawnEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onChatUse(AsyncPlayerChatEvent event) {
-        PlayerChatEvent.Event(event);
-    }
+   @EventHandler
+   public void onPlayerQuit(PlayerQuitEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.PlayerQuitEvent.Event(event);
+   }
 
+   @EventHandler
+   public void onEntityDamage(EntityDamageEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.EntityDamageEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onCommandUse(org.bukkit.event.player.PlayerCommandPreprocessEvent event) {
-        PlayerCommandPreprocessEvent.Event(event);
-    }
+   @EventHandler
+   public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.EntityDamageByEntityEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onChunkLoad(org.bukkit.event.world.ChunkLoadEvent event) {
-        ChunkLoadEvent.Event(event);
-    }
+   @EventHandler
+   public void onChatUse(AsyncPlayerChatEvent event) {
+      PlayerChatEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onWorldLoad(org.bukkit.event.world.WorldLoadEvent event) {
-        WorldLoadEvent.Event(event);
-    }
+   @EventHandler
+   public void onCommandUse(PlayerCommandPreprocessEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.PlayerCommandPreprocessEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onWorldSave(org.bukkit.event.world.WorldSaveEvent event) {
-        OnWorldSaveEvent.Event(event);
-    }
+   @EventHandler
+   public void onChunkLoad(ChunkLoadEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.ChunkLoadEvent.Event(event);
+   }
 
-    @EventHandler
-    public void PlayerLevelUp(org.gsdistance.grimmsServer.Events.Registers.PlayerLevelUpEvent event) {
-        PlayerLevelUpEvent.Event(event);
-    }
+   @EventHandler
+   public void onWorldLoad(WorldLoadEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.WorldLoadEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onItemPickup(EntityPickupItemEvent event) {
-        org.gsdistance.grimmsServer.Events.Listeners.EntityPickupItemEvent.Event(event);
-    }
+   @EventHandler
+   public void onWorldSave(WorldSaveEvent event) {
+      OnWorldSaveEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onPlayerItemDamage(org.bukkit.event.player.PlayerItemDamageEvent event) {
-        PlayerItemDamageEvent.Event(event);
-    }
+   @EventHandler
+   public void PlayerLevelUp(PlayerLevelUpRegister event) {
+      PlayerLevelUpEvent.Event(event);
+   }
 
-    @EventHandler
-    public void onPlayerMove(org.bukkit.event.player.PlayerMoveEvent event) {
-        PlayerMoveEvent.Event(event);
-    }
+   @EventHandler
+   public void onItemPickup(EntityPickupItemEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.EntityPickupItemEvent.Event(event);
+   }
+
+   @EventHandler
+   public void onPlayerItemDamage(PlayerItemDamageEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.PlayerItemDamageEvent.Event(event);
+   }
+
+   @EventHandler
+   public void onPlayerMove(PlayerMoveEvent event) {
+      org.gsdistance.grimmsServer.Events.Listeners.PlayerMoveEvent.Event(event);
+   }
 }

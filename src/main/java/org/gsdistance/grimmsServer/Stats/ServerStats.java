@@ -1,87 +1,84 @@
 package org.gsdistance.grimmsServer.Stats;
 
 import com.google.gson.Gson;
-import org.gsdistance.grimmsServer.Constructable.Market;
-import org.gsdistance.grimmsServer.GrimmsServer;
-
 import java.lang.reflect.Type;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
+import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Constructable.Market;
 
 public class ServerStats {
-    public static final Dictionary<String, Type> Stats = new Hashtable<>();
+   public static final Dictionary<String, Type> Stats = new Hashtable();
+   public static final Dictionary<String, String> StatNames;
+   private Map<String, Object> stats;
 
-    static {
-        Stats.put("death_count", Integer.class);
-        Stats.put("join_count", Integer.class);
-        Stats.put("market", String.class);
-        Stats.put("leaderboard", String.class);
-    }
+   public ServerStats() {
+      this.loadStats();
+   }
 
-    public static final Dictionary<String, String> StatNames = new Hashtable<>();
+   public static ServerStats getServerStats() {
+      return new ServerStats();
+   }
 
-    static {
-        StatNames.put("death_count", "Death Count");
-        StatNames.put("join_count", "Join Count");
-        StatNames.put("market", "Market");
-        StatNames.put("leaderboard", "Leaderboard");
-    }
+   private void loadStats() {
+      this.stats = (Map)GrimmsServer.pds.retrieveData("server_stats.json", "", Map.class);
+      if (this.stats == null) {
+         this.stats = new Hashtable();
+         this.stats.put("market", (new Gson()).toJson(new Market()));
+         this.stats.put("leaderboard", (new Gson()).toJson(new PlayerStatLeaderBoard()));
+         this.saveStats();
+      } else {
+         if (!this.stats.containsKey("market")) {
+            this.stats.put("market", (new Gson()).toJson(new Market()));
+         }
 
-    private Map<String, Object> stats;
+         if (!this.stats.containsKey("leaderboard")) {
+            this.stats.put("leaderboard", (new Gson()).toJson(new PlayerStatLeaderBoard()));
+         }
+      }
 
-    public ServerStats() {
-        loadStats();
-    }
+   }
 
-    public static ServerStats getServerStats() {
-        return new ServerStats();
-    }
+   private void saveStats() {
+      GrimmsServer.pds.saveData(this.stats, Map.class, "server_stats.json", "");
+   }
 
-    private void loadStats() {
-        //noinspection unchecked
-        stats = (Map<String, Object>) GrimmsServer.pds.retrieveData("server_stats.json", "", Map.class);
-        if (stats == null) {
-            stats = new Hashtable<>();
-            stats.put("market", new Gson().toJson(new Market())); // Initialize market stat
-            stats.put("leaderboard", new Gson().toJson(new PlayerStatLeaderBoard())); // Initialize leaderboard stat
-            saveStats();
-        } else {
-            if (!stats.containsKey("market")) {
-                stats.put("market", new Gson().toJson(new Market())); // Initialize market stat
-            }
-            if (!stats.containsKey("leaderboard")) {
-                stats.put("leaderboard", new Gson().toJson(new PlayerStatLeaderBoard())); // Initialize leaderboard stat
-            }
-        }
-    }
+   public Object getStat(String stat) {
+      return this.stats.getOrDefault(stat, 0);
+   }
 
-    private void saveStats() {
-        GrimmsServer.pds.saveData(stats, Map.class, "server_stats.json", "");
-    }
+   public void setStat(String stat, Object value) {
+      this.stats.put(stat, value);
+      this.saveStats();
+   }
 
-    public Object getStat(String stat) {
-        return stats.getOrDefault(stat, 0);
-    }
+   public void changeStat(String stat, int amount) {
+      Class<?> type = (Class)Stats.get(stat);
+      if (type == null) {
+         GrimmsServer.logger.warning("Stat " + stat + " does not exist.");
+      } else {
+         if (type == Integer.class) {
+            int currentStat = this.stats.get(stat) instanceof Number ? ((Number)this.stats.get(stat)).intValue() : 0;
+            this.stats.put(stat, currentStat + amount);
+         } else if (type == Double.class) {
+            double currentStat = this.stats.get(stat) instanceof Number ? ((Number)this.stats.get(stat)).doubleValue() : (double)0.0F;
+            this.stats.put(stat, currentStat + (double)amount);
+         }
 
-    public void setStat(String stat, Object value) {
-        stats.put(stat, value);
-        saveStats();
-    }
+         this.saveStats();
+      }
+   }
 
-    public void changeStat(String stat, int amount) {
-        Class<?> type = (Class<?>) Stats.get(stat);
-        if (type == null) {
-            GrimmsServer.logger.warning("Stat " + stat + " does not exist.");
-            return;
-        }
-        if (type == Integer.class) {
-            int currentStat = stats.get(stat) instanceof Number ? ((Number) stats.get(stat)).intValue() : 0;
-            stats.put(stat, currentStat + amount);
-        } else if (type == Double.class) {
-            double currentStat = stats.get(stat) instanceof Number ? ((Number) stats.get(stat)).doubleValue() : 0.0;
-            stats.put(stat, currentStat + amount);
-        }
-        saveStats();
-    }
+   static {
+      Stats.put("death_count", Integer.class);
+      Stats.put("join_count", Integer.class);
+      Stats.put("market", String.class);
+      Stats.put("leaderboard", String.class);
+      StatNames = new Hashtable();
+      StatNames.put("death_count", "Death Count");
+      StatNames.put("join_count", "Join Count");
+      StatNames.put("market", "Market");
+      StatNames.put("leaderboard", "Leaderboard");
+   }
 }

@@ -8,33 +8,36 @@ import org.gsdistance.grimmsServer.Constructable.Item.ItemLevelHandler;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class MakeItemLevelable implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
-            if (((Player) sender).getInventory().getItemInMainHand().getType().getMaxDurability() > 1) {
-                if (playerStats.getStat("level", Integer.class) > 10) {
-                    if (ItemLevelHandler.isItemLevelable(((Player) sender).getInventory().getItemInMainHand())) {
-                        sender.sendMessage("This item is already levelable.");
-                        return false;
-                    } else {
-                        if (playerStats.getStat("money", Double.class) > 3500) {
-                            playerStats.changeStat("money", -3500);
-                            ItemLevelHandler.getLevelHandler((Player) sender);
-                        } else {
-                            sender.sendMessage("You need over 3500 money to make an item levelable.");
-                            return false;
-                        }
-                    }
-                } else {
-                    sender.sendMessage("You need to be over level 10 to make an item levelable.");
-                    return false;
-                }
+   public MakeItemLevelable() {
+   }
+
+   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+      if (sender instanceof Player) {
+         PlayerStats playerStats = PlayerStats.getPlayerStats((Player)sender);
+         if (((Player)sender).getInventory().getItemInMainHand().getType().getMaxDurability() > 1) {
+            if ((Integer)playerStats.getStat("level", Integer.class) <= 10) {
+               sender.sendMessage("You need to be over level 10 to make an item levelable.");
+               return false;
             }
-        } else {
-            sender.sendMessage("This command can only be run by a player.");
-            return false;
-        }
-        return true;
-    }
+
+            if (ItemLevelHandler.isItemLevelable(((Player)sender).getInventory().getItemInMainHand())) {
+               sender.sendMessage("This item is already levelable.");
+               return false;
+            }
+
+            if (!((Double)playerStats.getStat("money", Double.class) > (double)3500.0F)) {
+               sender.sendMessage("You need over 3500 money to make an item levelable.");
+               return false;
+            }
+
+            playerStats.changeStat("money", -3500);
+            ItemLevelHandler.getLevelHandler((Player)sender);
+         }
+
+         return true;
+      } else {
+         sender.sendMessage("This command can only be run by a player.");
+         return false;
+      }
+   }
 }

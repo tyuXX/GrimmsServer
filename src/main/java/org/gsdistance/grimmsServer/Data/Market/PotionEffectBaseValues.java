@@ -1,61 +1,22 @@
 package org.gsdistance.grimmsServer.Data.Market;
 
+import java.util.Map;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.Map;
-
 public class PotionEffectBaseValues {
-    public static final Map<PotionEffectType, Double> potionEffectBaseValues = Map.ofEntries(
-            Map.entry(PotionEffectType.SPEED, 5.0),
-            Map.entry(PotionEffectType.SLOWNESS, 3.0),
-            Map.entry(PotionEffectType.HASTE, 8.0),
-            Map.entry(PotionEffectType.MINING_FATIGUE, 2.0),
-            Map.entry(PotionEffectType.STRENGTH, 10.0),
-            Map.entry(PotionEffectType.INSTANT_HEALTH, 50.0),
-            Map.entry(PotionEffectType.INSTANT_DAMAGE, 45.0),
-            Map.entry(PotionEffectType.JUMP_BOOST, 4.0),
-            Map.entry(PotionEffectType.NAUSEA, 1.0),
-            Map.entry(PotionEffectType.REGENERATION, 12.0),
-            Map.entry(PotionEffectType.RESISTANCE, 15.0),
-            Map.entry(PotionEffectType.FIRE_RESISTANCE, 6.0),
-            Map.entry(PotionEffectType.WATER_BREATHING, 4.0),
-            Map.entry(PotionEffectType.INVISIBILITY, 20.0),
-            Map.entry(PotionEffectType.BLINDNESS, 2.0),
-            Map.entry(PotionEffectType.NIGHT_VISION, 3.0),
-            Map.entry(PotionEffectType.HUNGER, 1.0),
-            Map.entry(PotionEffectType.WEAKNESS, 2.0),
-            Map.entry(PotionEffectType.POISON, 8.0),
-            Map.entry(PotionEffectType.WITHER, 18.0),
-            Map.entry(PotionEffectType.HEALTH_BOOST, 150.0),
-            Map.entry(PotionEffectType.ABSORPTION, 20.0),
-            Map.entry(PotionEffectType.GLOWING, 1.0),
-            Map.entry(PotionEffectType.LEVITATION, 12.0),
-            Map.entry(PotionEffectType.LUCK, 30.0),
-            Map.entry(PotionEffectType.UNLUCK, 2.0),
-            Map.entry(PotionEffectType.SLOW_FALLING, 5.0),
-            Map.entry(PotionEffectType.CONDUIT_POWER, 14.0),
-            Map.entry(PotionEffectType.DOLPHINS_GRACE, 3.0),
-            Map.entry(PotionEffectType.BAD_OMEN, 8.0),
-            Map.entry(PotionEffectType.HERO_OF_THE_VILLAGE, 25.0),
-            Map.entry(PotionEffectType.DARKNESS, 2.0),
-            Map.entry(PotionEffectType.TRIAL_OMEN, 10.0),
-            Map.entry(PotionEffectType.WIND_CHARGED, 7.0),
-            Map.entry(PotionEffectType.WEAVING, 6.0),
-            Map.entry(PotionEffectType.OOZING, 5.0),
-            Map.entry(PotionEffectType.INFESTED, 4.0)
-    );
+   public static final Map<PotionEffectType, Double> potionEffectBaseValues;
+   public static final Map<PotionEffectType, Integer> potionEffectAmplitudeLimits;
 
-    public static final Map<PotionEffectType, Integer> potionEffectAmplitudeLimits = Map.ofEntries(
-            Map.entry(PotionEffectType.REGENERATION, 2),
-            Map.entry(PotionEffectType.RESISTANCE, 1),
-            Map.entry(PotionEffectType.HASTE, 3)
-    );
+   public PotionEffectBaseValues() {
+   }
 
-    public static double getPotionEffectBaseValue(PotionEffectType potionEffectType, int time, int amplifier) {
-        Integer limit = potionEffectAmplitudeLimits.get(potionEffectType);
-        if (limit != null && amplifier > limit) {
-            return Double.MAX_VALUE;
-        }
-        return potionEffectBaseValues.get(potionEffectType) * time * Math.pow(amplifier, 2);
-    }
+   public static double getPotionEffectBaseValue(PotionEffectType potionEffectType, int time, int amplifier) {
+      Integer limit = (Integer)potionEffectAmplitudeLimits.get(potionEffectType);
+      return limit != null && amplifier > limit ? Double.MAX_VALUE : (Double)potionEffectBaseValues.get(potionEffectType) * (double)time * Math.pow((double)amplifier, (double)2.0F);
+   }
+
+   static {
+      potionEffectBaseValues = Map.ofEntries(Map.entry(PotionEffectType.SPEED, (double)5.0F), Map.entry(PotionEffectType.SLOWNESS, (double)3.0F), Map.entry(PotionEffectType.HASTE, (double)8.0F), Map.entry(PotionEffectType.MINING_FATIGUE, (double)2.0F), Map.entry(PotionEffectType.STRENGTH, (double)10.0F), Map.entry(PotionEffectType.INSTANT_HEALTH, (double)50.0F), Map.entry(PotionEffectType.INSTANT_DAMAGE, (double)45.0F), Map.entry(PotionEffectType.JUMP_BOOST, (double)4.0F), Map.entry(PotionEffectType.NAUSEA, (double)1.0F), Map.entry(PotionEffectType.REGENERATION, (double)12.0F), Map.entry(PotionEffectType.RESISTANCE, (double)15.0F), Map.entry(PotionEffectType.FIRE_RESISTANCE, (double)6.0F), Map.entry(PotionEffectType.WATER_BREATHING, (double)4.0F), Map.entry(PotionEffectType.INVISIBILITY, (double)20.0F), Map.entry(PotionEffectType.BLINDNESS, (double)2.0F), Map.entry(PotionEffectType.NIGHT_VISION, (double)3.0F), Map.entry(PotionEffectType.HUNGER, (double)1.0F), Map.entry(PotionEffectType.WEAKNESS, (double)2.0F), Map.entry(PotionEffectType.POISON, (double)8.0F), Map.entry(PotionEffectType.WITHER, (double)18.0F), Map.entry(PotionEffectType.HEALTH_BOOST, (double)150.0F), Map.entry(PotionEffectType.ABSORPTION, (double)20.0F), Map.entry(PotionEffectType.GLOWING, (double)1.0F), Map.entry(PotionEffectType.LEVITATION, (double)12.0F), Map.entry(PotionEffectType.LUCK, (double)30.0F), Map.entry(PotionEffectType.UNLUCK, (double)2.0F), Map.entry(PotionEffectType.SLOW_FALLING, (double)5.0F), Map.entry(PotionEffectType.CONDUIT_POWER, (double)14.0F), Map.entry(PotionEffectType.DOLPHINS_GRACE, (double)3.0F), Map.entry(PotionEffectType.BAD_OMEN, (double)8.0F), Map.entry(PotionEffectType.HERO_OF_THE_VILLAGE, (double)25.0F), Map.entry(PotionEffectType.DARKNESS, (double)2.0F), Map.entry(PotionEffectType.TRIAL_OMEN, (double)10.0F), Map.entry(PotionEffectType.WIND_CHARGED, (double)7.0F), Map.entry(PotionEffectType.WEAVING, (double)6.0F), Map.entry(PotionEffectType.OOZING, (double)5.0F), Map.entry(PotionEffectType.INFESTED, (double)4.0F));
+      potionEffectAmplitudeLimits = Map.ofEntries(Map.entry(PotionEffectType.REGENERATION, 2), Map.entry(PotionEffectType.RESISTANCE, 1), Map.entry(PotionEffectType.HASTE, 3));
+   }
 }

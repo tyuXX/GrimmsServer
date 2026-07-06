@@ -6,22 +6,28 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class HomeBaseCommand implements CommandExecutor {
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command.");
-            return true;
-        }
-        if (args.length == 0) {
+   public HomeBaseCommand() {
+   }
+
+   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+      if (sender instanceof Player player) {
+         if (args.length == 0) {
             return false;
-        }
-        String sub = args[0].toLowerCase();
-        return switch (sub) {
-            case "sethome" -> Sethome.SubCommand(player, args);
-            case "tp" -> TpHome.SubCommand(player, args);
-            case "homes" -> Homes.SubCommand(player, args);
-            case "delhome" -> DelHome.SubCommand(player, args);
-            default -> false;
-        };
-    }
+         } else {
+            boolean var10000;
+            switch (args[0].toLowerCase()) {
+               case "sethome" -> var10000 = Sethome.SubCommand(player, args);
+               case "tp" -> var10000 = TpHome.SubCommand(player, args);
+               case "homes" -> var10000 = Homes.SubCommand(player, args);
+               case "delhome" -> var10000 = DelHome.SubCommand(player, args);
+               default -> var10000 = false;
+            }
+
+            return var10000;
+         }
+      } else {
+         sender.sendMessage("Only players can use this command.");
+         return true;
+      }
+   }
 }
