@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Constructable.Item;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -73,9 +74,7 @@ public class ItemLevelHandler {
         this.setXp(totalXp);
         ItemStats.getItemStats(this.item).UpdateItemStats();
         if (levelUps > 0) {
-            Player var10000 = this.player;
-            String var10001 = String.valueOf(this.item.getType());
-            var10000.sendMessage("Your " + var10001 + " has leveled up to " + this.getLevel() + "!");
+            this.player.sendMessage(ChatColor.GREEN + "Your " + ChatColor.YELLOW + this.item.getType() + ChatColor.GREEN + " has leveled up to " + ChatColor.GOLD + this.getLevel() + ChatColor.GREEN + "!");
         }
 
     }

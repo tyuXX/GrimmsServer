@@ -17,7 +17,7 @@ public class GAuthBaseCommand implements CommandExecutor {
     }
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length < 2 && !args[0].equals("autologin")) {
+        if (args.length < 2 && (args.length == 0 || !args[0].equals("autologin"))) {
             sender.sendMessage(ChatColor.RED + "This command requires a password.");
             return false;
         } else {

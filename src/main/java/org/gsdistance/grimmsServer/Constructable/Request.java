@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Constructable;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 
@@ -31,8 +32,8 @@ public class Request {
 
     public static void newRequest(Function<Object, ?> onAccept, Player forPlayer, String forPurpose, Object requestData) {
         Request request = new Request(onAccept, forPlayer, forPurpose, requestData);
-        forPlayer.sendMessage("You have a new request: " + forPurpose);
-        forPlayer.sendMessage("Accept with /acceptRequest " + request.requestId);
+        forPlayer.sendMessage(ChatColor.GOLD + "You have a new request: " + ChatColor.WHITE + forPurpose);
+        forPlayer.sendMessage(ChatColor.GRAY + "Accept with " + ChatColor.YELLOW + "/acceptRequest " + request.requestId);
         PerSessionDataStorage.dataStore.put("request-" + request.requestId, Data.of(request, Request.class));
         ArrayList<Integer> requestDataList = (ArrayList) PerSessionDataStorage.dataStore.get("requestData-" + forPlayer.getName()).key();
         requestDataList.add(request.requestId);

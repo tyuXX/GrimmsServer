@@ -4,179 +4,179 @@ description: A spigot plugin made by Grimm and tyuXX, it adds player leveling, a
 website: www.gsdistance.org
 prefix: Grimm's
 main: org.gsdistance.grimmsServer.GrimmsServer
-version: 1.4r1
+version: 1.4r2
 api-version: 1.20
 load: STARTUP
 commands:
   sendMoney:
-    description: Sends money to another player.
+    description: Send money to another player from your balance
     usage: /sendMoney <player> <amount>
     permission: grimmsserver.sendMoney
   makeItemLevelable:
-    description: Makes the main hand item levelable for 3500 money, requires level 10.
+    description: Make the item in your main hand levelable (costs 3500 money, requires level 10+)
     usage: /makeItemLevelable
     permission: grimmsserver.makeItemLevelable
   setPlayerStat:
-    description: Set a player's stats.
+    description: Set a specific stat for any player (admin only)
     usage: /setPlayerStat <player> <statId> <value>
     permission: grimmsserver.setPlayerStat
   addTitle:
-    description: Adds a title to a player.
+    description: Add a title to a player (admin only)
     usage: /addTitle <player> <title>
     permission: grimmsserver.addTitle
   executePlayer:
-    description: Executes a player, requires title Executioner.
+    description: Execute a player (requires Executioner title)
     usage: /executePlayer <player>
     permission: grimmsserver.executePlayer
   grimmsServerCommands:
-    description: Displays all existing GrimmsServer commands
+    description: List all available GrimmsServer commands
     usage: /grimmsServerCommands
   withdrawMoney:
-    description: Withdraw an amount of money into a banknote
-    usage: /withdrawMoney <amount> (optional/banknoteAmount)
+    description: Withdraw money from your balance into physical banknotes
+    usage: /withdrawMoney <amount> [banknoteCount]
     permission: grimmsserver.withdrawMoney
   depositMoney:
-    description: Deposit a banknote
+    description: Deposit banknotes by holding them in your main hand
     usage: /depositMoney
     permission: grimmsserver.depositMoney
   acceptRequest:
-    description: Accepts a request.
-    usage: /acceptRequest
+    description: Accept a pending request by ID
+    usage: /acceptRequest <requestId>
     permission: grimmsserver.acceptRequest
   removeTitle:
-    description: Removes a title from a player.
+    description: Remove a title from a player (admin only)
     usage: /removeTitle <player> <title>
     permission: grimmsserver.removeTitle
   gFaction:
-    description: Faction commands
-    usage: /gFaction <command> <args>
+    description: Manage factions - create, join, leave, claim land, and manage members
+    usage: /gFaction <invite|join|leave|kick|info|new|claim|unclaim|setrank|unclaimall> [args]
     permission: grimmsserver.faction
   home:
-    description: Home commands
-    usage: /home <command> <args>
+    description: Manage your homes - set, teleport, list, or delete
+    usage: /home <sethome|tp|homes|delhome> [args]
     permission: grimmsserver.home
   nick:
-    description: Change your nickname or, if admin, set another player's nickname.
+    description: Change your nickname or set another player's nickname (admin)
     usage: /nick <nickname> OR /nick <player> <nickname>
     permission: grimmsserver.nick
   market:
-    description: Market commands
-    usage: /market <get|stock|ripoff|enchant|tp> [args]
+    description: Access the market system for buying, selling, enchanting, and viewing stock
+    usage: /market <get|stock|ripoff|enchant|potioneffect|tp|sell|sellall|buy|enchcosts|info> [args]
     permission: grimmsserver.market
   gLog:
-    description: For seeing statistics.
-    usage: /gLog self_stats|other_stats|self_titles|other_titles|world
+    description: View statistics for yourself, other players, worlds, or leaderboards
+    usage: /gLog <self_stats|other_stats|self_titles|other_titles|world|leaderboard|commands|chunk> [args]
     permission: grimmsserver.log
   gDim:
-    description: Dimension utilities.
-    usage: /gDim <command> [args]
+    description: Manage custom dimensions - create, delete, teleport, list, or get info
+    usage: /gDim <create|delete|tp|list|info> [args]
     permission: grimmsserver.dimensions
   gUtil:
-    description: Utility commands.
-    usage: /gUtil <command> [args]
+    description: Utility commands for version info, relics, capabilities, and settings
+    usage: /gUtil <version|relic|capability|setting> [args]
     permission: grimmsserver.util
   gConfig:
-    description: Configuration commands.
-    usage: /gConfig <command> [args]
+    description: Manage server configuration - dump config or reload settings
+    usage: /gConfig <dump|reload>
     permission: grimmsserver.config
   job:
-    description: Job commands.
-    usage: /job <command> [args]
+    description: Manage your job - log jobs, take jobs, or buy education
+    usage: /job <log|take|buyedu> [args]
     permission: grimmsserver.job
   gHelp:
-    description: Show a command help string
-    usage: /gHelp <command>
+    description: Get detailed help for any GrimmsServer command
+    usage: /gHelp [command]
     permission: grimmsserver.ghelp
   gAuth:
-    description: Offline mode authentication
-    usage: /gAuth unregister|register|login <password>
+    description: Offline mode authentication - register, login, or unregister
+    usage: /gAuth <register|login|unregister> <password>
     permission: grimmsserver.gauth
   gDeco:
-    description: Player decoration options
-    usage: /gDeco setdecotitle|cleardecotitle
+    description: Manage player decorations - set or clear decorative titles
+    usage: /gDeco <setdecotitle|cleardecotitle>
     permission: grimmsserver.gdeco
 permissions:
   grimmsserver.sendMoney:
-    description: Allows a player to send money to another player
+    description: Allows sending money to other players from your balance
     default: true
   grimmsserver.makeItemLevelable:
-    description: Allows a player to make an item levelable
+    description: Allows making items levelable for XP gain and stat bonuses
     default: true
   grimmsserver.setPlayerStat:
-    description: Allows a player to set another player's stats
+    description: Allows setting any player's stats directly (admin only)
     default: op
   grimmsserver.addTitle:
-    description: Allows a player to add a title to another player
+    description: Allows granting titles to players (admin only)
     default: op
   grimmsserver.executePlayer:
-    description: Allows a player to execute another player
+    description: Allows executing players with the Executioner title
     default: true
   grimmsserver.multiHome:
-    description: Allows multiple homes to be set
+    description: Allows setting multiple homes instead of just one
     default: op
   grimmsserver.home:
-    description: Allows a player to use home commands
+    description: Allows using home teleportation commands
     default: true
   grimmsserver.withdrawMoney:
-    description: Allows a player to withdraw money into a banknote
+    description: Allows withdrawing money into physical banknotes for trading
     default: true
   grimmsserver.depositMoney:
-    description: Allows a player to deposit a banknote
+    description: Allows depositing banknotes back into your balance
     default: true
   grimmsserver.acceptRequest:
-    description: Allows a player to accept a request
+    description: Allows accepting pending requests (faction invites, etc.)
     default: true
   grimmsserver.removeTitle:
-    description: Allows a player to remove a title from another player
+    description: Allows removing titles from players (admin only)
     default: op
   grimmsserver.faction:
-    description: Allows a player to use faction commands
+    description: Allows using faction commands for group gameplay
     default: true
   grimmsserver.factionAdmin:
-    description: Allows a player to use faction admin commands
+    description: Allows administrative faction commands (admin only)
     default: op
   grimmsserver.nick:
-    description: Allows a player to change their own nickname
+    description: Allows changing your own display nickname
     default: true
   grimmsserver.nick.others:
-    description: Allows a player to change other players' nicknames
+    description: Allows changing other players' nicknames (admin only)
     default: op
   grimmsserver.market:
-    description: Allows a player to use market commands
+    description: Allows using the market for buying, selling, and enchanting
     default: true
   grimmsserver.log:
-    description: Allows a player to use logging commands
+    description: Allows viewing various statistics and logs
     default: true
   grimmsserver.log.self:
-    description: Allows a player to log their own stats
+    description: Allows viewing your own statistics and titles
     default: true
   grimmsserver.log.other:
-    description: Allows a player to log another player's stats
+    description: Allows viewing other players' statistics (admin only)
     default: op
   grimmsserver.dimensions:
-    description: Allows a player to use dimension commands
+    description: Allows managing custom dimensions (admin only)
     default: op
   grimmsserver.util:
-    description: Allows a player to use utility commands
+    description: Allows using general utility commands
     default: true
   grimmsserver.util.admin:
-    description: Allows a player to use admin utility commands
+    description: Allows using administrative utility commands (admin only)
     default: op
   grimmsserver.config:
-    description: Allows a player to use configuration commands
+    description: Allows modifying server configuration (admin only)
     default: op
   grimmsserver.faction.bypass:
-    description: Allows a player to bypass claims
+    description: Allows bypassing faction claim restrictions
     default: op
   grimmsserver.job:
-    description: Allows a player to use job commands
+    description: Allows using the job system for income
     default: true
   grimmsserver.ghelp:
-    description: Allows a player to use the help string command
+    description: Allows using the help command system
     default: true
   grimmsserver.gauth:
-    description: Offline mode authentication
+    description: Allows using offline mode authentication
     default: true
   grimmsserver.gdeco:
-    description: Player decorations
+    description: Allows using player decoration options
     default: true

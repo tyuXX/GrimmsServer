@@ -4,15 +4,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Constructable.Request;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
+import org.jetbrains.annotations.NotNull;
 
 public class AcceptRequest implements CommandExecutor {
     public AcceptRequest() {
     }
 
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             if (args.length == 0) {
                 return false;

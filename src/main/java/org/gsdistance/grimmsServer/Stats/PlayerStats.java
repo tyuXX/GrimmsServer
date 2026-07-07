@@ -66,7 +66,7 @@ public class PlayerStats {
         }
     }
 
-    public void changeStat(String stat, int amount) {
+    public void changeStat(String stat, double amount) {
         PersistentDataType type = Stats.get(stat);
         if (type == null) {
             GrimmsServer.logger.warning("Stat " + stat + " does not exist.");
@@ -77,14 +77,14 @@ public class PlayerStats {
                     currentStat = 0;
                 }
 
-                this.dataContainer.set(new NamespacedKey(this.plugin, stat), PersistentDataType.INTEGER, currentStat + amount);
+                this.dataContainer.set(new NamespacedKey(this.plugin, stat), PersistentDataType.INTEGER, currentStat + (int) amount);
             } else if (type == PersistentDataType.DOUBLE) {
                 Double currentStat = this.dataContainer.get(new NamespacedKey(this.plugin, stat), PersistentDataType.DOUBLE);
                 if (currentStat == null) {
                     currentStat = (double) 0.0F;
                 }
 
-                this.dataContainer.set(new NamespacedKey(this.plugin, stat), PersistentDataType.DOUBLE, currentStat + (double) amount);
+                this.dataContainer.set(new NamespacedKey(this.plugin, stat), PersistentDataType.DOUBLE, currentStat + amount);
             } else if (type == PersistentDataType.LONG) {
                 Long currentStat = this.dataContainer.get(new NamespacedKey(this.plugin, stat), PersistentDataType.LONG);
                 if (currentStat == null) {

@@ -106,7 +106,7 @@ public class ItemIndexer {
         for (Material material : Material.values()) {
             if (material.isItem() && material != Material.AIR) {
                 List<Recipe> recipes = Bukkit.getServer().getRecipesFor(new ItemStack(material));
-                if (recipes != null && !recipes.isEmpty()) {
+                if (!recipes.isEmpty()) {
                     recipeCache.put(material, recipes);
                 }
             }

@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -20,7 +21,9 @@ public class Shared {
         if (Boolean.TRUE.equals(ActiveConfig.getConfigValue(ConfigKey.FORCE_DISABLE_BC, Boolean.class))) {
             GrimmsServer.logger.info("Broadcast is disabled by configuration.");
         } else {
-            GrimmsServer.instance.getServer().broadcastMessage("[" + GrimmsServer.instance.getDescription().getPrefix() + "-BC]: " + (prefix == null ? "" : prefix) + message);
+            String formattedPrefix = prefix == null ? "" : ChatColor.translateAlternateColorCodes('&', prefix);
+            String formattedMessage = ChatColor.translateAlternateColorCodes('&', message);
+            GrimmsServer.instance.getServer().broadcastMessage(ChatColor.GOLD + "[" + ChatColor.YELLOW + GrimmsServer.instance.getDescription().getPrefix() + ChatColor.GOLD + "-BC]: " + ChatColor.WHITE + formattedPrefix + formattedMessage);
         }
     }
 

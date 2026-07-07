@@ -23,7 +23,7 @@ public class StaticLists {
                 if (e.getKey().getKey().toLowerCase().contains("boat")) {
                     xpBlacklist.add(e);
                 }
-            } catch (IllegalArgumentException var5) {
+            } catch (IllegalArgumentException ignored) {
             }
         }
 

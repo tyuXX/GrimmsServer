@@ -8,12 +8,13 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
+import org.jetbrains.annotations.NotNull;
 
 public class SendMoney implements CommandExecutor {
     public SendMoney() {
     }
 
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.RED + "Usage: /sendMoney <player> <amount>");

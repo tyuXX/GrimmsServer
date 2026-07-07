@@ -1,6 +1,7 @@
 package org.gsdistance.grimmsServer.Commands.GFactionCommand;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
@@ -23,7 +24,7 @@ public class SetRank {
         // Guard: Check if target player is online
         Player targetPlayer = Bukkit.getPlayer(args[1]);
         if (targetPlayer == null) {
-            player.sendMessage("§cThe player you are trying to set the rank for is not found.");
+            player.sendMessage(ChatColor.RED + "The player you are trying to set the rank for is not found.");
             return false;
         }
 
@@ -31,19 +32,19 @@ public class SetRank {
         PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
         Faction faction = Faction.getFaction(playerMetadata.factionUUID);
         if (faction == null) {
-            player.sendMessage("§cYou are not a member of any faction.");
+            player.sendMessage(ChatColor.RED + "You are not a member of any faction.");
             return false;
         }
 
         // Guard: Check if target player belongs to the same faction
         if (!faction.isMember(targetPlayer.getUniqueId())) {
-            player.sendMessage("§cThe player is not a member of your faction.");
+            player.sendMessage(ChatColor.RED + "The player is not a member of your faction.");
             return false;
         }
 
         // Guard: Hierarchy check (Cannot alter ranks of peers or superiors)
         if (faction.getMemberRank(player.getUniqueId()).weight <= faction.getMemberRank(targetPlayer.getUniqueId()).weight) {
-            player.sendMessage("§cYou cannot set the rank of a player with the same or higher rank.");
+            player.sendMessage(ChatColor.RED + "You cannot set the rank of a player with the same or higher rank.");
             return false;
         }
 
@@ -55,7 +56,7 @@ public class SetRank {
                     .map(FactionRank::toString)
                     .collect(Collectors.joining(", "));
 
-            player.sendMessage("§cInvalid rank specified. Valid ranks are: " + validRanks);
+            player.sendMessage(ChatColor.RED + "Invalid rank specified. Valid ranks are: " + ChatColor.YELLOW + validRanks);
             return false;
         }
 

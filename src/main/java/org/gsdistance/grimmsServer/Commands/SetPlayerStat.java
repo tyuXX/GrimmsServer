@@ -7,12 +7,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
+import org.jetbrains.annotations.NotNull;
 
 public class SetPlayerStat implements CommandExecutor {
     public SetPlayerStat() {
     }
 
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             if (args.length < 3) {
                 return false;

@@ -6,12 +6,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerTitles;
+import org.jetbrains.annotations.NotNull;
 
 public class RemoveTitle implements CommandExecutor {
     public RemoveTitle() {
     }
 
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             if (args.length < 2) {
                 return false;

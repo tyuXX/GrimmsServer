@@ -15,7 +15,11 @@ public class Location {
         this.x = location.getX();
         this.y = location.getY();
         this.z = location.getZ();
-        this.world = Objects.requireNonNull(location.getWorld()).getName();
+        World world = location.getWorld();
+        if (world == null) {
+            throw new IllegalArgumentException("Location world cannot be null");
+        }
+        this.world = world.getName();
     }
 
     public Location(String world, double x, double y, double z) {

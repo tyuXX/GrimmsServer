@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Commands.GFactionCommand;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
@@ -13,16 +14,16 @@ public class Leave {
         PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
         Faction faction = Faction.getFaction(playerMetadata.factionUUID);
         if (faction == null) {
-            player.sendMessage("§cThe faction you are trying to leave does not exist.");
+            player.sendMessage(ChatColor.RED + "The faction you are trying to leave does not exist.");
             return false;
         } else if (faction.getMemberRank(player.getUniqueId()) == FactionRank.LEADER) {
             faction.delete();
-            player.sendMessage("§aYou have successfully disbanded the faction " + faction.name + ".");
+            player.sendMessage(ChatColor.GREEN + "You have successfully disbanded the faction " + ChatColor.YELLOW + faction.name + ChatColor.GREEN + ".");
             return false;
         } else {
             faction.removeMember(player.getUniqueId());
             playerMetadata.factionUUID = null;
-            player.sendMessage("§aYou have successfully left the faction " + faction.name + ".");
+            player.sendMessage(ChatColor.GREEN + "You have successfully left the faction " + ChatColor.YELLOW + faction.name + ChatColor.GREEN + ".");
             return true;
         }
     }

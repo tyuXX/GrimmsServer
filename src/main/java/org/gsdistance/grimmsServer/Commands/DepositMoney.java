@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,30 +12,41 @@ import org.gsdistance.grimmsServer.Constructable.Item.ItemDataHandler;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
+import org.jetbrains.annotations.NotNull;
 
 public class DepositMoney implements CommandExecutor {
     public DepositMoney() {
     }
 
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            ItemStack itemStack = ((Player) sender).getInventory().getItemInMainHand();
-            ItemDataHandler itemDataHandler = new ItemDataHandler(itemStack, GrimmsServer.instance);
-            Double banknoteValue = itemDataHandler.getItemNBTData("banknoteValue", PersistentDataType.DOUBLE);
-            if (banknoteValue == null) {
-                sender.sendMessage("Not a banknote.");
-                return false;
-            } else {
-                PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
-                playerStats.setStat("money", playerStats.getStat("money", Double.class) + banknoteValue * (double) itemStack.getAmount());
-                ((Player) sender).getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                Double var10001 = banknoteValue * (double) itemStack.getAmount();
-                sender.sendMessage("Deposited " + Shared.formatNumber(var10001) + " money.");
-                return true;
-            }
-        } else {
-            sender.sendMessage("This command can only be run by a player.");
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "This command can only be run by a player.");
             return false;
         }
+        
+        ItemStack itemStack = ((Player) sender).getInventory().getItemInMainHand();
+        
+        if (itemStack.getType() == Material.AIR) {
+            sender.sendMessage(ChatColor.RED + "You are not holding anything to deposit.");
+            return false;
+        }
+        
+        ItemDataHandler itemDataHandler = new ItemDataHandler(itemStack, GrimmsServer.instance);
+        Double banknoteValue = itemDataHandler.getItemNBTData("banknoteValue", PersistentDataType.DOUBLE);
+        
+        if (banknoteValue == null) {
+            sender.sendMessage(ChatColor.RED + "This item is not a valid banknote.");
+            return false;
+        }
+        
+        PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
+        double totalValue = banknoteValue * itemStack.getAmount();
+        double currentBalance = playerStats.getStat("money", Double.class);
+        
+        playerStats.setStat("money", currentBalance + totalValue);
+        ((Player) sender).getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+        
+        sender.sendMessage(ChatColor.GREEN + "Deposited " + ChatColor.GOLD + Shared.formatNumber(totalValue) + ChatColor.GREEN + ". New balance: " + ChatColor.GOLD + Shared.formatNumber(currentBalance + totalValue));
+        return true;
     }
 }

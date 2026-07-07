@@ -1,6 +1,7 @@
 package org.gsdistance.grimmsServer.Commands.GFactionCommand;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Constructable.Faction;
@@ -22,20 +23,26 @@ public class Invite {
             if (targetPlayer != null && targetPlayer.isOnline()) {
                 PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
                 if (playerMetadata.factionUUID == null) {
-                    player.sendMessage("§cYou are not a member of any faction.");
+                    player.sendMessage(ChatColor.RED + "You are not a member of any faction.");
                     return false;
                 } else if (PlayerMetadata.getPlayerMetadata(targetPlayer).factionUUID != null) {
-                    player.sendMessage("§cThe player you are trying to invite is already in a faction.");
+                    player.sendMessage(ChatColor.RED + "The player you are trying to invite is already in a faction.");
                     return false;
                 } else {
                     Faction faction = Faction.getFaction(playerMetadata.factionUUID);
-                    if (faction.getMemberRank(player.getUniqueId()).weight < FactionRank.MEMBER.weight) {
-                        player.sendMessage("§cYou do not have permission to invite players to your faction.");
+                    if (faction == null) {
+                        player.sendMessage(ChatColor.RED + "Your faction could not be found.");
+                        return false;
+                    } else if (faction.getMemberRank(player.getUniqueId()).weight < FactionRank.MEMBER.weight) {
+                        player.sendMessage(ChatColor.RED + "You do not have permission to invite players to your faction.");
                         return false;
                     } else {
                         Request.newRequest((object) -> {
                             Data<Player, UUID> data = (Data) object;
                             Faction targetFaction = Faction.getFaction(data.value());
+                            if (targetFaction == null) {
+                                return null;
+                            }
                             Player target = data.key();
                             PlayerMetadata targetMetadata = PlayerMetadata.getPlayerMetadata(target);
                             targetMetadata.factionUUID = targetFaction.uuid;
@@ -48,7 +55,7 @@ public class Invite {
                     }
                 }
             } else {
-                player.sendMessage("§cThe player you are trying to invite is not online.");
+                player.sendMessage(ChatColor.RED + "The player you are trying to invite is not online.");
                 return false;
             }
         }

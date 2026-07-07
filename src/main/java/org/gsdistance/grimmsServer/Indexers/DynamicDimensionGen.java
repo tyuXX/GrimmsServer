@@ -13,7 +13,6 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class DynamicDimensionGen {
@@ -76,11 +75,17 @@ public class DynamicDimensionGen {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static void unLoadWorlds() {
         Stopwatch sw = Stopwatch.createStarted();
         GrimmsServer.logger.info("Unloading worlds...");
 
-        for (String worldName : (List<String>) Objects.requireNonNull((List<?>) ActiveConfig.getConfigValue(ConfigKey.DISABLED_DIMENSIONS, List.class))) {
+        List<String> disabledDimensions = ActiveConfig.getConfigValue(ConfigKey.DISABLED_DIMENSIONS, List.class);
+        if (disabledDimensions == null) {
+            GrimmsServer.logger.warning("No disabled dimensions configured.");
+            return;
+        }
+        for (String worldName : disabledDimensions) {
             World world = Bukkit.getWorld(worldName);
             if (world != null) {
                 GrimmsServer.logger.info("Unloading world: " + worldName);

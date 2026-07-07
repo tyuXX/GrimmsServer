@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Commands.GDimensionCommand;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,7 +29,7 @@ public class GDimBaseCommand implements CommandExecutor {
                 return var10000;
             }
         } else {
-            sender.sendMessage("Only players can use this command.");
+            sender.sendMessage(ChatColor.RED + "Only players can use this command.");
             return true;
         }
     }

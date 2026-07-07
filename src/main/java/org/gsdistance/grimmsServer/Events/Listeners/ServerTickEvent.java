@@ -1,8 +1,8 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
-import org.gsdistance.grimmsServer.Constructable.JobTitle;
 import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Data.JobTitlesBaseValues;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
@@ -49,7 +49,7 @@ public class ServerTickEvent {
                     double multiplier = (double) 1.0F + Math.pow((double) playerStats.getStat("level", Integer.class), 2.0F) / (double) 100.0F;
                     double payCheck = Math.ceil(JobTitlesBaseValues.jobTitleBaseValues.getOrDefault(jobTitleId, null).paycheckSize() * multiplier);
                     playerStats.setStat("money", playerStats.getStat("money", Double.class) + payCheck);
-                    player.sendMessage("You have received your paycheck: " + Shared.formatNumber(payCheck));
+                    player.sendMessage(ChatColor.GREEN + "You have received your paycheck: " + ChatColor.GOLD + Shared.formatNumber(payCheck));
                 }
             }
         }

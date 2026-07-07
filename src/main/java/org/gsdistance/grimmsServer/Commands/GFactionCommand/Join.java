@@ -1,6 +1,7 @@
 package org.gsdistance.grimmsServer.Commands.GFactionCommand;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Constructable.Faction;
@@ -9,7 +10,6 @@ import org.gsdistance.grimmsServer.Constructable.Request;
 import org.gsdistance.grimmsServer.Data.FactionRank;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class Join {
@@ -18,12 +18,12 @@ public class Join {
 
     public static boolean subCommand(Player player, String[] args) {
         if (args.length < 2) {
-            player.sendMessage("§cUsage: /gfaction join <factionName>");
+            player.sendMessage(ChatColor.RED + "Usage: /gfaction join <factionName>");
             return false;
         } else {
             PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
             if (playerMetadata.factionUUID != null) {
-                player.sendMessage("§cYou are already a member of a faction. Leave your current faction first.");
+                player.sendMessage(ChatColor.RED + "You are already a member of a faction. Leave your current faction first.");
                 return false;
             } else {
                 Faction[] factions = GrimmsServer.pds.retrieveAllData(Faction.class, "factions");
@@ -37,23 +37,26 @@ public class Join {
                 }
 
                 if (targetFaction == null) {
-                    player.sendMessage("§cThe faction you are trying to join does not exist.");
+                    player.sendMessage(ChatColor.RED + "The faction you are trying to join does not exist.");
                     return false;
                 } else {
                     UUID leaderUUID = targetFaction.getMemberWithRank(FactionRank.LEADER);
                     if (leaderUUID == null) {
-                        player.sendMessage("§cThe faction does not have a leader.");
+                        player.sendMessage(ChatColor.RED + "The faction does not have a leader.");
                         return false;
                     } else {
                         Player targetPlayer = Bukkit.getPlayer(leaderUUID);
                         if (targetPlayer != null && targetPlayer.isOnline()) {
-                            if (Objects.requireNonNull(targetPlayer).isOnline()) {
                                 Request.newRequest((object) -> {
                                     Data<Player, UUID> data = (Data) object;
                                     Player target = data.key();
                                     PlayerMetadata targetMetadata = PlayerMetadata.getPlayerMetadata(target);
                                     Faction faction = Faction.getFaction(data.value());
-                                    target.sendMessage("You have successfully joined the faction " + faction.name + ".");
+                                    if (faction == null) {
+                                        target.sendMessage(ChatColor.RED + "The faction no longer exists.");
+                                        return null;
+                                    }
+                                    target.sendMessage(ChatColor.GREEN + "You have successfully joined the faction " + ChatColor.YELLOW + faction.name + ChatColor.GREEN + ".");
                                     targetMetadata.factionUUID = faction.uuid;
                                     faction.addMember(player.getUniqueId(), FactionRank.RECRUIT);
                                     faction.saveToFile();
@@ -62,13 +65,9 @@ public class Join {
                                 }, targetPlayer, player.getName() + " wants to join your faction.", Data.of(player, targetFaction.uuid));
                                 return true;
                             } else {
-                                player.sendMessage("§cNo leader or officer is online to accept your request.");
+                                player.sendMessage(ChatColor.RED + "No leader or officer is online to accept your request.");
                                 return true;
                             }
-                        } else {
-                            player.sendMessage("§cThe faction leader is not online.");
-                            return false;
-                        }
                     }
                 }
             }

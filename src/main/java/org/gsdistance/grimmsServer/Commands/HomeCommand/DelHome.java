@@ -17,12 +17,11 @@ public class DelHome {
         PlayerMetadata meta = PlayerMetadata.getPlayerMetadata(player);
         if (!meta.homes.containsKey(homeName)) {
             player.sendMessage("Home '" + homeName + "' does not exist.");
-            return true;
         } else {
             meta.homes.remove(homeName);
             meta.saveToPDS();
             player.sendMessage("Home '" + homeName + "' deleted.");
-            return true;
         }
+        return true;
     }
 }

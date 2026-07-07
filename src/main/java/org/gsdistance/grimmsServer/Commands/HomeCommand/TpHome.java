@@ -17,12 +17,11 @@ public class TpHome {
         PlayerMetadata meta = PlayerMetadata.getPlayerMetadata(player);
         if (!meta.homes.containsKey(homeName)) {
             player.sendMessage("Home '" + homeName + "' does not exist.");
-            return true;
         } else {
             Location loc = meta.homes.get(homeName);
             player.teleport(loc.toBukkitLocation());
             player.sendMessage("Teleported to home '" + homeName + "'.");
-            return true;
         }
+        return true;
     }
 }

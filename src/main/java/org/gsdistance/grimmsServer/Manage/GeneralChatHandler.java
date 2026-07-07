@@ -50,7 +50,8 @@ public class GeneralChatHandler {
         }
 
         String formattedMessage = String.format("%s: %s", nickname, message).replace("&timeF", LocalDateTime.now().toString()).replace("&world", player.getWorld().getName()).replace("&pos", player.getLocation().toString()).replace("&player", player.getName()).replace("&uuid", player.getUniqueId().toString()).replace("&date", LocalDateTime.now().toLocalDate().toString()).replace("&time", LocalDateTime.now().toLocalTime().toString()).replace("&nickname", nickname).replace("&day", String.valueOf(player.getWorld().getTime() / 24000L));
-        List<String> bannedWords = (List) ActiveConfig.getConfigValue(ConfigKey.BANNED_WORDS, List.class);
+        @SuppressWarnings("unchecked")
+        List<String> bannedWords = ActiveConfig.getConfigValue(ConfigKey.BANNED_WORDS, List.class);
         if (bannedWords != null) {
             String regex = "[ .-_,:;!?()\\[\\]{}\"'`~@#$%^&*+=|<>/\\\\]+";
             String normalizedMessage = message.replaceAll(regex, "").toLowerCase();
@@ -70,7 +71,7 @@ public class GeneralChatHandler {
         if (!Boolean.FALSE.equals(ActiveConfig.getConfigValue(ConfigKey.JOIN_MESSAGE, Boolean.class))) {
             PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(player);
             PlayerStats playerStats = PlayerStats.getPlayerStats(player);
-            ArrayList<String> message = new ArrayList();
+            ArrayList<String> message = new ArrayList<>();
             if (metadata.firstJoin) {
                 message.add("Welcome to the server, " + player.getName() + ".");
                 message.add("This server is running on GMSv" + GrimmsServer.instance.getDescription().getVersion() + ".");
@@ -90,7 +91,7 @@ public class GeneralChatHandler {
     }
 
     public static void authMessage(Player player) {
-        ArrayList<String> message = new ArrayList();
+        ArrayList<String> message = new ArrayList<>();
         if (!GrimmsServer.instance.getServer().isEnforcingSecureProfiles()) {
             PlayerStats playerStats = PlayerStats.getPlayerStats(player);
             if (playerStats.getStat("pass", String.class).isEmpty()) {

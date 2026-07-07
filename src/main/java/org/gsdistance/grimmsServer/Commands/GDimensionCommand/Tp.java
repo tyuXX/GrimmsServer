@@ -4,8 +4,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-import java.util.Objects;
-
 public class Tp {
     public Tp() {
     }
@@ -28,7 +26,10 @@ public class Tp {
                 player.sendMessage("World '" + worldName + "' does not exist.");
                 return false;
             } else {
-                targetPlayer.teleport(Objects.requireNonNull(GrimmsServer.instance.getServer().getWorld(worldName)).getSpawnLocation());
+                World world = GrimmsServer.instance.getServer().getWorld(worldName);
+                if (world != null) {
+                    targetPlayer.teleport(world.getSpawnLocation());
+                }
                 targetPlayer.sendMessage("Teleported to world '" + worldName + "'.");
                 return true;
             }

@@ -6,12 +6,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Item.ItemLevelHandler;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
+import org.jetbrains.annotations.NotNull;
 
 public class MakeItemLevelable implements CommandExecutor {
     public MakeItemLevelable() {
     }
 
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
             if (((Player) sender).getInventory().getItemInMainHand().getType().getMaxDurability() > 1) {

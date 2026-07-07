@@ -11,10 +11,9 @@ public class Homes {
         PlayerMetadata meta = PlayerMetadata.getPlayerMetadata(player);
         if (meta.homes.isEmpty()) {
             player.sendMessage("You have no homes set.");
-            return true;
         } else {
             player.sendMessage("Your homes: " + String.join(", ", meta.homes.keySet()));
-            return true;
         }
+        return true;
     }
 }

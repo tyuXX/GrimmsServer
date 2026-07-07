@@ -1,9 +1,9 @@
 package org.gsdistance.grimmsServer.Constructable;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.entity.Player;
@@ -17,7 +17,6 @@ import org.gsdistance.grimmsServer.Shared;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class Faction {
@@ -64,18 +63,18 @@ public class Faction {
     public boolean claimChunk(org.bukkit.Location location, Player player) {
         int claimLimit = this.getClaimLimit();
         if (this.claims.size() >= claimLimit) {
-            player.sendMessage("§cYou have reached the claim limit for your faction.");
+            player.sendMessage(ChatColor.RED + "You have reached the claim limit for your faction.");
             return false;
         } else if (this.getMemberRank(player.getUniqueId()).weight < FactionRank.MEMBER.weight) {
-            player.sendMessage("§cYou must be above member rank to claim a chunk.");
+            player.sendMessage(ChatColor.RED + "You must be above member rank to claim a chunk.");
             return false;
         } else if (location.getWorld() == null) {
-            player.sendMessage("§cInvalid world.");
+            player.sendMessage(ChatColor.RED + "Invalid world.");
             return false;
         } else {
             ChunkMetadata chunkMetadata = ChunkMetadata.getChunkMetadata(location.getChunk());
             if (chunkMetadata.factionUUID != null) {
-                player.sendMessage("§cThis chunk is already claimed by a faction.");
+                player.sendMessage(ChatColor.RED + "This chunk is already claimed by a faction.");
                 return false;
             } else {
                 Location claimLocation = new Location(location.getWorld().getName(), location.getChunk().getX(), 0.0F, location.getChunk().getZ());
@@ -84,7 +83,7 @@ public class Faction {
                 chunkMetadata.saveToFile();
                 this.saveToFile();
                 this.getBossBar().setProgress((double) this.claims.size() / (double) claimLimit);
-                player.sendMessage("§aChunk (" + claimLocation.x + "/" + claimLocation.z + ") claimed successfully.");
+                player.sendMessage(ChatColor.GREEN + "Chunk (" + ChatColor.YELLOW + claimLocation.x + ChatColor.GREEN + "/" + ChatColor.YELLOW + claimLocation.z + ChatColor.GREEN + ") claimed successfully.");
                 return true;
             }
         }
@@ -92,16 +91,20 @@ public class Faction {
 
     public boolean unClaimChunk(org.bukkit.Location location, Player player) {
         if (this.getMemberRank(player.getUniqueId()).weight < FactionRank.MEMBER.weight) {
-            player.sendMessage("§cYou must be the above member rank to un-claim a chunk.");
+            player.sendMessage(ChatColor.RED + "You must be the above member rank to un-claim a chunk.");
             return false;
         } else {
-            Location claimLocation = new Location(Objects.requireNonNull(location.getWorld()).getName(), location.getChunk().getX(), 0.0F, location.getChunk().getZ());
+            if (location.getWorld() == null) {
+                player.sendMessage(ChatColor.RED + "World not found for this location.");
+                return false;
+            }
+            Location claimLocation = new Location(location.getWorld().getName(), location.getChunk().getX(), 0.0F, location.getChunk().getZ());
             ChunkMetadata chunkMetadata = ChunkMetadata.getChunkMetadata(location.getChunk());
             if (chunkMetadata.factionUUID == null) {
-                player.sendMessage("§cThis chunk is not claimed by any faction.");
+                player.sendMessage(ChatColor.RED + "This chunk is not claimed by any faction.");
                 return false;
             } else if (!chunkMetadata.factionUUID.equals(this.uuid)) {
-                player.sendMessage("§cThis chunk is not claimed by your faction.");
+                player.sendMessage(ChatColor.RED + "This chunk is not claimed by your faction.");
                 return false;
             } else {
                 this.claims.remove(claimLocation);
@@ -109,7 +112,7 @@ public class Faction {
                 chunkMetadata.saveToFile();
                 this.saveToFile();
                 this.getBossBar().setProgress((double) this.claims.size() / (double) this.getClaimLimit());
-                player.sendMessage("§aChunk (" + claimLocation.x + "/" + claimLocation.z + ") un-claimed successfully.");
+                player.sendMessage(ChatColor.GREEN + "Chunk (" + ChatColor.YELLOW + claimLocation.x + ChatColor.GREEN + "/" + ChatColor.YELLOW + claimLocation.z + ChatColor.GREEN + ") un-claimed successfully.");
                 return true;
             }
         }
@@ -117,10 +120,11 @@ public class Faction {
 
     public void unClaimAllChunks() {
         for (Location claim : this.claims) {
-            if (Bukkit.getWorld(claim.world) == null) {
+            World world = Bukkit.getWorld(claim.world);
+            if (world == null) {
                 GrimmsServer.logger.warning("World " + claim.world + " is not loaded or does not exist. Skipping chunk unclaim for " + claim.x + ", " + claim.z);
             } else {
-                ChunkMetadata chunkMetadata = ChunkMetadata.getChunkMetadata(Bukkit.getWorld(claim.world).getChunkAt((int) Math.round(claim.x), (int) Math.round(claim.z)));
+                ChunkMetadata chunkMetadata = ChunkMetadata.getChunkMetadata(world.getChunkAt((int) Math.round(claim.x), (int) Math.round(claim.z)));
                 if (chunkMetadata != null) {
                     chunkMetadata.factionUUID = null;
                     chunkMetadata.saveToFile();
