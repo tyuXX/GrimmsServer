@@ -1,6 +1,5 @@
 package org.gsdistance.grimmsServer.Constructable.Item;
 
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.gsdistance.grimmsServer.Shared;
 

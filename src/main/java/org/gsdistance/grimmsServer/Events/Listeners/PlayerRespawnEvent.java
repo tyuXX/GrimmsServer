@@ -2,7 +2,6 @@ package org.gsdistance.grimmsServer.Events.Listeners;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.Indexers.DynamicDimensionGen;
 

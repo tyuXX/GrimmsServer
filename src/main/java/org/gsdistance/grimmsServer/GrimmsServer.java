@@ -1,6 +1,7 @@
 package org.gsdistance.grimmsServer;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.gsdistance.grimmsServer.Commands.MarketComand.MarketGUIListener;
 import org.gsdistance.grimmsServer.Config.ConfigLoader;
 import org.gsdistance.grimmsServer.Data.PluginDataStorage;
 import org.gsdistance.grimmsServer.Events.Listeners.ServerStartupEvent;
@@ -33,6 +34,7 @@ public final class GrimmsServer extends JavaPlugin {
         ConfigLoader.loadConfigFromFile();
         this.copyResourceFiles();
         this.getServer().getPluginManager().registerEvents(new EventRegistry(), this);
+        this.getServer().getPluginManager().registerEvents(new MarketGUIListener(), this);
         ServerStartupEvent.Event();
     }
 

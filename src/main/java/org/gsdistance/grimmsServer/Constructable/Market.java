@@ -5,6 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.gsdistance.grimmsServer.Config.ActiveConfig;
+import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Data.Market.EnchantBaseValues;
 import org.gsdistance.grimmsServer.Data.Market.MarketBaseValues;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
@@ -134,11 +136,12 @@ public class Market {
             return 0.0F;
         } else {
             long amount = this.items.get(item.getKey().getKey());
+            double minPrice = ActiveConfig.getConfigValue(ConfigKey.MARKET_MIN_PRICE, Double.class);
             double rt;
             if (MarketBaseValues.marketBaseValues.containsKey(item)) {
-                rt = Math.max(Math.max(0.25F, Math.floor(MarketBaseValues.marketBaseValues.get(item) / (double) 100.0F)), MarketBaseValues.marketBaseValues.get(item) + this.NegMarketSaturation - Math.sqrt((double) amount));
+                rt = Math.max(Math.max(minPrice, Math.floor(MarketBaseValues.marketBaseValues.get(item) / (double) 100.0F)), MarketBaseValues.marketBaseValues.get(item) + this.NegMarketSaturation - Math.sqrt((double) amount));
             } else {
-                rt = Math.max(0.25F, this.NegMarketSaturation / (double) 2.0F - Math.sqrt((double) amount));
+                rt = Math.max(minPrice, this.NegMarketSaturation / (double) 2.0F - Math.sqrt((double) amount));
             }
 
             return rt;

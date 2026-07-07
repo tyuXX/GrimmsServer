@@ -8,7 +8,6 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Shared;
 
 import java.io.File;
-import java.util.UUID;
 
 public class ChunkLoadEvent {
     public ChunkLoadEvent() {

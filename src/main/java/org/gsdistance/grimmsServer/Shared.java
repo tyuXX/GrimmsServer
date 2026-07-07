@@ -84,6 +84,7 @@ public class Shared {
             } else {
                 try (InputStream in = GrimmsServer.instance.getClass().getClassLoader().getResourceAsStream(resourcePath)) {
                     if (in != null) {
+                        targetFile.getParentFile().mkdirs();
                         try (OutputStream out = new FileOutputStream(targetFile)) {
                             byte[] buffer = new byte[1024];
                             int length;
