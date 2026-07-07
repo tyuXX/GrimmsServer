@@ -5,29 +5,29 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 
 public class LogPlayerTitles {
-   public LogPlayerTitles() {
-   }
+    public LogPlayerTitles() {
+    }
 
-   public static boolean subCommand(Player player, String[] args) {
-      if (!player.hasPermission("grimmsserver.log.other")) {
-         return false;
-      } else if (args.length < 2) {
-         return false;
-      } else {
-         Player tplayer = GrimmsServer.instance.getServer().getPlayer(args[1]);
-         if (tplayer == null) {
-            player.sendMessage("Player not found.");
+    public static boolean subCommand(Player player, String[] args) {
+        if (!player.hasPermission("grimmsserver.log.other")) {
             return false;
-         } else {
-            PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(tplayer);
-            player.sendMessage("__Your Titles:");
+        } else if (args.length < 2) {
+            return false;
+        } else {
+            Player tplayer = GrimmsServer.instance.getServer().getPlayer(args[1]);
+            if (tplayer == null) {
+                player.sendMessage("Player not found.");
+                return false;
+            } else {
+                PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(tplayer);
+                player.sendMessage("__Your Titles:");
 
-            for(String title : playerTitles.getTitles()) {
-               player.sendMessage("|" + title + ": " + (String)PlayerTitles.titles.get(title));
+                for (String title : playerTitles.getTitles()) {
+                    player.sendMessage("|" + title + ": " + PlayerTitles.titles.get(title));
+                }
+
+                return true;
             }
-
-            return true;
-         }
-      }
-   }
+        }
+    }
 }

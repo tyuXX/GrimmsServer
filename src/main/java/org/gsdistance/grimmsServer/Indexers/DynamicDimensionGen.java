@@ -1,95 +1,95 @@
 package org.gsdistance.grimmsServer.Indexers;
 
 import com.google.common.base.Stopwatch;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.World.Environment;
+import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
+import org.gsdistance.grimmsServer.Config.ActiveConfig;
+import org.gsdistance.grimmsServer.Config.ConfigKey;
+import org.gsdistance.grimmsServer.Constructable.World.WorldConstructor;
+import org.gsdistance.grimmsServer.GrimmsServer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.logging.Logger;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
-import org.bukkit.WorldType;
-import org.bukkit.World.Environment;
-import org.gsdistance.grimmsServer.GrimmsServer;
-import org.gsdistance.grimmsServer.Config.ActiveConfig;
-import org.gsdistance.grimmsServer.Config.ConfigKey;
-import org.gsdistance.grimmsServer.Constructable.World.WorldConstructor;
 
 public class DynamicDimensionGen {
-   public static final List<UUID> dynamicDimensions = new ArrayList();
+    public static final List<UUID> dynamicDimensions = new ArrayList();
 
-   public DynamicDimensionGen() {
-   }
+    public DynamicDimensionGen() {
+    }
 
-   public static void newDimension(WorldConstructor worldConstructor) {
-      GrimmsServer.logger.info("Creating new world: " + worldConstructor.name() + " with type: " + worldConstructor.type());
-      if (Bukkit.getWorld(worldConstructor.name()) != null) {
-         GrimmsServer.logger.info("World with name '" + worldConstructor.name() + "' already exists.");
-         Bukkit.getWorld(worldConstructor.name());
-      } else {
-         WorldCreator worldCreator = new WorldCreator(worldConstructor.name());
+    public static void newDimension(WorldConstructor worldConstructor) {
+        GrimmsServer.logger.info("Creating new world: " + worldConstructor.name() + " with type: " + worldConstructor.type());
+        if (Bukkit.getWorld(worldConstructor.name()) != null) {
+            GrimmsServer.logger.info("World with name '" + worldConstructor.name() + "' already exists.");
+            Bukkit.getWorld(worldConstructor.name());
+        } else {
+            WorldCreator worldCreator = new WorldCreator(worldConstructor.name());
 
-         try {
-            worldCreator.environment(Environment.valueOf(worldConstructor.type()));
-         } catch (EnumConstantNotPresentException e) {
-            worldCreator.environment(Environment.NORMAL);
-         }
-
-         worldCreator.generateStructures(worldConstructor.generateStructures());
-
-         try {
-            worldCreator.type(WorldType.valueOf(worldConstructor.worldType()));
-         } catch (EnumConstantNotPresentException e) {
-            worldCreator.type(WorldType.NORMAL);
-         }
-
-         if (worldConstructor.seed() != null) {
-            worldCreator.seed(worldConstructor.seed());
-         }
-
-         if (worldConstructor.generatorSettings() != null && !worldConstructor.generatorSettings().isEmpty()) {
-            worldCreator.generatorSettings(worldConstructor.generatorSettings());
-         }
-
-         GrimmsServer.logger.info("World created with name: " + worldCreator.name() + ", type: " + String.valueOf(worldCreator.type()) + ", environment: " + String.valueOf(worldCreator.environment()));
-         World world = worldCreator.createWorld();
-         if (world != null) {
-            dynamicDimensions.add(world.getUID());
-         }
-      }
-
-   }
-
-   public static void loadWorlds() {
-      GrimmsServer.logger.info("Loading worlds from worldConstructors...");
-      WorldConstructor[] worldConstructors = WorldConstructor.getAllWorldConstructors();
-      if (worldConstructors == null) {
-         GrimmsServer.logger.warning("No world constructors found to load.");
-      } else {
-         for(WorldConstructor worldConstructor : worldConstructors) {
-            if (Bukkit.getWorld(worldConstructor.name()) == null) {
-               newDimension(worldConstructor);
+            try {
+                worldCreator.environment(Environment.valueOf(worldConstructor.type()));
+            } catch (EnumConstantNotPresentException e) {
+                worldCreator.environment(Environment.NORMAL);
             }
-         }
 
-      }
-   }
+            worldCreator.generateStructures(worldConstructor.generateStructures());
 
-   public static void unLoadWorlds() {
-      Stopwatch sw = Stopwatch.createStarted();
-      GrimmsServer.logger.info("Unloading worlds...");
+            try {
+                worldCreator.type(WorldType.valueOf(worldConstructor.worldType()));
+            } catch (EnumConstantNotPresentException e) {
+                worldCreator.type(WorldType.NORMAL);
+            }
 
-      for(String worldName : (List<String>)Objects.requireNonNull((List<?>)ActiveConfig.getConfigValue(ConfigKey.DISABLED_DIMENSIONS, List.class))) {
-         World world = Bukkit.getWorld(worldName);
-         if (world != null) {
-            GrimmsServer.logger.info("Unloading world: " + worldName);
-            Bukkit.unloadWorld(world, false);
-         } else {
-            GrimmsServer.logger.warning("World with name '" + worldName + "' does not exist or is already unloaded.");
-         }
-      }
+            if (worldConstructor.seed() != null) {
+                worldCreator.seed(worldConstructor.seed());
+            }
 
-      GrimmsServer.logger.info("Unloaded worlds (" + String.valueOf(sw.stop()) + ")");
-   }
+            if (worldConstructor.generatorSettings() != null && !worldConstructor.generatorSettings().isEmpty()) {
+                worldCreator.generatorSettings(worldConstructor.generatorSettings());
+            }
+
+            GrimmsServer.logger.info("World created with name: " + worldCreator.name() + ", type: " + worldCreator.type() + ", environment: " + worldCreator.environment());
+            World world = worldCreator.createWorld();
+            if (world != null) {
+                dynamicDimensions.add(world.getUID());
+            }
+        }
+
+    }
+
+    public static void loadWorlds() {
+        GrimmsServer.logger.info("Loading worlds from worldConstructors...");
+        WorldConstructor[] worldConstructors = WorldConstructor.getAllWorldConstructors();
+        if (worldConstructors == null) {
+            GrimmsServer.logger.warning("No world constructors found to load.");
+        } else {
+            for (WorldConstructor worldConstructor : worldConstructors) {
+                if (Bukkit.getWorld(worldConstructor.name()) == null) {
+                    newDimension(worldConstructor);
+                }
+            }
+
+        }
+    }
+
+    public static void unLoadWorlds() {
+        Stopwatch sw = Stopwatch.createStarted();
+        GrimmsServer.logger.info("Unloading worlds...");
+
+        for (String worldName : (List<String>) Objects.requireNonNull((List<?>) ActiveConfig.getConfigValue(ConfigKey.DISABLED_DIMENSIONS, List.class))) {
+            World world = Bukkit.getWorld(worldName);
+            if (world != null) {
+                GrimmsServer.logger.info("Unloading world: " + worldName);
+                Bukkit.unloadWorld(world, false);
+            } else {
+                GrimmsServer.logger.warning("World with name '" + worldName + "' does not exist or is already unloaded.");
+            }
+        }
+
+        GrimmsServer.logger.info("Unloaded worlds (" + sw.stop() + ")");
+    }
 }

@@ -9,34 +9,34 @@ import org.gsdistance.grimmsServer.Constructable.Request;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 
 public class AcceptRequest implements CommandExecutor {
-   public AcceptRequest() {
-   }
+    public AcceptRequest() {
+    }
 
-   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-      if (sender instanceof Player) {
-         if (args.length == 0) {
-            return false;
-         }
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
+            if (args.length == 0) {
+                return false;
+            }
 
-         if (!PerSessionDataStorage.dataStore.containsKey("request-" + args[0])) {
-            sender.sendMessage("No such request found.");
-            return false;
-         }
+            if (!PerSessionDataStorage.dataStore.containsKey("request-" + args[0])) {
+                sender.sendMessage("No such request found.");
+                return false;
+            }
 
-         Request request = (Request)((Data)PerSessionDataStorage.dataStore.get("request-" + args[0])).key();
-         if (!request.canAccept((Player)sender)) {
-            sender.sendMessage("You cannot accept this request.");
-            return false;
-         }
+            Request request = (Request) PerSessionDataStorage.dataStore.get("request-" + args[0]).key();
+            if (!request.canAccept((Player) sender)) {
+                sender.sendMessage("You cannot accept this request.");
+                return false;
+            }
 
-         if (request.acceptRequest((Player)sender)) {
-            sender.sendMessage("Successfully accepted request that was for: " + request.forPurpose);
-            return true;
-         }
-      } else {
-         sender.sendMessage("This command can only be run by a player.");
-      }
+            if (request.acceptRequest((Player) sender)) {
+                sender.sendMessage("Successfully accepted request that was for: " + request.forPurpose);
+                return true;
+            }
+        } else {
+            sender.sendMessage("This command can only be run by a player.");
+        }
 
-      return false;
-   }
+        return false;
+    }
 }

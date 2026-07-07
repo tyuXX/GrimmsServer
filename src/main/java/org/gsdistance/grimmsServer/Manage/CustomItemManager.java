@@ -1,6 +1,6 @@
 package org.gsdistance.grimmsServer.Manage;
 
 public class CustomItemManager {
-   public CustomItemManager() {
-   }
+    public CustomItemManager() {
+    }
 }

@@ -1,69 +1,70 @@
 package org.gsdistance.grimmsServer.Stats;
 
 import com.google.gson.Gson;
+import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Constructable.Data;
+import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
+import org.gsdistance.grimmsServer.Shared;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Shared;
-import org.gsdistance.grimmsServer.Constructable.Data;
-import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
 
 public class PlayerStatLeaderBoard {
-   public static final Map<String, Type> Stats = Map.of("total_kill_count", Integer.class, "death_count", Integer.class, "join_count", Integer.class, "tPoint", Double.class, "block_break_count", Long.class, "money", Double.class, "level", Integer.class, "sent_messages", Long.class);
-   public final Map<String, Data<String, Number>> leaderboard = new HashMap();
+    public static final Map<String, Type> Stats = Map.of("total_kill_count", Integer.class, "death_count", Integer.class, "join_count", Integer.class, "tPoint", Double.class, "block_break_count", Long.class, "money", Double.class, "level", Integer.class, "sent_messages", Long.class);
+    public final Map<String, Data<String, Number>> leaderboard = new HashMap();
 
-   public PlayerStatLeaderBoard() {
-      for(String stat : Stats.keySet()) {
-         this.leaderboard.put(stat, Data.of("None", 0));
-      }
+    public PlayerStatLeaderBoard() {
+        for (String stat : Stats.keySet()) {
+            this.leaderboard.put(stat, Data.of("None", 0));
+        }
 
-   }
+    }
 
-   public static PlayerStatLeaderBoard getPlayerStatLeaderBoard() {
-      PlayerStatLeaderBoard playerStatLeaderBoard = (PlayerStatLeaderBoard)(new Gson()).fromJson((String)ServerStats.getServerStats().getStat("leaderboard"), PlayerStatLeaderBoard.class);
+    public static PlayerStatLeaderBoard getPlayerStatLeaderBoard() {
+        PlayerStatLeaderBoard playerStatLeaderBoard = (new Gson()).fromJson((String) ServerStats.getServerStats().getStat("leaderboard"), PlayerStatLeaderBoard.class);
 
-      for(String stat : Stats.keySet()) {
-         if (!playerStatLeaderBoard.leaderboard.containsKey(stat)) {
-            playerStatLeaderBoard.leaderboard.put(stat, Data.of("None", 0));
-         }
-      }
+        for (String stat : Stats.keySet()) {
+            if (!playerStatLeaderBoard.leaderboard.containsKey(stat)) {
+                playerStatLeaderBoard.leaderboard.put(stat, Data.of("None", 0));
+            }
+        }
 
-      return playerStatLeaderBoard;
-   }
+        return playerStatLeaderBoard;
+    }
 
-   public void savePlayerStatLeaderBoard() {
-      ServerStats.getServerStats().setStat("leaderboard", (new Gson()).toJson(this));
-   }
+    public void savePlayerStatLeaderBoard() {
+        ServerStats.getServerStats().setStat("leaderboard", (new Gson()).toJson(this));
+    }
 
-   public void checkPlayer(Player player) {
-      PlayerStats playerStats = PlayerStats.getPlayerStats(player);
-      boolean pass = false;
-      List<String> overtakes = new ArrayList();
+    public void checkPlayer(Player player) {
+        PlayerStats playerStats = PlayerStats.getPlayerStats(player);
+        boolean pass = false;
+        List<String> overtakes = new ArrayList();
 
-      for(String stat : this.leaderboard.keySet()) {
-         Number playerStatValue = (Number)playerStats.getStat(stat, Number.class);
-         Number leaderboardStatValue = (Number)((Data)this.leaderboard.get(stat)).value();
-         if (playerStatValue != null && playerStatValue.doubleValue() > leaderboardStatValue.doubleValue()) {
-            if (!player.getName().equalsIgnoreCase((String)((Data)this.leaderboard.get(stat)).key())) {
-               overtakes.add(stat);
+        for (String stat : this.leaderboard.keySet()) {
+            Number playerStatValue = playerStats.getStat(stat, Number.class);
+            Number leaderboardStatValue = (Number) ((Data) this.leaderboard.get(stat)).value();
+            if (playerStatValue != null && playerStatValue.doubleValue() > leaderboardStatValue.doubleValue()) {
+                if (!player.getName().equalsIgnoreCase((String) ((Data) this.leaderboard.get(stat)).key())) {
+                    overtakes.add(stat);
+                }
+
+                this.leaderboard.put(stat, Data.of(player.getName(), playerStatValue.intValue()));
+                this.savePlayerStatLeaderBoard();
+                pass = true;
+            }
+        }
+
+        if (pass) {
+            for (String stat : overtakes) {
+                Shared.Broadcast("The leader of stat " + PlayerStats.StatNames.get(stat) + " is now " + player.getDisplayName(), null);
             }
 
-            this.leaderboard.put(stat, Data.of(player.getName(), playerStatValue.intValue()));
-            this.savePlayerStatLeaderBoard();
-            pass = true;
-         }
-      }
+            PlayerTitleChecker.gotOnLeaderboard(player);
+        }
 
-      if (pass) {
-         for(String stat : overtakes) {
-            Shared.Broadcast("The leader of stat " + (String)PlayerStats.StatNames.get(stat) + " is now " + player.getDisplayName(), (String)null);
-         }
-
-         PlayerTitleChecker.gotOnLeaderboard(player);
-      }
-
-   }
+    }
 }

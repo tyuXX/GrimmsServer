@@ -6,17 +6,17 @@ import org.bukkit.command.CommandSender;
 import org.gsdistance.grimmsServer.Data.HelpStrings;
 
 public class GHelp implements CommandExecutor {
-   public GHelp() {
-   }
+    public GHelp() {
+    }
 
-   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-      if (args.length < 1) {
-         return false;
-      } else {
-         sender.sendMessage("Help string for command " + args[0] + ":");
-         sender.sendMessage(HelpStrings.getHelpString(args[0]));
-         sender.sendMessage(HelpStrings.getHelpUsage(args[0]));
-         return true;
-      }
-   }
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length < 1) {
+            return false;
+        } else {
+            sender.sendMessage("Help string for command " + args[0] + ":");
+            sender.sendMessage(HelpStrings.getHelpString(args[0]));
+            sender.sendMessage(HelpStrings.getHelpUsage(args[0]));
+            return true;
+        }
+    }
 }

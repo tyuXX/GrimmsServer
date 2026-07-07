@@ -1,6 +1,5 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
-import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Constructable.Data;
@@ -12,34 +11,36 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
 import org.gsdistance.grimmsServer.Stats.WorldStats;
 
+import java.util.ArrayList;
+
 public class PlayerJoinEvent {
-   public PlayerJoinEvent() {
-   }
+    public PlayerJoinEvent() {
+    }
 
-   public static void Event(org.bukkit.event.player.PlayerJoinEvent event) {
-      PlayerStats playerStats = PlayerStats.getPlayerStats(event.getPlayer());
-      playerStats.changeStat("join_count", 1);
-      boolean autologin = (Boolean)playerStats.getStat("autologin", Boolean.class);
-      GAuthBaseCommand.login(event.getPlayer(), autologin);
-      WorldStats.getWorldStats(event.getPlayer().getWorld()).changeStat("join_count", 1);
-      ServerStats.getServerStats().changeStat("join_count", 1);
-      PlayerTitleChecker.joinedGame(event.getPlayer());
-      PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(event.getPlayer());
-      if (!event.getPlayer().getName().equals(metadata.lastKnownNames.getLast())) {
-         metadata.lastKnownNames.add(event.getPlayer().getName());
-      }
+    public static void Event(org.bukkit.event.player.PlayerJoinEvent event) {
+        PlayerStats playerStats = PlayerStats.getPlayerStats(event.getPlayer());
+        playerStats.changeStat("join_count", 1);
+        boolean autologin = playerStats.getStat("autologin", Boolean.class);
+        GAuthBaseCommand.login(event.getPlayer(), autologin);
+        WorldStats.getWorldStats(event.getPlayer().getWorld()).changeStat("join_count", 1);
+        ServerStats.getServerStats().changeStat("join_count", 1);
+        PlayerTitleChecker.joinedGame(event.getPlayer());
+        PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(event.getPlayer());
+        if (!event.getPlayer().getName().equals(metadata.lastKnownNames.getLast())) {
+            metadata.lastKnownNames.add(event.getPlayer().getName());
+        }
 
-      playerStats.setStat("money", (Double)playerStats.getStat("money", Double.class) + metadata.offlineMoney);
-      GeneralChatHandler.joinMessage(event.getPlayer());
-      if (autologin) {
-         event.getPlayer().sendMessage(String.valueOf(ChatColor.GREEN) + "Logged in.");
-      } else {
-         GeneralChatHandler.authMessage(event.getPlayer());
-      }
+        playerStats.setStat("money", playerStats.getStat("money", Double.class) + metadata.offlineMoney);
+        GeneralChatHandler.joinMessage(event.getPlayer());
+        if (autologin) {
+            event.getPlayer().sendMessage(ChatColor.GREEN + "Logged in.");
+        } else {
+            GeneralChatHandler.authMessage(event.getPlayer());
+        }
 
-      metadata.firstJoin = false;
-      metadata.offlineMoney = (double)0.0F;
-      metadata.saveToPDS();
-      PerSessionDataStorage.dataStore.put("requestData-" + event.getPlayer().getName(), Data.of(new ArrayList(), ArrayList.class));
-   }
+        metadata.firstJoin = false;
+        metadata.offlineMoney = 0.0F;
+        metadata.saveToPDS();
+        PerSessionDataStorage.dataStore.put("requestData-" + event.getPlayer().getName(), Data.of(new ArrayList(), ArrayList.class));
+    }
 }

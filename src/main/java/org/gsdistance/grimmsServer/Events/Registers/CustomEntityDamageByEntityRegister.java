@@ -5,17 +5,17 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomEntityDamageByEntityRegister extends Event {
-   private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
 
-   public CustomEntityDamageByEntityRegister() {
-   }
+    public CustomEntityDamageByEntityRegister() {
+    }
 
-   @NotNull
-   public HandlerList getHandlers() {
-      return handlers;
-   }
+    @NotNull
+    public HandlerList getHandlers() {
+        return handlers;
+    }
 
-   public static HandlerList getHandlerList() {
-      return handlers;
-   }
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 }

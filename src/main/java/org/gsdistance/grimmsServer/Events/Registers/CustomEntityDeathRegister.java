@@ -6,23 +6,23 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomEntityDeathRegister extends Event {
-   private static final HandlerList handlers = new HandlerList();
-   private final Entity entity;
+    private static final HandlerList handlers = new HandlerList();
+    private final Entity entity;
 
-   public CustomEntityDeathRegister(Entity entity) {
-      this.entity = entity;
-   }
+    public CustomEntityDeathRegister(Entity entity) {
+        this.entity = entity;
+    }
 
-   @NotNull
-   public HandlerList getHandlers() {
-      return handlers;
-   }
+    @NotNull
+    public HandlerList getHandlers() {
+        return handlers;
+    }
 
-   public static HandlerList getHandlerList() {
-      return handlers;
-   }
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
-   public Entity getEntity() {
-      return this.entity;
-   }
+    public Entity getEntity() {
+        return this.entity;
+    }
 }

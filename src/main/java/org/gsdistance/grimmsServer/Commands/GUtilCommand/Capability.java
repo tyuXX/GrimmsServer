@@ -1,30 +1,31 @@
 package org.gsdistance.grimmsServer.Commands.GUtilCommand;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.Player.PlayerCapability;
 
-public class Capability {
-   public Capability() {
-   }
+import java.util.HashMap;
+import java.util.Map;
 
-   public static boolean subCommand(Player player, String[] args) {
-      if (!player.hasPermission("grimmsserver.util.admin")) {
-         player.sendMessage("You do not have permission to use this command.");
-         return false;
-      } else if (args.length < 2) {
-         return false;
-      } else {
-         String capabilityName = args[1].toLowerCase();
-         PlayerCapability capability = PlayerCapability.valueOf(capabilityName.toUpperCase());
-         PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
-         playerMetadata.capabilities = (Map<PlayerCapability, Integer>)(playerMetadata.capabilities == null ? new HashMap() : playerMetadata.capabilities);
-         playerMetadata.capabilities.put(capability, (Integer)playerMetadata.capabilities.getOrDefault(capability, 0) + 1);
-         playerMetadata.saveToPDS();
-         player.sendMessage("Granted capability: " + capability.displayName);
-         return true;
-      }
-   }
+public class Capability {
+    public Capability() {
+    }
+
+    public static boolean subCommand(Player player, String[] args) {
+        if (!player.hasPermission("grimmsserver.util.admin")) {
+            player.sendMessage("You do not have permission to use this command.");
+            return false;
+        } else if (args.length < 2) {
+            return false;
+        } else {
+            String capabilityName = args[1].toLowerCase();
+            PlayerCapability capability = PlayerCapability.valueOf(capabilityName.toUpperCase());
+            PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
+            playerMetadata.capabilities = (Map<PlayerCapability, Integer>) (playerMetadata.capabilities == null ? new HashMap() : playerMetadata.capabilities);
+            playerMetadata.capabilities.put(capability, playerMetadata.capabilities.getOrDefault(capability, 0) + 1);
+            playerMetadata.saveToPDS();
+            player.sendMessage("Granted capability: " + capability.displayName);
+            return true;
+        }
+    }
 }

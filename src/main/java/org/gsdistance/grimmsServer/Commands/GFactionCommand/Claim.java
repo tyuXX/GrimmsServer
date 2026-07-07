@@ -5,17 +5,17 @@ import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 
 public class Claim {
-   public Claim() {
-   }
+    public Claim() {
+    }
 
-   public static boolean subCommand(Player player) {
-      PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
-      Faction faction = Faction.getFaction(playerMetadata.factionUUID);
-      if (faction == null) {
-         player.sendMessage("You are not in a faction.");
-         return false;
-      } else {
-         return faction.claimChunk(player.getLocation(), player);
-      }
-   }
+    public static boolean subCommand(Player player) {
+        PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
+        Faction faction = Faction.getFaction(playerMetadata.factionUUID);
+        if (faction == null) {
+            player.sendMessage("You are not in a faction.");
+            return false;
+        } else {
+            return faction.claimChunk(player.getLocation(), player);
+        }
+    }
 }

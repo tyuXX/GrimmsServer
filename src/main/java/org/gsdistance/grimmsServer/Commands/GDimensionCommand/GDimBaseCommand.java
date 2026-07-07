@@ -7,29 +7,29 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class GDimBaseCommand implements CommandExecutor {
-   public GDimBaseCommand() {
-   }
+    public GDimBaseCommand() {
+    }
 
-   public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-      if (sender instanceof Player player) {
-         if (args.length == 0) {
-            return false;
-         } else {
-            boolean var10000;
-            switch (args[0].toLowerCase()) {
-               case "create" -> var10000 = Create.subCommand(player, args);
-               case "delete" -> var10000 = Delete.subCommand(player, args);
-               case "tp" -> var10000 = Tp.subCommand(player, args);
-               case "list" -> var10000 = List.subCommand(player);
-               case "info" -> var10000 = Info.subCommand(player, args);
-               default -> var10000 = false;
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (sender instanceof Player player) {
+            if (args.length == 0) {
+                return false;
+            } else {
+                boolean var10000;
+                switch (args[0].toLowerCase()) {
+                    case "create" -> var10000 = Create.subCommand(player, args);
+                    case "delete" -> var10000 = Delete.subCommand(player, args);
+                    case "tp" -> var10000 = Tp.subCommand(player, args);
+                    case "list" -> var10000 = List.subCommand(player);
+                    case "info" -> var10000 = Info.subCommand(player, args);
+                    default -> var10000 = false;
+                }
+
+                return var10000;
             }
-
-            return var10000;
-         }
-      } else {
-         sender.sendMessage("Only players can use this command.");
-         return true;
-      }
-   }
+        } else {
+            sender.sendMessage("Only players can use this command.");
+            return true;
+        }
+    }
 }

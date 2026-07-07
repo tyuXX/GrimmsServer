@@ -5,17 +5,17 @@ import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 
 public class Dump {
-   public Dump() {
-   }
+    public Dump() {
+    }
 
-   public static boolean subCommand(Player player) {
-      player.sendMessage("Config Dump:");
+    public static boolean subCommand(Player player) {
+        player.sendMessage("Config Dump:");
 
-      for(ConfigKey key : ConfigKey.values()) {
-         String var10001 = key.getKey();
-         player.sendMessage("|" + var10001 + ":" + (String)ActiveConfig.getConfigValue(key, String.class));
-      }
+        for (ConfigKey key : ConfigKey.values()) {
+            String var10001 = key.getKey();
+            player.sendMessage("|" + var10001 + ":" + ActiveConfig.getConfigValue(key, String.class));
+        }
 
-      return true;
-   }
+        return true;
+    }
 }

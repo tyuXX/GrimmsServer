@@ -1,18 +1,7 @@
 package org.gsdistance.grimmsServer.Manage;
 
-import java.util.List;
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.GrimmsServer;
-import org.gsdistance.grimmsServer.Commands.AddTitle;
-import org.gsdistance.grimmsServer.Commands.DepositMoney;
-import org.gsdistance.grimmsServer.Commands.ExecutePlayer;
-import org.gsdistance.grimmsServer.Commands.LogGrimmsServerCommands;
-import org.gsdistance.grimmsServer.Commands.MakeItemLevelable;
-import org.gsdistance.grimmsServer.Commands.Nick;
-import org.gsdistance.grimmsServer.Commands.RemoveTitle;
-import org.gsdistance.grimmsServer.Commands.SendMoney;
-import org.gsdistance.grimmsServer.Commands.SetPlayerStat;
-import org.gsdistance.grimmsServer.Commands.WithdrawMoney;
+import org.gsdistance.grimmsServer.Commands.*;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GConfigCommand.GConfigBaseCommand;
@@ -40,66 +29,69 @@ import org.gsdistance.grimmsServer.Commands.RequestCommand.RequestTabCompleter;
 import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Data.ConfigRequirements;
+import org.gsdistance.grimmsServer.GrimmsServer;
+
+import java.util.List;
 
 public class CommandRegistry {
-   public CommandRegistry() {
-   }
+    public CommandRegistry() {
+    }
 
-   public static void registerCommands() {
-      GrimmsServer.instance.getCommand("sendMoney").setExecutor(new SendMoney());
-      GrimmsServer.instance.getCommand("makeItemLevelable").setExecutor(new MakeItemLevelable());
-      GrimmsServer.instance.getCommand("setPlayerStat").setExecutor(new SetPlayerStat());
-      GrimmsServer.instance.getCommand("addTitle").setExecutor(new AddTitle());
-      GrimmsServer.instance.getCommand("executePlayer").setExecutor(new ExecutePlayer());
-      GrimmsServer.instance.getCommand("grimmsServerCommands").setExecutor(new LogGrimmsServerCommands());
-      GrimmsServer.instance.getCommand("withdrawMoney").setExecutor(new WithdrawMoney());
-      GrimmsServer.instance.getCommand("depositMoney").setExecutor(new DepositMoney());
-      GrimmsServer.instance.getCommand("acceptRequest").setExecutor(new AcceptRequest());
-      GrimmsServer.instance.getCommand("acceptRequest").setTabCompleter(new RequestTabCompleter());
-      GrimmsServer.instance.getCommand("removeTitle").setExecutor(new RemoveTitle());
-      GrimmsServer.instance.getCommand("home").setExecutor(new HomeBaseCommand());
-      GrimmsServer.instance.getCommand("home").setTabCompleter(new HomeTabCompleter());
-      GrimmsServer.instance.getCommand("nick").setExecutor(new Nick());
-      GrimmsServer.instance.getCommand("market").setExecutor(new MarketBaseCommand());
-      GrimmsServer.instance.getCommand("market").setTabCompleter(new MarketTabCompleter());
-      GrimmsServer.instance.getCommand("gUtil").setExecutor(new GUtilBaseCommand());
-      GrimmsServer.instance.getCommand("gUtil").setTabCompleter(new GUtilTabCompleter());
-      GrimmsServer.instance.getCommand("gLog").setExecutor(new GLogBaseCommand());
-      GrimmsServer.instance.getCommand("gLog").setTabCompleter(new GLogTabCompleter());
-      GrimmsServer.instance.getCommand("gDim").setExecutor(new GDimBaseCommand());
-      GrimmsServer.instance.getCommand("gDim").setTabCompleter(new GDimTabCompleter());
-      GrimmsServer.instance.getCommand("gFaction").setExecutor(new GFactionBaseCommand());
-      GrimmsServer.instance.getCommand("gFaction").setTabCompleter(new GFactionTabCompleter());
-      GrimmsServer.instance.getCommand("gConfig").setExecutor(new GConfigBaseCommand());
-      GrimmsServer.instance.getCommand("gConfig").setTabCompleter(new GConfigTabCompleter());
-      GrimmsServer.instance.getCommand("job").setExecutor(new JobBaseCommand());
-      GrimmsServer.instance.getCommand("job").setTabCompleter(new JobTabCompleter());
-      GrimmsServer.instance.getCommand("gHelp").setExecutor(new GHelp());
-      GrimmsServer.instance.getCommand("gHelp").setTabCompleter(new GHelpTabCompleter());
-      GrimmsServer.instance.getCommand("gAuth").setExecutor(new GAuthBaseCommand());
-      GrimmsServer.instance.getCommand("gAuth").setTabCompleter(new GAuthTabCompleter());
-      GrimmsServer.instance.getCommand("gDeco").setExecutor(new GDecoBaseCommand());
-      GrimmsServer.instance.getCommand("gDeco").setTabCompleter(new GDecoTabCompleter());
-   }
+    public static void registerCommands() {
+        GrimmsServer.instance.getCommand("sendMoney").setExecutor(new SendMoney());
+        GrimmsServer.instance.getCommand("makeItemLevelable").setExecutor(new MakeItemLevelable());
+        GrimmsServer.instance.getCommand("setPlayerStat").setExecutor(new SetPlayerStat());
+        GrimmsServer.instance.getCommand("addTitle").setExecutor(new AddTitle());
+        GrimmsServer.instance.getCommand("executePlayer").setExecutor(new ExecutePlayer());
+        GrimmsServer.instance.getCommand("grimmsServerCommands").setExecutor(new LogGrimmsServerCommands());
+        GrimmsServer.instance.getCommand("withdrawMoney").setExecutor(new WithdrawMoney());
+        GrimmsServer.instance.getCommand("depositMoney").setExecutor(new DepositMoney());
+        GrimmsServer.instance.getCommand("acceptRequest").setExecutor(new AcceptRequest());
+        GrimmsServer.instance.getCommand("acceptRequest").setTabCompleter(new RequestTabCompleter());
+        GrimmsServer.instance.getCommand("removeTitle").setExecutor(new RemoveTitle());
+        GrimmsServer.instance.getCommand("home").setExecutor(new HomeBaseCommand());
+        GrimmsServer.instance.getCommand("home").setTabCompleter(new HomeTabCompleter());
+        GrimmsServer.instance.getCommand("nick").setExecutor(new Nick());
+        GrimmsServer.instance.getCommand("market").setExecutor(new MarketBaseCommand());
+        GrimmsServer.instance.getCommand("market").setTabCompleter(new MarketTabCompleter());
+        GrimmsServer.instance.getCommand("gUtil").setExecutor(new GUtilBaseCommand());
+        GrimmsServer.instance.getCommand("gUtil").setTabCompleter(new GUtilTabCompleter());
+        GrimmsServer.instance.getCommand("gLog").setExecutor(new GLogBaseCommand());
+        GrimmsServer.instance.getCommand("gLog").setTabCompleter(new GLogTabCompleter());
+        GrimmsServer.instance.getCommand("gDim").setExecutor(new GDimBaseCommand());
+        GrimmsServer.instance.getCommand("gDim").setTabCompleter(new GDimTabCompleter());
+        GrimmsServer.instance.getCommand("gFaction").setExecutor(new GFactionBaseCommand());
+        GrimmsServer.instance.getCommand("gFaction").setTabCompleter(new GFactionTabCompleter());
+        GrimmsServer.instance.getCommand("gConfig").setExecutor(new GConfigBaseCommand());
+        GrimmsServer.instance.getCommand("gConfig").setTabCompleter(new GConfigTabCompleter());
+        GrimmsServer.instance.getCommand("job").setExecutor(new JobBaseCommand());
+        GrimmsServer.instance.getCommand("job").setTabCompleter(new JobTabCompleter());
+        GrimmsServer.instance.getCommand("gHelp").setExecutor(new GHelp());
+        GrimmsServer.instance.getCommand("gHelp").setTabCompleter(new GHelpTabCompleter());
+        GrimmsServer.instance.getCommand("gAuth").setExecutor(new GAuthBaseCommand());
+        GrimmsServer.instance.getCommand("gAuth").setTabCompleter(new GAuthTabCompleter());
+        GrimmsServer.instance.getCommand("gDeco").setExecutor(new GDecoBaseCommand());
+        GrimmsServer.instance.getCommand("gDeco").setTabCompleter(new GDecoTabCompleter());
+    }
 
-   public static boolean CanExecute(String command, Player player) {
-      if (command != null && !command.isEmpty()) {
-         if (!GAuthBaseCommand.isLoggedIn(player) && !command.equalsIgnoreCase("gAuth")) {
-            return false;
-         } else {
-            List<String> disabledCommands = (List)ActiveConfig.getConfigValue(ConfigKey.DISABLED_COMMANDS, List.class);
-            if (disabledCommands != null) {
-               for(String disabledCommand : disabledCommands) {
-                  if (disabledCommand.equalsIgnoreCase(command)) {
-                     return false;
-                  }
-               }
+    public static boolean CanExecute(String command, Player player) {
+        if (command != null && !command.isEmpty()) {
+            if (!GAuthBaseCommand.isLoggedIn(player) && !command.equalsIgnoreCase("gAuth")) {
+                return false;
+            } else {
+                List<String> disabledCommands = (List) ActiveConfig.getConfigValue(ConfigKey.DISABLED_COMMANDS, List.class);
+                if (disabledCommands != null) {
+                    for (String disabledCommand : disabledCommands) {
+                        if (disabledCommand.equalsIgnoreCase(command)) {
+                            return false;
+                        }
+                    }
+                }
+
+                return ConfigRequirements.isCommandEnabled(command);
             }
-
-            return ConfigRequirements.isCommandEnabled(command);
-         }
-      } else {
-         return false;
-      }
-   }
+        } else {
+            return false;
+        }
+    }
 }

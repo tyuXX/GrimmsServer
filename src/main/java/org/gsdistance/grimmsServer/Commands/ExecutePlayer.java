@@ -8,31 +8,31 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 
 public class ExecutePlayer implements CommandExecutor {
-   public ExecutePlayer() {
-   }
+    public ExecutePlayer() {
+    }
 
-   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-      if (sender instanceof Player) {
-         if (args.length == 0) {
-            return false;
-         } else {
-            Player player = GrimmsServer.instance.getServer().getPlayer(args[0]);
-            if (player == null) {
-               sender.sendMessage("Player not found.");
-               return false;
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (sender instanceof Player) {
+            if (args.length == 0) {
+                return false;
             } else {
-               if (PlayerTitles.getPlayerTitles((Player)sender).hasTitle("Executioner")) {
-                  player.sendMessage("You have been executed by " + ((Player)sender).getDisplayName());
-                  sender.sendMessage("You have executed " + player.getDisplayName());
-                  player.damage(player.getHealth() * (double)10.0F);
-               }
+                Player player = GrimmsServer.instance.getServer().getPlayer(args[0]);
+                if (player == null) {
+                    sender.sendMessage("Player not found.");
+                    return false;
+                } else {
+                    if (PlayerTitles.getPlayerTitles((Player) sender).hasTitle("Executioner")) {
+                        player.sendMessage("You have been executed by " + ((Player) sender).getDisplayName());
+                        sender.sendMessage("You have executed " + player.getDisplayName());
+                        player.damage(player.getHealth() * (double) 10.0F);
+                    }
 
-               return true;
+                    return true;
+                }
             }
-         }
-      } else {
-         sender.sendMessage("This command can only be run by a player.");
-         return false;
-      }
-   }
+        } else {
+            sender.sendMessage("This command can only be run by a player.");
+            return false;
+        }
+    }
 }
