@@ -39,32 +39,48 @@ public class GeneralChatHandler {
     public static String handleMessage(String message, Player player) {
         PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(player);
         String nickname = metadata != null ? metadata.nickname : player.getName();
-        PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
-        Faction faction = Faction.getFaction(playerMetadata.factionUUID);
-        if (PlayerTitles.titles.get(playerMetadata.decoTitle) != null) {
-            nickname = "(" + playerMetadata.decoTitle + ") " + nickname;
+
+        // Optimized: Don't fetch metadata twice
+        if (metadata != null && PlayerTitles.titles.get(metadata.decoTitle) != null) {
+            nickname = "(" + metadata.decoTitle + ") " + nickname;
         }
 
-        if (faction != null) {
-            nickname = "[" + faction.name + "] " + nickname;
+        if (metadata != null) {
+            Faction faction = Faction.getFaction(metadata.factionUUID);
+            if (faction != null) {
+                nickname = "[" + faction.name + "] " + nickname;
+            }
         }
 
-        String formattedMessage = String.format("%s: %s", nickname, message).replace("&timeF", LocalDateTime.now().toString()).replace("&world", player.getWorld().getName()).replace("&pos", player.getLocation().toString()).replace("&player", player.getName()).replace("&uuid", player.getUniqueId().toString()).replace("&date", LocalDateTime.now().toLocalDate().toString()).replace("&time", LocalDateTime.now().toLocalTime().toString()).replace("&nickname", nickname).replace("&day", String.valueOf(player.getWorld().getTime() / 24000L));
+        // 1. RUN THE FILTER FIRST before doing heavy string formatting
         @SuppressWarnings("unchecked")
         List<String> bannedWords = ActiveConfig.getConfigValue(ConfigKey.BANNED_WORDS, List.class);
         if (bannedWords != null) {
-            String regex = "[ .-_,:;!?()\\[\\]{}\"'`~@#$%^&*+=|<>/\\\\]+";
+            String regex = "[^\\p{L}\\p{N}]+"; // Safely keeps all letters and numbers across languages
             String normalizedMessage = message.replaceAll(regex, "").toLowerCase();
 
             for (String word : bannedWords) {
-                if (normalizedMessage.contains(word.replaceAll(regex, "").toLowerCase())) {
+                String normalizedBannedWord = word.replaceAll(regex, "").toLowerCase();
+                if (normalizedMessage.contains(normalizedBannedWord)) {
                     GrimmsServer.logger.info("Message interrupted: '" + message + "' by player: " + player.getName() + ". Contains banned word: " + word);
                     return String.format("<%s>: %s", nickname, "§c[REDACTED]");
                 }
             }
         }
 
-        return formattedMessage;
+        // 2. NOW formatting happens only if the message is safe
+        LocalDateTime now = LocalDateTime.now(); // Instantiated once instead of 3 separate times
+
+        return String.format("%s: %s", nickname, message)
+                .replace("&timeF", now.toString())
+                .replace("&world", player.getWorld().getName())
+                .replace("&pos", player.getLocation().toString()) // Consider formatting this cleanly later
+                .replace("&player", player.getName())
+                .replace("&uuid", player.getUniqueId().toString())
+                .replace("&date", now.toLocalDate().toString())
+                .replace("&time", now.toLocalTime().toString())
+                .replace("&nickname", nickname)
+                .replace("&day", String.valueOf(player.getWorld().getTime() / 24000L));
     }
 
     public static void joinMessage(Player player) {
