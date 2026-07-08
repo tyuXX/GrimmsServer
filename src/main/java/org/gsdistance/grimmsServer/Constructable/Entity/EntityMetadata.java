@@ -2,6 +2,8 @@ package org.gsdistance.grimmsServer.Constructable.Entity;
 
 import com.google.gson.Gson;
 import org.bukkit.entity.Entity;
+import org.gsdistance.grimmsServer.Config.ActiveConfig;
+import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.GrimmsServer;
@@ -14,16 +16,21 @@ public class EntityMetadata {
     public final UUID uuid;
     public final String timestamp;
     public int level = 1;
+    public String originalName;
 
     public EntityMetadata(Entity entity) {
         this.uuid = entity.getUniqueId();
         this.timestamp = LocalDateTime.now().toString();
+        this.originalName = entity.getName();
     }
 
     public void logMetadata() {
-        Logger var10000 = GrimmsServer.logger;
-        String var10001 = String.valueOf(this.uuid);
-        var10000.info("Entity Metadata for " + var10001 + ":" + (new Gson()).toJson(this));
+        String logLevel = ActiveConfig.getConfigValue(ConfigKey.LOG_LEVEL, String.class);
+        if ("Verbose".equalsIgnoreCase(logLevel)) {
+            Logger var10000 = GrimmsServer.logger;
+            String var10001 = String.valueOf(this.uuid);
+            var10000.info("Entity Metadata for " + var10001 + ":" + (new Gson()).toJson(this));
+        }
     }
 
     public void softSave() {
@@ -42,9 +49,15 @@ public class EntityMetadata {
             EntityMetadata metadata = GrimmsServer.pds.retrieveData(entity.getUniqueId() + ".json", "entityMetadata", EntityMetadata.class);
             if (metadata == null) {
                 metadata = new EntityMetadata(entity);
-                GrimmsServer.logger.info("Created new EntityMetadata for " + entity.getUniqueId());
+                String logLevel = ActiveConfig.getConfigValue(ConfigKey.LOG_LEVEL, String.class);
+                if ("Verbose".equalsIgnoreCase(logLevel)) {
+                    GrimmsServer.logger.info("Created new EntityMetadata for " + entity.getUniqueId());
+                }
             } else {
-                GrimmsServer.logger.info("Retrieved EntityMetadata for " + entity.getUniqueId());
+                String logLevel = ActiveConfig.getConfigValue(ConfigKey.LOG_LEVEL, String.class);
+                if ("Verbose".equalsIgnoreCase(logLevel)) {
+                    GrimmsServer.logger.info("Retrieved EntityMetadata for " + entity.getUniqueId());
+                }
             }
 
             PerSessionDataStorage.dataStore.put("entityMetadata-" + entity.getUniqueId(), Data.of(metadata, EntityMetadata.class));

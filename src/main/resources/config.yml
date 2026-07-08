@@ -17,3 +17,4 @@ disabledDimensions: [ ]
 forceDisableBroadcasts: false
 bannedWords: [ ]
 enforceAuth: false
+log_level: Info

@@ -2,6 +2,8 @@ package org.gsdistance.grimmsServer.Constructable.Player;
 
 import com.google.gson.Gson;
 import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Config.ActiveConfig;
+import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Constructable.Location;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
@@ -64,9 +66,12 @@ public class PlayerMetadata {
     }
 
     public void logMetadata() {
-        Logger var10000 = GrimmsServer.logger;
-        String var10001 = String.valueOf(this.uuid);
-        var10000.info("Player Metadata for " + var10001 + ":" + (new Gson()).toJson(this));
+        String logLevel = ActiveConfig.getConfigValue(ConfigKey.LOG_LEVEL, String.class);
+        if ("Verbose".equalsIgnoreCase(logLevel)) {
+            Logger var10000 = GrimmsServer.logger;
+            String var10001 = String.valueOf(this.uuid);
+            var10000.info("Player Metadata for " + var10001 + ":" + (new Gson()).toJson(this));
+        }
     }
 
     public void softSave() {
@@ -85,9 +90,15 @@ public class PlayerMetadata {
             PlayerMetadata metadata = GrimmsServer.pds.retrieveData(player.getUniqueId() + ".json", "playerMetadata", PlayerMetadata.class);
             if (metadata == null) {
                 metadata = new PlayerMetadata(player);
-                GrimmsServer.logger.info("Created new PlayerMetadata for " + player.getName());
+                String logLevel = ActiveConfig.getConfigValue(ConfigKey.LOG_LEVEL, String.class);
+                if ("Verbose".equalsIgnoreCase(logLevel)) {
+                    GrimmsServer.logger.info("Created new PlayerMetadata for " + player.getName());
+                }
             } else {
-                GrimmsServer.logger.info("Retrieved PlayerMetadata for " + player.getName());
+                String logLevel = ActiveConfig.getConfigValue(ConfigKey.LOG_LEVEL, String.class);
+                if ("Verbose".equalsIgnoreCase(logLevel)) {
+                    GrimmsServer.logger.info("Retrieved PlayerMetadata for " + player.getName());
+                }
             }
 
             PerSessionDataStorage.dataStore.put("metadata-" + player.getUniqueId(), Data.of(metadata, PlayerMetadata.class));

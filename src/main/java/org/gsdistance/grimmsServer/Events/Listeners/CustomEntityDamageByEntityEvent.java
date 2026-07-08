@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
+import org.bukkit.entity.Entity;
 import org.gsdistance.grimmsServer.Events.Registers.CustomEntityDamageByEntityRegister;
 
 public class CustomEntityDamageByEntityEvent {
@@ -7,5 +8,6 @@ public class CustomEntityDamageByEntityEvent {
     }
 
     public static void Event(CustomEntityDamageByEntityRegister event) {
+        // This event is only called for non-player entities
     }
 }

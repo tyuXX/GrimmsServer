@@ -1,5 +1,7 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
+import org.bukkit.ChatColor;
+import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.World.ChunkMetadata;
 
@@ -8,6 +10,12 @@ public class BlockPlaceEvent {
     }
 
     public static void Event(org.bukkit.event.block.BlockPlaceEvent event) {
+        if (!GAuthBaseCommand.isLoggedIn(event.getPlayer())) {
+            event.getPlayer().sendMessage(ChatColor.RED + "You must login with /gAuth login <password> to perform this action.");
+            event.setCancelled(true);
+            return;
+        }
+
         ChunkMetadata chunkMetadata = ChunkMetadata.getChunkMetadata(event.getBlock().getChunk());
         if (!event.getPlayer().hasPermission("grimmsserver.faction.bypass") && chunkMetadata.factionUUID != null) {
             Faction faction = Faction.getFaction(chunkMetadata.factionUUID);

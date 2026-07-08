@@ -9,6 +9,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.EntityRemoveEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
@@ -19,6 +20,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldSaveEvent;
@@ -41,7 +43,9 @@ public class EventRegistry implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         org.gsdistance.grimmsServer.Events.Listeners.EntityDeathEvent.Event(event);
-        callEvent(new CustomEntityDeathRegister(event.getEntity()));
+        if (event.getEntity().getType() != org.bukkit.entity.EntityType.PLAYER) {
+            callEvent(new CustomEntityDeathRegister(event.getEntity(), event.getEntity().getKiller()));
+        }
     }
 
     @EventHandler
@@ -52,7 +56,6 @@ public class EventRegistry implements Listener {
     @EventHandler
     public void onCustomEntityDamageByEntity(CustomEntityDamageByEntityRegister event) {
         CustomEntityDamageByEntityEvent.Event(event);
-        callEvent(new CustomEntityDamageByEntityRegister());
     }
 
     @EventHandler
@@ -98,6 +101,9 @@ public class EventRegistry implements Listener {
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         org.gsdistance.grimmsServer.Events.Listeners.EntityDamageByEntityEvent.Event(event);
+        if (event.getEntity().getType() != org.bukkit.entity.EntityType.PLAYER) {
+            callEvent(new CustomEntityDamageByEntityRegister());
+        }
     }
 
     @EventHandler
@@ -141,6 +147,11 @@ public class EventRegistry implements Listener {
     }
 
     @EventHandler
+    public void onEntityRemove(EntityRemoveEvent event) {
+        org.gsdistance.grimmsServer.Events.Listeners.EntityRemoveEvent.Event(event);
+    }
+
+    @EventHandler
     public void onPlayerItemDamage(PlayerItemDamageEvent event) {
         org.gsdistance.grimmsServer.Events.Listeners.PlayerItemDamageEvent.Event(event);
     }
@@ -148,5 +159,10 @@ public class EventRegistry implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         org.gsdistance.grimmsServer.Events.Listeners.PlayerMoveEvent.Event(event);
+    }
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        org.gsdistance.grimmsServer.Events.Listeners.PlayerDropItemEvent.Event(event);
     }
 }
