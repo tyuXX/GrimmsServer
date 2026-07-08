@@ -1,6 +1,5 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
-import org.bukkit.ChatColor;
 import org.bukkit.boss.KeyedBossBar;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Constructable.Faction;

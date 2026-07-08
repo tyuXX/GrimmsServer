@@ -31,6 +31,7 @@ public class Login {
                 GAuthBaseCommand.login(player, true);
                 PerSessionDataStorage.softSave(0, Integer.class, playerKey + "-attempts");
                 PerSessionDataStorage.softSave(null, Long.class, playerKey + "-cooldown");
+                player.setInvulnerable(false);
                 player.sendMessage(ChatColor.GREEN + "Logged in.");
                 return true;
             } else {

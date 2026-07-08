@@ -1,6 +1,5 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
-import org.bukkit.entity.Entity;
 import org.gsdistance.grimmsServer.Events.Registers.CustomEntityDamageByEntityRegister;
 
 public class CustomEntityDamageByEntityEvent {

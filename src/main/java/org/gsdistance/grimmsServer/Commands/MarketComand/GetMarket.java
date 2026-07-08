@@ -3,9 +3,9 @@ package org.gsdistance.grimmsServer.Commands.MarketComand;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
+import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Shared;
 
 public class GetMarket {

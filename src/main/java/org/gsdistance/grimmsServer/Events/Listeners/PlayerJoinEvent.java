@@ -42,5 +42,9 @@ public class PlayerJoinEvent {
         metadata.offlineMoney = 0.0F;
         metadata.saveToPDS();
         PerSessionDataStorage.dataStore.put("requestData-" + event.getPlayer().getName(), Data.of(new ArrayList(), ArrayList.class));
+
+        if (!GAuthBaseCommand.isLoggedIn(event.getPlayer())) {
+            event.getPlayer().setInvulnerable(true);
+        }
     }
 }
