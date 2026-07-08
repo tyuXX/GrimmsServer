@@ -9,6 +9,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -132,6 +133,11 @@ public class EventRegistry implements Listener {
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {
         org.gsdistance.grimmsServer.Events.Listeners.EntityPickupItemEvent.Event(event);
+    }
+
+    @EventHandler
+    public void onEntitySpawn(EntitySpawnEvent event) {
+        org.gsdistance.grimmsServer.Events.Listeners.EntitySpawnEvent.Event(event);
     }
 
     @EventHandler

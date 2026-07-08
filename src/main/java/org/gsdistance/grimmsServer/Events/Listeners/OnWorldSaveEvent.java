@@ -4,10 +4,12 @@ import com.google.common.base.Stopwatch;
 import org.bukkit.Bukkit;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.gsdistance.grimmsServer.Constructable.Data;
+import org.gsdistance.grimmsServer.Constructable.Entity.EntityMetadata;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Manage.CustomEntityManager;
 
 import java.lang.reflect.Type;
 
@@ -36,8 +38,12 @@ public class OnWorldSaveEvent {
                 ((PlayerMetadata) data.key()).saveToPDS();
             } else if (type.equals(Faction.class)) {
                 ((Faction) data.key()).saveToFile();
+            } else if (type.equals(EntityMetadata.class)) {
+                ((EntityMetadata) data.key()).saveToFile();
             }
         }
+
+        CustomEntityManager.saveToFile();
 
         GrimmsServer.logger.info("Done (" + sw.stop() + ")");
     }

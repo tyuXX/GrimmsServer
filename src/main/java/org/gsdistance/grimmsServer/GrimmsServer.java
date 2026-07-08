@@ -39,6 +39,7 @@ public final class GrimmsServer extends JavaPlugin {
     }
 
     public void onDisable() {
+        super.onDisable();
     }
 
     public String[] fullHotReload() {

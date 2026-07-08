@@ -4,6 +4,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerLevelHandler;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
+import org.gsdistance.grimmsServer.Manage.CustomEntityManager;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
 import org.gsdistance.grimmsServer.Stats.WorldStats;
@@ -13,6 +14,10 @@ public class EntityDeathEvent {
     }
 
     public static void Event(org.bukkit.event.entity.EntityDeathEvent event) {
+        if (event.getEntity().getType() != EntityType.PLAYER) {
+            CustomEntityManager.unregisterEntity(event.getEntity());
+        }
+
         if (event.getEntity().getKiller() != null && event.getEntity().getKiller().getType() == EntityType.PLAYER) {
             PlayerStats playerStats = PlayerStats.getPlayerStats(event.getEntity().getKiller());
             WorldStats worldStats = WorldStats.getWorldStats(event.getEntity().getWorld());

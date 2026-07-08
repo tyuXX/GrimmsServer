@@ -6,6 +6,7 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Indexers.DynamicDimensionGen;
 import org.gsdistance.grimmsServer.Indexers.ItemIndexer;
 import org.gsdistance.grimmsServer.Manage.CommandRegistry;
+import org.gsdistance.grimmsServer.Manage.CustomEntityManager;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ public class ServerStartupEvent {
     public static void Event() {
         Stopwatch sw = Stopwatch.createStarted();
         CommandRegistry.registerCommands();
+        CustomEntityManager.loadFromFile();
         GrimmsServer.instance.getServer().getScheduler().scheduleSyncRepeatingTask(GrimmsServer.instance, ServerTickEvent::Event, 100L, 1L);
         Bukkit.getScheduler().runTask(GrimmsServer.instance, () -> {
             Stopwatch swLoad = Stopwatch.createStarted();
