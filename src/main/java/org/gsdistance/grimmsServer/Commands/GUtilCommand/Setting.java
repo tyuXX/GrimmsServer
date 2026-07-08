@@ -12,7 +12,9 @@ public class Setting {
 
     public static boolean subCommand(Player player, String[] args) {
         if (args.length < 2) {
-            return false;
+            SettingGUI gui = new SettingGUI(player);
+            gui.open();
+            return true;
         } else {
             String settingName = args[1].toLowerCase();
             PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);

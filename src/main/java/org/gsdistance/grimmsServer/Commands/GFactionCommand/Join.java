@@ -65,7 +65,7 @@ public class Join {
                                 }, targetPlayer, player.getName() + " wants to join your faction.", Data.of(player, targetFaction.uuid));
                                 return true;
                             } else {
-                                player.sendMessage(ChatColor.RED + "No leader or officer is online to accept your request.");
+                                player.sendMessage(ChatColor.RED + "No leader is online to accept your request.");
                                 return true;
                             }
                     }

@@ -4,6 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
+import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.jetbrains.annotations.Nullable;
@@ -116,5 +118,15 @@ public class Shared {
         }
 
         return closestPlayer;
+    }
+
+    public static boolean checkContainerAuth(Player player, InventoryHolder holder, String action) {
+        if (holder != null && !(holder instanceof Player)) {
+            if (!GAuthBaseCommand.isLoggedIn(player)) {
+                player.sendMessage(ChatColor.RED + "You must login with /gAuth login <password> to " + action + " containers.");
+                return false;
+            }
+        }
+        return true;
     }
 }

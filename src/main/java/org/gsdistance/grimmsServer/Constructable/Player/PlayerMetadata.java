@@ -31,6 +31,7 @@ public class PlayerMetadata {
     public Map<PlayerCapability, Integer> capabilities;
     public List<String> settings;
     public String decoTitle;
+    public boolean factionChatEnabled = false;
 
     public PlayerMetadata(Player player) {
         this.rank = PlayerRank.DEFAULT;
@@ -38,17 +39,17 @@ public class PlayerMetadata {
         this.lastKnownNames = List.of(player.getName());
         this.uuid = player.getUniqueId();
         this.exitLocation = new Location(player.getLocation());
-        this.homes = new HashMap();
+        this.homes = new HashMap<>();
         this.titles = new String[0];
         this.timestamp = LocalDateTime.now().toString();
-        this.capabilities = new HashMap();
-        this.settings = new ArrayList();
+        this.capabilities = new HashMap<>();
+        this.settings = new ArrayList<>();
         this.decoTitle = "";
     }
 
     public void fixNulls() {
         if (this.lastKnownNames == null) {
-            this.lastKnownNames = new ArrayList();
+            this.lastKnownNames = new ArrayList<>();
         }
 
         if (this.titles == null) {
@@ -56,11 +57,11 @@ public class PlayerMetadata {
         }
 
         if (this.capabilities == null) {
-            this.capabilities = new HashMap();
+            this.capabilities = new HashMap<>();
         }
 
         if (this.settings == null) {
-            this.settings = new ArrayList();
+            this.settings = new ArrayList<>();
         }
 
     }

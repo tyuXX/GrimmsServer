@@ -48,7 +48,7 @@ public class Invite {
                             targetMetadata.factionUUID = targetFaction.uuid;
                             targetMetadata.saveToPDS();
                             targetFaction.addMember(target.getUniqueId(), FactionRank.RECRUIT);
-                            faction.saveToFile();
+                            targetFaction.saveToFile();
                             return null;
                         }, targetPlayer, "You have been invited to join the faction " + faction.name + ".", Data.of(targetPlayer, playerMetadata.factionUUID));
                         return true;

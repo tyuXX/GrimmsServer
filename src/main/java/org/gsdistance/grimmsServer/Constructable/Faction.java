@@ -25,6 +25,7 @@ public class Faction {
     public final UUID uuid = UUID.randomUUID();
     public List<Data<UUID, FactionRank>> members;
     public List<Location> claims = new ArrayList();
+    public Location homeLocation;
 
     public Faction(String id, List<Data<UUID, FactionRank>> members) {
         this.id = id;

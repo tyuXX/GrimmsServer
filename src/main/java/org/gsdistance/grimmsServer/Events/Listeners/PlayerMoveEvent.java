@@ -1,9 +1,12 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.boss.KeyedBossBar;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.World.ChunkMetadata;
+
+import java.util.Iterator;
 
 public class PlayerMoveEvent {
     public PlayerMoveEvent() {
@@ -16,18 +19,19 @@ public class PlayerMoveEvent {
         }
 
         if (event.getTo() != null) {
-            if (!event.getFrom().getChunk().equals(event.getTo().getChunk())) {
-                ChunkMetadata fromChunkMetadata = ChunkMetadata.getChunkMetadata(event.getFrom().getChunk());
-                if (fromChunkMetadata != null && fromChunkMetadata.factionUUID != null) {
-                    Faction fromFaction = Faction.getFaction(fromChunkMetadata.factionUUID);
-                    if (fromFaction != null) {
-                        KeyedBossBar fromBossBar = fromFaction.getBossBar();
-                        if (fromBossBar != null) {
-                            fromBossBar.removePlayer(event.getPlayer());
-                        }
+            boolean chunkChanged = !event.getFrom().getChunk().equals(event.getTo().getChunk());
+            boolean worldChanged = !event.getFrom().getWorld().equals(event.getTo().getWorld());
+
+            if (chunkChanged || worldChanged) {
+                // Remove player from all faction bossbars
+                for (Iterator<KeyedBossBar> it = Bukkit.getServer().getBossBars(); it.hasNext(); ) {
+                    KeyedBossBar bossBar = it.next();
+                    if (bossBar.getKey().getKey().startsWith("faction-")) {
+                        bossBar.removePlayer(event.getPlayer());
                     }
                 }
 
+                // Add player to the new chunk's faction bossbar if applicable
                 ChunkMetadata toChunkMetadata = ChunkMetadata.getChunkMetadata(event.getTo().getChunk());
                 if (toChunkMetadata != null && toChunkMetadata.factionUUID != null) {
                     Faction toFaction = Faction.getFaction(toChunkMetadata.factionUUID);
@@ -38,7 +42,6 @@ public class PlayerMoveEvent {
                         }
                     }
                 }
-
             }
         }
     }

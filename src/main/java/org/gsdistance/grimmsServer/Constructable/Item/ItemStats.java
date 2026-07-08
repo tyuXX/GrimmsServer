@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Constructable.Item;
 
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.gsdistance.grimmsServer.Shared;
 
@@ -24,20 +25,21 @@ public class ItemStats {
     }
 
     public List<String> getItemStats() {
-        List<String> toolStats = new ArrayList();
+        List<String> toolStats = new ArrayList<>();
+        
         if (ItemLevelHandler.isItemLevelable(this.item)) {
             ItemLevelHandler levelHandler = ItemLevelHandler.getLevelHandler(this.item, null);
-            toolStats.add("Level: " + Shared.formatNumber(levelHandler.getLevel()));
-            String var10001 = Shared.formatNumber(Math.floor(levelHandler.getXp()));
-            toolStats.add("XP: " + var10001 + "/" + Shared.formatNumber(Math.ceil(levelHandler.getXpToLevel())));
+            toolStats.add(ChatColor.GOLD + "Level: " + ChatColor.YELLOW + Shared.formatNumber(levelHandler.getLevel()));
+            toolStats.add(ChatColor.GREEN + "XP: " + ChatColor.AQUA + Shared.formatNumber(Math.floor(levelHandler.getXp())) + 
+                         ChatColor.GRAY + "/" + ChatColor.AQUA + Shared.formatNumber(Math.ceil(levelHandler.getXpToLevel())));
         }
 
         if (RelicHandler.isRelic(this.item)) {
             RelicHandler relicHandler = RelicHandler.getRelicHandler(this.item);
-            toolStats.add("Type: " + relicHandler.getRelicType());
-            toolStats.add("Tier: " + relicHandler.getRelicTier());
-            toolStats.add("Grade: " + relicHandler.getRelicGrade());
-            toolStats.add("Durability Resistance: " + relicHandler.getRelicDurabilityResistance() + "%");
+            toolStats.add(ChatColor.LIGHT_PURPLE + "Type: " + ChatColor.WHITE + relicHandler.getRelicType());
+            toolStats.add(ChatColor.DARK_PURPLE + "Tier: " + ChatColor.WHITE + relicHandler.getRelicTier());
+            toolStats.add(ChatColor.BLUE + "Grade: " + ChatColor.WHITE + relicHandler.getRelicGrade());
+            toolStats.add(ChatColor.RED + "Durability Resistance: " + ChatColor.WHITE + relicHandler.getRelicDurabilityResistance() + "%");
         }
 
         return toolStats;

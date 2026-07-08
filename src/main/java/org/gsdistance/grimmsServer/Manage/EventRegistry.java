@@ -12,6 +12,9 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityRemoveEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -163,5 +166,20 @@ public class EventRegistry implements Listener {
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         org.gsdistance.grimmsServer.Events.Listeners.PlayerDropItemEvent.Event(event);
+    }
+
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent event) {
+        org.gsdistance.grimmsServer.Events.Listeners.InventoryOpenEvent.Event(event);
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        org.gsdistance.grimmsServer.Events.Listeners.InventoryClickEvent.Event(event);
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        org.gsdistance.grimmsServer.Events.Listeners.InventoryDragEvent.Event(event);
     }
 }

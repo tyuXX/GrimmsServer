@@ -60,9 +60,24 @@ public class SetRank {
             return false;
         }
 
+        // Guard: Prevent setting rank higher than or equal to executor's rank
+        if (newRank.weight >= faction.getMemberRank(player.getUniqueId()).weight) {
+            player.sendMessage(ChatColor.RED + "You cannot set a rank equal to or higher than your own.");
+            return false;
+        }
+
+        // Guard: Prevent multiple leaders
+        if (newRank == FactionRank.LEADER && faction.getMemberWithRank(FactionRank.LEADER) != null) {
+            player.sendMessage(ChatColor.RED + "There is already a leader in this faction.");
+            return false;
+        }
+
         // Process rank update
         faction.removeMember(targetPlayer.getUniqueId());
         faction.addMember(targetPlayer.getUniqueId(), newRank);
+        faction.saveToFile();
+        player.sendMessage(ChatColor.GREEN + "You have set " + ChatColor.YELLOW + targetPlayer.getName() + ChatColor.GREEN + "'s rank to " + ChatColor.YELLOW + newRank.toString() + ChatColor.GREEN + ".");
+        targetPlayer.sendMessage(ChatColor.GREEN + "Your rank has been set to " + ChatColor.YELLOW + newRank.toString() + ChatColor.GREEN + ".");
         return true;
     }
 }

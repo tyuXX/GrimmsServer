@@ -19,7 +19,7 @@ public class Leave {
         } else if (faction.getMemberRank(player.getUniqueId()) == FactionRank.LEADER) {
             faction.delete();
             player.sendMessage(ChatColor.GREEN + "You have successfully disbanded the faction " + ChatColor.YELLOW + faction.name + ChatColor.GREEN + ".");
-            return false;
+            return true;
         } else {
             faction.removeMember(player.getUniqueId());
             playerMetadata.factionUUID = null;

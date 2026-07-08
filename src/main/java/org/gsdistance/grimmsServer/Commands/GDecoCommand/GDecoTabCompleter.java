@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GDecoTabCompleter implements TabCompleter {
-    public static final List<String> subCommands = List.of("selectdecotitle", "cleardecotitle");
+    public static final List<String> subCommands = List.of("selectTitle", "clearTitle");
 
     public GDecoTabCompleter() {
     }
@@ -23,23 +23,19 @@ public class GDecoTabCompleter implements TabCompleter {
             if (args.length == 1) {
                 return subCommands.stream().filter((subCommand) -> subCommand.startsWith(args[0].toLowerCase())).toList();
             } else if (args.length == 2) {
-                switch (args[0].toLowerCase()) {
-                    case "selectdecotitle":
-                        PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
-                        List<String> availableTitles = new ArrayList();
+                if (args[0].equalsIgnoreCase("selecttitle")) {
+                    PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
+                    List<String> availableTitles = new ArrayList<>();
 
-                        for (String title : PlayerTitles.titles.keySet()) {
-                            if (playerTitles.hasTitle(title)) {
-                                availableTitles.add(title);
-                            }
+                    for (String title : PlayerTitles.titles.keySet()) {
+                        if (playerTitles.hasTitle(title)) {
+                            availableTitles.add(title);
                         }
+                    }
 
-                        return availableTitles.stream().filter((titlex) -> titlex.toLowerCase().startsWith(args[1].toLowerCase())).toList();
-                    case "cleardecotitle":
-                        return List.of();
-                    default:
-                        return List.of();
+                    return availableTitles.stream().filter((title) -> title.toLowerCase().startsWith(args[1].toLowerCase())).toList();
                 }
+                return List.of();
             } else {
                 return List.of();
             }

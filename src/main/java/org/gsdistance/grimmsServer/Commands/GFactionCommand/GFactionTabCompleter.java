@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GFactionTabCompleter implements TabCompleter {
-    private static final List<String> SUBCOMMANDS = Arrays.asList("invite", "join", "leave", "kick", "info", "new", "claim", "unclaim", "setrank", "unclaimall");
+    private static final List<String> SUBCOMMANDS = Arrays.asList("invite", "join", "leave", "kick", "info", "new", "claim", "unclaim", "setrank", "unclaimall", "sethome", "home", "chat", "showclaims");
 
     public GFactionTabCompleter() {
     }
@@ -28,17 +28,15 @@ public class GFactionTabCompleter implements TabCompleter {
         } else if (args.length == 1) {
             return SUBCOMMANDS.stream().filter((subcommand) -> subcommand.startsWith(args[0].toLowerCase())).collect(Collectors.toList());
         } else if (args.length == 2) {
-            switch (args[0].toLowerCase()) {
-                case "invite":
-                case "kick":
-                    return Bukkit.getOnlinePlayers().stream().map(Player::getName).filter((name) -> name.toLowerCase().startsWith(args[1].toLowerCase())).collect(Collectors.toList());
-                case "join":
-                    return this.getFactionNames().stream().filter((name) -> name.toLowerCase().startsWith(args[1].toLowerCase())).collect(Collectors.toList());
-                case "setrank":
-                    return this.getFactionMembers((Player) sender).stream().filter((name) -> name.toLowerCase().startsWith(args[1].toLowerCase())).collect(Collectors.toList());
-                default:
-                    return List.of();
-            }
+            return switch (args[0].toLowerCase()) {
+                case "invite", "kick" ->
+                        Bukkit.getOnlinePlayers().stream().map(Player::getName).filter((name) -> name.toLowerCase().startsWith(args[1].toLowerCase())).collect(Collectors.toList());
+                case "join" ->
+                        this.getFactionNames().stream().filter((name) -> name.toLowerCase().startsWith(args[1].toLowerCase())).collect(Collectors.toList());
+                case "setrank" ->
+                        this.getFactionMembers((Player) sender).stream().filter((name) -> name.toLowerCase().startsWith(args[1].toLowerCase())).collect(Collectors.toList());
+                default -> List.of();
+            };
         } else {
             return args.length == 3 && args[0].equalsIgnoreCase("setrank") ? Arrays.stream(FactionRank.values()).map(FactionRank::toString).filter((rank) -> rank.toLowerCase().startsWith(args[2].toLowerCase())).collect(Collectors.toList()) : List.of();
         }

@@ -14,18 +14,17 @@ public class GDecoBaseCommand implements CommandExecutor {
         if (args.length < 1) {
             return false;
         } else if (sender instanceof Player player) {
-            switch (args[0].toLowerCase()) {
-                case "selectdecotitle":
+            return switch (args[0].toLowerCase()) {
+                case "selecttitle" -> {
                     if (args.length < 2) {
-                        return false;
+                        yield false;
                     }
 
-                    return SelectTitle.subCommand(player, args[1]);
-                case "cleardecotitle":
-                    return SelectTitle.subCommand(player, "");
-                default:
-                    return false;
-            }
+                    yield SelectTitle.subCommand(player, args[1]);
+                }
+                case "cleartitle" -> SelectTitle.subCommand(player, "");
+                default -> false;
+            };
         } else {
             sender.sendMessage("This command can only be used by players.");
             return false;

@@ -28,7 +28,6 @@ public class ItemIndexer {
         calculatedMarketValues.clear();
         skippedMarketValues.clear();
         recipeCache.clear();
-        cacheAllRecipes();
 
         Map<Material, Double> tmp;
         try {
@@ -53,9 +52,10 @@ public class ItemIndexer {
                 .collect(Collectors.toSet());
 
         Set<Material> firstPassSkipped = new HashSet<>();
+        Set<Material> processingSet = new HashSet<>();
 
         for (Material material : materialsToProcess) {
-            double marketValue = calculateMarketValue(material);
+            double marketValue = calculateMarketValueInternal(material, processingSet);
             if (marketValue > 0.0) {
                 calculatedMarketValues.put(material, Math.floor(marketValue));
                 if (loggingEnabled) {
@@ -66,33 +66,50 @@ public class ItemIndexer {
             }
         }
 
-        if (!cacheExists && !firstPassSkipped.isEmpty()) {
-            for (int i = 0; i < 2; ++i) {
-                if (loggingEnabled) {
-                    GrimmsServer.logger.info("Recalculating skipped market values, attempt " + (i + 1));
-                }
+        if (!firstPassSkipped.isEmpty()) {
+            if (loggingEnabled) {
+                GrimmsServer.logger.info("Recalculating skipped market values, attempt 1");
+            }
 
-                Set<Material> stillSkipped = new HashSet<>();
+            Set<Material> stillSkipped = new HashSet<>();
+            int newValuesCalculated = 0;
 
-                for (Material material : firstPassSkipped) {
-                    double marketValue = calculateMarketValue(material);
-                    if (marketValue > 0.0) {
-                        calculatedMarketValues.put(material, marketValue);
-                        if (loggingEnabled) {
-                            GrimmsServer.logger.info("Calculated market value for " + material + ": " + marketValue);
-                        }
-                    } else {
-                        stillSkipped.add(material);
+            for (Material material : firstPassSkipped) {
+                double marketValue = calculateMarketValueInternal(material, processingSet);
+                if (marketValue > 0.0) {
+                    calculatedMarketValues.put(material, Math.floor(marketValue));
+                    if (loggingEnabled) {
+                        GrimmsServer.logger.info("Calculated market value for " + material + ": " + Math.floor(marketValue));
                     }
-                }
-
-                firstPassSkipped = stillSkipped;
-                if (stillSkipped.isEmpty()) {
-                    break;
+                    newValuesCalculated++;
+                } else {
+                    stillSkipped.add(material);
                 }
             }
 
-            skippedMarketValues.addAll(firstPassSkipped);
+            if (newValuesCalculated > 0 && !stillSkipped.isEmpty()) {
+                if (loggingEnabled) {
+                    GrimmsServer.logger.info("Recalculating skipped market values, attempt 2");
+                }
+
+                Set<Material> finalSkipped = new HashSet<>();
+
+                for (Material material : stillSkipped) {
+                    double marketValue = calculateMarketValueInternal(material, processingSet);
+                    if (marketValue > 0.0) {
+                        calculatedMarketValues.put(material, Math.floor(marketValue));
+                        if (loggingEnabled) {
+                            GrimmsServer.logger.info("Calculated market value for " + material + ": " + Math.floor(marketValue));
+                        }
+                    } else {
+                        finalSkipped.add(material);
+                    }
+                }
+
+                skippedMarketValues.addAll(finalSkipped);
+            } else {
+                skippedMarketValues.addAll(stillSkipped);
+            }
         }
 
         GrimmsServer.logger.info("Indexed " + calculatedMarketValues.size() + " items in (" + stopwatch.stop() + ").");
@@ -102,21 +119,19 @@ public class ItemIndexer {
         MarketBaseValues.marketBaseValues.putAll(calculatedMarketValues);
     }
 
-    private static void cacheAllRecipes() {
-        for (Material material : Material.values()) {
-            if (material.isItem() && material != Material.AIR) {
-                List<Recipe> recipes = Bukkit.getServer().getRecipesFor(new ItemStack(material));
-                if (!recipes.isEmpty()) {
-                    recipeCache.put(material, recipes);
-                }
-            }
-        }
+    private static List<Recipe> getRecipesFor(Material material) {
+        return recipeCache.computeIfAbsent(material, m -> {
+            List<Recipe> recipes = Bukkit.getServer().getRecipesFor(new ItemStack(m));
+            return recipes.isEmpty() ? null : recipes;
+        });
     }
 
     public static Double calculateMarketValue(@Nullable Material item) {
         Set<Material> processingSet = processingMaterials.get();
         processingSet.clear();
-        return calculateMarketValueInternal(item, processingSet);
+        Double result = calculateMarketValueInternal(item, processingSet);
+        processingSet.clear();
+        return result;
     }
 
     private static Double calculateMarketValueInternal(@Nullable Material item, Set<Material> processingMaterials) {
@@ -134,7 +149,7 @@ public class ItemIndexer {
 
         processingMaterials.add(item);
         double marketValue = Double.MAX_VALUE;
-        List<Recipe> recipes = recipeCache.get(item);
+        List<Recipe> recipes = getRecipesFor(item);
 
         if (recipes != null && !recipes.isEmpty()) {
             for (Recipe recipe : recipes) {
