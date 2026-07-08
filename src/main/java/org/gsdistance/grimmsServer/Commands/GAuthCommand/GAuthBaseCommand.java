@@ -17,38 +17,76 @@ public class GAuthBaseCommand implements CommandExecutor {
     }
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length < 2 && (args.length == 0 || !args[0].equals("autologin"))) {
-            sender.sendMessage(ChatColor.RED + "This command requires a password.");
+        if (args.length == 0) {
+            sender.sendMessage(ChatColor.RED + "Usage: /gAuth <login|register|unregister|autologin|clearcooldown> [args]");
             return false;
-        } else {
-            Player player = (Player) sender;
-            boolean var10000;
-            switch (args[0].toLowerCase()) {
-                case "login":
-                    var10000 = Login.subCommand(player, args[1]);
-                    break;
-                case "register":
-                    var10000 = Register.subCommand(player, args[1]);
-                    break;
-                case "unregister":
-                    var10000 = Unregister.subCommand(player, args[1]);
-                    break;
-                case "autologin":
-                    if (!isLoggedIn(player)) {
-                        player.sendMessage(ChatColor.RED + "Failed to login.");
-                        var10000 = false;
-                    } else {
-                        PlayerStats playerStats = PlayerStats.getPlayerStats(player);
-                        playerStats.setStat("autologin", !(Boolean) playerStats.getStat("autologin", Boolean.class));
-                        player.sendMessage(ChatColor.GREEN + "Toggled autologin, remember that this is considered unsafe.");
-                        var10000 = true;
-                    }
-                    break;
-                default:
-                    var10000 = false;
-            }
+        }
 
-            return var10000;
+        switch (args[0].toLowerCase()) {
+            case "login":
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+                    return false;
+                }
+                if (args.length < 2) {
+                    sender.sendMessage(ChatColor.RED + "This command requires a password.");
+                    return false;
+                }
+                return Login.subCommand((Player) sender, args[1]);
+            case "register":
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+                    return false;
+                }
+                if (args.length < 2) {
+                    sender.sendMessage(ChatColor.RED + "This command requires a password.");
+                    return false;
+                }
+                return Register.subCommand((Player) sender, args[1]);
+            case "unregister":
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+                    return false;
+                }
+                if (args.length < 2) {
+                    sender.sendMessage(ChatColor.RED + "This command requires a password.");
+                    return false;
+                }
+                return Unregister.subCommand((Player) sender, args[1]);
+            case "autologin":
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+                    return false;
+                }
+                Player player = (Player) sender;
+                if (!isLoggedIn(player)) {
+                    player.sendMessage(ChatColor.RED + "Failed to login.");
+                    return false;
+                } else {
+                    PlayerStats playerStats = PlayerStats.getPlayerStats(player);
+                    playerStats.setStat("autologin", !(Boolean) playerStats.getStat("autologin", Boolean.class));
+                    player.sendMessage(ChatColor.GREEN + "Toggled autologin, remember that this is considered unsafe.");
+                    return true;
+                }
+            case "clearcooldown":
+                if (args.length < 2) {
+                    sender.sendMessage(ChatColor.RED + "Usage: /gAuth clearcooldown <player>");
+                    return false;
+                }
+                Player target = GrimmsServer.instance.getServer().getPlayer(args[1]);
+                if (target == null) {
+                    sender.sendMessage(ChatColor.RED + "Player not found.");
+                    return false;
+                }
+                String playerKey = target.getUniqueId() + "-login";
+                PerSessionDataStorage.softSave(0, Integer.class, playerKey + "-attempts");
+                PerSessionDataStorage.softSave(null, Long.class, playerKey + "-cooldown");
+                PerSessionDataStorage.softSave(1, Integer.class, playerKey + "-multiplier");
+                sender.sendMessage(ChatColor.GREEN + "Cleared login cooldown for " + target.getName());
+                return true;
+            default:
+                sender.sendMessage(ChatColor.RED + "Unknown subcommand. Usage: /gAuth <login|register|unregister|autologin|clearcooldown> [args]");
+                return false;
         }
     }
 
