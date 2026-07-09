@@ -36,7 +36,11 @@ public class BuyEnchantment {
                         return false;
                     } else {
                         PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
-                        double cost = EnchantBaseValues.enchantBaseValues.get(enchantment) * (double) (itemToApply.getEnchantmentLevel(enchantment) + 1);
+                        int currentLevel = itemToApply.getEnchantmentLevel(enchantment);
+                        int vanillaMax = enchantment.getMaxLevel();
+                        int levelsAboveVanilla = Math.max(0, currentLevel - vanillaMax);
+                        double multiplier = Math.pow(2, levelsAboveVanilla);
+                        double cost = EnchantBaseValues.enchantBaseValues.get(enchantment) * (double) (currentLevel + 1) * multiplier;
                         if (playerStats.getStat("money", Double.class) < cost) {
                             sender.sendMessage("Not enough money.");
                             return false;

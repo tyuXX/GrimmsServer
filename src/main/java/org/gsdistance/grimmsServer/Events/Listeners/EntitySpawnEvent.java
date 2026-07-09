@@ -106,6 +106,7 @@ public class EntitySpawnEvent {
                 double maxHealth = livingEntity.getAttribute(Attribute.MAX_HEALTH).getValue();
                 String healthBar = generateHealthBar(livingEntity.getHealth(), maxHealth);
 
+                livingEntity.setCustomName(null);
                 metadata.originalName = livingEntity.getName();
                 String displayName = levelColor + "[" + finalLevel + "] " + ChatColor.WHITE + metadata.originalName + " " + healthBar;
                 livingEntity.setCustomName(displayName);
