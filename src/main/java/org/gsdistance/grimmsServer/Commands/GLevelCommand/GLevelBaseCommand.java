@@ -11,7 +11,7 @@ public class GLevelBaseCommand implements CommandExecutor {
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: /gLevel <prestige>");
+            sender.sendMessage(ChatColor.RED + "Usage: /gLevel <prestige|shop>");
             return false;
         }
 
@@ -22,8 +22,16 @@ public class GLevelBaseCommand implements CommandExecutor {
                     return false;
                 }
                 return Prestige.subCommand((Player) sender);
+            case "shop":
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
+                    return false;
+                }
+                PrestigeShop shop = new PrestigeShop((Player) sender);
+                shop.open();
+                return true;
             default:
-                sender.sendMessage(ChatColor.RED + "Unknown subcommand. Usage: /gLevel <prestige>");
+                sender.sendMessage(ChatColor.RED + "Unknown subcommand. Usage: /gLevel <prestige|shop>");
                 return false;
         }
     }

@@ -13,7 +13,7 @@ public class GLevelTabCompleter implements TabCompleter {
     @Nullable
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (strings.length == 1) {
-            return List.of("prestige");
+            return List.of("prestige", "shop");
         }
         return List.of();
     }

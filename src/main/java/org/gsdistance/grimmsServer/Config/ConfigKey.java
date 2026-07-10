@@ -26,7 +26,9 @@ public enum ConfigKey {
     MARKET_RIPOFF_MULTIPLIER("market_ripoff_multiplier", 10.0),
     MARKET_MIN_PRICE("market_min_price", 0.25),
     MARKET_PRICE_REFRESH_INTERVAL("market_price_refresh_interval", 300),
-    LOG_LEVEL("log_level", "Info");
+    LOG_LEVEL("log_level", "Info"),
+    PRESTIGE_CAPABILITY_AUTOSELL_PRICE("prestige_capability_autosell_price", 5),
+    PRESTIGE_CAPABILITY_MAGNET_PRICE("prestige_capability_magnet_price", 10);
 
     private final String key;
     private final Object defaultValue;
