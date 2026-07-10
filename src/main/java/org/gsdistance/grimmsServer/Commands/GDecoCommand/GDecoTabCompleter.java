@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GDecoTabCompleter implements TabCompleter {
-    public static final List<String> subCommands = List.of("selectTitle", "clearTitle");
+    public static final List<String> subCommands = List.of("selectTitle", "clearTitle", "togglePrestigeDeco");
 
     public GDecoTabCompleter() {
     }

@@ -32,6 +32,7 @@ public class PlayerMetadata {
     public List<String> settings;
     public String decoTitle;
     public boolean factionChatEnabled = false;
+    public boolean showPrestigeDeco = false;
 
     public PlayerMetadata(Player player) {
         this.rank = PlayerRank.DEFAULT;
@@ -63,7 +64,6 @@ public class PlayerMetadata {
         if (this.settings == null) {
             this.settings = new ArrayList<>();
         }
-
     }
 
     public void logMetadata() {

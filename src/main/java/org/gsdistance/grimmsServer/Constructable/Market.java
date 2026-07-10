@@ -154,7 +154,7 @@ public class Market {
         for (Enchantment e : enchantments.keySet()) {
             Double enchantValue = EnchantBaseValues.enchantBaseValues.get(e);
             if (enchantValue != null) {
-                rt += enchantValue * (double) enchantments.get(e);
+                rt += enchantValue * Math.sqrt(enchantments.get(e));
             }
         }
 

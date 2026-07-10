@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Manage;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Config.ActiveConfig;
@@ -38,11 +39,18 @@ public class GeneralChatHandler {
 
     public static String handleMessage(String message, Player player) {
         PlayerMetadata metadata = PlayerMetadata.getPlayerMetadata(player);
+        PlayerStats playerStats = PlayerStats.getPlayerStats(player);
         String nickname = metadata != null ? metadata.nickname : player.getName();
 
         // Optimized: Don't fetch metadata twice
         if (metadata != null && PlayerTitles.titles.get(metadata.decoTitle) != null) {
             nickname = "(" + metadata.decoTitle + ") " + nickname;
+        }
+
+        int prestige = playerStats.getStat("prestige", Integer.class);
+        
+        if (metadata != null && metadata.showPrestigeDeco && prestige > 0) {
+            nickname = ChatColor.DARK_PURPLE + "[" + prestige + "] " + ChatColor.RESET + nickname;
         }
 
         if (metadata != null) {

@@ -23,6 +23,7 @@ public class GDecoBaseCommand implements CommandExecutor {
                     yield SelectTitle.subCommand(player, args[1]);
                 }
                 case "cleartitle" -> SelectTitle.subCommand(player, "");
+                case "toggleprestigedeco" -> TogglePrestigeDeco.subCommand(player);
                 default -> false;
             };
         } else {

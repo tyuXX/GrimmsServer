@@ -95,6 +95,10 @@ commands:
     description: Manage player decorations - set or clear decorative titles
     usage: /gDeco <setdecotitle|cleardecotitle>
     permission: grimmsserver.gdeco
+  gLevel:
+    description: Manage player level and prestige
+    usage: /gLevel <prestige>
+    permission: grimmsserver.glevel
 permissions:
   grimmsserver.sendMoney:
     description: Allows sending money to other players from your balance
@@ -179,4 +183,7 @@ permissions:
     default: true
   grimmsserver.gdeco:
     description: Allows using player decoration options
+    default: true
+  grimmsserver.glevel:
+    description: Allows using player level and prestige commands
     default: true

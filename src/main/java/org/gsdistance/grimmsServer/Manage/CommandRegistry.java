@@ -9,6 +9,8 @@ import org.gsdistance.grimmsServer.Commands.GConfigCommand.GConfigBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GConfigCommand.GConfigTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GDecoCommand.GDecoBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GDecoCommand.GDecoTabCompleter;
+import org.gsdistance.grimmsServer.Commands.GLevelCommand.GLevelBaseCommand;
+import org.gsdistance.grimmsServer.Commands.GLevelCommand.GLevelTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GDimensionCommand.GDimBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GDimensionCommand.GDimTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GFactionCommand.GFactionBaseCommand;
@@ -118,6 +120,11 @@ public class CommandRegistry {
         if (gDecoCmd != null) {
             gDecoCmd.setExecutor(new GDecoBaseCommand());
             gDecoCmd.setTabCompleter(new GDecoTabCompleter());
+        }
+        PluginCommand gLevelCmd = GrimmsServer.instance.getCommand("gLevel");
+        if (gLevelCmd != null) {
+            gLevelCmd.setExecutor(new GLevelBaseCommand());
+            gLevelCmd.setTabCompleter(new GLevelTabCompleter());
         }
     }
 

@@ -112,6 +112,8 @@ public class PlayerStats {
         Stats.put("jobTitle", PersistentDataType.STRING);
         Stats.put("pass", PersistentDataType.STRING);
         Stats.put("autologin", PersistentDataType.BOOLEAN);
+        Stats.put("prestige", PersistentDataType.INTEGER);
+        Stats.put("prestigePoints", PersistentDataType.LONG);
         StatNames = new Hashtable();
         StatNames.put("death_count", "Death Count");
         StatNames.put("money", "Money");
@@ -127,7 +129,9 @@ public class PlayerStats {
         StatNames.put("jobTitle", "Job");
         StatNames.put("pass", "Password");
         StatNames.put("autologin", "Login Automatically");
-        StatOrder = List.of("death_count", "money", "total_kill_count", "join_count", "tPoint", "block_break_count", "sent_messages", "level", "xp", "xp_required", "intelligence", "jobTitle");
-        StatDefaultValues = Map.ofEntries(Map.entry("death_count", 0), Map.entry("money", (double) 0.0F), Map.entry("total_kill_count", 0), Map.entry("join_count", 0), Map.entry("tPoint", (double) 0.0F), Map.entry("block_break_count", 0L), Map.entry("level", 1), Map.entry("xp", (double) 0.0F), Map.entry("xp_required", (double) 100.0F), Map.entry("sent_messages", 0L), Map.entry("intelligence", (new Random()).nextInt(0, 100)), Map.entry("jobTitle", ""), Map.entry("pass", ""), Map.entry("autologin", false));
+        StatNames.put("prestige", "Prestige");
+        StatNames.put("prestigePoints", "Prestige Points");
+        StatOrder = List.of("death_count", "money", "total_kill_count", "join_count", "tPoint", "block_break_count", "sent_messages", "level", "xp", "xp_required", "intelligence", "jobTitle", "prestige", "prestigePoints");
+        StatDefaultValues = Map.ofEntries(Map.entry("death_count", 0), Map.entry("money", (double) 0.0F), Map.entry("total_kill_count", 0), Map.entry("join_count", 0), Map.entry("tPoint", (double) 0.0F), Map.entry("block_break_count", 0L), Map.entry("level", 1), Map.entry("xp", (double) 0.0F), Map.entry("xp_required", (double) 100.0F), Map.entry("sent_messages", 0L), Map.entry("intelligence", (new Random()).nextInt(0, 100)), Map.entry("jobTitle", ""), Map.entry("pass", ""), Map.entry("autologin", false), Map.entry("prestige", 0), Map.entry("prestigePoints", 0L));
     }
 }
