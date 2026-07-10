@@ -20,6 +20,8 @@ public class SettingGUI {
     public static final String GUI_TITLE = "Settings";
     private static final int GUI_SIZE = 27;
     private static final Map<Player, SettingGUI> openGUIs = new HashMap<>();
+    private static final Map<Player, Long> lastClickTime = new HashMap<>();
+    private static final long COOLDOWN_MS = 1000;
     
     private final Player player;
     private final PlayerMetadata playerMetadata;
@@ -70,6 +72,12 @@ public class SettingGUI {
             case MAGNET:
                 material = Material.IRON_NUGGET;
                 break;
+            case VEINMINER:
+                material = Material.DIAMOND_PICKAXE;
+                break;
+            case SATURATION_PERK:
+                material = Material.GOLDEN_CARROT;
+                break;
             default:
                 material = Material.PAPER;
         }
@@ -102,6 +110,14 @@ public class SettingGUI {
     }
     
     public void handleClick(int slot) {
+        // Check cooldown
+        long currentTime = System.currentTimeMillis();
+        long lastClick = lastClickTime.getOrDefault(player, 0L);
+        if (currentTime - lastClick < COOLDOWN_MS) {
+            return;
+        }
+        lastClickTime.put(player, currentTime);
+        
         // Check if it's a setting slot
         if (slot < PlayerCapability.values().length) {
             PlayerCapability[] capabilities = PlayerCapability.values();

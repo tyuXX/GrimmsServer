@@ -50,7 +50,7 @@ public class PlayerLevelHandler {
         for (tMoney = 0.0F; exp > this.getXpToLevel(); ++lvlups) {
             exp -= this.getXpToLevel();
             this.playerStats.changeStat("level", 1);
-            tMoney += Math.pow(this.getLevel(), 1.8) * (double) 100.0F;
+            tMoney += Math.pow(this.getLevel(), 1.8) * (double) 100.0F * Math.pow(playerStats.getStat("prestige", Integer.class) + 1,2);
         }
 
         this.setXp(exp);

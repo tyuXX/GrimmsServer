@@ -14,9 +14,9 @@ public class Prestige {
 
         int currentLevel = levelHandler.getLevel();
         int currentPrestige = playerStats.getStat("prestige", Integer.class);
-        long requiredLevel = (currentPrestige + 1) * 15L;
+        long requiredLevel = 15 + (currentPrestige) * 10L;
 
-        if (currentLevel <= requiredLevel) {
+        if (currentLevel < requiredLevel) {
             player.sendMessage(ChatColor.RED + "You must be at least level " + requiredLevel + " to prestige.");
             return false;
         }

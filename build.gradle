@@ -44,4 +44,7 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+    filesMatching('embed/version.embed') {
+        expand props
+    }
 }

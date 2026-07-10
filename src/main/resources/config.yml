@@ -17,4 +17,12 @@ disabledDimensions: [ ]
 forceDisableBroadcasts: false
 bannedWords: [ ]
 enforceAuth: false
+market_gui_enabled: true
+market_ripoff_multiplier: 10.0
+market_min_price: 0.25
+market_price_refresh_interval: 300
 log_level: Info
+prestige_capability_autosell_price: 4
+prestige_capability_magnet_price: 2
+prestige_capability_veinminer_price: 3
+prestige_capability_saturation_perk_price: 4

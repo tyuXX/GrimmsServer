@@ -114,7 +114,7 @@ public class PlayerStats {
         Stats.put("autologin", PersistentDataType.BOOLEAN);
         Stats.put("prestige", PersistentDataType.INTEGER);
         Stats.put("prestigePoints", PersistentDataType.LONG);
-        StatNames = new Hashtable();
+        StatNames = new Hashtable<>();
         StatNames.put("death_count", "Death Count");
         StatNames.put("money", "Money");
         StatNames.put("total_kill_count", "Total Kill Count");

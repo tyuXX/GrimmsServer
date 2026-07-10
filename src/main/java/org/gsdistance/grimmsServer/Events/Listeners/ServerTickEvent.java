@@ -46,7 +46,7 @@ public class ServerTickEvent {
                 PlayerStats playerStats = PlayerStats.getPlayerStats(player);
                 String jobTitleId = playerStats.getStat("jobTitle", String.class);
                 if (jobTitleId != null && !jobTitleId.isEmpty()) {
-                    double multiplier = (double) 1.0F + Math.pow((double) playerStats.getStat("level", Integer.class), 2.0F) / (double) 100.0F;
+                    double multiplier = (double) 1.0F + Math.pow((double) playerStats.getStat("level", Integer.class), 2.0F) * Math.pow(playerStats.getStat("prestige", Integer.class) + 1,2) / (double) 100.0F;
                     double payCheck = Math.ceil(JobTitlesBaseValues.jobTitleBaseValues.getOrDefault(jobTitleId, null).paycheckSize() * multiplier);
                     playerStats.setStat("money", playerStats.getStat("money", Double.class) + payCheck);
                     player.sendMessage(ChatColor.GREEN + "You have received your paycheck: " + ChatColor.GOLD + Shared.formatNumber(payCheck));
