@@ -18,7 +18,7 @@ public class Sethome {
         PlayerMetadata meta = PlayerMetadata.getPlayerMetadata(player);
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
         boolean hasMultiHome = player.hasPermission("grimmsserver.multiHome");
-        if (!hasMultiHome && (long) meta.homes.size() >= Math.round(Math.cbrt((double) playerStats.getStat("level", Integer.class))) && !meta.homes.containsKey(homeName)) {
+        if (!hasMultiHome && (long) meta.homes.size() >= Math.round(Math.cbrt((double) playerStats.getStat("level", Integer.class))) + playerStats.getStat("prestige", Integer.class) && !meta.homes.containsKey(homeName)) {
             player.sendMessage("You do not have permission to set multiple homes and your level isn't enough.");
             return true;
         } else {

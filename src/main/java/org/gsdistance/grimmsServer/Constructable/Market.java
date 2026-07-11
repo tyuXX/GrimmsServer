@@ -36,13 +36,14 @@ public class Market {
         } else {
             PlayerStats playerStats = PlayerStats.getPlayerStats(player);
             this.items.putIfAbsent(itemStack.getType().getKey().getKey(), 0L);
+            long initialAmount = this.items.get(itemStack.getType().getKey().getKey());
             double sold = 0.0F;
 
             for (int i = 0; i < itemStack.getAmount(); ++i) {
-                sold += this.getISPrice(itemStack.getType(), itemStack.getEnchantments());
+                sold += this.getISPriceWithAmount(itemStack.getType(), itemStack.getEnchantments(), initialAmount + i);
             }
 
-            this.items.put(itemStack.getType().getKey().getKey(), this.items.get(itemStack.getType().getKey().getKey()) + (long) itemStack.getAmount());
+            this.items.put(itemStack.getType().getKey().getKey(), initialAmount + (long) itemStack.getAmount());
             playerStats.setStat("money", playerStats.getStat("money", Double.class) + sold);
             player.getInventory().removeItem(itemStack);
             return sold;
@@ -68,14 +69,15 @@ public class Market {
         } else {
             PlayerStats playerStats = PlayerStats.getPlayerStats(player);
             this.items.putIfAbsent(item.getKey().getKey(), 0L);
+            long initialAmount = this.items.get(item.getKey().getKey());
             Double sold = (double) 0.0F;
             int amount = player.getInventory().all(item).values().stream().mapToInt(ItemStack::getAmount).sum();
 
             for (int i = 0; i < amount; ++i) {
-                sold = sold + this.getPrice(item);
+                sold = sold + this.getPriceWithAmount(item, initialAmount + i);
             }
 
-            this.items.put(item.getKey().getKey(), this.items.get(item.getKey().getKey()) + (long) amount);
+            this.items.put(item.getKey().getKey(), initialAmount + (long) amount);
             playerStats.setStat("money", playerStats.getStat("money", Double.class) + sold);
             player.getInventory().remove(item);
             return Data.of(sold, amount);
@@ -88,26 +90,28 @@ public class Market {
         } else if ((long) amount > this.items.get(item.getKey().getKey())) {
             return 0.0F;
         } else {
-            double boughtP = 0.0F;
-            int bought = 0;
-
+            long initialAmount = this.items.get(item.getKey().getKey());
+            
+            // Calculate total buy cost (prices at current market state, then decreasing amounts)
+            double totalBuyCost = 0.0;
             for (int i = 0; i < amount; ++i) {
-                Double money = PlayerStats.getPlayerStats(player).getStat("money", Double.class);
-                if (!(money >= this.getPrice(item))) {
-                    break;
-                }
-
-                PlayerStats.getPlayerStats(player).setStat("money", money - this.getPrice(item));
-                boughtP += this.getPrice(item);
-                this.items.put(item.getKey().getKey(), this.items.get(item.getKey().getKey()) - 1L);
-                ++bought;
+                totalBuyCost += this.getPriceWithAmount(item, initialAmount - i);
+            }
+            
+            // Add a 50% tax to ensure buy cost is always significantly higher than any potential sell revenue
+            double tax = totalBuyCost * 0.5;
+            double totalCostWithTax = totalBuyCost + tax;
+            
+            Double money = PlayerStats.getPlayerStats(player).getStat("money", Double.class);
+            if (!(money >= totalCostWithTax)) {
+                return 0.0F;
             }
 
-            if (bought > 0) {
-                player.getInventory().addItem(new ItemStack(item, bought));
-            }
-
-            return boughtP;
+            PlayerStats.getPlayerStats(player).setStat("money", money - totalCostWithTax);
+            this.items.put(item.getKey().getKey(), initialAmount - amount);
+            player.getInventory().addItem(new ItemStack(item, amount));
+            
+            return totalCostWithTax;
         }
     }
 
@@ -135,21 +139,37 @@ public class Market {
         if (this.items.get(item.getKey().getKey()) == null) {
             return 0.0F;
         } else {
-            long amount = this.items.get(item.getKey().getKey());
-            double minPrice = ActiveConfig.getConfigValue(ConfigKey.MARKET_MIN_PRICE, Double.class);
-            double rt;
-            if (MarketBaseValues.marketBaseValues.containsKey(item)) {
-                rt = Math.max(Math.max(minPrice, Math.floor(MarketBaseValues.marketBaseValues.get(item) / (double) 100.0F)), MarketBaseValues.marketBaseValues.get(item) + this.NegMarketSaturation - Math.sqrt((double) amount));
-            } else {
-                rt = Math.max(minPrice, this.NegMarketSaturation / (double) 2.0F - Math.sqrt((double) amount));
-            }
-
-            return rt;
+            return this.getPriceWithAmount(item, this.items.get(item.getKey().getKey()));
         }
+    }
+
+    public double getPriceWithAmount(Material item, long amount) {
+        double minPrice = ActiveConfig.getConfigValue(ConfigKey.MARKET_MIN_PRICE, Double.class);
+        double rt;
+        if (MarketBaseValues.marketBaseValues.containsKey(item)) {
+            rt = Math.max(Math.max(minPrice, Math.floor(MarketBaseValues.marketBaseValues.get(item) / (double) 100.0F)), MarketBaseValues.marketBaseValues.get(item) + this.NegMarketSaturation - Math.sqrt((double) amount));
+        } else {
+            rt = Math.max(minPrice, this.NegMarketSaturation / (double) 2.0F - Math.sqrt((double) amount));
+        }
+
+        return rt;
     }
 
     public double getISPrice(Material item, Map<Enchantment, Integer> enchantments) {
         double rt = this.getPrice(item);
+
+        for (Enchantment e : enchantments.keySet()) {
+            Double enchantValue = EnchantBaseValues.enchantBaseValues.get(e);
+            if (enchantValue != null) {
+                rt += enchantValue * Math.sqrt(enchantments.get(e));
+            }
+        }
+
+        return rt;
+    }
+
+    public double getISPriceWithAmount(Material item, Map<Enchantment, Integer> enchantments, long amount) {
+        double rt = this.getPriceWithAmount(item, amount);
 
         for (Enchantment e : enchantments.keySet()) {
             Double enchantValue = EnchantBaseValues.enchantBaseValues.get(e);

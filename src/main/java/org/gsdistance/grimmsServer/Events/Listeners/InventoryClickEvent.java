@@ -26,16 +26,6 @@ public class InventoryClickEvent {
                 }
                 return;
             }
-            
-            // Handle SettingGUI
-            if (event.getView().getTitle().equals(SettingGUI.GUI_TITLE)) {
-                event.setCancelled(true);
-                SettingGUI settingGUI = SettingGUI.getGUI(player);
-                if (settingGUI != null) {
-                    settingGUI.handleClick(event.getSlot());
-                }
-                return;
-            }
         }
     }
 }
