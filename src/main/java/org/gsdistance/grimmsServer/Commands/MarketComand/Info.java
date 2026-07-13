@@ -26,21 +26,7 @@ public class Info {
 
         player.sendMessage("Total item count: " + Shared.formatNumber(totalItemCount));
 
-        double totalValue = 0.0;
-
-        // OPTIMIZATION: Iterating over entrySet() prevents redundant .get() lookups on every loop cycle
-        for (Map.Entry<String, Long> entry : market.items.entrySet()) {
-            Material material = Material.matchMaterial(entry.getKey());
-
-            if (material != null) {
-                long amount = entry.getValue();
-                Double price = MarketBaseValues.marketBaseValues.get(material);
-
-                // Cleaned up double casting syntax with a modern fallback assignment
-                double unitPrice = (price != null) ? price : 0.25;
-                totalValue += amount * unitPrice;
-            }
-        }
+        double totalValue = Math.pow(market.NegMarketSaturation, 4);
 
         player.sendMessage("Total value: " + Shared.formatNumber(totalValue));
         player.sendMessage("Unique item count: " + market.items.size());

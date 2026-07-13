@@ -10,7 +10,7 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 import java.util.*;
 
 public class PlayerStats {
-    public static final Dictionary<String, PersistentDataType<?, ?>> Stats = new Hashtable();
+    public static final Dictionary<String, PersistentDataType<?, ?>> Stats = new Hashtable<>();
     public static final Dictionary<String, String> StatNames;
     public static final List<String> StatOrder;
     public static final Map<String, ?> StatDefaultValues;
