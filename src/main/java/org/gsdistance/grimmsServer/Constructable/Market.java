@@ -80,10 +80,17 @@ public class Market {
             this.items.putIfAbsent(item.getKey().getKey(), 0L);
             long initialAmount = this.items.get(item.getKey().getKey());
             Double sold = 0.0;
-            int amount = player.getInventory().all(item).values().stream().mapToInt(ItemStack::getAmount).sum();
+            int amount = 0;
 
-            for (int i = 0; i < amount; ++i) {
-                sold = sold + this.getPriceWithAmount(item, initialAmount + i);
+            for (ItemStack itemStack : player.getInventory().all(item).values()) {
+                for (int i = 0; i < itemStack.getAmount(); ++i) {
+                    sold += this.getISPriceWithAmount(item, itemStack.getEnchantments(), initialAmount + amount);
+                    amount++;
+                }
+                for (Enchantment enchantment : itemStack.getEnchantments().keySet()){
+                    this.enchantments.putIfAbsent(enchantment.getName(), 0L);
+                    this.enchantments.compute(enchantment.getName(), (k, initialEnchantmentAmount) -> initialEnchantmentAmount + (long) itemStack.getAmount());
+                }
             }
 
             this.items.put(item.getKey().getKey(), initialAmount + (long) amount);
