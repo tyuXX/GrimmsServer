@@ -21,6 +21,7 @@ import org.gsdistance.grimmsServer.Commands.GLogCommand.GLogBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GLogCommand.GLogTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GStatsCommand.GStatsBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GStatsCommand.GStatsTabCompleter;
+import org.gsdistance.grimmsServer.Commands.GStatsCommand.SetPlayerStat;
 import org.gsdistance.grimmsServer.Commands.GUtilCommand.GUtilBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GUtilCommand.GUtilTabCompleter;
 import org.gsdistance.grimmsServer.Commands.HomeCommand.HomeBaseCommand;

@@ -16,6 +16,7 @@ public class EntityDeathEvent {
     public static void Event(org.bukkit.event.entity.EntityDeathEvent event) {
         if (event.getEntity().getType() != EntityType.PLAYER) {
             CustomEntityManager.unregisterEntity(event.getEntity());
+            event.getEntity().setCustomName(null);
         }
 
         if (event.getEntity().getKiller() != null && event.getEntity().getKiller().getType() == EntityType.PLAYER) {

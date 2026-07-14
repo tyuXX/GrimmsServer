@@ -26,6 +26,7 @@ public class PlayerTickEvent {
     private static final List<Player> magnetPlayers = new ArrayList();
     private static final Map<Player, Integer> saturationPerkPlayers = new HashMap();
     private static final Map<UUID, Long> playerLoginTimes = new HashMap();
+    private static final Map<UUID, Long> lastPaycheckTimes = new HashMap();
     private static final long LOGIN_KICK_TIMEOUT_MS = 60000L; // 60 seconds
     private static final long TITLE_CHECK_INTERVAL_MS = 50000L; // ~50 seconds (was 1000 ticks)
     private static final long PAYCHECK_INTERVAL_MS = 1200000L; // ~20 minutes (was 24000 ticks)
@@ -51,13 +52,14 @@ public class PlayerTickEvent {
             saturationPerkPlayers.remove(player);
         }
 
-        // Track player login time for real-time kick timer
+        long currentTime = System.currentTimeMillis();
         UUID playerId = player.getUniqueId();
+        
+        // Track player login time for real-time kick timer
         if (!playerLoginTimes.containsKey(playerId)) {
-            playerLoginTimes.put(playerId, System.currentTimeMillis());
+            playerLoginTimes.put(playerId, currentTime);
         }
 
-        long currentTime = System.currentTimeMillis();
         long loginTime = playerLoginTimes.get(playerId);
 
         // Real-time login kick check
@@ -77,7 +79,8 @@ public class PlayerTickEvent {
         }
 
         // Paycheck (was every 24000 ticks, now every ~20 minutes)
-        if ((currentTime - loginTime) % PAYCHECK_INTERVAL_MS < 50L) {
+        long lastPaycheckTime = lastPaycheckTimes.getOrDefault(playerId, 0L);
+        if ((currentTime - lastPaycheckTime) >= PAYCHECK_INTERVAL_MS) {
             PlayerStats playerStats = PlayerStats.getPlayerStats(player);
             String jobTitleId = playerStats.getStat("jobTitle", String.class);
             if (jobTitleId != null && !jobTitleId.isEmpty()) {
@@ -85,6 +88,7 @@ public class PlayerTickEvent {
                 double payCheck = Math.ceil(JobTitlesBaseValues.jobTitleBaseValues.getOrDefault(jobTitleId, null).paycheckSize() * multiplier);
                 playerStats.setStat("money", playerStats.getStat("money", Double.class) + payCheck);
                 player.sendMessage(ChatColor.GREEN + "You have received your paycheck: " + ChatColor.GOLD + Shared.formatNumber(payCheck));
+                lastPaycheckTimes.put(playerId, currentTime);
             }
         }
     }
@@ -106,5 +110,11 @@ public class PlayerTickEvent {
 
     public static void onPlayerQuit(Player player) {
         playerLoginTimes.remove(player.getUniqueId());
+        lastPaycheckTimes.remove(player.getUniqueId());
+    }
+
+    public static void initializePaycheckTimer(Player player) {
+        UUID playerId = player.getUniqueId();
+        lastPaycheckTimes.put(playerId, System.currentTimeMillis());
     }
 }

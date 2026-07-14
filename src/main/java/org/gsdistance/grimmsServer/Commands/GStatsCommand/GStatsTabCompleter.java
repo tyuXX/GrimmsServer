@@ -27,7 +27,7 @@ public class GStatsTabCompleter implements TabCompleter {
             List<String> suggestions = new ArrayList();
 
             for (String subcommand : SUBCOMMANDS) {
-                if (subcommand.startsWith(partial)) {
+                if (subcommand.startsWith(partial) && hasPermissionForSubcommand(sender, subcommand)) {
                     suggestions.add(subcommand);
                 }
             }
@@ -100,5 +100,14 @@ public class GStatsTabCompleter implements TabCompleter {
         }
 
         return List.of();
+    }
+
+    private boolean hasPermissionForSubcommand(CommandSender sender, String subcommand) {
+        return switch (subcommand) {
+            case "self_history" -> sender.hasPermission("grimmsserver.stats.self");
+            case "others_history" -> sender.hasPermission("grimmsserver.stats.other");
+            case "commands" -> true;
+            default -> false;
+        };
     }
 }

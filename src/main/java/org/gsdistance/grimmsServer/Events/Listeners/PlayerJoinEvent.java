@@ -13,6 +13,7 @@ import org.gsdistance.grimmsServer.Stats.ServerStats;
 import org.gsdistance.grimmsServer.Stats.WorldStats;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class PlayerJoinEvent {
     public PlayerJoinEvent() {
@@ -47,6 +48,9 @@ public class PlayerJoinEvent {
         if (!GAuthBaseCommand.isLoggedIn(event.getPlayer())) {
             event.getPlayer().setInvulnerable(true);
         }
+
+        // Initialize paycheck timer on join to prevent immediate paycheck
+        PlayerTickEvent.initializePaycheckTimer(event.getPlayer());
 
         GrimmsServer.historicalStatsManager.recordJoinSnapshot(event.getPlayer());
     }

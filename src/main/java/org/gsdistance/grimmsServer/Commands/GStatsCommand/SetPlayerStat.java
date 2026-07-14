@@ -1,4 +1,4 @@
-package org.gsdistance.grimmsServer.Commands;
+package org.gsdistance.grimmsServer.Commands.GStatsCommand;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
