@@ -19,6 +19,8 @@ import org.gsdistance.grimmsServer.Commands.GHelpCommand.GHelp;
 import org.gsdistance.grimmsServer.Commands.GHelpCommand.GHelpTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GLogCommand.GLogBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GLogCommand.GLogTabCompleter;
+import org.gsdistance.grimmsServer.Commands.GStatsCommand.GStatsBaseCommand;
+import org.gsdistance.grimmsServer.Commands.GStatsCommand.GStatsTabCompleter;
 import org.gsdistance.grimmsServer.Commands.GUtilCommand.GUtilBaseCommand;
 import org.gsdistance.grimmsServer.Commands.GUtilCommand.GUtilTabCompleter;
 import org.gsdistance.grimmsServer.Commands.HomeCommand.HomeBaseCommand;
@@ -85,6 +87,11 @@ public class CommandRegistry {
         if (gLogCmd != null) {
             gLogCmd.setExecutor(new GLogBaseCommand());
             gLogCmd.setTabCompleter(new GLogTabCompleter());
+        }
+        PluginCommand gStatsCmd = GrimmsServer.instance.getCommand("gStats");
+        if (gStatsCmd != null) {
+            gStatsCmd.setExecutor(new GStatsBaseCommand());
+            gStatsCmd.setTabCompleter(new GStatsTabCompleter());
         }
         PluginCommand gDimCmd = GrimmsServer.instance.getCommand("gDim");
         if (gDimCmd != null) {

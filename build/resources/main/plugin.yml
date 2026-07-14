@@ -67,6 +67,10 @@ commands:
     description: View statistics for yourself, other players, worlds, or leaderboards
     usage: /gLog <self_stats|other_stats|self_titles|other_titles|world|leaderboard|commands|chunk> [args]
     permission: grimmsserver.log
+  gStats:
+    description: View historical statistics and growth graphs for yourself or other players
+    usage: /gStats <self_history|others_history> [args]
+    permission: grimmsserver.stats
   gDim:
     description: Manage custom dimensions - create, delete, teleport, list, or get info
     usage: /gDim <create|delete|tp|list|info> [args]
@@ -155,6 +159,15 @@ permissions:
     description: Allows viewing your own statistics and titles
     default: true
   grimmsserver.log.other:
+    description: Allows viewing other players' statistics (admin only)
+    default: op
+  grimmsserver.stats:
+    description: Allows viewing historical statistics and growth graphs
+    default: true
+  grimmsserver.stats.self:
+    description: Allows viewing your own historical statistics
+    default: true
+  grimmsserver.stats.other:
     description: Allows viewing other players' statistics (admin only)
     default: op
   grimmsserver.dimensions:
