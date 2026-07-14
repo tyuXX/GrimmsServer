@@ -20,5 +20,8 @@ public class PlayerQuitEvent {
         // Clean up GUIs
         PrestigeShop.closeGUI(event.getPlayer());
         SettingGUI.closeGUI(event.getPlayer());
+        
+        // Clean up login time tracking
+        PlayerTickEvent.onPlayerQuit(event.getPlayer());
     }
 }

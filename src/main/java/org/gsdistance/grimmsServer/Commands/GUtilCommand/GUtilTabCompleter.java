@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GUtilTabCompleter implements TabCompleter {
     public static final List<String> defSubCommands = List.of("version", "setting");
-    public static final List<String> adminSubCommands = List.of("relic", "capability");
+    public static final List<String> adminSubCommands = List.of("relic", "capability", "broadcast");
 
     public GUtilTabCompleter() {
     }

@@ -13,22 +13,33 @@ import java.util.List;
 import java.util.Map;
 
 public class PlayerStatLeaderBoard {
-    public static final Map<String, Type> Stats = Map.of("total_kill_count", Integer.class, "death_count", Integer.class, "join_count", Integer.class, "tPoint", Double.class, "block_break_count", Long.class, "money", Double.class, "level", Integer.class, "sent_messages", Long.class);
-    public final Map<String, Data<String, Number>> leaderboard = new HashMap();
+    public static final Map<String, Type> Stats = Map.of("total_kill_count", Integer.class, "death_count", Integer.class, "join_count", Integer.class, "tPoint", Double.class, "block_break_count", Long.class, "money", Double.class, "level", Integer.class, "sent_messages", Long.class, "prestige", Integer.class, "prestigePoints", Long.class);
+    public final Map<String, List<Data<String, Number>>> leaderboard = new HashMap<>();
 
     public PlayerStatLeaderBoard() {
         for (String stat : Stats.keySet()) {
-            this.leaderboard.put(stat, Data.of("None", 0));
+            this.leaderboard.put(stat, new ArrayList<>());
         }
 
     }
 
     public static PlayerStatLeaderBoard getPlayerStatLeaderBoard() {
-        PlayerStatLeaderBoard playerStatLeaderBoard = (new Gson()).fromJson((String) ServerStats.getServerStats().getStat("leaderboard"), PlayerStatLeaderBoard.class);
+        PlayerStatLeaderBoard playerStatLeaderBoard;
+        try {
+            playerStatLeaderBoard = (new Gson()).fromJson((String) ServerStats.getServerStats().getStat("leaderboard"), PlayerStatLeaderBoard.class);
+        } catch (Exception e) {
+            // If JSON parsing fails (e.g., corrupted data or wrong structure), create a new empty leaderboard
+            playerStatLeaderBoard = new PlayerStatLeaderBoard();
+            playerStatLeaderBoard.savePlayerStatLeaderBoard();
+        }
+
+        if (playerStatLeaderBoard == null) {
+            playerStatLeaderBoard = new PlayerStatLeaderBoard();
+        }
 
         for (String stat : Stats.keySet()) {
             if (!playerStatLeaderBoard.leaderboard.containsKey(stat)) {
-                playerStatLeaderBoard.leaderboard.put(stat, Data.of("None", 0));
+                playerStatLeaderBoard.leaderboard.put(stat, new ArrayList<>());
             }
         }
 
@@ -46,19 +57,50 @@ public class PlayerStatLeaderBoard {
 
         for (String stat : this.leaderboard.keySet()) {
             Number playerStatValue = playerStats.getStat(stat, Number.class);
-            Number leaderboardStatValue = (Number) ((Data) this.leaderboard.get(stat)).value();
-            if (playerStatValue != null && playerStatValue.doubleValue() > leaderboardStatValue.doubleValue()) {
-                if (!player.getName().equalsIgnoreCase((String) ((Data) this.leaderboard.get(stat)).key())) {
-                    overtakes.add(stat);
+            List<Data<String, Number>> statLeaders = this.leaderboard.get(stat);
+            
+            if (playerStatValue != null) {
+                // Check if player was already #1 before update
+                boolean wasAlreadyLeader = !statLeaders.isEmpty() && statLeaders.get(0).key().equalsIgnoreCase(player.getName());
+                
+                // Check if player should be in top 3
+                boolean shouldAdd = true;
+                if (statLeaders.size() >= 3) {
+                    Number lowestValue = statLeaders.get(statLeaders.size() - 1).value();
+                    if (playerStatValue.doubleValue() <= lowestValue.doubleValue()) {
+                        shouldAdd = false;
+                    }
                 }
-
-                this.leaderboard.put(stat, Data.of(player.getName(), playerStatValue.intValue()));
-                this.savePlayerStatLeaderBoard();
-                pass = true;
+                
+                if (shouldAdd) {
+                    // Remove existing entry for this player if present
+                    statLeaders.removeIf(entry -> entry.key().equalsIgnoreCase(player.getName()));
+                    
+                    // Add new entry
+                    statLeaders.add(Data.of(player.getName(), playerStatValue));
+                    
+                    // Sort by value descending
+                    statLeaders.sort((a, b) -> Double.compare(b.value().doubleValue(), a.value().doubleValue()));
+                    
+                    // Keep only top 3
+                    while (statLeaders.size() > 3) {
+                        statLeaders.remove(statLeaders.size() - 1);
+                    }
+                    
+                    // Check if player is now #1 (for backwards compatibility)
+                    if (!statLeaders.isEmpty() && statLeaders.get(0).key().equalsIgnoreCase(player.getName())) {
+                        pass = true;
+                        // Only broadcast if player wasn't already the leader
+                        if (!wasAlreadyLeader) {
+                            overtakes.add(stat);
+                        }
+                    }
+                }
             }
         }
 
         if (pass) {
+            this.savePlayerStatLeaderBoard();
             for (String stat : overtakes) {
                 Shared.Broadcast("The leader of stat " + PlayerStats.StatNames.get(stat) + " is now " + player.getDisplayName(), null);
             }

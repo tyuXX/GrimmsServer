@@ -13,27 +13,39 @@ public class GUtilBaseCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length < 1) {
             return false;
-        } else if (sender instanceof Player player) {
+        } else {
             switch (args[0].toLowerCase()) {
                 case "version" -> {
-                    return Version.subCommand(player, args);
+                    if (sender instanceof Player player) {
+                        return Version.subCommand(player, args);
+                    }
+                    return false;
                 }
                 case "relic" -> {
-                    return Relic.subCommand(player, args);
+                    if (sender instanceof Player player) {
+                        return Relic.subCommand(player, args);
+                    }
+                    return false;
                 }
                 case "capability" -> {
-                    return Capability.subCommand(player, args);
+                    if (sender instanceof Player player) {
+                        return Capability.subCommand(player, args);
+                    }
+                    return false;
                 }
                 case "setting" -> {
-                    return Setting.subCommand(player, args);
+                    if (sender instanceof Player player) {
+                        return Setting.subCommand(player, args);
+                    }
+                    return false;
+                }
+                case "broadcast" -> {
+                    return Broadcast.subCommand(sender, args);
                 }
                 default -> {
                     return false;
                 }
             }
-        } else {
-            sender.sendMessage("This command can only be used by players.");
-            return false;
         }
     }
 }

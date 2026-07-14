@@ -1,20 +1,34 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
+import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
+import org.gsdistance.grimmsServer.Data.JobTitlesBaseValues;
 import org.gsdistance.grimmsServer.Data.Player.PlayerCapability;
+import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
+import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Shared;
+import org.gsdistance.grimmsServer.Stats.PlayerStatLeaderBoard;
+import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class PlayerTickEvent {
     private static final List<Player> magnetPlayers = new ArrayList();
     private static final Map<Player, Integer> saturationPerkPlayers = new HashMap();
+    private static final Map<UUID, Long> playerLoginTimes = new HashMap();
+    private static final long LOGIN_KICK_TIMEOUT_MS = 60000L; // 60 seconds
+    private static final long TITLE_CHECK_INTERVAL_MS = 50000L; // ~50 seconds (was 1000 ticks)
+    private static final long PAYCHECK_INTERVAL_MS = 1200000L; // ~20 minutes (was 24000 ticks)
 
     public PlayerTickEvent() {
     }
@@ -31,12 +45,48 @@ public class PlayerTickEvent {
             int currentDuration = saturationPerkPlayers.getOrDefault(player, 0);
             saturationPerkPlayers.put(player, currentDuration + 1);
             
-            // Apply saturation effect with lowest level (1) for 10 seconds
+            // Apply saturation effect with the lowest level (1) for 10 seconds
             player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 200, 0, false, false));
         } else {
             saturationPerkPlayers.remove(player);
         }
 
+        // Track player login time for real-time kick timer
+        UUID playerId = player.getUniqueId();
+        if (!playerLoginTimes.containsKey(playerId)) {
+            playerLoginTimes.put(playerId, System.currentTimeMillis());
+        }
+
+        long currentTime = System.currentTimeMillis();
+        long loginTime = playerLoginTimes.get(playerId);
+
+        // Real-time login kick check
+        if (!GAuthBaseCommand.isLoggedIn(player) && (currentTime - loginTime) >= LOGIN_KICK_TIMEOUT_MS) {
+            player.kickPlayer("Not logged in for too long.");
+            playerLoginTimes.remove(playerId);
+            return;
+        }
+
+        // Title checks (was every 1000 ticks, now every ~50 seconds)
+        if ((currentTime - loginTime) % TITLE_CHECK_INTERVAL_MS < 50L) {
+            PlayerStatLeaderBoard.getPlayerStatLeaderBoard().checkPlayer(player);
+            PlayerTitleChecker.checkForMoney(player);
+            PlayerTitleChecker.checkTitles(player);
+            PlayerTitleChecker.checkForBlockBreaks(player);
+            PlayerTitleChecker.checkForTotalKills(player);
+        }
+
+        // Paycheck (was every 24000 ticks, now every ~20 minutes)
+        if ((currentTime - loginTime) % PAYCHECK_INTERVAL_MS < 50L) {
+            PlayerStats playerStats = PlayerStats.getPlayerStats(player);
+            String jobTitleId = playerStats.getStat("jobTitle", String.class);
+            if (jobTitleId != null && !jobTitleId.isEmpty()) {
+                double multiplier = (double) 1.0F + Math.pow((double) playerStats.getStat("level", Integer.class), 2.0F) * Math.pow(playerStats.getStat("prestige", Integer.class) + 1,2) / (double) 100.0F;
+                double payCheck = Math.ceil(JobTitlesBaseValues.jobTitleBaseValues.getOrDefault(jobTitleId, null).paycheckSize() * multiplier);
+                playerStats.setStat("money", playerStats.getStat("money", Double.class) + payCheck);
+                player.sendMessage(ChatColor.GREEN + "You have received your paycheck: " + ChatColor.GOLD + Shared.formatNumber(payCheck));
+            }
+        }
     }
 
     public static void processMagnets() {
@@ -52,5 +102,9 @@ public class PlayerTickEvent {
 
             magnetPlayers.clear();
         }
+    }
+
+    public static void onPlayerQuit(Player player) {
+        playerLoginTimes.remove(player.getUniqueId());
     }
 }
