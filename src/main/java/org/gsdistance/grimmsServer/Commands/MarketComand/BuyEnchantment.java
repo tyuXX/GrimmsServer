@@ -24,6 +24,10 @@ public class BuyEnchantment {
                 Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(args[1].toLowerCase()));
                 if (enchantment != null && EnchantBaseValues.enchantBaseValues.containsKey(enchantment)) {
                     ItemStack itemToApply = ((Player) sender).getInventory().getItemInMainHand();
+                    if (itemToApply.getAmount() > 1) {
+                        sender.sendMessage("You can only enchant one item at a time. Please unstack the item first.");
+                        return false;
+                    }
                     int enchantBonus = Math.toIntExact(Math.min(Math.round(Math.sqrt(ItemLevelHandler.getLevelHandler(itemToApply, (Player) sender).getLevel())), 100L));
                     if (RelicHandler.isRelic(itemToApply)) {
                         RelicHandler relicHandler = RelicHandler.getRelicHandler(itemToApply);
