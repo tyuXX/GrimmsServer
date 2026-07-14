@@ -7,6 +7,7 @@ import org.gsdistance.grimmsServer.Config.ConfigLoader;
 import org.gsdistance.grimmsServer.Data.PluginDataStorage;
 import org.gsdistance.grimmsServer.Events.Listeners.ServerStartupEvent;
 import org.gsdistance.grimmsServer.Manage.EventRegistry;
+import org.gsdistance.grimmsServer.Stats.HistoricalStatsManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +24,7 @@ public final class GrimmsServer extends JavaPlugin {
     public static Logger logger;
     public static PluginDataStorage pds;
     public static List<Function<JavaPlugin, String>> hotReloadFuncs;
+    public static HistoricalStatsManager historicalStatsManager;
 
     public GrimmsServer() {
     }
@@ -31,6 +33,7 @@ public final class GrimmsServer extends JavaPlugin {
         instance = this;
         logger = this.getLogger();
         pds = new PluginDataStorage(this);
+        historicalStatsManager = new HistoricalStatsManager(this);
         ConfigLoader.initialize(this);
         ConfigLoader.loadConfigFromFile();
         this.copyResourceFiles();
@@ -38,9 +41,11 @@ public final class GrimmsServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new MarketGUIListener(), this);
         this.getServer().getPluginManager().registerEvents(new SettingGUIListener(), this);
         ServerStartupEvent.Event();
+        historicalStatsManager.start();
     }
 
     public void onDisable() {
+        historicalStatsManager.stop();
         super.onDisable();
     }
 

@@ -6,6 +6,7 @@ import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
+import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Manage.GeneralChatHandler;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
@@ -46,5 +47,7 @@ public class PlayerJoinEvent {
         if (!GAuthBaseCommand.isLoggedIn(event.getPlayer())) {
             event.getPlayer().setInvulnerable(true);
         }
+
+        GrimmsServer.historicalStatsManager.recordJoinSnapshot(event.getPlayer());
     }
 }
