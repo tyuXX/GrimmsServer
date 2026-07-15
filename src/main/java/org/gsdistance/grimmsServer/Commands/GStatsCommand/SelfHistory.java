@@ -32,12 +32,26 @@ public class SelfHistory {
 
         String timeRange = "all";
         String specificStat = null;
+        boolean largeGraph = false;
 
         if (args.length >= 2) {
             timeRange = args[1].toLowerCase();
         }
         if (args.length >= 3) {
-            specificStat = args[2].toLowerCase();
+            String arg = args[2].toLowerCase();
+            if (arg.equals("largegraph")) {
+                largeGraph = true;
+            } else {
+                specificStat = arg;
+            }
+        }
+        if (args.length >= 4) {
+            String arg = args[3].toLowerCase();
+            if (arg.equals("largegraph")) {
+                largeGraph = true;
+            } else if (specificStat == null) {
+                specificStat = arg;
+            }
         }
 
         List<HistoricalStatsSnapshot> snapshots = filterSnapshotsByTime(historicalStats.allTimeSnapshots, timeRange);
@@ -47,10 +61,10 @@ public class SelfHistory {
             return true;
         }
 
-        if (specificStat != null && !PlayerStats.Stats.get(specificStat).equals(null)) {
-            displaySingleStatGraph(player, snapshots, specificStat, timeRange);
+        if (specificStat != null && PlayerStats.Stats.get(specificStat) != null) {
+            displaySingleStatGraph(player, snapshots, specificStat, timeRange, largeGraph);
         } else {
-            displayAllStatsGraph(player, snapshots, timeRange);
+            displayAllStatsGraph(player, snapshots, timeRange, largeGraph);
         }
 
         return true;
@@ -91,10 +105,10 @@ public class SelfHistory {
         return filtered;
     }
 
-    public static void displaySingleStatGraph(Player player, List<HistoricalStatsSnapshot> snapshots, String statName, String timeRange) {
+    public static void displaySingleStatGraph(Player player, List<HistoricalStatsSnapshot> snapshots, String statName, String timeRange, boolean largeGraph) {
         ArrayList<String> messages = new ArrayList<>();
         String displayName = PlayerStats.StatNames.get(statName);
-        
+
         messages.add(ChatColor.GOLD + "=== " + displayName + " History (" + timeRange + ") ===");
         messages.add(ChatColor.GRAY + "Showing " + snapshots.size() + " data points");
 
@@ -122,10 +136,10 @@ public class SelfHistory {
                 maxValue += 1;
             }
 
-            int graphHeight = 10;
-            int graphWidth = Math.min(snapshots.size(), 40);
+            int graphHeight = largeGraph ? 15 : 6;
+            int graphWidth = largeGraph ? Math.min(snapshots.size(), 60) : Math.min(snapshots.size(), 25);
 
-            messages.add(ChatColor.GRAY + "Min: " + ChatColor.AQUA + formatStatValue(statName, minValue) + 
+            messages.add(ChatColor.GRAY + "Min: " + ChatColor.AQUA + formatStatValue(statName, minValue) +
                         ChatColor.GRAY + " | Max: " + ChatColor.AQUA + formatStatValue(statName, maxValue));
 
             for (int row = graphHeight; row >= 0; row--) {
@@ -148,7 +162,7 @@ public class SelfHistory {
                 messages.add(line.toString());
             }
 
-            messages.add(ChatColor.GRAY + "Time: " + formatTimestamp(snapshots.get(0).getTimestamp()) + 
+            messages.add(ChatColor.GRAY + "Time: " + formatTimestamp(snapshots.get(0).getTimestamp()) +
                         " → " + formatTimestamp(snapshots.get(snapshots.size() - 1).getTimestamp()));
         }
 
@@ -156,12 +170,15 @@ public class SelfHistory {
         GeneralChatHandler.sendArray(player, messages.toArray(new String[0]));
     }
 
-    public static void displayAllStatsGraph(Player player, List<HistoricalStatsSnapshot> snapshots, String timeRange) {
+    public static void displayAllStatsGraph(Player player, List<HistoricalStatsSnapshot> snapshots, String timeRange, boolean largeGraph) {
         ArrayList<String> messages = new ArrayList<>();
-        
+
         messages.add(ChatColor.GOLD + "=== All Stats History (" + timeRange + ") ===");
         messages.add(ChatColor.GRAY + "Showing " + snapshots.size() + " data points");
         messages.add(ChatColor.YELLOW + "Use /gStats self_history " + timeRange + " <stat> for detailed graph");
+        if (largeGraph) {
+            messages.add(ChatColor.YELLOW + "Add 'largegraph' for larger graph display");
+        }
 
         HistoricalStatsSnapshot first = snapshots.get(0);
         HistoricalStatsSnapshot last = snapshots.get(snapshots.size() - 1);
@@ -186,11 +203,11 @@ public class SelfHistory {
                 ChatColor changeColor = change > 0 ? ChatColor.GREEN : (change < 0 ? ChatColor.RED : ChatColor.GRAY);
                 String changeSymbol = change > 0 ? "+" : "";
 
-                messages.add(ChatColor.WHITE + displayName + ": " + 
-                           ChatColor.AQUA + formatStatValue(stat, firstValue) + 
-                           ChatColor.GRAY + " → " + 
-                           ChatColor.AQUA + formatStatValue(stat, lastValue) + 
-                           changeColor + " (" + changeSymbol + formatStatValue(stat, change) + 
+                messages.add(ChatColor.WHITE + displayName + ": " +
+                           ChatColor.AQUA + formatStatValue(stat, firstValue) +
+                           ChatColor.GRAY + " → " +
+                           ChatColor.AQUA + formatStatValue(stat, lastValue) +
+                           changeColor + " (" + changeSymbol + formatStatValue(stat, change) +
                            ChatColor.GRAY + ", " + changeSymbol + String.format("%.1f", percentChange) + "%)");
             }
         }

@@ -12,10 +12,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class GStatsTabCompleter implements TabCompleter {
     private static final List<String> SUBCOMMANDS = Arrays.asList("self_history", "others_history", "commands");
     private static final List<String> TIME_RANGES = Arrays.asList("hour", "day", "week", "month", "all");
+    private static final List<String> GRAPH_OPTIONS = Arrays.asList("largegraph");
 
     public GStatsTabCompleter() {
     }
@@ -42,6 +44,18 @@ public class GStatsTabCompleter implements TabCompleter {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (player.getName().toLowerCase().startsWith(partialPlayer)) {
                         playerSuggestions.add(player.getName());
+                    }
+                }
+
+                for (org.bukkit.OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+                    if (offlinePlayer.hasPlayedBefore() &&
+                        offlinePlayer.getName() != null &&
+                        offlinePlayer.getName().toLowerCase().startsWith(partialPlayer) &&
+                        !playerSuggestions.contains(offlinePlayer.getName())) {
+                        UUID uuid = offlinePlayer.getUniqueId();
+                        if (org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata.getOfflinePlayerMetadata(uuid) != null) {
+                            playerSuggestions.add(offlinePlayer.getName());
+                        }
                     }
                 }
 
@@ -96,6 +110,23 @@ public class GStatsTabCompleter implements TabCompleter {
                 }
 
                 return statSuggestions;
+            }
+        } else if (args.length == 4 || args.length == 5) {
+            String subcommand = args[0].toLowerCase();
+            if (subcommand.equals("self_history") || subcommand.equals("others_history")) {
+                int argIndex = subcommand.equals("self_history") ? 3 : 4;
+                if (args.length > argIndex) {
+                    String partialGraph = args[argIndex].toLowerCase();
+                    List<String> graphSuggestions = new ArrayList();
+
+                    for (String graphOption : GRAPH_OPTIONS) {
+                        if (graphOption.startsWith(partialGraph)) {
+                            graphSuggestions.add(graphOption);
+                        }
+                    }
+
+                    return graphSuggestions;
+                }
             }
         }
 

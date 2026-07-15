@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class GLogTabCompleter implements TabCompleter {
     private static final List<String> SUBCOMMANDS = Arrays.asList("self_stats", "other_stats", "self_titles", "other_titles", "world", "leaderboard", "commands", "chunk");
@@ -41,6 +42,18 @@ public class GLogTabCompleter implements TabCompleter {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (player.getName().toLowerCase().startsWith(partialPlayer)) {
                             playerSuggestions.add(player.getName());
+                        }
+                    }
+
+                    for (org.bukkit.OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+                        if (offlinePlayer.hasPlayedBefore() && 
+                            offlinePlayer.getName() != null && 
+                            offlinePlayer.getName().toLowerCase().startsWith(partialPlayer) &&
+                            !playerSuggestions.contains(offlinePlayer.getName())) {
+                            UUID uuid = offlinePlayer.getUniqueId();
+                            if (org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata.getOfflinePlayerMetadata(uuid) != null) {
+                                playerSuggestions.add(offlinePlayer.getName());
+                            }
                         }
                     }
 

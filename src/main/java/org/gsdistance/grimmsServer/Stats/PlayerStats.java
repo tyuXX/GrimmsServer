@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerStats {
     public static final Dictionary<String, PersistentDataType<?, ?>> Stats = new Hashtable<>();
@@ -16,10 +17,14 @@ public class PlayerStats {
     public static final Map<String, ?> StatDefaultValues;
     private final JavaPlugin plugin;
     private final PersistentDataContainer dataContainer;
+    private final Map<String, Object> offlineStats;
+    private final boolean isOffline;
 
     public PlayerStats(JavaPlugin plugin, Player player) {
         this.plugin = plugin;
         this.dataContainer = player.getPersistentDataContainer();
+        this.offlineStats = null;
+        this.isOffline = false;
 
         for (String stat : StatOrder) {
             if (!this.hasExactStat(stat)) {
@@ -29,8 +34,37 @@ public class PlayerStats {
 
     }
 
+    public PlayerStats(Map<String, Object> offlineStatsData) {
+        this.plugin = GrimmsServer.instance;
+        this.dataContainer = null;
+        this.offlineStats = new ConcurrentHashMap<>(offlineStatsData);
+        this.isOffline = true;
+
+        for (String stat : StatOrder) {
+            if (!this.offlineStats.containsKey(stat)) {
+                this.offlineStats.put(stat, StatDefaultValues.get(stat));
+            }
+        }
+    }
+
     public static PlayerStats getPlayerStats(Player player) {
         return new PlayerStats(GrimmsServer.instance, player);
+    }
+
+    public static PlayerStats getOfflinePlayerStats(UUID uuid) {
+        org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata metadata = 
+            org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata.getOfflinePlayerMetadata(uuid);
+        if (metadata == null) {
+            return null;
+        }
+        
+        Map<String, Object> statsData = new ConcurrentHashMap<>();
+        for (String stat : StatOrder) {
+            Object defaultValue = StatDefaultValues.get(stat);
+            statsData.put(stat, defaultValue);
+        }
+        
+        return new PlayerStats(statsData);
     }
 
     public void resetStat(String stat) {
@@ -38,6 +72,16 @@ public class PlayerStats {
     }
 
     public <T> T getStat(String stat, Class<T> ignoredType) {
+        if (this.isOffline) {
+            Object value = this.offlineStats.get(stat);
+            if (value == null) {
+                T defaultValue = (T) StatDefaultValues.get(stat);
+                this.offlineStats.put(stat, defaultValue);
+                return defaultValue;
+            }
+            return (T) value;
+        }
+        
         PersistentDataType type = Stats.get(stat);
         if (!this.hasExactStat(stat)) {
             GrimmsServer.logger.warning("Stat " + stat + " does not have a value.");
@@ -54,10 +98,18 @@ public class PlayerStats {
     }
 
     public boolean hasExactStat(String stat) {
+        if (this.isOffline) {
+            return this.offlineStats.containsKey(stat);
+        }
         return this.dataContainer.has(new NamespacedKey(this.plugin, stat), (PersistentDataType) Stats.get(stat));
     }
 
     public void setStat(String stat, Object value) {
+        if (this.isOffline) {
+            this.offlineStats.put(stat, value);
+            return;
+        }
+        
         PersistentDataType type = Stats.get(stat);
         if (type == null) {
             GrimmsServer.logger.warning("Stat " + stat + " does not exist.");
@@ -100,6 +152,7 @@ public class PlayerStats {
     static {
         Stats.put("death_count", PersistentDataType.INTEGER);
         Stats.put("money", PersistentDataType.DOUBLE);
+        Stats.put("maximum_balance", PersistentDataType.DOUBLE);
         Stats.put("total_kill_count", PersistentDataType.INTEGER);
         Stats.put("join_count", PersistentDataType.INTEGER);
         Stats.put("tPoint", PersistentDataType.DOUBLE);
@@ -117,6 +170,7 @@ public class PlayerStats {
         StatNames = new Hashtable<>();
         StatNames.put("death_count", "Death Count");
         StatNames.put("money", "Money");
+        StatNames.put("maximum_balance", "Maximum Balance");
         StatNames.put("total_kill_count", "Total Kill Count");
         StatNames.put("join_count", "Join Count");
         StatNames.put("tPoint", "Total Points");
@@ -131,7 +185,7 @@ public class PlayerStats {
         StatNames.put("autologin", "Login Automatically");
         StatNames.put("prestige", "Prestige");
         StatNames.put("prestigePoints", "Prestige Points");
-        StatOrder = List.of("death_count", "money", "total_kill_count", "join_count", "tPoint", "block_break_count", "sent_messages", "level", "xp", "xp_required", "intelligence", "jobTitle", "prestige", "prestigePoints");
-        StatDefaultValues = Map.ofEntries(Map.entry("death_count", 0), Map.entry("money", (double) 0.0F), Map.entry("total_kill_count", 0), Map.entry("join_count", 0), Map.entry("tPoint", (double) 0.0F), Map.entry("block_break_count", 0L), Map.entry("level", 1), Map.entry("xp", (double) 0.0F), Map.entry("xp_required", (double) 100.0F), Map.entry("sent_messages", 0L), Map.entry("intelligence", (new Random()).nextInt(0, 100)), Map.entry("jobTitle", ""), Map.entry("pass", ""), Map.entry("autologin", false), Map.entry("prestige", 0), Map.entry("prestigePoints", 0L));
+        StatOrder = List.of("death_count", "money", "maximum_balance", "total_kill_count", "join_count", "tPoint", "block_break_count", "sent_messages", "level", "xp", "xp_required", "intelligence", "jobTitle", "prestige", "prestigePoints");
+        StatDefaultValues = Map.ofEntries(Map.entry("death_count", 0), Map.entry("money", (double) 0.0F), Map.entry("maximum_balance", (double) 1000.0F), Map.entry("total_kill_count", 0), Map.entry("join_count", 0), Map.entry("tPoint", (double) 0.0F), Map.entry("block_break_count", 0L), Map.entry("level", 1), Map.entry("xp", (double) 0.0F), Map.entry("xp_required", (double) 100.0F), Map.entry("sent_messages", 0L), Map.entry("intelligence", (new Random()).nextInt(0, 100)), Map.entry("jobTitle", ""), Map.entry("pass", ""), Map.entry("autologin", false), Map.entry("prestige", 0), Map.entry("prestigePoints", 0L));
     }
 }

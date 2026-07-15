@@ -1,8 +1,11 @@
 package org.gsdistance.grimmsServer.Config;
 
+import org.gsdistance.grimmsServer.GrimmsServer;
+
 import java.util.ArrayList;
 
 public enum ConfigKey {
+    CONFIG_VERSION("config_version", GrimmsServer.instance.getDescription().getVersion()),
     MODULE_JOBS("module_Jobs", true),
     MODULE_FACTIONS("module_Factions", true),
     MODULE_MARKET("module_Market", true),
@@ -18,8 +21,8 @@ public enum ConfigKey {
     MODULE_RANKS("module_Ranks", true),
     JOIN_MESSAGE("joinMessage", true),
     MODULE_DIMENSIONS("module_Dimensions", true),
-    DISABLED_DIMENSIONS("disabledDimensions", new ArrayList()),
-    BANNED_WORDS("bannedWords", new ArrayList()),
+    DISABLED_DIMENSIONS("disabledDimensions", new ArrayList<>()),
+    BANNED_WORDS("bannedWords", new ArrayList<>()),
     FORCE_DISABLE_BC("forceDisableBroadcasts", false),
     FORCE_AUTH("forceAuth", false),
     MARKET_GUI_ENABLED("market_gui_enabled", true),

@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 import java.io.File;
+import java.io.IOException;
 
 public class ConfigLoader {
     private static FileConfiguration config;
@@ -17,10 +18,23 @@ public class ConfigLoader {
     public static void initialize(JavaPlugin plugin) {
         File configFile = new File(plugin.getDataFolder(), "config.yml");
         if (!configFile.exists()) {
-            plugin.saveDefaultConfig();
+            generateDefaultConfig(configFile);
         }
 
         config = YamlConfiguration.loadConfiguration(configFile);
+    }
+
+    private static void generateDefaultConfig(File configFile) {
+        YamlConfiguration yamlConfig = new YamlConfiguration();
+        for (ConfigKey key : ConfigKey.values()) {
+            yamlConfig.set(key.getKey(), key.getDefaultValue());
+        }
+        try {
+            yamlConfig.save(configFile);
+            GrimmsServer.logger.info("Generated default config.yml from ConfigKey enum");
+        } catch (IOException e) {
+            GrimmsServer.logger.severe("Failed to generate default config.yml: " + e.getMessage());
+        }
     }
 
     public static void loadConfigFromFile() {

@@ -47,12 +47,26 @@ public class OthersHistory {
 
         String timeRange = "all";
         String specificStat = null;
+        boolean largeGraph = false;
 
         if (args.length >= 3) {
             timeRange = args[2].toLowerCase();
         }
         if (args.length >= 4) {
-            specificStat = args[3].toLowerCase();
+            String arg = args[3].toLowerCase();
+            if (arg.equals("largegraph")) {
+                largeGraph = true;
+            } else {
+                specificStat = arg;
+            }
+        }
+        if (args.length >= 5) {
+            String arg = args[4].toLowerCase();
+            if (arg.equals("largegraph")) {
+                largeGraph = true;
+            } else if (specificStat == null) {
+                specificStat = arg;
+            }
         }
 
         List<HistoricalStatsSnapshot> snapshots = SelfHistory.filterSnapshotsByTime(historicalStats.allTimeSnapshots, timeRange);
@@ -65,9 +79,9 @@ public class OthersHistory {
         player.sendMessage(ChatColor.GOLD + "=== " + targetPlayerName + "'s Stats History ===");
 
         if (specificStat != null && PlayerStats.Stats.get(specificStat) != null) {
-            SelfHistory.displaySingleStatGraph(player, snapshots, specificStat, timeRange);
+            SelfHistory.displaySingleStatGraph(player, snapshots, specificStat, timeRange, largeGraph);
         } else {
-            SelfHistory.displayAllStatsGraph(player, snapshots, timeRange);
+            SelfHistory.displayAllStatsGraph(player, snapshots, timeRange, largeGraph);
         }
 
         return true;
