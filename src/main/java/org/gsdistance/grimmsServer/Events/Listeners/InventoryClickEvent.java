@@ -1,9 +1,8 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.InventoryHolder;
+import org.gsdistance.grimmsServer.Data.Player.AfkManager;
 import org.gsdistance.grimmsServer.Commands.GLevelCommand.PrestigeShop;
-import org.gsdistance.grimmsServer.Commands.GUtilCommand.SettingGUI;
 import org.gsdistance.grimmsServer.Shared;
 
 public class InventoryClickEvent {
@@ -12,6 +11,9 @@ public class InventoryClickEvent {
 
     public static void Event(org.bukkit.event.inventory.InventoryClickEvent event) {
         if (event.getWhoClicked() instanceof org.bukkit.entity.Player player) {
+            // Record activity for AFK tracking
+            AfkManager.recordActivity(player);
+
             InventoryHolder holder = event.getInventory().getHolder();
             if (!Shared.checkContainerAuth(player, holder, "modify")) {
                 event.setCancelled(true);

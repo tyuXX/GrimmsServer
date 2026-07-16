@@ -2,6 +2,7 @@ package org.gsdistance.grimmsServer.Events.Listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.boss.KeyedBossBar;
+import org.gsdistance.grimmsServer.Data.Player.AfkManager;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.World.ChunkMetadata;
@@ -17,6 +18,9 @@ public class PlayerMoveEvent {
             event.setCancelled(true);
             return;
         }
+
+        // Record activity for AFK tracking
+        AfkManager.recordActivity(event.getPlayer());
 
         if (event.getTo() != null) {
             boolean chunkChanged = !event.getFrom().getChunk().equals(event.getTo().getChunk());

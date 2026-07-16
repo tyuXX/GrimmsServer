@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.gsdistance.grimmsServer.Data.Player.AfkManager;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
@@ -22,6 +23,9 @@ public class PlayerChatEvent {
             event.setCancelled(true);
             return;
         }
+
+        // Record activity for AFK tracking
+        AfkManager.recordActivity(event.getPlayer());
 
         PlayerStats.getPlayerStats(event.getPlayer()).changeStat("sent_messages", 1);
 

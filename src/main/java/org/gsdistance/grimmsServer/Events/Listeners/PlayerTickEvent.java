@@ -5,13 +5,12 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.gsdistance.grimmsServer.Data.Player.AfkManager;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
-import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.JobTitlesBaseValues;
 import org.gsdistance.grimmsServer.Data.Player.PlayerCapability;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
-import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStatLeaderBoard;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
@@ -87,13 +86,16 @@ public class PlayerTickEvent {
                 double multiplier = (double) 1.0F + Math.pow((double) playerStats.getStat("level", Integer.class), 2.0F) * Math.pow(playerStats.getStat("prestige", Integer.class) + 1,2) / (double) 100.0F;
                 double payCheck = Math.ceil(JobTitlesBaseValues.jobTitleBaseValues.getOrDefault(jobTitleId, null).paycheckSize() * multiplier);
                 double money = playerStats.getStat("money", Double.class);
-                if(playerStats.getStat("maximum_balance", Double.class) < money + payCheck){
+                if(!AfkManager.isPlayerAfk(player) && playerStats.getStat("maximum_balance", Double.class) < money + payCheck){
                     playerStats.setStat("money", money + payCheck);
                     player.sendMessage(ChatColor.GREEN + "You have received your paycheck: " + ChatColor.GOLD + Shared.formatNumber(payCheck));
                 }
                 lastPaycheckTimes.put(playerId, currentTime);
             }
         }
+
+        // Check AFK status
+        AfkManager.checkAfkStatus(player);
     }
 
     public static void processMagnets() {
@@ -114,6 +116,7 @@ public class PlayerTickEvent {
     public static void onPlayerQuit(Player player) {
         playerLoginTimes.remove(player.getUniqueId());
         lastPaycheckTimes.remove(player.getUniqueId());
+        AfkManager.onPlayerQuit(player);
     }
 
     public static void initializePaycheckTimer(Player player) {

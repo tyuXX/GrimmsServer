@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.gsdistance.grimmsServer.Data.Player.AfkManager;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.Item.ItemLevelHandler;
@@ -30,6 +31,9 @@ public class BlockBreakEvent {
             event.setCancelled(true);
             return;
         }
+
+        // Record activity for AFK tracking
+        AfkManager.recordActivity(event.getPlayer());
 
         ChunkMetadata chunkMetadata = ChunkMetadata.getChunkMetadata(event.getBlock().getChunk());
         if (!event.getPlayer().hasPermission("grimmsserver.faction.bypass") && chunkMetadata.factionUUID != null) {

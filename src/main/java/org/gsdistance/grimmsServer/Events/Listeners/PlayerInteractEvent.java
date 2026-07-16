@@ -1,6 +1,7 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
 import org.bukkit.ChatColor;
+import org.gsdistance.grimmsServer.Data.Player.AfkManager;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.World.ChunkMetadata;
@@ -15,6 +16,9 @@ public class PlayerInteractEvent {
             event.setCancelled(true);
             return;
         }
+
+        // Record activity for AFK tracking
+        AfkManager.recordActivity(event.getPlayer());
 
         if (event.getClickedBlock() != null) {
             ChunkMetadata chunkMetadata = ChunkMetadata.getChunkMetadata(event.getClickedBlock().getChunk());
