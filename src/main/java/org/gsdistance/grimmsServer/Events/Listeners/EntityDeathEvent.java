@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerLevelHandler;
@@ -19,7 +20,7 @@ public class EntityDeathEvent {
             event.getEntity().setCustomName(null);
         }
 
-        if (event.getEntity().getKiller() != null && event.getEntity().getKiller().getType() == EntityType.PLAYER) {
+        if (event.getEntity().getKiller() != null && event.getEntity().getAttribute(Attribute.MAX_HEALTH) != null && event.getEntity().getAttribute(Attribute.MAX_HEALTH).getValue() > 0 && event.getEntity().getKiller().getType() == EntityType.PLAYER) {
             PlayerStats playerStats = PlayerStats.getPlayerStats(event.getEntity().getKiller());
             WorldStats worldStats = WorldStats.getWorldStats(event.getEntity().getWorld());
             playerStats.changeStat("total_kill_count", 1);

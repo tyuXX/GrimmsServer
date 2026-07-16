@@ -89,8 +89,8 @@ public class PlayerTickEvent {
                 double money = playerStats.getStat("money", Double.class);
                 if(playerStats.getStat("maximum_balance", Double.class) < money + payCheck){
                     playerStats.setStat("money", money + payCheck);
+                    player.sendMessage(ChatColor.GREEN + "You have received your paycheck: " + ChatColor.GOLD + Shared.formatNumber(payCheck));
                 }
-                player.sendMessage(ChatColor.GREEN + "You have received your paycheck: " + ChatColor.GOLD + Shared.formatNumber(payCheck));
                 lastPaycheckTimes.put(playerId, currentTime);
             }
         }

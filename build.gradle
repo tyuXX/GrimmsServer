@@ -48,3 +48,7 @@ processResources {
         expand props
     }
 }
+
+// Clean build output jars before every build
+def var = build.dependsOn clean
+var

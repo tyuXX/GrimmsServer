@@ -33,7 +33,7 @@ public enum ConfigKey {
     PRESTIGE_CAPABILITY_AUTOSELL_PRICE("prestige_capability_autosell_price", 4),
     PRESTIGE_CAPABILITY_MAGNET_PRICE("prestige_capability_magnet_price", 2),
     PRESTIGE_CAPABILITY_VEINMINER_PRICE("prestige_capability_veinminer_price", 3),
-    PRESTIGE_CAPABILITY_SATURATION_PERK_PRICE("prestige_capability_saturation_perk_price", 4);
+    PRESTIGE_CAPABILITY_SATURATION_PERK_PRICE("prestige_capability_saturation_perk_price", 10);
 
     private final String key;
     private final Object defaultValue;

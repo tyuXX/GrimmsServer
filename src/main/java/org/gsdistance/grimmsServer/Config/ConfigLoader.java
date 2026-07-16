@@ -11,17 +11,47 @@ import java.io.IOException;
 
 public class ConfigLoader {
     private static FileConfiguration config;
+    private static File configFile;
 
     public ConfigLoader() {
     }
 
     public static void initialize(JavaPlugin plugin) {
-        File configFile = new File(plugin.getDataFolder(), "config.yml");
+        configFile = new File(plugin.getDataFolder(), "config.yml");
         if (!configFile.exists()) {
             generateDefaultConfig(configFile);
+        } else {
+            migrateConfig();
         }
 
         config = YamlConfiguration.loadConfiguration(configFile);
+    }
+
+    private static void migrateConfig() {
+        YamlConfiguration existingConfig = YamlConfiguration.loadConfiguration(configFile);
+        String currentVersion = GrimmsServer.instance.getDescription().getVersion();
+        String configVersion = existingConfig.getString(ConfigKey.CONFIG_VERSION.getKey());
+
+        if (configVersion == null || !configVersion.equals(currentVersion)) {
+            boolean needsUpdate = false;
+            for (ConfigKey key : ConfigKey.values()) {
+                if (!existingConfig.contains(key.getKey())) {
+                    existingConfig.set(key.getKey(), key.getDefaultValue());
+                    needsUpdate = true;
+                    GrimmsServer.logger.info("Added missing config field: " + key.getKey());
+                }
+            }
+            existingConfig.set(ConfigKey.CONFIG_VERSION.getKey(), currentVersion);
+
+            if (needsUpdate) {
+                try {
+                    existingConfig.save(configFile);
+                    GrimmsServer.logger.info("Config migrated to version " + currentVersion);
+                } catch (IOException e) {
+                    GrimmsServer.logger.severe("Failed to migrate config: " + e.getMessage());
+                }
+            }
+        }
     }
 
     private static void generateDefaultConfig(File configFile) {
@@ -40,9 +70,10 @@ public class ConfigLoader {
     public static void loadConfigFromFile() {
         Stopwatch sw = Stopwatch.createStarted();
         GrimmsServer.logger.info("Loading GrimmsServer config...");
-        if (config == null) {
-            GrimmsServer.logger.warning("Config somehow not initialized. (" + sw.stop() + ")");
+        if (configFile == null) {
+            GrimmsServer.logger.warning("Config file not initialized. (" + sw.stop() + ")");
         } else {
+            config = YamlConfiguration.loadConfiguration(configFile);
             for (ConfigKey key : ConfigKey.values()) {
                 Object value = config.get(key.getKey(), key.getDefaultValue());
                 ActiveConfig.setConfigValue(key, value);
