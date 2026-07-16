@@ -42,6 +42,12 @@ public class GUtilBaseCommand implements CommandExecutor {
                 case "broadcast" -> {
                     return Broadcast.subCommand(sender, args);
                 }
+                case "inventoryrestore" -> {
+                    if (sender instanceof Player player) {
+                        return InventoryRestore.subCommand(player, args);
+                    }
+                    return false;
+                }
                 default -> {
                     return false;
                 }

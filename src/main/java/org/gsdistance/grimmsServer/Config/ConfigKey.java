@@ -35,7 +35,9 @@ public enum ConfigKey {
     PRESTIGE_CAPABILITY_VEINMINER_PRICE("prestige_capability_veinminer_price", 3),
     PRESTIGE_CAPABILITY_SATURATION_PERK_PRICE("prestige_capability_saturation_perk_price", 10),
     AFK_TIMEOUT("afk_timeout", 300000L),
-    AFK_ANNOUNCEMENT_ENABLED("afk_announcement_enabled", true);
+    AFK_ANNOUNCEMENT_ENABLED("afk_announcement_enabled", true),
+    CLEAR_INVENTORY_ON_DEATH("clear_inventory_on_death", false),
+    MAX_HISTORICAL_INVENTORIES("max_historical_inventories", 20);
 
     private final String key;
     private final Object defaultValue;
