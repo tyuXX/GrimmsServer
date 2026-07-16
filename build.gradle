@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'org.gsdistance'
-version = '1.5.2'
+version = '1.5.3'
 
 repositories {
     mavenCentral()
@@ -49,6 +49,14 @@ processResources {
     }
 }
 
-// Clean build output jars before every build
-def var = build.dependsOn clean
-var
+// Custom task to clean only jar files before build
+task cleanJars(type: Delete) {
+    delete fileTree('build/libs') {
+        include '*.jar'
+        exclude "${project.name}-${version}.jar"
+    }
+}
+
+// Run cleanJars before every build
+build.dependsOn cleanJars
+

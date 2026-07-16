@@ -43,13 +43,15 @@ public class ConfigLoader {
             }
             existingConfig.set(ConfigKey.CONFIG_VERSION.getKey(), currentVersion);
 
-            if (needsUpdate) {
-                try {
-                    existingConfig.save(configFile);
-                    GrimmsServer.logger.info("Config migrated to version " + currentVersion);
-                } catch (IOException e) {
-                    GrimmsServer.logger.severe("Failed to migrate config: " + e.getMessage());
+            try {
+                existingConfig.save(configFile);
+                if (needsUpdate) {
+                    GrimmsServer.logger.info("Config migrated to version " + currentVersion + " with new fields");
+                } else {
+                    GrimmsServer.logger.info("Config version updated to " + currentVersion);
                 }
+            } catch (IOException e) {
+                GrimmsServer.logger.severe("Failed to migrate config: " + e.getMessage());
             }
         }
     }

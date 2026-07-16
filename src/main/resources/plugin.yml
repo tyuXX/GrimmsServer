@@ -1,6 +1,6 @@
 name: GrimmsServer
-author: Grimm&tyuXX
-description: A spigot plugin made by Grimm and tyuXX, it adds player leveling, a market, money, and more.
+author: Grimm & [tyuXX]
+description: A spigot plugin made by Grimm and [tyuXX], it adds player leveling, a market, money, and more.
 website: www.gsdistance.org
 prefix: Grimm's
 main: org.gsdistance.grimmsServer.GrimmsServer
