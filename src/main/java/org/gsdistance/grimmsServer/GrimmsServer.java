@@ -5,6 +5,7 @@ import org.gsdistance.grimmsServer.Commands.GUtilCommand.SettingGUIListener;
 import org.gsdistance.grimmsServer.Commands.MarketComand.MarketGUIListener;
 import org.gsdistance.grimmsServer.Config.ConfigLoader;
 import org.gsdistance.grimmsServer.Data.PluginDataStorage;
+import org.gsdistance.grimmsServer.Data.PlayerLoginLogManager;
 import org.gsdistance.grimmsServer.Events.Listeners.ServerStartupEvent;
 import org.gsdistance.grimmsServer.Manage.EventRegistry;
 import org.gsdistance.grimmsServer.Stats.HistoricalStatsManager;
@@ -42,6 +43,7 @@ public final class GrimmsServer extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new SettingGUIListener(), this);
         ServerStartupEvent.Event();
         historicalStatsManager.start();
+        PlayerLoginLogManager.initialize();
     }
 
     public void onDisable() {

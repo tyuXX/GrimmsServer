@@ -13,32 +13,27 @@ public class AddTitle implements CommandExecutor {
     }
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player) {
-            if (args.length < 2) {
-                return false;
-            } else if (!PlayerTitles.titles.containsKey(args[1])) {
-                sender.sendMessage("Title not found.");
+        if (args.length < 2) {
+            return false;
+        } else if (!PlayerTitles.titles.containsKey(args[1])) {
+            sender.sendMessage("Title not found.");
+            return false;
+        } else {
+            Player player = GrimmsServer.instance.getServer().getPlayer(args[0]);
+            if (player == null) {
+                sender.sendMessage("Player not found.");
                 return false;
             } else {
-                Player player = GrimmsServer.instance.getServer().getPlayer(args[0]);
-                if (player == null) {
-                    sender.sendMessage("Player not found.");
+                PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
+                if (playerTitles.hasTitle(args[1])) {
+                    sender.sendMessage("Player already has this title.");
                     return false;
                 } else {
-                    PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
-                    if (playerTitles.hasTitle(args[1])) {
-                        sender.sendMessage("Player already has this title.");
-                        return false;
-                    } else {
-                        playerTitles.addTitle(args[1]);
-                        sender.sendMessage("Title " + args[1] + " added to " + player.getDisplayName() + ".");
-                        return true;
-                    }
+                    playerTitles.addTitle(args[1]);
+                    sender.sendMessage("Title " + args[1] + " added to " + player.getDisplayName() + ".");
+                    return true;
                 }
             }
-        } else {
-            sender.sendMessage("This command can only be run by a player.");
-            return false;
         }
     }
 }

@@ -54,8 +54,6 @@ public class CommandRegistry {
         if (addTitleCmd != null) addTitleCmd.setExecutor(new AddTitle());
         PluginCommand executePlayerCmd = GrimmsServer.instance.getCommand("executePlayer");
         if (executePlayerCmd != null) executePlayerCmd.setExecutor(new ExecutePlayer());
-        PluginCommand grimmsServerCommandsCmd = GrimmsServer.instance.getCommand("grimmsServerCommands");
-        if (grimmsServerCommandsCmd != null) grimmsServerCommandsCmd.setExecutor(new LogGrimmsServerCommands());
         PluginCommand withdrawMoneyCmd = GrimmsServer.instance.getCommand("withdrawMoney");
         if (withdrawMoneyCmd != null) withdrawMoneyCmd.setExecutor(new WithdrawMoney());
         PluginCommand depositMoneyCmd = GrimmsServer.instance.getCommand("depositMoney");

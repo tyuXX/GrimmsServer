@@ -13,27 +13,23 @@ public class ExecutePlayer implements CommandExecutor {
     }
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player) {
-            if (args.length == 0) {
+        if (args.length == 0) {
+            return false;
+        } else {
+            Player player = GrimmsServer.instance.getServer().getPlayer(args[0]);
+            if (player == null) {
+                sender.sendMessage("Player not found.");
                 return false;
             } else {
-                Player player = GrimmsServer.instance.getServer().getPlayer(args[0]);
-                if (player == null) {
-                    sender.sendMessage("Player not found.");
+                if (sender instanceof Player && !PlayerTitles.getPlayerTitles((Player) sender).hasTitle("Executioner")) {
+                    sender.sendMessage("You need the Executioner title to use this command.");
                     return false;
-                } else {
-                    if (PlayerTitles.getPlayerTitles((Player) sender).hasTitle("Executioner")) {
-                        player.sendMessage("You have been executed by " + ((Player) sender).getDisplayName());
-                        sender.sendMessage("You have executed " + player.getDisplayName());
-                        player.damage(player.getHealth() * (double) 10.0F);
-                    }
-
-                    return true;
                 }
+                player.sendMessage("You have been executed by " + (sender instanceof Player ? ((Player) sender).getDisplayName() : "CONSOLE"));
+                sender.sendMessage("You have executed " + player.getDisplayName());
+                player.damage(player.getHealth() * (double) 10.0F);
+                return true;
             }
-        } else {
-            sender.sendMessage("This command can only be run by a player.");
-            return false;
         }
     }
 }

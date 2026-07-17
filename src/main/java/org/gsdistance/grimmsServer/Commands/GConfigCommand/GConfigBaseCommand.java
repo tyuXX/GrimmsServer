@@ -16,7 +16,7 @@ public class GConfigBaseCommand implements CommandExecutor {
         } else {
             boolean var10000;
             switch (args[0].toLowerCase()) {
-                case "dump" -> var10000 = Dump.subCommand((Player) sender);
+                case "dump" -> var10000 = Dump.subCommand(sender);
                 case "reload" -> var10000 = Reload.subCommand();
                 default -> var10000 = false;
             }

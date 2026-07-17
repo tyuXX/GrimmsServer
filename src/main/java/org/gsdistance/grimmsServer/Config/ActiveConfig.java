@@ -17,8 +17,15 @@ public class ActiveConfig {
     }
 
     public static <T> T getConfigValue(ConfigKey key, Class<T> ignoredType) {
+        Object value = configValues.getOrDefault(key, key.getDefaultValue());
+        
+        // Handle Integer to Long conversion for config values
+        if (ignoredType == Long.class && value instanceof Integer) {
+            value = ((Integer) value).longValue();
+        }
+        
         try {
-            return (T) configValues.getOrDefault(key, key.getDefaultValue());
+            return (T) value;
         } catch (ClassCastException e) {
             GrimmsServer.logger.warning("Config value for " + key.getKey() + " is not of type " + ignoredType.getSimpleName() + ". Message: " + e.getMessage());
 

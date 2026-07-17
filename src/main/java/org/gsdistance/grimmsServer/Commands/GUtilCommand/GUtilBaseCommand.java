@@ -16,10 +16,7 @@ public class GUtilBaseCommand implements CommandExecutor {
         } else {
             switch (args[0].toLowerCase()) {
                 case "version" -> {
-                    if (sender instanceof Player player) {
-                        return Version.subCommand(player, args);
-                    }
-                    return false;
+                    return Version.subCommand(sender, args);
                 }
                 case "relic" -> {
                     if (sender instanceof Player player) {

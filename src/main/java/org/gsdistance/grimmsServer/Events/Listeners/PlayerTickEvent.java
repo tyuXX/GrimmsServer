@@ -6,11 +6,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.gsdistance.grimmsServer.Data.Player.AfkManager;
+import org.gsdistance.grimmsServer.Data.PlayerLoginLogManager;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.JobTitlesBaseValues;
 import org.gsdistance.grimmsServer.Data.Player.PlayerCapability;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
+import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStatLeaderBoard;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
@@ -64,6 +66,8 @@ public class PlayerTickEvent {
         // Real-time login kick check
         if (!GAuthBaseCommand.isLoggedIn(player) && (currentTime - loginTime) >= LOGIN_KICK_TIMEOUT_MS) {
             player.kickPlayer("Not logged in for too long.");
+            GrimmsServer.logger.warning("Kicked player " + player.getName() + " for not logging in for too long.");
+            PlayerLoginLogManager.logPlayerLogin(player, "timeout_kick");
             playerLoginTimes.remove(playerId);
             return;
         }

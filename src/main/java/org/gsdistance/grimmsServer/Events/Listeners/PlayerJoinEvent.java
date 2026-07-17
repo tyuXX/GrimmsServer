@@ -6,6 +6,7 @@ import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
+import org.gsdistance.grimmsServer.Data.PlayerLoginLogManager;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Manage.GeneralChatHandler;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
@@ -53,5 +54,9 @@ public class PlayerJoinEvent {
         PlayerTickEvent.initializePaycheckTimer(event.getPlayer());
 
         GrimmsServer.historicalStatsManager.recordJoinSnapshot(event.getPlayer());
+
+        // Log player login with IP address
+        String loginType = autologin ? "autologin" : "manual";
+        PlayerLoginLogManager.logPlayerLogin(event.getPlayer(), loginType);
     }
 }

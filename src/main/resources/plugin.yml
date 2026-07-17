@@ -28,9 +28,6 @@ commands:
     description: Execute a player (requires Executioner title)
     usage: /executePlayer <player>
     permission: grimmsserver.executePlayer
-  grimmsServerCommands:
-    description: List all available GrimmsServer commands
-    usage: /grimmsServerCommands
   withdrawMoney:
     description: Withdraw money from your balance into physical banknotes
     usage: /withdrawMoney <amount> [banknoteCount]

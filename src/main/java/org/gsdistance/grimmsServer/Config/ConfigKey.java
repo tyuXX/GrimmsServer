@@ -37,7 +37,8 @@ public enum ConfigKey {
     AFK_TIMEOUT("afk_timeout", 300000L),
     AFK_ANNOUNCEMENT_ENABLED("afk_announcement_enabled", true),
     CLEAR_INVENTORY_ON_DEATH("clear_inventory_on_death", false),
-    MAX_HISTORICAL_INVENTORIES("max_historical_inventories", 20);
+    MAX_HISTORICAL_INVENTORIES("max_historical_inventories", 20),
+    LOGIN_LOGGER_ENABLED("login_logger_enabled", true);
 
     private final String key;
     private final Object defaultValue;
