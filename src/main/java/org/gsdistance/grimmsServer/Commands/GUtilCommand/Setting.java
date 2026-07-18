@@ -14,7 +14,6 @@ public class Setting {
         if (args.length < 2) {
             SettingGUI gui = new SettingGUI(player);
             gui.open();
-            return true;
         } else {
             String settingName = args[1].toLowerCase();
             PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
@@ -28,7 +27,7 @@ public class Setting {
             }
 
             playerMetadata.saveToPDS();
-            return true;
         }
+        return true;
     }
 }

@@ -3,12 +3,12 @@ package org.gsdistance.grimmsServer.Manage;
 import org.bukkit.entity.Entity;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CustomEntityManager {
-    public static final List<UUID> currentRegistry = new ArrayList<>();
+    public static final List<UUID> currentRegistry = new CopyOnWriteArrayList<>();
 
     public CustomEntityManager() {
     }

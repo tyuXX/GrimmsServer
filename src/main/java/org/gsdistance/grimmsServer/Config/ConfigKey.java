@@ -38,7 +38,12 @@ public enum ConfigKey {
     AFK_ANNOUNCEMENT_ENABLED("afk_announcement_enabled", true),
     CLEAR_INVENTORY_ON_DEATH("clear_inventory_on_death", false),
     MAX_HISTORICAL_INVENTORIES("max_historical_inventories", 20),
-    LOGIN_LOGGER_ENABLED("login_logger_enabled", true);
+    LOGIN_LOGGER_ENABLED("login_logger_enabled", true),
+    LEVELLED_MOBS_ENABLED("levelled_mobs_enabled", true),
+    LEVELLED_MOBS_SEARCH_RADIUS("levelled_mobs_search_radius", 50),
+    LEVELLED_MOBS_HEALTH_DIVISOR("levelled_mobs_health_divisor", 25.0),
+    LEVELLED_MOBS_ARMOR_DIVISOR("levelled_mobs_armor_divisor", 2.0),
+    LEVELLED_MOBS_BLACKLIST("levelled_mobs_blacklist", new ArrayList<String>());
 
     private final String key;
     private final Object defaultValue;
@@ -56,8 +61,4 @@ public enum ConfigKey {
         return this.defaultValue;
     }
 
-    // $FF: synthetic method
-    private static ConfigKey[] $values() {
-        return new ConfigKey[]{MODULE_JOBS, MODULE_FACTIONS, MODULE_MARKET, MODULE_LEADERBOARD, DISABLED_COMMANDS, MODULE_CHAT, MODULE_HOMES, MODULE_LEVELING, MODULE_TITLES, MODULE_RELICS, MODULE_EVENTS, MODULE_UTILS, MODULE_RANKS, JOIN_MESSAGE, MODULE_DIMENSIONS, DISABLED_DIMENSIONS, BANNED_WORDS, FORCE_DISABLE_BC, FORCE_AUTH, MARKET_GUI_ENABLED, MARKET_RIPOFF_MULTIPLIER, MARKET_MIN_PRICE, MARKET_PRICE_REFRESH_INTERVAL, LOG_LEVEL};
-    }
 }

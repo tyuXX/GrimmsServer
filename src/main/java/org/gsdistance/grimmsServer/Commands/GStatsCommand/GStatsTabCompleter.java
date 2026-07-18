@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static org.gsdistance.grimmsServer.Shared.getOnlinePlayers;
+
 public class GStatsTabCompleter implements TabCompleter {
     private static final List<String> SUBCOMMANDS = Arrays.asList("self_history", "others_history", "commands");
     private static final List<String> TIME_RANGES = Arrays.asList("hour", "day", "week", "month", "all");
@@ -26,7 +28,7 @@ public class GStatsTabCompleter implements TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {
             String partial = args[0].toLowerCase();
-            List<String> suggestions = new ArrayList();
+            List<String> suggestions = new ArrayList<>();
 
             for (String subcommand : SUBCOMMANDS) {
                 if (subcommand.startsWith(partial) && hasPermissionForSubcommand(sender, subcommand)) {
@@ -39,30 +41,12 @@ public class GStatsTabCompleter implements TabCompleter {
             String subcommand = args[0].toLowerCase();
             if (subcommand.equals("others_history")) {
                 String partialPlayer = args[1].toLowerCase();
-                List<String> playerSuggestions = new ArrayList();
+                List<String> playerSuggestions = new ArrayList<>();
 
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.getName().toLowerCase().startsWith(partialPlayer)) {
-                        playerSuggestions.add(player.getName());
-                    }
-                }
-
-                for (org.bukkit.OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-                    if (offlinePlayer.hasPlayedBefore() &&
-                            offlinePlayer.getName() != null &&
-                            offlinePlayer.getName().toLowerCase().startsWith(partialPlayer) &&
-                            !playerSuggestions.contains(offlinePlayer.getName())) {
-                        UUID uuid = offlinePlayer.getUniqueId();
-                        if (org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata.getOfflinePlayerMetadata(uuid) != null) {
-                            playerSuggestions.add(offlinePlayer.getName());
-                        }
-                    }
-                }
-
-                return playerSuggestions;
+                return getOnlinePlayers(partialPlayer, playerSuggestions);
             } else if (subcommand.equals("self_history")) {
                 String partialTime = args[1].toLowerCase();
-                List<String> timeSuggestions = new ArrayList();
+                List<String> timeSuggestions = new ArrayList<>();
 
                 for (String timeRange : TIME_RANGES) {
                     if (timeRange.startsWith(partialTime)) {
@@ -76,7 +60,7 @@ public class GStatsTabCompleter implements TabCompleter {
             String subcommand = args[0].toLowerCase();
             if (subcommand.equals("others_history")) {
                 String partialTime = args[2].toLowerCase();
-                List<String> timeSuggestions = new ArrayList();
+                List<String> timeSuggestions = new ArrayList<>();
 
                 for (String timeRange : TIME_RANGES) {
                     if (timeRange.startsWith(partialTime)) {
@@ -87,7 +71,7 @@ public class GStatsTabCompleter implements TabCompleter {
                 return timeSuggestions;
             } else if (subcommand.equals("self_history")) {
                 String partialStat = args[2].toLowerCase();
-                List<String> statSuggestions = new ArrayList();
+                List<String> statSuggestions = new ArrayList<>();
 
                 for (String stat : PlayerStats.StatOrder) {
                     if (stat.startsWith(partialStat)) {
@@ -101,7 +85,7 @@ public class GStatsTabCompleter implements TabCompleter {
             String subcommand = args[0].toLowerCase();
             if (subcommand.equals("others_history")) {
                 String partialStat = args[3].toLowerCase();
-                List<String> statSuggestions = new ArrayList();
+                List<String> statSuggestions = new ArrayList<>();
 
                 for (String stat : PlayerStats.StatOrder) {
                     if (stat.startsWith(partialStat)) {
@@ -111,22 +95,20 @@ public class GStatsTabCompleter implements TabCompleter {
 
                 return statSuggestions;
             }
-        } else if (args.length == 4 || args.length == 5) {
+        } else if (args.length == 5) {
             String subcommand = args[0].toLowerCase();
             if (subcommand.equals("self_history") || subcommand.equals("others_history")) {
                 int argIndex = subcommand.equals("self_history") ? 3 : 4;
-                if (args.length > argIndex) {
-                    String partialGraph = args[argIndex].toLowerCase();
-                    List<String> graphSuggestions = new ArrayList();
+                String partialGraph = args[argIndex].toLowerCase();
+                List<String> graphSuggestions = new ArrayList<>();
 
-                    for (String graphOption : GRAPH_OPTIONS) {
-                        if (graphOption.startsWith(partialGraph)) {
-                            graphSuggestions.add(graphOption);
-                        }
+                for (String graphOption : GRAPH_OPTIONS) {
+                    if (graphOption.startsWith(partialGraph)) {
+                        graphSuggestions.add(graphOption);
                     }
-
-                    return graphSuggestions;
                 }
+
+                return graphSuggestions;
             }
         }
 

@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.List;
+import java.util.UUID;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 
@@ -47,8 +49,43 @@ public class Shared {
 
     public static void updateResource(String resourcePath, boolean isDirectory) {
         GrimmsServer.logger.info("Updating resource: " + resourcePath);
-        File embedFolder = new File(GrimmsServer.instance.getDataFolder(), resourcePath);
-        deleteDirectoryRecursively(embedFolder);
+        File targetFolder = new File(GrimmsServer.instance.getDataFolder(), resourcePath);
+        
+        if (isDirectory) {
+            // Get list of files in JAR for this resource path
+            java.util.Set<String> jarFiles = new java.util.HashSet<>();
+            try {
+                String jarPath = GrimmsServer.instance.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+                try (JarFile jarFile = new JarFile(jarPath)) {
+                    jarFile.stream().filter(entry -> entry.getName().startsWith(resourcePath) && !entry.isDirectory()).forEach(entry -> {
+                        String relativePath = entry.getName().substring(resourcePath.length() + 1);
+                        jarFiles.add(relativePath);
+                    });
+                }
+            } catch (IOException e) {
+                GrimmsServer.logger.warning("Failed to read JAR files for update: " + resourcePath);
+                GrimmsServer.logger.warning("Error: " + e.getMessage());
+                return;
+            }
+            
+            // Only delete files that exist in the JAR (auto-generated)
+            if (targetFolder.exists() && targetFolder.isDirectory()) {
+                File[] files = targetFolder.listFiles();
+                if (files != null) {
+                    for (File file : files) {
+                        if (jarFiles.contains(file.getName())) {
+                            deleteDirectoryRecursively(file);
+                        }
+                    }
+                }
+            }
+        } else {
+            // For single files, delete if it exists
+            if (targetFolder.exists()) {
+                targetFolder.delete();
+            }
+        }
+        
         saveResourceIfNotExists(resourcePath, isDirectory);
     }
 
@@ -128,5 +165,27 @@ public class Shared {
             }
         }
         return true;
+    }
+
+    public static List<String> getOnlinePlayers(String partialPlayer, List<String> playerSuggestions) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getName().toLowerCase().startsWith(partialPlayer)) {
+                playerSuggestions.add(player.getName());
+            }
+        }
+
+        for (org.bukkit.OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+            if (offlinePlayer.hasPlayedBefore() &&
+                    offlinePlayer.getName() != null &&
+                    offlinePlayer.getName().toLowerCase().startsWith(partialPlayer) &&
+                    !playerSuggestions.contains(offlinePlayer.getName())) {
+                UUID uuid = offlinePlayer.getUniqueId();
+                if (org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata.getOfflinePlayerMetadata(uuid) != null) {
+                    playerSuggestions.add(offlinePlayer.getName());
+                }
+            }
+        }
+
+        return playerSuggestions;
     }
 }
