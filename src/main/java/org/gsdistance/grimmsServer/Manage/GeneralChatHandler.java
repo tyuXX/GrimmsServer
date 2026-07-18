@@ -48,7 +48,7 @@ public class GeneralChatHandler {
         }
 
         int prestige = playerStats.getStat("prestige", Integer.class);
-        
+
         if (metadata != null && metadata.showPrestigeDeco && prestige > 0) {
             nickname = ChatColor.DARK_PURPLE + "[" + prestige + "] " + ChatColor.RESET + nickname;
         }
@@ -71,7 +71,7 @@ public class GeneralChatHandler {
                 String normalizedBannedWord = word.replaceAll(regex, "").toLowerCase();
                 if (normalizedMessage.contains(normalizedBannedWord)) {
                     GrimmsServer.logger.info("Message interrupted: '" + message + "' by player: " + player.getName() + ". Contains banned word: " + word);
-                    return String.format("<%s>: %s", nickname, "§c[REDACTED]");
+                    return String.format("%s: %s", nickname, "§c[REDACTED]");
                 }
             }
         }

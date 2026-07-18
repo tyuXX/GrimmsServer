@@ -19,10 +19,10 @@ public class GHelp implements CommandExecutor {
             sender.sendMessage(ChatColor.GOLD + "=== Grimm'sServer Commands ===");
             sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.YELLOW + "/ghelp <command>" + ChatColor.GRAY + " for detailed help on a specific command.");
             sender.sendMessage("");
-            
+
             List<String> commands = new ArrayList<>(HelpStrings.helpStrings.keySet());
             commands.sort(String.CASE_INSENSITIVE_ORDER);
-            
+
             StringBuilder commandList = new StringBuilder(ChatColor.GRAY + "Available commands: ");
             for (int i = 0; i < commands.size(); i++) {
                 if (i > 0) {
@@ -37,13 +37,13 @@ public class GHelp implements CommandExecutor {
             String commandName = args[0].toLowerCase();
             String helpString = HelpStrings.getHelpString(commandName);
             String helpUsage = HelpStrings.getHelpUsage(commandName);
-            
+
             if (helpString.equals("Not found.") && helpUsage.equals("Not found.")) {
                 sender.sendMessage(ChatColor.RED + "Command '" + commandName + "' not found.");
                 sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.YELLOW + "/ghelp" + ChatColor.GRAY + " to see all available commands.");
                 return true;
             }
-            
+
             sender.sendMessage(ChatColor.GOLD + "=== Help for /" + commandName + " ===");
             sender.sendMessage(ChatColor.GRAY + "Description: " + ChatColor.WHITE + helpString);
             sender.sendMessage(ChatColor.GRAY + "Usage: " + ChatColor.YELLOW + helpUsage);

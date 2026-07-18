@@ -52,18 +52,18 @@ public class PlayerStats {
     }
 
     public static PlayerStats getOfflinePlayerStats(UUID uuid) {
-        org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata metadata = 
-            org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata.getOfflinePlayerMetadata(uuid);
+        org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata metadata =
+                org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata.getOfflinePlayerMetadata(uuid);
         if (metadata == null) {
             return null;
         }
-        
+
         Map<String, Object> statsData = new ConcurrentHashMap<>();
         for (String stat : StatOrder) {
             Object defaultValue = StatDefaultValues.get(stat);
             statsData.put(stat, defaultValue);
         }
-        
+
         return new PlayerStats(statsData);
     }
 
@@ -81,7 +81,7 @@ public class PlayerStats {
             }
             return (T) value;
         }
-        
+
         PersistentDataType type = Stats.get(stat);
         if (!this.hasExactStat(stat)) {
             GrimmsServer.logger.warning("Stat " + stat + " does not have a value.");
@@ -109,7 +109,7 @@ public class PlayerStats {
             this.offlineStats.put(stat, value);
             return;
         }
-        
+
         PersistentDataType type = Stats.get(stat);
         if (type == null) {
             GrimmsServer.logger.warning("Stat " + stat + " does not exist.");

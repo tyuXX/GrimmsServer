@@ -58,11 +58,11 @@ public class PlayerStatLeaderBoard {
         for (String stat : this.leaderboard.keySet()) {
             Number playerStatValue = playerStats.getStat(stat, Number.class);
             List<Data<String, Number>> statLeaders = this.leaderboard.get(stat);
-            
+
             if (playerStatValue != null) {
                 // Check if player was already #1 before update
                 boolean wasAlreadyLeader = !statLeaders.isEmpty() && statLeaders.get(0).key().equalsIgnoreCase(player.getName());
-                
+
                 // Check if player should be in top 3
                 boolean shouldAdd = true;
                 if (statLeaders.size() >= 3) {
@@ -71,22 +71,22 @@ public class PlayerStatLeaderBoard {
                         shouldAdd = false;
                     }
                 }
-                
+
                 if (shouldAdd) {
                     // Remove existing entry for this player if present
                     statLeaders.removeIf(entry -> entry.key().equalsIgnoreCase(player.getName()));
-                    
+
                     // Add new entry
                     statLeaders.add(Data.of(player.getName(), playerStatValue));
-                    
+
                     // Sort by value descending
                     statLeaders.sort((a, b) -> Double.compare(b.value().doubleValue(), a.value().doubleValue()));
-                    
+
                     // Keep only top 3
                     while (statLeaders.size() > 3) {
                         statLeaders.remove(statLeaders.size() - 1);
                     }
-                    
+
                     // Check if player is now #1 (for backwards compatibility)
                     if (!statLeaders.isEmpty() && statLeaders.get(0).key().equalsIgnoreCase(player.getName())) {
                         pass = true;

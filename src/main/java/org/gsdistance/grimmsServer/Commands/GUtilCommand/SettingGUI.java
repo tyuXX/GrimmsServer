@@ -22,26 +22,26 @@ public class SettingGUI {
     private static final Map<Player, SettingGUI> openGUIs = new HashMap<>();
     private static final Map<Player, Long> lastClickTime = new HashMap<>();
     private static final long COOLDOWN_MS = 1000;
-    
+
     private final Player player;
     private final PlayerMetadata playerMetadata;
-    private Inventory inventory;
-    
+    private final Inventory inventory;
+
     public SettingGUI(Player player) {
         this.player = player;
         this.playerMetadata = PlayerMetadata.getPlayerMetadata(player);
         this.inventory = Bukkit.createInventory(null, GUI_SIZE, GUI_TITLE);
         openGUIs.put(player, this);
     }
-    
+
     public void open() {
         renderGUI();
         player.openInventory(inventory);
     }
-    
+
     private void renderGUI() {
         inventory.clear();
-        
+
         // Render all available settings
         int slot = 0;
         for (PlayerCapability capability : PlayerCapability.values()) {
@@ -49,7 +49,7 @@ public class SettingGUI {
             inventory.setItem(slot, settingItem);
             slot++;
         }
-        
+
         // Add close button at the end
         ItemStack closeItem = new ItemStack(Material.BARRIER);
         ItemMeta closeMeta = closeItem.getItemMeta();
@@ -62,7 +62,7 @@ public class SettingGUI {
         }
         inventory.setItem(26, closeItem);
     }
-    
+
     private ItemStack createSettingItem(PlayerCapability capability) {
         Material material;
         switch (capability) {
@@ -81,15 +81,15 @@ public class SettingGUI {
             default:
                 material = Material.PAPER;
         }
-        
+
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
-        
+
         if (meta != null) {
             boolean isEnabled = playerMetadata.settings.contains(capability.capabilityId);
-            
+
             meta.setDisplayName(ChatColor.WHITE + capability.displayName);
-            
+
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.GRAY + capability.description);
             lore.add("");
@@ -102,13 +102,13 @@ public class SettingGUI {
             lore.add("");
             lore.add(ChatColor.YELLOW + "Click to toggle");
             meta.setLore(lore);
-            
+
             item.setItemMeta(meta);
         }
-        
+
         return item;
     }
-    
+
     public void handleClick(int slot) {
         // Check cooldown
         long currentTime = System.currentTimeMillis();
@@ -117,7 +117,7 @@ public class SettingGUI {
             return;
         }
         lastClickTime.put(player, currentTime);
-        
+
         // Check if it's a setting slot
         if (slot < PlayerCapability.values().length) {
             PlayerCapability[] capabilities = PlayerCapability.values();
@@ -127,17 +127,16 @@ public class SettingGUI {
             }
             return;
         }
-        
+
         // Close button
         if (slot == 26) {
             player.closeInventory();
-            return;
         }
     }
-    
+
     private void toggleSetting(PlayerCapability capability) {
         String settingName = capability.capabilityId;
-        
+
         if (playerMetadata.settings.contains(settingName)) {
             playerMetadata.settings.remove(settingName);
             player.sendMessage(ChatColor.RED + "Disabled: " + capability.displayName);
@@ -145,14 +144,14 @@ public class SettingGUI {
             playerMetadata.settings.add(settingName);
             player.sendMessage(ChatColor.GREEN + "Enabled: " + capability.displayName);
         }
-        
+
         playerMetadata.saveToPDS();
     }
-    
+
     public static SettingGUI getGUI(Player player) {
         return openGUIs.get(player);
     }
-    
+
     public static void closeGUI(Player player) {
         openGUIs.remove(player);
     }

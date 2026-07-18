@@ -76,8 +76,8 @@ public class SetRank {
         faction.removeMember(targetPlayer.getUniqueId());
         faction.addMember(targetPlayer.getUniqueId(), newRank);
         faction.saveToFile();
-        player.sendMessage(ChatColor.GREEN + "You have set " + ChatColor.YELLOW + targetPlayer.getName() + ChatColor.GREEN + "'s rank to " + ChatColor.YELLOW + newRank.toString() + ChatColor.GREEN + ".");
-        targetPlayer.sendMessage(ChatColor.GREEN + "Your rank has been set to " + ChatColor.YELLOW + newRank.toString() + ChatColor.GREEN + ".");
+        player.sendMessage(ChatColor.GREEN + "You have set " + ChatColor.YELLOW + targetPlayer.getName() + ChatColor.GREEN + "'s rank to " + ChatColor.YELLOW + newRank + ChatColor.GREEN + ".");
+        targetPlayer.sendMessage(ChatColor.GREEN + "Your rank has been set to " + ChatColor.YELLOW + newRank + ChatColor.GREEN + ".");
         return true;
     }
 }

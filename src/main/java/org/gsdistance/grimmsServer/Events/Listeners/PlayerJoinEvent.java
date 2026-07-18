@@ -14,7 +14,6 @@ import org.gsdistance.grimmsServer.Stats.ServerStats;
 import org.gsdistance.grimmsServer.Stats.WorldStats;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class PlayerJoinEvent {
     public PlayerJoinEvent() {

@@ -54,11 +54,10 @@ public class GAuthBaseCommand implements CommandExecutor {
                 }
                 return Unregister.subCommand((Player) sender, args[1]);
             case "autologin":
-                if (!(sender instanceof Player)) {
+                if (!(sender instanceof Player player)) {
                     sender.sendMessage(ChatColor.RED + "This command can only be used by players.");
                     return false;
                 }
-                Player player = (Player) sender;
                 if (!isLoggedIn(player)) {
                     player.sendMessage(ChatColor.RED + "Failed to login.");
                     return false;

@@ -46,10 +46,10 @@ public class GLogTabCompleter implements TabCompleter {
                     }
 
                     for (org.bukkit.OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-                        if (offlinePlayer.hasPlayedBefore() && 
-                            offlinePlayer.getName() != null && 
-                            offlinePlayer.getName().toLowerCase().startsWith(partialPlayer) &&
-                            !playerSuggestions.contains(offlinePlayer.getName())) {
+                        if (offlinePlayer.hasPlayedBefore() &&
+                                offlinePlayer.getName() != null &&
+                                offlinePlayer.getName().toLowerCase().startsWith(partialPlayer) &&
+                                !playerSuggestions.contains(offlinePlayer.getName())) {
                             UUID uuid = offlinePlayer.getUniqueId();
                             if (org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata.getOfflinePlayerMetadata(uuid) != null) {
                                 playerSuggestions.add(offlinePlayer.getName());

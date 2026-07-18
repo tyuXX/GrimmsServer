@@ -17,7 +17,7 @@ import java.util.UUID;
 public class GStatsTabCompleter implements TabCompleter {
     private static final List<String> SUBCOMMANDS = Arrays.asList("self_history", "others_history", "commands");
     private static final List<String> TIME_RANGES = Arrays.asList("hour", "day", "week", "month", "all");
-    private static final List<String> GRAPH_OPTIONS = Arrays.asList("largegraph");
+    private static final List<String> GRAPH_OPTIONS = List.of("largegraph");
 
     public GStatsTabCompleter() {
     }
@@ -49,9 +49,9 @@ public class GStatsTabCompleter implements TabCompleter {
 
                 for (org.bukkit.OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
                     if (offlinePlayer.hasPlayedBefore() &&
-                        offlinePlayer.getName() != null &&
-                        offlinePlayer.getName().toLowerCase().startsWith(partialPlayer) &&
-                        !playerSuggestions.contains(offlinePlayer.getName())) {
+                            offlinePlayer.getName() != null &&
+                            offlinePlayer.getName().toLowerCase().startsWith(partialPlayer) &&
+                            !playerSuggestions.contains(offlinePlayer.getName())) {
                         UUID uuid = offlinePlayer.getUniqueId();
                         if (org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata.getOfflinePlayerMetadata(uuid) != null) {
                             playerSuggestions.add(offlinePlayer.getName());

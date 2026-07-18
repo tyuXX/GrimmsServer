@@ -45,6 +45,48 @@ public class GUtilBaseCommand implements CommandExecutor {
                     }
                     return false;
                 }
+                case "fly" -> {
+                    if (sender instanceof Player player) {
+                        return Fly.subCommand(player, args);
+                    }
+                    return false;
+                }
+                case "god" -> {
+                    if (sender instanceof Player player) {
+                        return God.subCommand(player, args);
+                    }
+                    return false;
+                }
+                case "heal" -> {
+                    if (sender instanceof Player player) {
+                        return Heal.subCommand(player, args);
+                    }
+                    return false;
+                }
+                case "spawn" -> {
+                    if (sender instanceof Player player) {
+                        return Spawn.subCommand(player, args);
+                    }
+                    return false;
+                }
+                case "speed" -> {
+                    if (sender instanceof Player player) {
+                        return Speed.subCommand(player, args);
+                    }
+                    return false;
+                }
+                case "enderchest" -> {
+                    if (sender instanceof Player player) {
+                        return Enderchest.subCommand(player, args);
+                    }
+                    return false;
+                }
+                case "invsee" -> {
+                    if (sender instanceof Player player) {
+                        return Invsee.subCommand(player, args);
+                    }
+                    return false;
+                }
                 default -> {
                     return false;
                 }

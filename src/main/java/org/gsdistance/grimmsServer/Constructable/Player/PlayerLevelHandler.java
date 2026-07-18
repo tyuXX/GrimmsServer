@@ -50,7 +50,7 @@ public class PlayerLevelHandler {
         for (tMoney = 0.0F; exp > this.getXpToLevel(); ++lvlups) {
             exp -= this.getXpToLevel();
             this.playerStats.changeStat("level", 1);
-            tMoney += Math.pow(this.getLevel(), 1.8) * (double) 100.0F * Math.pow(playerStats.getStat("prestige", Integer.class) + 1,2);
+            tMoney += Math.pow(this.getLevel(), 1.8) * (double) 100.0F * Math.pow(playerStats.getStat("prestige", Integer.class) + 1, 2);
         }
 
         this.setXp(exp);
@@ -59,7 +59,7 @@ public class PlayerLevelHandler {
             this.playerStats.setStat("money", this.playerStats.getStat("money", Double.class) + tMoney);
             double prestige = Math.max(1, this.playerStats.getStat("prestige", Integer.class));
             double level = this.playerStats.getStat("level", Integer.class);
-            this.playerStats.setStat("maximum_balance", Math.floor(Math.pow(level, 1.5) * Math.pow(prestige, 2) * 10000 * Math.log(level) / Math.log(7)) );
+            this.playerStats.setStat("maximum_balance", Math.floor(Math.pow(level, 1.5) * Math.pow(prestige, 2) * 10000 * Math.log(level) / Math.log(7)));
             EventRegistry.callEvent(new PlayerLevelUpRegister(this.player, lvlups, tMoney));
         }
     }

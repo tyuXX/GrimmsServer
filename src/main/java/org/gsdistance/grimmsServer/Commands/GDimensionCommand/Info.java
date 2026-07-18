@@ -1,14 +1,14 @@
 package org.gsdistance.grimmsServer.Commands.GDimensionCommand;
 
 import org.bukkit.World;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 public class Info {
     public Info() {
     }
 
-    public static boolean subCommand(Player player, String[] args) {
+    public static boolean subCommand(CommandSender player, String[] args) {
         if (args.length < 2) {
             player.sendMessage("Usage: /gdim info <worldName>");
             return false;

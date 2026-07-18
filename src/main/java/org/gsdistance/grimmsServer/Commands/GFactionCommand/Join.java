@@ -47,27 +47,27 @@ public class Join {
                     } else {
                         Player targetPlayer = Bukkit.getPlayer(leaderUUID);
                         if (targetPlayer != null && targetPlayer.isOnline()) {
-                                Request.newRequest((object) -> {
-                                    Data<Player, UUID> data = (Data) object;
-                                    Player target = data.key();
-                                    PlayerMetadata targetMetadata = PlayerMetadata.getPlayerMetadata(target);
-                                    Faction faction = Faction.getFaction(data.value());
-                                    if (faction == null) {
-                                        target.sendMessage(ChatColor.RED + "The faction no longer exists.");
-                                        return null;
-                                    }
-                                    target.sendMessage(ChatColor.GREEN + "You have successfully joined the faction " + ChatColor.YELLOW + faction.name + ChatColor.GREEN + ".");
-                                    targetMetadata.factionUUID = faction.uuid;
-                                    faction.addMember(player.getUniqueId(), FactionRank.RECRUIT);
-                                    faction.saveToFile();
-                                    targetMetadata.saveToPDS();
+                            Request.newRequest((object) -> {
+                                Data<Player, UUID> data = (Data) object;
+                                Player target = data.key();
+                                PlayerMetadata targetMetadata = PlayerMetadata.getPlayerMetadata(target);
+                                Faction faction = Faction.getFaction(data.value());
+                                if (faction == null) {
+                                    target.sendMessage(ChatColor.RED + "The faction no longer exists.");
                                     return null;
-                                }, targetPlayer, player.getName() + " wants to join your faction.", Data.of(player, targetFaction.uuid));
-                                return true;
-                            } else {
-                                player.sendMessage(ChatColor.RED + "No leader is online to accept your request.");
-                                return true;
-                            }
+                                }
+                                target.sendMessage(ChatColor.GREEN + "You have successfully joined the faction " + ChatColor.YELLOW + faction.name + ChatColor.GREEN + ".");
+                                targetMetadata.factionUUID = faction.uuid;
+                                faction.addMember(player.getUniqueId(), FactionRank.RECRUIT);
+                                faction.saveToFile();
+                                targetMetadata.saveToPDS();
+                                return null;
+                            }, targetPlayer, player.getName() + " wants to join your faction.", Data.of(player, targetFaction.uuid));
+                            return true;
+                        } else {
+                            player.sendMessage(ChatColor.RED + "No leader is online to accept your request.");
+                            return true;
+                        }
                     }
                 }
             }

@@ -19,23 +19,23 @@ public class Ripoff {
             sender.sendMessage(ChatColor.RED + "This command can only be run by a player.");
             return false;
         }
-        
+
         if (args.length < 3) {
             sender.sendMessage(ChatColor.RED + "Usage: /market ripoff <item> <amount>");
             return false;
         }
-        
+
         Material material = Material.matchMaterial(args[1]);
         if (material == null) {
             sender.sendMessage(ChatColor.RED + "Invalid item: '" + args[1] + "'. Use /market stock to see available items.");
             return false;
         }
-        
+
         if (!MarketBaseValues.marketBaseValues.containsKey(material)) {
             sender.sendMessage(ChatColor.RED + "Item '" + args[1] + "' is not available for ripoff purchase.");
             return false;
         }
-        
+
         int amount;
         try {
             amount = Integer.parseInt(args[2]);

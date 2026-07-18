@@ -10,7 +10,6 @@ import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerLevelHandler;
 import org.gsdistance.grimmsServer.Data.Player.PlayerInventoryData;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
-import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Manage.CustomEntityManager;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
@@ -51,22 +50,22 @@ public class EntityDeathEvent {
 
         if (event.getEntity().getType() == EntityType.PLAYER) {
             PlayerStats.getPlayerStats((Player) event.getEntity()).changeStat("death_count", 1);
-            
+
             // Save inventory if keepInventory is off
             Player player = (Player) event.getEntity();
             if (!player.getWorld().getGameRuleValue(GameRule.KEEP_INVENTORY)) {
                 PlayerInventoryData inventoryData = PlayerInventoryData.getPlayerInventoryData(player.getUniqueId());
-                
+
                 // Save current inventory as a snapshot to previous inventories
                 if (inventoryData.inventoryContents != null && !inventoryData.inventoryContents.isEmpty()) {
                     PlayerInventoryData.InventorySnapshot snapshot = new PlayerInventoryData.InventorySnapshot(
-                        inventoryData.inventoryContents,
-                        inventoryData.armorContents,
-                        inventoryData.extraContents
+                            inventoryData.inventoryContents,
+                            inventoryData.armorContents,
+                            inventoryData.extraContents
                     );
                     inventoryData.addPreviousInventory(snapshot);
                 }
-                
+
                 // Save current inventory
                 Map<Integer, ItemStack> currentInventory = new HashMap<>();
                 for (int i = 0; i < player.getInventory().getSize(); i++) {
@@ -75,12 +74,12 @@ public class EntityDeathEvent {
                         currentInventory.put(i, item);
                     }
                 }
-                
+
                 inventoryData.inventoryContents = currentInventory;
                 inventoryData.armorContents = player.getInventory().getArmorContents();
                 inventoryData.extraContents = player.getInventory().getExtraContents();
                 inventoryData.saveToPDS();
-                
+
                 // Clear inventory if config allows
                 boolean clearInventory = ActiveConfig.getConfigValue(ConfigKey.CLEAR_INVENTORY_ON_DEATH, Boolean.class);
                 if (clearInventory) {

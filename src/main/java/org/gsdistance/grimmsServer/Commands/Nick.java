@@ -18,42 +18,40 @@ public class Nick implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "This command can only be run by a player.");
             return false;
         }
-        
+
         if (args.length == 0) {
             player.sendMessage(ChatColor.RED + "Usage: /nick <nickname> OR /nick <player> <nickname>");
             return true;
         }
-        
+
         if (args.length == 1) {
             if (!player.hasPermission("grimmsserver.nick")) {
                 player.sendMessage(ChatColor.RED + "You don't have permission to change your nickname.");
                 return true;
             }
-            
+
             String newNick = ChatColor.translateAlternateColorCodes('&', args[0]);
             if (newNick.isEmpty()) {
                 player.sendMessage(ChatColor.RED + "Nickname cannot be empty.");
                 return true;
             }
-            
+
             PlayerMetadata meta = PlayerMetadata.getPlayerMetadata(player);
             meta.nickname = newNick;
             meta.saveToPDS();
             player.sendMessage(ChatColor.GREEN + "Your nickname has been set to " + ChatColor.YELLOW + newNick);
-        }
-        
-        else {
+        } else {
             if (!player.hasPermission("grimmsserver.nick.others")) {
                 player.sendMessage(ChatColor.RED + "You don't have permission to set others' nicknames.");
                 return true;
             }
-            
+
             Player target = Bukkit.getPlayer(args[0]);
             if (target == null) {
                 player.sendMessage(ChatColor.RED + "Player '" + args[0] + "' not found or not online.");
                 return true;
             }
-            
+
             StringBuilder sb = new StringBuilder();
             for (int i = 1; i < args.length; ++i) {
                 sb.append(args[i]);
@@ -67,7 +65,7 @@ public class Nick implements CommandExecutor {
                 player.sendMessage(ChatColor.RED + "Nickname cannot be empty.");
                 return true;
             }
-            
+
             PlayerMetadata meta = PlayerMetadata.getPlayerMetadata(target);
             meta.nickname = newNick;
             meta.saveToPDS();

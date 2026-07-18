@@ -15,11 +15,11 @@ public class EntityDamageEvent {
 
     private static String generateHealthBar(double currentHealth, double maxHealth) {
         if (maxHealth <= 0) return "";
-        
+
         int bars = 10;
         double healthPercent = currentHealth / maxHealth;
         int filledBars = (int) Math.round(healthPercent * bars);
-        
+
         ChatColor barColor;
         if (healthPercent > 0.6) {
             barColor = ChatColor.GREEN;
@@ -28,7 +28,7 @@ public class EntityDamageEvent {
         } else {
             barColor = ChatColor.RED;
         }
-        
+
         StringBuilder healthBar = new StringBuilder(barColor.toString());
         healthBar.append("[");
         for (int i = 0; i < bars; i++) {
@@ -39,7 +39,7 @@ public class EntityDamageEvent {
             }
         }
         healthBar.append("]");
-        
+
         return healthBar.toString();
     }
 
@@ -59,7 +59,7 @@ public class EntityDamageEvent {
         if (var2 instanceof LivingEntity livingEntity && var2.hasMetadata("customEntityLevel")) {
             int level = var2.getMetadata("customEntityLevel").get(0).asInt();
             EntityMetadata metadata = EntityMetadata.getEntityMetadata(livingEntity);
-            
+
             ChatColor levelColor;
             if (level < 10) {
                 levelColor = ChatColor.GREEN;

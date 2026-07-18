@@ -19,7 +19,7 @@ public class SellAll {
             sender.sendMessage(ChatColor.RED + "This command can only be run by a player.");
             return false;
         }
-        
+
         Market market = Market.getMarket();
         Material iS = ((Player) sender).getInventory().getItemInMainHand().getType();
         if (iS == Material.AIR) {

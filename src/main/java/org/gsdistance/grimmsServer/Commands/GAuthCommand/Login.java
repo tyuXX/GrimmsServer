@@ -18,7 +18,7 @@ public class Login {
             return true;
         } else {
             String playerKey = player.getUniqueId() + "-login";
-            
+
             Long cooldownEnd = PerSessionDataStorage.getData(playerKey + "-cooldown", Long.class);
             if (cooldownEnd != null && System.currentTimeMillis() < cooldownEnd) {
                 long remainingSeconds = (cooldownEnd - System.currentTimeMillis()) / 1000;
@@ -43,13 +43,13 @@ public class Login {
                 if (failedAttempts >= 3) {
                     Integer cooldownMultiplier = PerSessionDataStorage.getData(playerKey + "-multiplier", Integer.class);
                     if (cooldownMultiplier == null) cooldownMultiplier = 1;
-                    
+
                     long cooldownMillis = 60000L * cooldownMultiplier;
                     cooldownEnd = System.currentTimeMillis() + cooldownMillis;
                     PerSessionDataStorage.softSave(cooldownEnd, Long.class, playerKey + "-cooldown");
                     PerSessionDataStorage.softSave(cooldownMultiplier * 2, Integer.class, playerKey + "-multiplier");
                     PerSessionDataStorage.softSave(0, Integer.class, playerKey + "-attempts");
-                    
+
                     player.kickPlayer(ChatColor.RED + "Too many failed login attempts. Wait " + (cooldownMillis / 60000) + " minute(s) before rejoining.");
                     return false;
                 }

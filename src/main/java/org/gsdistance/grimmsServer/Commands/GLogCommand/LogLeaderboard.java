@@ -16,7 +16,7 @@ public class LogLeaderboard {
     public static boolean subCommand(Player player) {
         PlayerStatLeaderBoard leaderBoard = PlayerStatLeaderBoard.getPlayerStatLeaderBoard();
         leaderBoard.checkPlayer(player);
-        
+
         player.sendMessage(ChatColor.GOLD + "=" + ChatColor.YELLOW + "=".repeat(40) + ChatColor.GOLD + "=");
         player.sendMessage(ChatColor.GOLD + "=" + ChatColor.YELLOW + "=".repeat(15) + ChatColor.BOLD + " LEADERBOARD " + ChatColor.YELLOW + "=".repeat(16) + ChatColor.GOLD + "=");
         player.sendMessage(ChatColor.GOLD + "=" + ChatColor.YELLOW + "=".repeat(40) + ChatColor.GOLD + "=");
@@ -25,9 +25,9 @@ public class LogLeaderboard {
         for (String stat : leaderBoard.leaderboard.keySet()) {
             String statName = PlayerStats.StatNames.get(stat);
             List<Data<String, Number>> statLeaders = leaderBoard.leaderboard.get(stat);
-            
+
             player.sendMessage(ChatColor.GREEN + "[" + statName + "]");
-            
+
             if (statLeaders.isEmpty()) {
                 player.sendMessage(ChatColor.GRAY + "  No data yet");
             } else {
@@ -35,7 +35,7 @@ public class LogLeaderboard {
                     Data<String, Number> entry = statLeaders.get(i);
                     String rankColor;
                     String rankSymbol;
-                    
+
                     switch (i) {
                         case 0:
                             rankColor = ChatColor.GOLD.toString();
@@ -53,14 +53,14 @@ public class LogLeaderboard {
                             rankColor = ChatColor.WHITE.toString();
                             rankSymbol = "  ";
                     }
-                    
+
                     String formattedValue;
                     if (stat.equals("money") || stat.equals("tPoint") || stat.equals("block_break_count") || stat.equals("prestigePoints") || stat.equals("sent_messages")) {
                         formattedValue = Shared.formatNumber(entry.value().doubleValue());
                     } else {
                         formattedValue = entry.value().toString();
                     }
-                    
+
                     player.sendMessage(rankColor + rankSymbol + " " + ChatColor.YELLOW + entry.key() + ChatColor.GRAY + " - " + ChatColor.AQUA + formattedValue);
                 }
             }

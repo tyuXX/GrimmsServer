@@ -3,7 +3,6 @@ package org.gsdistance.grimmsServer.Commands.GLevelCommand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerLevelHandler;
-import org.gsdistance.grimmsServer.Manage.GeneralChatHandler;
 import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
@@ -23,7 +22,7 @@ public class Prestige {
 
         int newPrestige = currentPrestige + 1;
         long currentPrestigePoints = playerStats.getStat("prestigePoints", Long.class);
-        
+
         playerStats.setStat("prestige", newPrestige);
         playerStats.setStat("prestigePoints", currentPrestigePoints + newPrestige);
         playerStats.setStat("level", 0);

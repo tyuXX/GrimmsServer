@@ -1,8 +1,8 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
 import org.bukkit.inventory.InventoryHolder;
-import org.gsdistance.grimmsServer.Data.Player.AfkManager;
 import org.gsdistance.grimmsServer.Commands.GLevelCommand.PrestigeShop;
+import org.gsdistance.grimmsServer.Data.Player.AfkManager;
 import org.gsdistance.grimmsServer.Shared;
 
 public class InventoryClickEvent {
@@ -18,7 +18,7 @@ public class InventoryClickEvent {
             if (!Shared.checkContainerAuth(player, holder, "modify")) {
                 event.setCancelled(true);
             }
-            
+
             // Handle PrestigeShop GUI
             if (event.getView().getTitle().equals(PrestigeShop.GUI_TITLE)) {
                 event.setCancelled(true);
@@ -26,7 +26,6 @@ public class InventoryClickEvent {
                 if (shop != null) {
                     shop.handleClick(event.getSlot());
                 }
-                return;
             }
         }
     }

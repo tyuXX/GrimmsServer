@@ -6,24 +6,20 @@ import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class AfkManager {
     private static final Map<UUID, Long> lastActivityTimes = new HashMap<>();
     private static final Set<UUID> afkPlayers = new HashSet<>();
     private static final Map<UUID, Long> afkSinceTimes = new HashMap<>();
-    
+
     public AfkManager() {
     }
 
     public static void recordActivity(Player player) {
         UUID playerId = player.getUniqueId();
         long currentTime = System.currentTimeMillis();
-        
+
         // If player was AFK, announce they're back
         if (afkPlayers.contains(playerId)) {
             long afkDuration = currentTime - afkSinceTimes.get(playerId);
@@ -31,28 +27,28 @@ public class AfkManager {
             afkPlayers.remove(playerId);
             afkSinceTimes.remove(playerId);
         }
-        
+
         lastActivityTimes.put(playerId, currentTime);
     }
 
     public static void checkAfkStatus(Player player) {
         UUID playerId = player.getUniqueId();
-        
+
         // Skip if player not tracked
         if (!lastActivityTimes.containsKey(playerId)) {
             lastActivityTimes.put(playerId, System.currentTimeMillis());
             return;
         }
-        
+
         // Skip if already AFK
         if (afkPlayers.contains(playerId)) {
             return;
         }
-        
+
         long currentTime = System.currentTimeMillis();
         long lastActivity = lastActivityTimes.get(playerId);
         long afkTimeout = getAfkTimeout();
-        
+
         if ((currentTime - lastActivity) >= afkTimeout) {
             setPlayerAfk(player, currentTime);
         }
@@ -119,7 +115,7 @@ public class AfkManager {
         long seconds = milliseconds / 1000;
         long minutes = seconds / 60;
         long hours = minutes / 60;
-        
+
         if (hours > 0) {
             return hours + "h " + (minutes % 60) + "m";
         } else if (minutes > 0) {

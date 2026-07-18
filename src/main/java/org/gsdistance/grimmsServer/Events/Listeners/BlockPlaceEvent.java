@@ -1,10 +1,10 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
 import org.bukkit.ChatColor;
-import org.gsdistance.grimmsServer.Data.Player.AfkManager;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.World.ChunkMetadata;
+import org.gsdistance.grimmsServer.Data.Player.AfkManager;
 
 public class BlockPlaceEvent {
     public BlockPlaceEvent() {

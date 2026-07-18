@@ -28,12 +28,12 @@ public class WithdrawMoney implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "This command can only be run by a player.");
             return false;
         }
-        
+
         if (args.length == 0) {
             sender.sendMessage(ChatColor.RED + "Usage: /withdrawMoney <amount> [banknoteCount]");
             return false;
         }
-        
+
         double amount;
         try {
             amount = Double.parseDouble(args[0]);
@@ -41,23 +41,23 @@ public class WithdrawMoney implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "Invalid amount: '" + args[0] + "'. Must be a number.");
             return false;
         }
-        
+
         if (amount < MIN_BANKNOTE_VALUE) {
             sender.sendMessage(ChatColor.RED + "Smallest banknote is " + ChatColor.GOLD + MIN_BANKNOTE_VALUE + ChatColor.RED + " money.");
             return false;
         }
-        
+
         PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
         double currentBalance = playerStats.getStat("money", Double.class);
-        
+
         if (currentBalance < amount) {
             sender.sendMessage(ChatColor.RED + "Not enough money. Current balance: " + ChatColor.GOLD + Shared.formatNumber(currentBalance));
             return false;
         }
-        
+
         int banknoteCount = 1;
         double banknoteValue = amount;
-        
+
         if (args.length > 1) {
             try {
                 banknoteCount = Integer.parseInt(args[1]);
@@ -75,25 +75,25 @@ public class WithdrawMoney implements CommandExecutor {
                 return false;
             }
         }
-        
+
         ItemStack itemStack = new ItemStack(Material.PAPER, banknoteCount);
         ItemDataHandler itemDataHandler = new ItemDataHandler(itemStack, GrimmsServer.instance);
         itemDataHandler.setItemNBTData("banknoteValue", banknoteValue, PersistentDataType.DOUBLE);
         itemDataHandler.setItemLoreData(List.of(
-            ChatColor.GOLD + "Grimmnote - " + Shared.formatNumber(banknoteValue) + " Money",
-            ChatColor.GRAY + "Minted by " + sender.getName(),
-            ChatColor.GRAY + "Minted at " + LocalDateTime.now()
+                ChatColor.GOLD + "Grimmnote - " + Shared.formatNumber(banknoteValue) + " Money",
+                ChatColor.GRAY + "Minted by " + sender.getName(),
+                ChatColor.GRAY + "Minted at " + LocalDateTime.now()
         ));
-        
+
         ((Player) sender).getInventory().addItem(itemStack);
         playerStats.setStat("money", currentBalance - amount);
-        
+
         if (banknoteCount > 1) {
             sender.sendMessage(ChatColor.GREEN + "Withdrew " + ChatColor.GOLD + Shared.formatNumber(amount) + ChatColor.GREEN + " into " + ChatColor.YELLOW + banknoteCount + ChatColor.GREEN + " banknotes of " + ChatColor.GOLD + Shared.formatNumber(banknoteValue) + ChatColor.GREEN + " each.");
         } else {
             sender.sendMessage(ChatColor.GREEN + "Withdrew " + ChatColor.GOLD + Shared.formatNumber(amount) + ChatColor.GREEN + " into a banknote.");
         }
-        
+
         return true;
     }
 }

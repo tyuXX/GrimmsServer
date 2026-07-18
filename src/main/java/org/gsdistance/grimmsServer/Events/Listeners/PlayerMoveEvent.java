@@ -2,10 +2,10 @@ package org.gsdistance.grimmsServer.Events.Listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.boss.KeyedBossBar;
-import org.gsdistance.grimmsServer.Data.Player.AfkManager;
 import org.gsdistance.grimmsServer.Commands.GAuthCommand.GAuthBaseCommand;
 import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.World.ChunkMetadata;
+import org.gsdistance.grimmsServer.Data.Player.AfkManager;
 
 import java.util.Iterator;
 

@@ -23,29 +23,29 @@ public class DepositMoney implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "This command can only be run by a player.");
             return false;
         }
-        
+
         ItemStack itemStack = ((Player) sender).getInventory().getItemInMainHand();
-        
+
         if (itemStack.getType() == Material.AIR) {
             sender.sendMessage(ChatColor.RED + "You are not holding anything to deposit.");
             return false;
         }
-        
+
         ItemDataHandler itemDataHandler = new ItemDataHandler(itemStack, GrimmsServer.instance);
         Double banknoteValue = itemDataHandler.getItemNBTData("banknoteValue", PersistentDataType.DOUBLE);
-        
+
         if (banknoteValue == null) {
             sender.sendMessage(ChatColor.RED + "This item is not a valid banknote.");
             return false;
         }
-        
+
         PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
         double totalValue = banknoteValue * itemStack.getAmount();
         double currentBalance = playerStats.getStat("money", Double.class);
-        
+
         playerStats.setStat("money", currentBalance + totalValue);
         ((Player) sender).getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-        
+
         sender.sendMessage(ChatColor.GREEN + "Deposited " + ChatColor.GOLD + Shared.formatNumber(totalValue) + ChatColor.GREEN + ". New balance: " + ChatColor.GOLD + Shared.formatNumber(currentBalance + totalValue));
         return true;
     }

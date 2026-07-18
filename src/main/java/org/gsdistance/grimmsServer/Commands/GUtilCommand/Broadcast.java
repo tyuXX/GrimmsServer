@@ -30,13 +30,13 @@ public class Broadcast {
 
         String message = messageBuilder.toString();
         String prefix = sender instanceof Player player ? ChatColor.GOLD + "[" + ChatColor.YELLOW + player.getName() + ChatColor.GOLD + "] " : ChatColor.GOLD + "[CONSOLE] ";
-        
+
         Shared.Broadcast(message, prefix);
-        
+
         if (sender instanceof Player) {
             sender.sendMessage(ChatColor.GREEN + "Broadcast sent successfully!");
         }
-        
+
         return true;
     }
 }

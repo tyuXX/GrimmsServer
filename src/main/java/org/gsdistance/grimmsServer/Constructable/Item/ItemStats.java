@@ -26,12 +26,12 @@ public class ItemStats {
 
     public List<String> getItemStats() {
         List<String> toolStats = new ArrayList<>();
-        
+
         if (ItemLevelHandler.isItemLevelable(this.item)) {
             ItemLevelHandler levelHandler = ItemLevelHandler.getLevelHandler(this.item, null);
             toolStats.add(ChatColor.GOLD + "Level: " + ChatColor.YELLOW + Shared.formatNumber(levelHandler.getLevel()));
-            toolStats.add(ChatColor.GREEN + "XP: " + ChatColor.AQUA + Shared.formatNumber(Math.floor(levelHandler.getXp())) + 
-                         ChatColor.GRAY + "/" + ChatColor.AQUA + Shared.formatNumber(Math.ceil(levelHandler.getXpToLevel())));
+            toolStats.add(ChatColor.GREEN + "XP: " + ChatColor.AQUA + Shared.formatNumber(Math.floor(levelHandler.getXp())) +
+                    ChatColor.GRAY + "/" + ChatColor.AQUA + Shared.formatNumber(Math.ceil(levelHandler.getXpToLevel())));
         }
 
         if (RelicHandler.isRelic(this.item)) {

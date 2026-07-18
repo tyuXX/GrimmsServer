@@ -45,7 +45,7 @@ public class Market {
             }
 
             this.items.put(itemStack.getType().getKey().getKey(), initialAmount + (long) itemStack.getAmount());
-            for (Enchantment enchantment : itemStack.getEnchantments().keySet()){
+            for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
                 this.enchantments.putIfAbsent(enchantment.getName(), 0L);
                 this.enchantments.compute(enchantment.getName(), (k, initialEnchantmentAmount) -> initialEnchantmentAmount + (long) itemStack.getAmount());
             }
@@ -65,7 +65,7 @@ public class Market {
         }
 
         this.items.put(itemStack.getType().getKey().getKey(), this.items.get(itemStack.getType().getKey().getKey()) + (long) itemStack.getAmount());
-        for (Enchantment enchantment : itemStack.getEnchantments().keySet()){
+        for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
             this.enchantments.putIfAbsent(enchantment.getName(), 0L);
             this.enchantments.compute(enchantment.getName(), (k, initialEnchantmentAmount) -> initialEnchantmentAmount + (long) itemStack.getAmount());
         }
@@ -87,7 +87,7 @@ public class Market {
                     sold += this.getISPriceWithAmount(item, itemStack.getEnchantments(), initialAmount + amount);
                     amount++;
                 }
-                for (Enchantment enchantment : itemStack.getEnchantments().keySet()){
+                for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
                     this.enchantments.putIfAbsent(enchantment.getName(), 0L);
                     this.enchantments.compute(enchantment.getName(), (k, initialEnchantmentAmount) -> initialEnchantmentAmount + (long) itemStack.getAmount());
                 }
@@ -107,17 +107,17 @@ public class Market {
             return 0.0;
         } else {
             long initialAmount = this.items.get(item.getKey().getKey());
-            
+
             // Calculate total buy cost (prices at current market state, then decreasing amounts)
             double totalBuyCost = 0.0;
             for (int i = 0; i < amount; ++i) {
                 totalBuyCost += this.getPriceWithAmount(item, initialAmount - i);
             }
-            
+
             // Add a 50% tax to ensure buy cost is always significantly higher than any potential sell revenue
             double tax = totalBuyCost * 0.5;
             double totalCostWithTax = totalBuyCost + tax;
-            
+
             Double money = PlayerStats.getPlayerStats(player).getStat("money", Double.class);
             if (!(money >= totalCostWithTax)) {
                 return 0.0F;
@@ -126,7 +126,7 @@ public class Market {
             PlayerStats.getPlayerStats(player).setStat("money", money - totalCostWithTax);
             this.items.put(item.getKey().getKey(), initialAmount - amount);
             player.getInventory().addItem(new ItemStack(item, amount));
-            
+
             return totalCostWithTax;
         }
     }
@@ -147,14 +147,14 @@ public class Market {
             }
         }
 
-        for (String string : this.enchantments.keySet()){
+        for (String string : this.enchantments.keySet()) {
             Enchantment enchantment = Enchantment.getByName(string);
-            if(enchantment != null){
+            if (enchantment != null) {
                 long amount = this.enchantments.get(string);
                 Double price = EnchantBaseValues.enchantBaseValues.get(enchantment) / 10;
-                if(price != null){
+                if (price != null) {
                     totalValue += (double) amount * price;
-                }else{
+                } else {
                     totalValue += (double) amount * 0.25;
                 }
             }
@@ -188,9 +188,9 @@ public class Market {
 
         for (Enchantment e : enchantments.keySet()) {
             Long enchantmentAmount = this.enchantments.get(e.getName());
-            double enchantValue = EnchantBaseValues.enchantBaseValues.get(e) - (Math.sqrt((enchantmentAmount != null ? enchantmentAmount : 0L) * 300) * 10) + this.NegMarketSaturation*10;
+            double enchantValue = EnchantBaseValues.enchantBaseValues.get(e) - (Math.sqrt((enchantmentAmount != null ? enchantmentAmount : 0L) * 300) * 10) + this.NegMarketSaturation * 10;
             double minValue = Math.sqrt(EnchantBaseValues.enchantBaseValues.get(e)) * Math.sqrt(NegMarketSaturation);
-            rt += Math.max(enchantValue,minValue) * enchantments.get(e);
+            rt += Math.max(enchantValue, minValue) * enchantments.get(e);
         }
 
         return rt;
@@ -203,8 +203,8 @@ public class Market {
             Long enchantmentAmount = this.enchantments.get(e.getName());
             Double baseEnchantValue = EnchantBaseValues.enchantBaseValues.get(e);
             if (baseEnchantValue != null) {
-                double enchantValue = baseEnchantValue - (Math.sqrt((enchantmentAmount != null ? enchantmentAmount : 0L) * 300) * 10) + this.NegMarketSaturation*10;
-                if(enchantValue < 0){
+                double enchantValue = baseEnchantValue - (Math.sqrt((enchantmentAmount != null ? enchantmentAmount : 0L) * 300) * 10) + this.NegMarketSaturation * 10;
+                if (enchantValue < 0) {
                     enchantValue = this.NegMarketSaturation;
                 }
                 rt += enchantValue * Math.sqrt(enchantments.get(e));

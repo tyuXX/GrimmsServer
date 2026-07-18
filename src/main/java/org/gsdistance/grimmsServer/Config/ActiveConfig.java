@@ -18,12 +18,12 @@ public class ActiveConfig {
 
     public static <T> T getConfigValue(ConfigKey key, Class<T> ignoredType) {
         Object value = configValues.getOrDefault(key, key.getDefaultValue());
-        
+
         // Handle Integer to Long conversion for config values
         if (ignoredType == Long.class && value instanceof Integer) {
             value = ((Integer) value).longValue();
         }
-        
+
         try {
             return (T) value;
         } catch (ClassCastException e) {

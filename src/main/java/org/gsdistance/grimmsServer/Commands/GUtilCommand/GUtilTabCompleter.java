@@ -13,17 +13,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GUtilTabCompleter implements TabCompleter {
-    public static final List<String> defSubCommands = List.of("version", "setting");
-    public static final List<String> adminSubCommands = List.of("relic", "capability", "broadcast", "inventoryrestore");
+    public static final List<String> defSubCommands = List.of("version", "setting", "spawn");
+    public static final List<String> adminSubCommands = List.of("relic", "capability", "broadcast", "inventoryrestore", "fly", "god", "heal", "speed", "enderchest", "invsee");
 
     public GUtilTabCompleter() {
     }
 
     @Nullable
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        List<String> subCommands = new ArrayList();
+        List<String> subCommands = new ArrayList<>();
         if (sender instanceof Player player) {
             if (sender.hasPermission("grimmsserver.gutil.admin")) {
                 subCommands.addAll(adminSubCommands);
@@ -43,11 +44,21 @@ public class GUtilTabCompleter implements TabCompleter {
                     case "setting" -> {
                         return PlayerMetadata.getPlayerMetadata(player).settings.stream().toList();
                     }
-                    case "inventoryrestore" -> {
+                    case "inventoryrestore", "heal", "spawn", "enderchest", "invsee" -> {
                         return Bukkit.getOnlinePlayers().stream()
-                            .map(Player::getName)
-                            .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
-                            .collect(Collectors.toList());
+                                .map(Player::getName)
+                                .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
+                                .collect(Collectors.toList());
+                    }
+                    case "fly", "god" -> {
+                        return Stream.of("on", "off", "true", "false")
+                                .filter(option -> option.startsWith(args[1].toLowerCase()))
+                                .toList();
+                    }
+                    case "speed" -> {
+                        return Stream.of("walk", "fly")
+                                .filter(type -> type.startsWith(args[1].toLowerCase()))
+                                .toList();
                     }
                     default -> {
                         return List.of();
@@ -55,6 +66,15 @@ public class GUtilTabCompleter implements TabCompleter {
                 }
             } else if (args.length == 3) {
                 switch (args[0].toLowerCase()) {
+                    case "speed" -> {
+                        List<String> speeds = new ArrayList<>();
+                        for (int i = 1; i <= 10; i++) {
+                            speeds.add(String.valueOf(i));
+                        }
+                        return speeds.stream()
+                                .filter(speed -> speed.startsWith(args[2]))
+                                .toList();
+                    }
                     case "inventoryrestore" -> {
                         Player targetPlayer = Bukkit.getPlayer(args[1]);
                         if (targetPlayer != null) {
@@ -64,8 +84,8 @@ public class GUtilTabCompleter implements TabCompleter {
                                 indices.add(String.valueOf(i + 1));
                             }
                             return indices.stream()
-                                .filter(index -> index.startsWith(args[2]))
-                                .collect(Collectors.toList());
+                                    .filter(index -> index.startsWith(args[2]))
+                                    .collect(Collectors.toList());
                         }
                         return List.of();
                     }

@@ -140,7 +140,7 @@ public class SelfHistory {
             int graphWidth = largeGraph ? Math.min(snapshots.size(), 60) : Math.min(snapshots.size(), 25);
 
             messages.add(ChatColor.GRAY + "Min: " + ChatColor.AQUA + formatStatValue(statName, minValue) +
-                        ChatColor.GRAY + " | Max: " + ChatColor.AQUA + formatStatValue(statName, maxValue));
+                    ChatColor.GRAY + " | Max: " + ChatColor.AQUA + formatStatValue(statName, maxValue));
 
             for (int row = graphHeight; row >= 0; row--) {
                 StringBuilder line = new StringBuilder();
@@ -163,7 +163,7 @@ public class SelfHistory {
             }
 
             messages.add(ChatColor.GRAY + "Time: " + formatTimestamp(snapshots.get(0).getTimestamp()) +
-                        " → " + formatTimestamp(snapshots.get(snapshots.size() - 1).getTimestamp()));
+                    " → " + formatTimestamp(snapshots.get(snapshots.size() - 1).getTimestamp()));
         }
 
         messages.add(ChatColor.GOLD + "=====================================");
@@ -204,11 +204,11 @@ public class SelfHistory {
                 String changeSymbol = change > 0 ? "+" : "";
 
                 messages.add(ChatColor.WHITE + displayName + ": " +
-                           ChatColor.AQUA + formatStatValue(stat, firstValue) +
-                           ChatColor.GRAY + " → " +
-                           ChatColor.AQUA + formatStatValue(stat, lastValue) +
-                           changeColor + " (" + changeSymbol + formatStatValue(stat, change) +
-                           ChatColor.GRAY + ", " + changeSymbol + String.format("%.1f", percentChange) + "%)");
+                        ChatColor.AQUA + formatStatValue(stat, firstValue) +
+                        ChatColor.GRAY + " → " +
+                        ChatColor.AQUA + formatStatValue(stat, lastValue) +
+                        changeColor + " (" + changeSymbol + formatStatValue(stat, change) +
+                        ChatColor.GRAY + ", " + changeSymbol + String.format("%.1f", percentChange) + "%)");
             }
         }
 
@@ -228,7 +228,7 @@ public class SelfHistory {
 
     private static String formatStatValue(String statName, Object value) {
         if (value == null) return "N/A";
-        
+
         if (value instanceof Double) {
             return Shared.formatNumber((Double) value);
         } else if (value instanceof Long) {
@@ -236,7 +236,7 @@ public class SelfHistory {
         } else if (value instanceof Integer) {
             return String.valueOf(value);
         }
-        
+
         return value.toString();
     }
 
