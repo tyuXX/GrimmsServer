@@ -1,104 +1,131 @@
 package org.gsdistance.grimmsServer.Data.Player;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.PlayerTitles;
+import org.gsdistance.grimmsServer.Stats.TitleCriteria;
+import org.gsdistance.grimmsServer.Stats.TitleGenerator;
+
+import java.util.List;
 
 public class PlayerTitleChecker {
+    private static final long CHECK_INTERVAL_TICKS = 600; // Check every 30 seconds (20 ticks = 1 second)
+    private static int taskId = -1;
+
     public PlayerTitleChecker() {
     }
 
+    // Start periodic title checking
+    public static void startPeriodicChecking() {
+        if (taskId == -1) {
+            taskId = Bukkit.getScheduler().runTaskTimer(GrimmsServer.instance, () -> {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    checkAllTitles(player);
+                }
+            }, CHECK_INTERVAL_TICKS, CHECK_INTERVAL_TICKS).getTaskId();
+        }
+    }
+
+    // Stop periodic title checking
+    public static void stopPeriodicChecking() {
+        if (taskId != -1) {
+            Bukkit.getScheduler().cancelTask(taskId);
+            taskId = -1;
+        }
+    }
+
+    // Manual title awards (not auto-checked)
+    public static void awardTitle(Player player, String titleId) {
+        PlayerTitles.getPlayerTitles(player).addTitle(titleId);
+    }
+
+    // Event-specific triggers that increment stats only
     public static void killedPlayer(Player player) {
-        PlayerTitles.getPlayerTitles(player).addTitle("Murderer");
+        PlayerStats.getPlayerStats(player).changeStat("total_kill_count", 1);
     }
 
     public static void gotKilledByPlayer(Player player) {
-        PlayerTitles.getPlayerTitles(player).addTitle("Victim");
+        PlayerStats.getPlayerStats(player).changeStat("death_count", 1);
     }
 
     public static void killedDragon(Player player) {
-        PlayerTitles.getPlayerTitles(player).addTitle("DragonSlayer");
+        // Dragon kills not tracked in persistent stats
     }
 
     public static void gotOnLeaderboard(Player player) {
-        PlayerTitles.getPlayerTitles(player).addTitle("Leader");
+        // Leaderboard status not tracked in persistent stats
     }
 
     public static void joinedGame(Player player) {
-        PlayerTitles.getPlayerTitles(player).addTitle("Newbie");
+        checkAllTitles(player);
     }
 
+    private static void checkAllTitles(Player player) {
+        PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
+        PlayerStats playerStats = PlayerStats.getPlayerStats(player);
+        
+        // Check static criteria titles
+        for (TitleCriteria criteria : TitleCriteria.values()) {
+            if (!playerTitles.hasTitle(criteria.getTitleId()) && criteria.test(player)) {
+                playerTitles.addTitle(criteria.getTitleId());
+            }
+        }
+        
+        // Check dynamic money titles (all qualifying titles like achievements)
+        double money = playerStats.getStat("money", Double.class);
+        List<String> moneyTitles = TitleGenerator.getMoneyTitles(money);
+        for (String title : moneyTitles) {
+            if (!playerTitles.hasTitle(title)) {
+                playerTitles.addTitle(title);
+            }
+        }
+        
+        // Check dynamic block break titles (all qualifying titles like achievements)
+        long blockBreaks = playerStats.getStat("block_break_count", Long.class);
+        List<String> blockBreakTitles = TitleGenerator.getBlockBreakTitles(blockBreaks);
+        for (String title : blockBreakTitles) {
+            if (!playerTitles.hasTitle(title)) {
+                playerTitles.addTitle(title);
+            }
+        }
+        
+        // Check dynamic kill titles (all qualifying titles like achievements)
+        long totalKills = getTotalKills(player);
+        List<String> killTitles = TitleGenerator.getKillTitles(totalKills);
+        for (String title : killTitles) {
+            if (!playerTitles.hasTitle(title)) {
+                playerTitles.addTitle(title);
+            }
+        }
+    }
+    
+    private static long getTotalKills(Player player) {
+        Object totalKillsObj = PlayerStats.getPlayerStats(player).getStat("total_kill_count", Object.class);
+        if (totalKillsObj instanceof Integer) {
+            return ((Integer) totalKillsObj).longValue();
+        } else if (totalKillsObj instanceof Long) {
+            return (Long) totalKillsObj;
+        }
+        return 0;
+    }
+
+    // Legacy method for backward compatibility
     public static void checkTitles(Player player) {
-        PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
-        if (playerTitles.getTitles().length > 5) {
-            playerTitles.addTitle("Titlemaxxer");
-        }
-
+        checkAllTitles(player);
     }
 
+    // Legacy methods for backward compatibility
     public static void checkForMoney(Player player) {
-        double money = PlayerStats.getPlayerStats(player).getStat("money", Double.class);
-        PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
-        if (money > (double) 100000.0F) {
-            playerTitles.addTitle("Richie");
-        }
-
-        if (money > (double) 1000000.0F) {
-            playerTitles.addTitle("Millionaire");
-        }
-
-        if (money > (double) 1.0E9F) {
-            playerTitles.addTitle("Billionaire");
-        }
-
-        if (money > 1.0E12) {
-            playerTitles.addTitle("Trillionaire");
-        }
-
-        if (money > 1.0E15) {
-            playerTitles.addTitle("Trillionaire");
-        }
-
+        checkAllTitles(player);
     }
 
     public static void checkForBlockBreaks(Player player) {
-        long blockBreakCount = PlayerStats.getPlayerStats(player).getStat("block_break_count", Long.class);
-        PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
-        if (blockBreakCount > 1000L) {
-            playerTitles.addTitle("Miner");
-        }
-
-        if (blockBreakCount > 10000L) {
-            playerTitles.addTitle("Anti-block");
-        }
-
-        if (blockBreakCount > 100000L) {
-            playerTitles.addTitle("UltimateMiner");
-        }
-
+        checkAllTitles(player);
     }
 
     public static void checkForTotalKills(Player player) {
-        Object totalKillsObj = PlayerStats.getPlayerStats(player).getStat("total_kill_count", Object.class);
-        long totalKills;
-        if (totalKillsObj instanceof Integer) {
-            totalKills = ((Integer) totalKillsObj).longValue();
-        } else {
-            totalKills = (Long) totalKillsObj;
-        }
-
-        PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
-        if (totalKills > 100L) {
-            playerTitles.addTitle("KillingMachine");
-        }
-
-        if (totalKills > 1000L) {
-            playerTitles.addTitle("ProGamer");
-        }
-
-        if (totalKills > 10000L) {
-            playerTitles.addTitle("Hitman");
-        }
-
+        checkAllTitles(player);
     }
 }

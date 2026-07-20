@@ -50,8 +50,6 @@ public class CommandRegistry {
         if (makeItemLevelableCmd != null) makeItemLevelableCmd.setExecutor(new MakeItemLevelable());
         PluginCommand setPlayerStatCmd = GrimmsServer.instance.getCommand("setPlayerStat");
         if (setPlayerStatCmd != null) setPlayerStatCmd.setExecutor(new SetPlayerStat());
-        PluginCommand addTitleCmd = GrimmsServer.instance.getCommand("addTitle");
-        if (addTitleCmd != null) addTitleCmd.setExecutor(new AddTitle());
         PluginCommand executePlayerCmd = GrimmsServer.instance.getCommand("executePlayer");
         if (executePlayerCmd != null) executePlayerCmd.setExecutor(new ExecutePlayer());
         PluginCommand withdrawMoneyCmd = GrimmsServer.instance.getCommand("withdrawMoney");
@@ -63,8 +61,6 @@ public class CommandRegistry {
             acceptRequestCmd.setExecutor(new AcceptRequest());
             acceptRequestCmd.setTabCompleter(new RequestTabCompleter());
         }
-        PluginCommand removeTitleCmd = GrimmsServer.instance.getCommand("removeTitle");
-        if (removeTitleCmd != null) removeTitleCmd.setExecutor(new RemoveTitle());
         PluginCommand homeCmd = GrimmsServer.instance.getCommand("home");
         if (homeCmd != null) {
             homeCmd.setExecutor(new HomeBaseCommand());

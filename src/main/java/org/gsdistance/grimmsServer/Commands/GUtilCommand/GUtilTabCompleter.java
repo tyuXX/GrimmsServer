@@ -7,6 +7,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.Player.PlayerInventoryData;
+import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +18,7 @@ import java.util.stream.Stream;
 
 public class GUtilTabCompleter implements TabCompleter {
     public static final List<String> defSubCommands = List.of("version", "setting", "spawn");
-    public static final List<String> adminSubCommands = List.of("relic", "capability", "broadcast", "inventoryrestore", "fly", "god", "heal", "speed", "enderchest", "invsee");
+    public static final List<String> adminSubCommands = List.of("relic", "capability", "broadcast", "inventoryrestore", "fly", "god", "heal", "speed", "enderchest", "invsee", "addtitle", "removetitle");
 
     public GUtilTabCompleter() {
     }
@@ -44,7 +45,7 @@ public class GUtilTabCompleter implements TabCompleter {
                     case "setting" -> {
                         return PlayerMetadata.getPlayerMetadata(player).settings.stream().toList();
                     }
-                    case "inventoryrestore", "heal", "spawn", "enderchest", "invsee" -> {
+                    case "inventoryrestore", "heal", "spawn", "enderchest", "invsee", "addtitle", "removetitle" -> {
                         return Bukkit.getOnlinePlayers().stream()
                                 .map(Player::getName)
                                 .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
@@ -85,6 +86,22 @@ public class GUtilTabCompleter implements TabCompleter {
                             }
                             return indices.stream()
                                     .filter(index -> index.startsWith(args[2]))
+                                    .collect(Collectors.toList());
+                        }
+                        return List.of();
+                    }
+                    case "addtitle" -> {
+                        // Ensure dynamic titles are populated
+                        PlayerTitles.populateDynamicTitles();
+                        return PlayerTitles.titles.keySet().stream()
+                                .filter(title -> title.toLowerCase().startsWith(args[2].toLowerCase()))
+                                .collect(Collectors.toList());
+                    }
+                    case "removetitle" -> {
+                        Player targetPlayer = Bukkit.getPlayer(args[1]);
+                        if (targetPlayer != null) {
+                            return PlayerTitles.getPlayerTitles(targetPlayer).getTitles().stream()
+                                    .filter(title -> title.toLowerCase().startsWith(args[2].toLowerCase()))
                                     .collect(Collectors.toList());
                         }
                         return List.of();

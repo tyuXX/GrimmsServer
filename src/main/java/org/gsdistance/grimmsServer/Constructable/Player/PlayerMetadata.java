@@ -22,7 +22,7 @@ public class PlayerMetadata {
     public final UUID uuid;
     public Location exitLocation;
     public String lastExitTime = LocalDateTime.now().toString();
-    public String[] titles;
+    public Set<String> titles;
     public final String timestamp;
     public UUID factionUUID = null;
     public double offlineMoney = 0.0F;
@@ -41,7 +41,7 @@ public class PlayerMetadata {
         this.uuid = player.getUniqueId();
         this.exitLocation = new Location(player.getLocation());
         this.homes = new HashMap<>();
-        this.titles = new String[0];
+        this.titles = new HashSet<>();
         this.timestamp = LocalDateTime.now().toString();
         this.capabilities = new HashMap<>();
         this.settings = new ArrayList<>();
@@ -54,7 +54,7 @@ public class PlayerMetadata {
         }
 
         if (this.titles == null) {
-            this.titles = new String[0];
+            this.titles = new HashSet<>();
         }
 
         if (this.capabilities == null) {

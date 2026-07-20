@@ -12,6 +12,8 @@ import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerLevelHandler;
 import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.gsdistance.grimmsServer.GrimmsServer;
+import org.gsdistance.grimmsServer.Shared;
+import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class EntityMetadata {
     public final UUID uuid;
     public final String timestamp;
     public int level = 1;
+    public int prestige = 1;
     public String originalName;
 
     public EntityMetadata(Entity entity) {
@@ -70,7 +73,7 @@ public class EntityMetadata {
                     GrimmsServer.logger.info("Retrieved EntityMetadata for " + entity.getUniqueId());
                 }
                 // Re-apply levelling when metadata is loaded (e.g., after chunk reload)
-                if (entity instanceof LivingEntity && metadata.level > 1) {
+                if (entity instanceof LivingEntity && (metadata.level > 1 || metadata.prestige > 1)) {
                     applyLevelling((LivingEntity) entity, metadata);
                 }
             }
@@ -82,34 +85,18 @@ public class EntityMetadata {
         }
     }
 
-    private static String generateHealthBar(double currentHealth, double maxHealth) {
-        if (maxHealth <= 0) return "";
-
-        int bars = 10;
-        double healthPercent = currentHealth / maxHealth;
-        int filledBars = (int) Math.round(healthPercent * bars);
-
-        ChatColor barColor;
-        if (healthPercent > 0.6) {
-            barColor = ChatColor.GREEN;
-        } else if (healthPercent > 0.3) {
-            barColor = ChatColor.YELLOW;
+    public static ChatColor getLevelColor(int level) {
+        if (level < 10) {
+            return ChatColor.GREEN;
+        } else if (level < 25) {
+            return ChatColor.YELLOW;
+        } else if (level < 50) {
+            return ChatColor.GOLD;
+        } else if (level < 75) {
+            return ChatColor.RED;
         } else {
-            barColor = ChatColor.RED;
+            return ChatColor.DARK_RED;
         }
-
-        StringBuilder healthBar = new StringBuilder(barColor.toString());
-        healthBar.append("[");
-        for (int i = 0; i < bars; i++) {
-            if (i < filledBars) {
-                healthBar.append("|");
-            } else {
-                healthBar.append(ChatColor.GRAY).append("|").append(barColor);
-            }
-        }
-        healthBar.append("]");
-
-        return healthBar.toString();
     }
 
     private static void applyLevelling(LivingEntity livingEntity, EntityMetadata metadata) {
@@ -126,6 +113,7 @@ public class EntityMetadata {
 
         // Calculate level based on nearby players
         int totalLevel = 0;
+        int totalPrestige = 0;
         List<Player> nearbyPlayers = new ArrayList<>();
         Integer searchRadius = ActiveConfig.getConfigValue(ConfigKey.LEVELLED_MOBS_SEARCH_RADIUS, Integer.class);
         if (searchRadius == null) searchRadius = 50;
@@ -136,21 +124,25 @@ public class EntityMetadata {
             }
         }
         for (Player player : nearbyPlayers) {
-            totalLevel += PlayerLevelHandler.getLevelHandler(player).getLevel();
+            PlayerStats playerStats = PlayerStats.getPlayerStats(player);
+            totalLevel += playerStats.getStat("level", Integer.class);
+            totalPrestige += playerStats.getStat("prestige", Integer.class);
         }
 
         double randomness = Math.sqrt(totalLevel);
         double randomOffset = (Math.random() * 2 * randomness) - randomness;
         int finalLevel = (int) Math.max(1, Math.round(totalLevel + randomOffset));
+        totalPrestige = Math.max(totalPrestige, 1);
 
         metadata.level = finalLevel;
+        metadata.prestige = totalPrestige;
 
         // Apply attribute modifiers
         if (livingEntity.getAttribute(Attribute.MAX_HEALTH) != null) {
             double baseHealth = livingEntity.getAttribute(Attribute.MAX_HEALTH).getBaseValue();
             Double healthDivisor = ActiveConfig.getConfigValue(ConfigKey.LEVELLED_MOBS_HEALTH_DIVISOR, Double.class);
             if (healthDivisor == null) healthDivisor = 25.0;
-            double healthBoost = baseHealth * (finalLevel / healthDivisor);
+            double healthBoost = baseHealth * (finalLevel / healthDivisor) * Math.cbrt(totalPrestige);
             livingEntity.getAttribute(Attribute.MAX_HEALTH).setBaseValue(baseHealth + healthBoost);
             livingEntity.setHealth(livingEntity.getAttribute(Attribute.MAX_HEALTH).getValue());
         }
@@ -158,36 +150,26 @@ public class EntityMetadata {
         if (livingEntity.getAttribute(Attribute.ARMOR) != null) {
             Double armorDivisor = ActiveConfig.getConfigValue(ConfigKey.LEVELLED_MOBS_ARMOR_DIVISOR, Double.class);
             if (armorDivisor == null) armorDivisor = 2.0;
-            double armorBoost = Math.sqrt(finalLevel) / armorDivisor;
+            double armorBoost = Math.sqrt(finalLevel) * Math.sqrt(totalPrestige) / armorDivisor;
             livingEntity.getAttribute(Attribute.ARMOR).setBaseValue(armorBoost);
         }
 
         if (livingEntity.getAttribute(Attribute.ATTACK_DAMAGE) != null) {
-            double damageBoost = Math.cbrt(finalLevel);
+            double damageBoost = Math.cbrt(finalLevel) * Math.sqrt(totalPrestige);
             livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).setBaseValue(
                     livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).getBaseValue() + damageBoost
             );
         }
 
         // Set custom name with level and health bar
-        ChatColor levelColor;
-        if (finalLevel < 10) {
-            levelColor = ChatColor.GREEN;
-        } else if (finalLevel < 25) {
-            levelColor = ChatColor.YELLOW;
-        } else if (finalLevel < 50) {
-            levelColor = ChatColor.GOLD;
-        } else if (finalLevel < 75) {
-            levelColor = ChatColor.RED;
-        } else {
-            levelColor = ChatColor.DARK_RED;
-        }
+        ChatColor levelColor = getLevelColor(finalLevel);
 
         double maxHealth = livingEntity.getAttribute(Attribute.MAX_HEALTH).getValue();
-        String healthBar = generateHealthBar(livingEntity.getHealth(), maxHealth);
+        String healthBar = Shared.generateHealthBar(livingEntity.getHealth(), maxHealth);
 
         metadata.originalName = livingEntity.getName();
-        String displayName = levelColor + "[" + finalLevel + "] " + ChatColor.WHITE + metadata.originalName + " " + healthBar;
+        String prestigeDisplay = totalPrestige > 1 ? ChatColor.DARK_PURPLE + "[" + totalPrestige + "]" : "";
+        String displayName = prestigeDisplay + levelColor + "[" + finalLevel + "] " + ChatColor.WHITE + metadata.originalName + " " + healthBar;
         livingEntity.setCustomName(displayName);
         livingEntity.setCustomNameVisible(true);
     }

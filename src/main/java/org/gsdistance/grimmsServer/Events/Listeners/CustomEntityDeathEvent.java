@@ -21,7 +21,7 @@ public class CustomEntityDeathEvent {
         if (event.getKiller() instanceof Player) {
             EntityMetadata metadata = EntityMetadata.getEntityMetadata(event.getEntity());
             if (metadata != null) {
-                double extraXp = Math.sqrt(metadata.level);
+                double extraXp = Math.sqrt(metadata.level) * Math.cbrt(metadata.prestige);
                 PlayerLevelHandler.getLevelHandler((Player) event.getKiller()).addExp(extraXp);
             }
         }

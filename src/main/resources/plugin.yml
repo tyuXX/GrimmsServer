@@ -20,10 +20,6 @@ commands:
     description: Set a specific stat for any player (admin only)
     usage: /setPlayerStat <player> <statId> <value>
     permission: grimmsserver.setPlayerStat
-  addTitle:
-    description: Add a title to a player (admin only)
-    usage: /addTitle <player> <title>
-    permission: grimmsserver.addTitle
   executePlayer:
     description: Execute a player (requires Executioner title)
     usage: /executePlayer <player>
@@ -40,10 +36,6 @@ commands:
     description: Accept a pending request by ID
     usage: /acceptRequest <requestId>
     permission: grimmsserver.acceptRequest
-  removeTitle:
-    description: Remove a title from a player (admin only)
-    usage: /removeTitle <player> <title>
-    permission: grimmsserver.removeTitle
   gFaction:
     description: Manage factions - create, join, leave, claim land, and manage members
     usage: /gFaction <invite|join|leave|kick|info|new|claim|unclaim|setrank|unclaimall> [args]
@@ -73,8 +65,8 @@ commands:
     usage: /gDim <create|delete|tp|list|info> [args]
     permission: grimmsserver.dimensions
   gUtil:
-    description: Utility commands for version info, relics, capabilities, and settings
-    usage: /gUtil <version|relic|capability|setting> [args]
+    description: Utility commands for version info, relics, capabilities, settings, and title management
+    usage: /gUtil <version|relic|capability|setting|addtitle|removetitle> [args]
     permission: grimmsserver.util
   gConfig:
     description: Manage server configuration - dump config or reload settings
@@ -110,9 +102,6 @@ permissions:
   grimmsserver.setPlayerStat:
     description: Allows setting any player's stats directly (admin only)
     default: op
-  grimmsserver.addTitle:
-    description: Allows granting titles to players (admin only)
-    default: op
   grimmsserver.executePlayer:
     description: Allows executing players with the Executioner title
     default: true
@@ -131,9 +120,6 @@ permissions:
   grimmsserver.acceptRequest:
     description: Allows accepting pending requests (faction invites, etc.)
     default: true
-  grimmsserver.removeTitle:
-    description: Allows removing titles from players (admin only)
-    default: op
   grimmsserver.faction:
     description: Allows using faction commands for group gameplay
     default: true

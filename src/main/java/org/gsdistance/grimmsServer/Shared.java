@@ -1,7 +1,7 @@
 package org.gsdistance.grimmsServer;
 
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -187,5 +187,35 @@ public class Shared {
         }
 
         return playerSuggestions;
+    }
+
+    public static String generateHealthBar(double currentHealth, double maxHealth) {
+        if (maxHealth <= 0) return "";
+
+        int bars = 10;
+        double healthPercent = currentHealth / maxHealth;
+        int filledBars = (int) Math.round(healthPercent * bars);
+
+        ChatColor barColor;
+        if (healthPercent > 0.6) {
+            barColor = ChatColor.GREEN;
+        } else if (healthPercent > 0.3) {
+            barColor = ChatColor.YELLOW;
+        } else {
+            barColor = ChatColor.RED;
+        }
+
+        StringBuilder healthBar = new StringBuilder(barColor.toString());
+        healthBar.append("[");
+        for (int i = 0; i < bars; i++) {
+            if (i < filledBars) {
+                healthBar.append("|");
+            } else {
+                healthBar.append(ChatColor.GRAY).append("|").append(barColor);
+            }
+        }
+        healthBar.append("]");
+
+        return healthBar.toString();
     }
 }

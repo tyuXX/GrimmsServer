@@ -7,12 +7,14 @@ import org.gsdistance.grimmsServer.Commands.GUtilCommand.SettingGUIListener;
 import org.gsdistance.grimmsServer.Commands.MarketComand.MarketGUIListener;
 import org.gsdistance.grimmsServer.Config.ConfigLoader;
 import org.gsdistance.grimmsServer.Constructable.Market;
+import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.Data.PlayerLoginLogManager;
 import org.gsdistance.grimmsServer.Data.PluginDataStorage;
 import org.gsdistance.grimmsServer.Events.Listeners.ServerStartupEvent;
 import org.gsdistance.grimmsServer.Manage.EventRegistry;
 import org.gsdistance.grimmsServer.Stats.HistoricalStatsManager;
 import org.gsdistance.grimmsServer.Stats.PlayerStatLeaderBoard;
+import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,10 +52,13 @@ public final class GrimmsServer extends JavaPlugin {
         ServerStartupEvent.Event();
         historicalStatsManager.start();
         PlayerLoginLogManager.initialize();
+        PlayerTitles.populateDynamicTitles();
+        PlayerTitleChecker.startPeriodicChecking();
     }
 
     public void onDisable() {
         historicalStatsManager.stop();
+        PlayerTitleChecker.stopPeriodicChecking();
         super.onDisable();
     }
 

@@ -87,6 +87,12 @@ public class GUtilBaseCommand implements CommandExecutor {
                     }
                     return false;
                 }
+                case "addtitle" -> {
+                    return AddTitle.subCommand(sender, args);
+                }
+                case "removetitle" -> {
+                    return RemoveTitle.subCommand(sender, args);
+                }
                 default -> {
                     return false;
                 }

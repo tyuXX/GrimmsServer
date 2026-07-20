@@ -70,118 +70,38 @@ public class RelicHandler {
         int tier = this.getRelicTier();
         int grade = this.getRelicGrade();
         Material material = this.item.getType();
-        double baseDamage;
-        switch (material) {
-            case DIAMOND_SWORD:
-                baseDamage = 7.0F;
-                break;
-            case IRON_SWORD:
-                baseDamage = 6.0F;
-                break;
-            case STONE_SWORD:
-                baseDamage = 5.0F;
-                break;
-            case WOODEN_SWORD:
-            case GOLDEN_SWORD:
-                baseDamage = 4.0F;
-                break;
-            case NETHERITE_SWORD:
-                baseDamage = 8.0F;
-                break;
-            case DIAMOND_AXE:
-                baseDamage = 9.0F;
-                break;
-            case IRON_AXE:
-                baseDamage = 8.0F;
-                break;
-            case STONE_AXE:
-                baseDamage = 7.0F;
-                break;
-            case WOODEN_AXE:
-            case GOLDEN_AXE:
-                baseDamage = 6.0F;
-                break;
-            case NETHERITE_AXE:
-                baseDamage = 10.0F;
-                break;
-            default:
-                baseDamage = 1.0F;
-        }
-        double baseArmor;
-        switch (material) {
-            case DIAMOND_HELMET:
-            case DIAMOND_CHESTPLATE:
-            case DIAMOND_LEGGINGS:
-            case DIAMOND_BOOTS:
-                baseArmor = 3.0F;
-                break;
-            case IRON_HELMET:
-            case IRON_CHESTPLATE:
-            case IRON_LEGGINGS:
-            case IRON_BOOTS:
-                baseArmor = 2.0F;
-                break;
-            case CHAINMAIL_HELMET:
-            case CHAINMAIL_CHESTPLATE:
-            case CHAINMAIL_LEGGINGS:
-            case CHAINMAIL_BOOTS:
-                baseArmor = 1.5F;
-                break;
-            case GOLDEN_HELMET:
-            case GOLDEN_CHESTPLATE:
-            case GOLDEN_LEGGINGS:
-            case GOLDEN_BOOTS:
-                baseArmor = 1.0F;
-                break;
-            case NETHERITE_HELMET:
-            case NETHERITE_CHESTPLATE:
-            case NETHERITE_LEGGINGS:
-            case NETHERITE_BOOTS:
-                baseArmor = 4.0F;
-                break;
-            default:
-                baseArmor = 0.0F;
-        }
-        double baseToughness;
-        switch (material) {
-            case DIAMOND_HELMET:
-            case DIAMOND_CHESTPLATE:
-            case DIAMOND_LEGGINGS:
-            case DIAMOND_BOOTS:
-                baseToughness = 2.0F;
-                break;
-            case IRON_HELMET:
-            case IRON_CHESTPLATE:
-            case IRON_LEGGINGS:
-            case IRON_BOOTS:
-                baseToughness = 1.0F;
-                break;
-            case CHAINMAIL_HELMET:
-            case CHAINMAIL_CHESTPLATE:
-            case CHAINMAIL_LEGGINGS:
-            case CHAINMAIL_BOOTS:
-                baseToughness = 0.5F;
-                break;
-            case GOLDEN_HELMET:
-            case GOLDEN_CHESTPLATE:
-            case GOLDEN_LEGGINGS:
-            case GOLDEN_BOOTS:
-                baseToughness = 0.0F;
-                break;
-            case NETHERITE_HELMET:
-            case NETHERITE_CHESTPLATE:
-            case NETHERITE_LEGGINGS:
-            case NETHERITE_BOOTS:
-                baseToughness = 3.0F;
-                break;
-            default:
-                baseToughness = 0.0F;
-        }
+        double baseDamage = switch (material) {
+            case DIAMOND_SWORD, STONE_AXE -> 7.0F;
+            case IRON_SWORD, WOODEN_AXE, GOLDEN_AXE -> 6.0F;
+            case STONE_SWORD -> 5.0F;
+            case WOODEN_SWORD, GOLDEN_SWORD -> 4.0F;
+            case NETHERITE_SWORD, IRON_AXE -> 8.0F;
+            case DIAMOND_AXE -> 9.0F;
+            case NETHERITE_AXE -> 10.0F;
+            default -> 1.0F;
+        };
+        double baseArmor = switch (material) {
+            case DIAMOND_HELMET, DIAMOND_CHESTPLATE, DIAMOND_LEGGINGS, DIAMOND_BOOTS -> 3.0F;
+            case IRON_HELMET, IRON_CHESTPLATE, IRON_LEGGINGS, IRON_BOOTS -> 2.0F;
+            case CHAINMAIL_HELMET, CHAINMAIL_CHESTPLATE, CHAINMAIL_LEGGINGS, CHAINMAIL_BOOTS -> 1.5F;
+            case GOLDEN_HELMET, GOLDEN_CHESTPLATE, GOLDEN_LEGGINGS, GOLDEN_BOOTS -> 1.0F;
+            case NETHERITE_HELMET, NETHERITE_CHESTPLATE, NETHERITE_LEGGINGS, NETHERITE_BOOTS -> 4.0F;
+            default -> 0.0F;
+        };
+        double baseToughness = switch (material) {
+            case DIAMOND_HELMET, DIAMOND_CHESTPLATE, DIAMOND_LEGGINGS, DIAMOND_BOOTS -> 2.0F;
+            case IRON_HELMET, IRON_CHESTPLATE, IRON_LEGGINGS, IRON_BOOTS -> 1.0F;
+            case CHAINMAIL_HELMET, CHAINMAIL_CHESTPLATE, CHAINMAIL_LEGGINGS, CHAINMAIL_BOOTS -> 0.5F;
+            case NETHERITE_HELMET, NETHERITE_CHESTPLATE, NETHERITE_LEGGINGS, NETHERITE_BOOTS -> 3.0F;
+            default -> 0.0F;
+        };
         switch (this.getRelicType()) {
             case "sword":
                 this.dataHandler.setAttribute(Attribute.ATTACK_DAMAGE, new AttributeModifier(Shared.getNamespacedKey("reliic_attack_damage"), baseDamage + Math.pow(Math.max(2.0F, (double) grade / (double) 25.0F), tier), Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
-                if (tier > 1) {
-                    this.dataHandler.setAttribute(Attribute.ATTACK_SPEED, new AttributeModifier(Shared.getNamespacedKey("reliic_attack_speed"), Math.max(1.7, Math.sqrt(grade) * (double) tier / (double) 10.0F), Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
+                if (tier == 1) {
+                    this.dataHandler.setAttribute(Attribute.ATTACK_SPEED, new AttributeModifier(Shared.getNamespacedKey("reliic_attack_speed"), -2.4, Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
+                } else {
+                    this.dataHandler.setAttribute(Attribute.ATTACK_SPEED, new AttributeModifier(Shared.getNamespacedKey("reliic_attack_speed"), -(2.4 - Math.max(Math.max((Math.sqrt(grade) * (double) tier / (double) 10.0F), 2), 1)), Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
                 }
                 break;
             case "armor":
