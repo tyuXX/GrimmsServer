@@ -10,11 +10,13 @@ import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerLevelHandler;
 import org.gsdistance.grimmsServer.Data.Player.PlayerInventoryData;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
+import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Manage.CustomEntityManager;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.gsdistance.grimmsServer.Stats.ServerStats;
 import org.gsdistance.grimmsServer.Stats.WorldStats;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,17 +58,7 @@ public class EntityDeathEvent {
             if (!player.getWorld().getGameRuleValue(GameRule.KEEP_INVENTORY)) {
                 PlayerInventoryData inventoryData = PlayerInventoryData.getPlayerInventoryData(player.getUniqueId());
 
-                // Save current inventory as a snapshot to previous inventories
-                if (inventoryData.inventoryContents != null && !inventoryData.inventoryContents.isEmpty()) {
-                    PlayerInventoryData.InventorySnapshot snapshot = new PlayerInventoryData.InventorySnapshot(
-                            inventoryData.inventoryContents,
-                            inventoryData.armorContents,
-                            inventoryData.extraContents
-                    );
-                    inventoryData.addPreviousInventory(snapshot);
-                }
-
-                // Save current inventory
+                // Convert current inventory to Base64 for saving
                 Map<Integer, ItemStack> currentInventory = new HashMap<>();
                 for (int i = 0; i < player.getInventory().getSize(); i++) {
                     ItemStack item = player.getInventory().getItem(i);
@@ -75,9 +67,51 @@ public class EntityDeathEvent {
                     }
                 }
 
-                inventoryData.inventoryContents = currentInventory;
-                inventoryData.armorContents = player.getInventory().getArmorContents();
-                inventoryData.extraContents = player.getInventory().getExtraContents();
+                // Save current inventory as a snapshot to previous inventories
+                // Convert current inventory to Base64 for the snapshot
+                Map<Integer, String> currentInventoryBase64 = new HashMap<>();
+                for (Map.Entry<Integer, ItemStack> entry : currentInventory.entrySet()) {
+                    try {
+                        String base64 = PlayerInventoryData.itemStackToBase64(entry.getValue());
+                        if (base64 != null) {
+                            currentInventoryBase64.put(entry.getKey(), base64);
+                        }
+                    } catch (IOException e) {
+                        GrimmsServer.logger.warning("Failed to serialize ItemStack at slot " + entry.getKey());
+                    }
+                }
+
+                String[] armorBase64 = new String[4];
+                ItemStack[] armor = player.getInventory().getArmorContents();
+                for (int i = 0; i < armor.length && i < 4; i++) {
+                    try {
+                        armorBase64[i] = PlayerInventoryData.itemStackToBase64(armor[i]);
+                    } catch (IOException e) {
+                        GrimmsServer.logger.warning("Failed to serialize armor slot " + i);
+                    }
+                }
+
+                String[] extraBase64 = new String[Math.min(player.getInventory().getExtraContents().length, 36)];
+                ItemStack[] extra = player.getInventory().getExtraContents();
+                for (int i = 0; i < extraBase64.length; i++) {
+                    try {
+                        extraBase64[i] = PlayerInventoryData.itemStackToBase64(extra[i]);
+                    } catch (IOException e) {
+                        GrimmsServer.logger.warning("Failed to serialize extra slot " + i);
+                    }
+                }
+
+                PlayerInventoryData.InventorySnapshot snapshot = new PlayerInventoryData.InventorySnapshot(
+                        currentInventoryBase64,
+                        armorBase64,
+                        extraBase64
+                );
+                inventoryData.addPreviousInventory(snapshot);
+
+                // Save the new inventory
+                inventoryData.setInventoryFromItemStacks(currentInventory);
+                inventoryData.setArmorFromItemStacks(player.getInventory().getArmorContents());
+                inventoryData.setExtraFromItemStacks(player.getInventory().getExtraContents());
                 inventoryData.saveToPDS();
 
                 // Clear inventory if config allows

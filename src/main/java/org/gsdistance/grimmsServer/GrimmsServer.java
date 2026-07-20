@@ -1,14 +1,18 @@
 package org.gsdistance.grimmsServer;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.Commands.GUtilCommand.SettingGUIListener;
 import org.gsdistance.grimmsServer.Commands.MarketComand.MarketGUIListener;
 import org.gsdistance.grimmsServer.Config.ConfigLoader;
+import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Data.PlayerLoginLogManager;
 import org.gsdistance.grimmsServer.Data.PluginDataStorage;
 import org.gsdistance.grimmsServer.Events.Listeners.ServerStartupEvent;
 import org.gsdistance.grimmsServer.Manage.EventRegistry;
 import org.gsdistance.grimmsServer.Stats.HistoricalStatsManager;
+import org.gsdistance.grimmsServer.Stats.PlayerStatLeaderBoard;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +39,7 @@ public final class GrimmsServer extends JavaPlugin {
         instance = this;
         logger = this.getLogger();
         pds = new PluginDataStorage(this);
+        this.migrateData();
         historicalStatsManager = new HistoricalStatsManager(this);
         ConfigLoader.initialize(this);
         ConfigLoader.loadConfigFromFile();
@@ -90,5 +96,47 @@ public final class GrimmsServer extends JavaPlugin {
             Shared.saveResourceIfNotExists("embed", true);
         }
 
+    }
+
+    private void migrateData() {
+        // Check if migration is needed (market.json or leaderboard.json don't exist)
+        if (!pds.exists("market.json", "") || !pds.exists("leaderboard.json", "")) {
+            Map<String, Object> serverStats = pds.retrieveData("server_stats.json", "", new TypeToken<Map<String, Object>>(){}.getType());
+            
+            if (serverStats != null) {
+                Gson gson = new Gson();
+                boolean migrated = false;
+                
+                // Migrate market data
+                if (serverStats.containsKey("market")) {
+                    String marketJson = (String) serverStats.get("market");
+                    Market market = gson.fromJson(marketJson, Market.class);
+                    if (market != null) {
+                        pds.saveData(market, Market.class, "market.json", "");
+                        serverStats.remove("market");
+                        migrated = true;
+                        logger.info("Migrated market data to market.json");
+                    }
+                }
+                
+                // Migrate leaderboard data
+                if (serverStats.containsKey("leaderboard")) {
+                    String leaderboardJson = (String) serverStats.get("leaderboard");
+                    PlayerStatLeaderBoard leaderboard = gson.fromJson(leaderboardJson, PlayerStatLeaderBoard.class);
+                    if (leaderboard != null) {
+                        pds.saveData(leaderboard, PlayerStatLeaderBoard.class, "leaderboard.json", "");
+                        serverStats.remove("leaderboard");
+                        migrated = true;
+                        logger.info("Migrated leaderboard data to leaderboard.json");
+                    }
+                }
+                
+                // Save updated server_stats.json if migration occurred
+                if (migrated) {
+                    pds.saveData(serverStats, new TypeToken<Map<String, Object>>(){}.getType(), "server_stats.json", "");
+                    logger.info("Data migration completed successfully");
+                }
+            }
+        }
     }
 }

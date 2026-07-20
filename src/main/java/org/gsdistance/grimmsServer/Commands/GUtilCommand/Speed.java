@@ -15,14 +15,14 @@ public class Speed {
         }
 
         if (sender instanceof Player player) {
-            if (args.length < 2) {
+            if (args.length < 3) {
                 return false;
             }
 
-            String type = args[0].toLowerCase();
+            String type = args[1].toLowerCase();
             float speed;
             try {
-                speed = Float.parseFloat(args[1]);
+                speed = Float.parseFloat(args[2]);
             } catch (NumberFormatException e) {
                 sender.sendMessage(ChatColor.RED + "Invalid speed value. Must be a number between 1 and 10.");
                 return false;

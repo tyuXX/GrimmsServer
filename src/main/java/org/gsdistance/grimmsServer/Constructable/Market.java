@@ -9,8 +9,8 @@ import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Data.Market.EnchantBaseValues;
 import org.gsdistance.grimmsServer.Data.Market.MarketBaseValues;
+import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
-import org.gsdistance.grimmsServer.Stats.ServerStats;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,11 +24,16 @@ public class Market {
     }
 
     public static Market getMarket() {
-        return (new Gson()).fromJson((String) ServerStats.getServerStats().getStat("market"), Market.class);
+        Market market = GrimmsServer.pds.retrieveData("market.json", "", Market.class);
+        if (market == null) {
+            market = new Market();
+            market.saveMarket();
+        }
+        return market;
     }
 
     public void saveMarket() {
-        ServerStats.getServerStats().setStat("market", (new Gson()).toJson(this));
+        GrimmsServer.pds.saveData(this, Market.class, "market.json", "");
     }
 
     public double sell(ItemStack itemStack, Player player) {

@@ -15,11 +15,11 @@ public class God {
         }
 
         if (sender instanceof Player player) {
-            if (args.length < 1) {
+            if (args.length < 2) {
                 return false;
             } else {
                 boolean enable;
-                switch (args[0].toLowerCase()) {
+                switch (args[1].toLowerCase()) {
                     case "on", "true" -> enable = true;
                     case "off", "false" -> enable = false;
                     default -> {

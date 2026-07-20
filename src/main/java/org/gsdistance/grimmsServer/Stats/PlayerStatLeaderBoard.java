@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Data;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
+import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Shared;
 
 import java.lang.reflect.Type;
@@ -26,7 +27,7 @@ public class PlayerStatLeaderBoard {
     public static PlayerStatLeaderBoard getPlayerStatLeaderBoard() {
         PlayerStatLeaderBoard playerStatLeaderBoard;
         try {
-            playerStatLeaderBoard = (new Gson()).fromJson((String) ServerStats.getServerStats().getStat("leaderboard"), PlayerStatLeaderBoard.class);
+            playerStatLeaderBoard = GrimmsServer.pds.retrieveData("leaderboard.json", "", PlayerStatLeaderBoard.class);
         } catch (Exception e) {
             // If JSON parsing fails (e.g., corrupted data or wrong structure), create a new empty leaderboard
             playerStatLeaderBoard = new PlayerStatLeaderBoard();
@@ -47,7 +48,7 @@ public class PlayerStatLeaderBoard {
     }
 
     public void savePlayerStatLeaderBoard() {
-        ServerStats.getServerStats().setStat("leaderboard", (new Gson()).toJson(this));
+        GrimmsServer.pds.saveData(this, PlayerStatLeaderBoard.class, "leaderboard.json", "");
     }
 
     public void checkPlayer(Player player) {

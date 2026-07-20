@@ -59,16 +59,17 @@ public class InventoryRestore {
                 }
 
                 PlayerInventoryData.InventorySnapshot snapshot = inventoryData.previousInventories.get(index);
-
+                
                 // Restore inventory to target player
                 targetPlayer.getInventory().clear();
 
-                for (Map.Entry<Integer, ItemStack> entry : snapshot.inventoryContents.entrySet()) {
+                Map<Integer, ItemStack> restoredInventory = snapshot.getInventoryAsItemStacks();
+                for (Map.Entry<Integer, ItemStack> entry : restoredInventory.entrySet()) {
                     targetPlayer.getInventory().setItem(entry.getKey(), entry.getValue());
                 }
 
-                targetPlayer.getInventory().setArmorContents(snapshot.armorContents);
-                targetPlayer.getInventory().setExtraContents(snapshot.extraContents);
+                targetPlayer.getInventory().setArmorContents(snapshot.getArmorAsItemStacks());
+                targetPlayer.getInventory().setExtraContents(snapshot.getExtraAsItemStacks());
 
                 player.sendMessage("Restored inventory from " + snapshot.timestamp + " to " + targetPlayerName + ".");
                 targetPlayer.sendMessage("Your inventory has been restored by an admin.");
