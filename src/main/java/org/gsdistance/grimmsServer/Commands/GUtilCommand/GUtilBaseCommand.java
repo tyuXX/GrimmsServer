@@ -93,6 +93,21 @@ public class GUtilBaseCommand implements CommandExecutor {
                 case "removetitle" -> {
                     return RemoveTitle.subCommand(sender, args);
                 }
+                case "unlevelentity" -> {
+                    if (sender instanceof Player player) {
+                        return UnlevelEntity.subCommand(player, args);
+                    }
+                    return false;
+                }
+                case "levelentity" -> {
+                    if (sender instanceof Player player) {
+                        return LevelEntity.subCommand(player, args);
+                    }
+                    return false;
+                }
+                case "sudo" -> {
+                    return Sudo.subCommand(sender, args);
+                }
                 default -> {
                     return false;
                 }

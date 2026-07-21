@@ -61,6 +61,8 @@ public class PlayerTitles {
         for (Map.Entry<Long, String> entry : TitleGenerator.getAllKillTitles().entrySet()) {
             titles.put(entry.getKey().toString(), entry.getValue());
         }
+        // Add descriptions for dynamic titles
+        titles.putAll(TitleGenerator.getAllTitleDescriptions());
     }
 
     public Set<String> getTitles() {

@@ -2,6 +2,7 @@ package org.gsdistance.grimmsServer.Commands.GUtilCommand;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
@@ -11,6 +12,7 @@ import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,9 +20,41 @@ import java.util.stream.Stream;
 
 public class GUtilTabCompleter implements TabCompleter {
     public static final List<String> defSubCommands = List.of("version", "setting", "spawn");
-    public static final List<String> adminSubCommands = List.of("relic", "capability", "broadcast", "inventoryrestore", "fly", "god", "heal", "speed", "enderchest", "invsee", "addtitle", "removetitle");
+    public static final List<String> adminSubCommands = List.of("relic", "capability", "broadcast", "inventoryrestore", "fly", "god", "heal", "speed", "enderchest", "invsee", "addtitle", "removetitle", "unlevelentity", "sudo", "levelentity");
 
     public GUtilTabCompleter() {
+    }
+
+    private CommandMap getCommandMap() {
+        try {
+            Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            commandMapField.setAccessible(true);
+            return (CommandMap) commandMapField.get(Bukkit.getServer());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("Failed to get command map", e);
+        }
+    }
+
+    private TabCompleter getTabCompleter(Command command) {
+        try {
+            Field tabCompleterField = command.getClass().getDeclaredField("tabCompleter");
+            tabCompleterField.setAccessible(true);
+            return (TabCompleter) tabCompleterField.get(command);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return null;
+        }
+    }
+
+    private java.util.Map<String, Command> getKnownCommands(CommandMap commandMap) {
+        try {
+            Field knownCommandsField = commandMap.getClass().getDeclaredField("knownCommands");
+            knownCommandsField.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            java.util.Map<String, Command> knownCommands = (java.util.Map<String, Command>) knownCommandsField.get(commandMap);
+            return knownCommands;
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return new java.util.HashMap<>();
+        }
     }
 
     @Nullable
@@ -45,7 +79,7 @@ public class GUtilTabCompleter implements TabCompleter {
                     case "setting" -> {
                         return PlayerMetadata.getPlayerMetadata(player).settings.stream().toList();
                     }
-                    case "inventoryrestore", "heal", "spawn", "enderchest", "invsee", "addtitle", "removetitle" -> {
+                    case "inventoryrestore", "heal", "spawn", "enderchest", "invsee", "addtitle", "removetitle", "sudo", "unlevelentity", "levelentity" -> {
                         return Bukkit.getOnlinePlayers().stream()
                                 .map(Player::getName)
                                 .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
@@ -106,10 +140,29 @@ public class GUtilTabCompleter implements TabCompleter {
                         }
                         return List.of();
                     }
+                    case "sudo" -> {
+                        return getKnownCommands(getCommandMap()).keySet().stream()
+                                .filter(cmd -> cmd.startsWith(args[2].toLowerCase()))
+                                .collect(Collectors.toList());
+                    }
                     default -> {
                         return List.of();
                     }
                 }
+            } else if (args.length >= 3 && args[0].equalsIgnoreCase("sudo")) {
+                // Handle nested tab completion for sudo command
+                String commandName = args[2];
+                org.bukkit.command.Command targetCommand = getCommandMap().getCommand(commandName);
+                if (targetCommand != null) {
+                    TabCompleter tabCompleter = getTabCompleter(targetCommand);
+                    if (tabCompleter != null) {
+                        // Build the args array for the target command
+                        String[] targetArgs = new String[args.length - 3];
+                        System.arraycopy(args, 3, targetArgs, 0, targetArgs.length);
+                        return tabCompleter.onTabComplete(sender, targetCommand, commandName, targetArgs);
+                    }
+                }
+                return List.of();
             } else {
                 return List.of();
             }

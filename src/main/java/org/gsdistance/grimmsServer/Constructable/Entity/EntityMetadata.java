@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Config.ActiveConfig;
@@ -64,7 +65,7 @@ public class EntityMetadata {
                     GrimmsServer.logger.info("Created new EntityMetadata for " + entity.getUniqueId());
                 }
                 // Apply levelling when metadata is first created
-                if (entity instanceof LivingEntity) {
+                if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER) {
                     applyLevelling((LivingEntity) entity, metadata);
                 }
             } else {
@@ -152,6 +153,11 @@ public class EntityMetadata {
             if (armorDivisor == null) armorDivisor = 2.0;
             double armorBoost = Math.sqrt(finalLevel) * Math.sqrt(totalPrestige) / armorDivisor;
             livingEntity.getAttribute(Attribute.ARMOR).setBaseValue(armorBoost);
+        }
+
+        if (livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS) != null) {
+            double toughnessBoost = Math.cbrt(finalLevel) * Math.cbrt(totalPrestige);
+            livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS).setBaseValue(toughnessBoost);
         }
 
         if (livingEntity.getAttribute(Attribute.ATTACK_DAMAGE) != null) {
