@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
+import org.gsdistance.grimmsServer.Data.CustomEnchantments;
 import org.gsdistance.grimmsServer.Data.Player.PlayerInventoryData;
 import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 import org.jetbrains.annotations.NotNull;
@@ -20,16 +21,22 @@ import java.util.stream.Stream;
 
 public class GUtilTabCompleter implements TabCompleter {
     public static final List<String> defSubCommands = List.of("version", "setting", "spawn");
-    public static final List<String> adminSubCommands = List.of("relic", "capability", "broadcast", "inventoryrestore", "fly", "god", "heal", "speed", "enderchest", "invsee", "addtitle", "removetitle", "unlevelentity", "sudo", "levelentity");
+    public static final List<String> adminSubCommands = List.of("relic", "enchant", "capability", "broadcast", "inventoryrestore", "fly", "god", "heal", "speed", "enderchest", "invsee", "addtitle", "removetitle", "unlevelentity", "sudo", "levelentity");
+
+    private CommandMap cachedCommandMap;
 
     public GUtilTabCompleter() {
     }
 
     private CommandMap getCommandMap() {
+        if (cachedCommandMap != null) {
+            return cachedCommandMap;
+        }
         try {
             Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             commandMapField.setAccessible(true);
-            return (CommandMap) commandMapField.get(Bukkit.getServer());
+            cachedCommandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
+            return cachedCommandMap;
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Failed to get command map", e);
         }
@@ -73,13 +80,16 @@ public class GUtilTabCompleter implements TabCompleter {
                     case "relic" -> {
                         return List.of("make", "set", "recalc", "reroll");
                     }
+                    case "enchant" -> {
+                        return List.of("add", "remove", "set", "list", "clear", "has");
+                    }
                     case "version" -> {
                         return List.of("check", "update");
                     }
                     case "setting" -> {
                         return PlayerMetadata.getPlayerMetadata(player).settings.stream().toList();
                     }
-                    case "inventoryrestore", "heal", "spawn", "enderchest", "invsee", "addtitle", "removetitle", "sudo", "unlevelentity", "levelentity" -> {
+                    case "inventoryrestore", "heal", "spawn", "enderchest", "invsee", "addtitle", "removetitle", "sudo" -> {
                         return Bukkit.getOnlinePlayers().stream()
                                 .map(Player::getName)
                                 .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
@@ -95,12 +105,54 @@ public class GUtilTabCompleter implements TabCompleter {
                                 .filter(type -> type.startsWith(args[1].toLowerCase()))
                                 .toList();
                     }
+                    case "levelentity", "unlevelentity" -> {
+                        return player.getWorld().getEntities().stream()
+                                .map(entity -> entity.getUniqueId().toString())
+                                .filter(uuid -> uuid.toLowerCase().startsWith(args[1].toLowerCase()))
+                                .collect(Collectors.toList());
+                    }
                     default -> {
                         return List.of();
                     }
                 }
+            } else if (args.length > 3 && args[0].equalsIgnoreCase("sudo")) {
+                // Handle nested tab completion for sudo command
+                String commandName = args[2];
+                org.bukkit.command.Command targetCommand = getCommandMap().getCommand(commandName);
+                if (targetCommand != null) {
+                    TabCompleter tabCompleter = getTabCompleter(targetCommand);
+                    if (tabCompleter != null) {
+                        // Build the args array for the target command
+                        String[] targetArgs = new String[args.length - 3];
+                        System.arraycopy(args, 3, targetArgs, 0, targetArgs.length);
+                        return tabCompleter.onTabComplete(sender, targetCommand, commandName, targetArgs);
+                    }
+                }
+                return List.of();
             } else if (args.length == 3) {
                 switch (args[0].toLowerCase()) {
+                    case "enchant" -> {
+                        if (args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("remove") || 
+                            args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("has")) {
+                            return java.util.Arrays.stream(CustomEnchantments.values())
+                                    .map(enchant -> enchant.name().toLowerCase())
+                                    .filter(name -> name.startsWith(args[2].toLowerCase()))
+                                    .collect(Collectors.toList());
+                        }
+                        return List.of();
+                    }
+                    case "relic" -> {
+                        if (args[1].equalsIgnoreCase("set")) {
+                            List<String> tiers = new ArrayList<>();
+                            for (int i = 1; i <= 10; i++) {
+                                tiers.add(String.valueOf(i));
+                            }
+                            return tiers.stream()
+                                    .filter(tier -> tier.startsWith(args[2]))
+                                    .toList();
+                        }
+                        return List.of();
+                    }
                     case "speed" -> {
                         List<String> speeds = new ArrayList<>();
                         for (int i = 1; i <= 10; i++) {
@@ -149,20 +201,59 @@ public class GUtilTabCompleter implements TabCompleter {
                         return List.of();
                     }
                 }
-            } else if (args.length >= 3 && args[0].equalsIgnoreCase("sudo")) {
-                // Handle nested tab completion for sudo command
-                String commandName = args[2];
-                org.bukkit.command.Command targetCommand = getCommandMap().getCommand(commandName);
-                if (targetCommand != null) {
-                    TabCompleter tabCompleter = getTabCompleter(targetCommand);
-                    if (tabCompleter != null) {
-                        // Build the args array for the target command
-                        String[] targetArgs = new String[args.length - 3];
-                        System.arraycopy(args, 3, targetArgs, 0, targetArgs.length);
-                        return tabCompleter.onTabComplete(sender, targetCommand, commandName, targetArgs);
+            } else if (args.length == 4) {
+                switch (args[0].toLowerCase()) {
+                    case "enchant" -> {
+                        if (args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("set")) {
+                            try {
+                                CustomEnchantments enchantment = CustomEnchantments.valueOf(args[2].toUpperCase());
+                                List<String> levels = new ArrayList<>();
+                                for (int i = 1; i <= enchantment.maxLevel; i++) {
+                                    levels.add(String.valueOf(i));
+                                }
+                                return levels.stream()
+                                        .filter(level -> level.startsWith(args[3]))
+                                        .collect(Collectors.toList());
+                            } catch (IllegalArgumentException e) {
+                                return List.of();
+                            }
+                        }
+                        return List.of();
+                    }
+                    case "relic" -> {
+                        if (args[1].equalsIgnoreCase("set")) {
+                            List<String> grades = new ArrayList<>();
+                            for (int i = 1; i <= 10; i++) {
+                                grades.add(String.valueOf(i));
+                            }
+                            return grades.stream()
+                                    .filter(grade -> grade.startsWith(args[3]))
+                                    .toList();
+                        }
+                        return List.of();
+                    }
+                    default -> {
+                        return List.of();
                     }
                 }
-                return List.of();
+            } else if (args.length == 5) {
+                switch (args[0].toLowerCase()) {
+                    case "relic" -> {
+                        if (args[1].equalsIgnoreCase("set")) {
+                            List<String> resistances = new ArrayList<>();
+                            for (int i = 1; i <= 100; i++) {
+                                resistances.add(String.valueOf(i));
+                            }
+                            return resistances.stream()
+                                    .filter(res -> res.startsWith(args[4]))
+                                    .toList();
+                        }
+                        return List.of();
+                    }
+                    default -> {
+                        return List.of();
+                    }
+                }
             } else {
                 return List.of();
             }

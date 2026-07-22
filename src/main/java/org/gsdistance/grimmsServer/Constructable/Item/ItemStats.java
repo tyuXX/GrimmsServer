@@ -27,6 +27,23 @@ public class ItemStats {
     public List<String> getItemStats() {
         List<String> toolStats = new ArrayList<>();
 
+        if (CustomItemHandler.isCustomItem(this.item)) {
+            CustomItemHandler customItemHandler = CustomItemHandler.getHandler(this.item);
+            String customItemId = customItemHandler.getCustomItemId();
+            toolStats.add(ChatColor.BOLD + "Item: " + ChatColor.RESET + ChatColor.WHITE + customItemId);
+            
+            // Check if this is a registered custom item with additional info
+            if (CustomItemRegistry.isCustomItemRegistered(customItemId)) {
+                CustomItem customItem = CustomItemRegistry.getCustomItem(customItemId);
+                if (customItem != null) {
+                    String description = customItem.getDescription();
+                    if (description != null && !description.isEmpty()) {
+                        toolStats.add(ChatColor.GRAY + description);
+                    }
+                }
+            }
+        }
+
         if (ItemLevelHandler.isItemLevelable(this.item)) {
             ItemLevelHandler levelHandler = ItemLevelHandler.getLevelHandler(this.item, null);
             toolStats.add(ChatColor.GOLD + "Level: " + ChatColor.YELLOW + Shared.formatNumber(levelHandler.getLevel()));

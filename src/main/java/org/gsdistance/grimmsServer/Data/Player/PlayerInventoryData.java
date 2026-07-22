@@ -20,6 +20,11 @@ public class PlayerInventoryData {
     public String[] armorContents; // Store as Base64 strings
     public String[] extraContents; // Store as Base64 strings
     public List<InventorySnapshot> previousInventories;
+    
+    // Soulbound items - these items are kept on death and restored on respawn
+    public Map<Integer, String> soulboundInventoryContents; // Store as Base64 strings
+    public String[] soulboundArmorContents; // Store as Base64 strings
+    public String[] soulboundExtraContents; // Store as Base64 strings
 
     public PlayerInventoryData(UUID uuid) {
         this.uuid = uuid;
@@ -28,6 +33,11 @@ public class PlayerInventoryData {
         this.armorContents = new String[4];
         this.extraContents = new String[36];
         this.previousInventories = new ArrayList<>();
+        
+        // Initialize soulbound storage
+        this.soulboundInventoryContents = new HashMap<>();
+        this.soulboundArmorContents = new String[4];
+        this.soulboundExtraContents = new String[36];
     }
 
     public void addPreviousInventory(InventorySnapshot snapshot) {
@@ -137,6 +147,97 @@ public class PlayerInventoryData {
             }
         }
         return result;
+    }
+
+    // Soulbound item management methods
+    
+    // Mark an item as soulbound by slot (removes from saved inventory, adds to soulbound storage)
+    public void markSoulboundItem(int slot, String itemType) {
+        if (itemType == null) return;
+        
+        if (itemType.equals("inventory")) {
+            String item = this.inventoryContents.remove(slot);
+            if (item != null) {
+                this.soulboundInventoryContents.put(slot, item);
+            }
+        } else if (itemType.equals("armor")) {
+            if (slot >= 0 && slot < 4) {
+                String item = this.armorContents[slot];
+                if (item != null) {
+                    this.soulboundArmorContents[slot] = item;
+                    this.armorContents[slot] = null;
+                }
+            }
+        } else if (itemType.equals("extra")) {
+            if (slot >= 0 && slot < this.extraContents.length) {
+                String item = this.extraContents[slot];
+                if (item != null) {
+                    this.soulboundExtraContents[slot] = item;
+                    this.extraContents[slot] = null;
+                }
+            }
+        }
+    }
+
+    // Mark an ItemStack as soulbound (converts to Base64 and marks)
+    public void markSoulboundItemStack(int slot, ItemStack itemStack, String itemType) {
+        if (itemStack == null) return;
+        
+        try {
+            String base64 = itemStackToBase64(itemStack);
+            markSoulboundItem(slot, itemType);
+        } catch (IOException e) {
+            GrimmsServer.logger.warning("Failed to serialize soulbound ItemStack at slot " + slot);
+        }
+    }
+
+    // Get soulbound inventory as ItemStacks
+    public Map<Integer, ItemStack> getSoulboundInventoryAsItemStacks() {
+        Map<Integer, ItemStack> result = new HashMap<>();
+        for (Map.Entry<Integer, String> entry : this.soulboundInventoryContents.entrySet()) {
+            try {
+                ItemStack itemStack = itemStackFromBase64(entry.getValue());
+                if (itemStack != null) {
+                    result.put(entry.getKey(), itemStack);
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                GrimmsServer.logger.warning("Failed to deserialize soulbound ItemStack at slot " + entry.getKey());
+            }
+        }
+        return result;
+    }
+
+    // Get soulbound armor as ItemStack array
+    public ItemStack[] getSoulboundArmorAsItemStacks() {
+        ItemStack[] result = new ItemStack[4];
+        for (int i = 0; i < this.soulboundArmorContents.length && i < 4; i++) {
+            try {
+                result[i] = itemStackFromBase64(this.soulboundArmorContents[i]);
+            } catch (IOException | ClassNotFoundException e) {
+                GrimmsServer.logger.warning("Failed to deserialize soulbound armor slot " + i);
+            }
+        }
+        return result;
+    }
+
+    // Get soulbound extra contents as ItemStack array
+    public ItemStack[] getSoulboundExtraAsItemStacks() {
+        ItemStack[] result = new ItemStack[this.soulboundExtraContents.length];
+        for (int i = 0; i < this.soulboundExtraContents.length; i++) {
+            try {
+                result[i] = itemStackFromBase64(this.soulboundExtraContents[i]);
+            } catch (IOException | ClassNotFoundException e) {
+                GrimmsServer.logger.warning("Failed to deserialize soulbound extra slot " + i);
+            }
+        }
+        return result;
+    }
+
+    // Clear all soulbound items (called after restoring on respawn)
+    public void clearSoulboundItems() {
+        this.soulboundInventoryContents.clear();
+        this.soulboundArmorContents = new String[4];
+        this.soulboundExtraContents = new String[36];
     }
 
     public static class InventorySnapshot {

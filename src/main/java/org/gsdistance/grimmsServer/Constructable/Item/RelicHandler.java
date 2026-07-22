@@ -17,6 +17,7 @@ import java.util.UUID;
 public class RelicHandler {
     ItemStack item;
     ItemDataHandler dataHandler;
+    private static final Random RANDOM = new Random();
 
     public RelicHandler(ItemStack item) {
         this.item = item;
@@ -28,11 +29,26 @@ public class RelicHandler {
         return isRelic != null && isRelic;
     }
 
+    /**
+     * Migrates existing relics to the new CustomItem system.
+     * Call this during plugin startup to update legacy relics.
+     */
+    public static void migrateRelicToCustomItem(ItemStack item) {
+        if (isRelic(item) && !CustomItemHandler.isCustomItem(item)) {
+            CustomItemHandler customHandler = CustomItemHandler.createHandler(item);
+            String relicType = getRelicHandler(item).getRelicType();
+            customHandler.setCustomItemId("relic_" + relicType);
+        }
+    }
+
     public static RelicHandler getRelicHandler(ItemStack item) {
         return new RelicHandler(item);
     }
 
     public static void makeRelic(ItemStack item) {
+        // Initialize as a custom item first
+        CustomItemHandler customHandler = CustomItemHandler.createHandler(item);
+        
         RelicHandler relicHandler = new RelicHandler(item);
         relicHandler.dataHandler.setItemNBTData("isRelic", true, PersistentDataType.BOOLEAN);
         relicHandler.dataHandler.setItemNBTData("relicUUID", UUID.randomUUID().toString(), PersistentDataType.STRING);
@@ -54,13 +70,17 @@ public class RelicHandler {
         }
 
         relicHandler.dataHandler.setItemNBTData("relicType", relicType, PersistentDataType.STRING);
+        
+        // Set custom item ID to relic type for identification
+        customHandler.setCustomItemId("relic_" + relicType);
+        
         relicHandler.initRandomRelicStats();
     }
 
     public void initRandomRelicStats() {
-        int tier = (new Random()).nextInt(1, 4);
-        int grade = (new Random()).nextInt(1, 101);
-        int durabilityResistance = (new Random()).nextInt(1, 81);
+        int tier = RANDOM.nextInt(1, 4);
+        int grade = RANDOM.nextInt(1, 101);
+        int durabilityResistance = RANDOM.nextInt(1, 81);
         this.setRelicStats(tier, grade, durabilityResistance);
         this.recalculateBaseAttributes();
         ItemStats.getItemStats(this.item).UpdateItemStats();
@@ -97,11 +117,11 @@ public class RelicHandler {
         };
         switch (this.getRelicType()) {
             case "sword":
-                this.dataHandler.setAttribute(Attribute.ATTACK_DAMAGE, new AttributeModifier(Shared.getNamespacedKey("reliic_attack_damage"), baseDamage + Math.pow(Math.max(2.0F, (double) grade / (double) 25.0F), tier), Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
+                this.dataHandler.setAttribute(Attribute.ATTACK_DAMAGE, new AttributeModifier(Shared.getNamespacedKey("relic_attack_damage"), baseDamage + Math.pow(Math.max(2.0F, (double) grade / (double) 25.0F), tier), Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
                 if (tier == 1) {
-                    this.dataHandler.setAttribute(Attribute.ATTACK_SPEED, new AttributeModifier(Shared.getNamespacedKey("reliic_attack_speed"), -2.4, Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
+                    this.dataHandler.setAttribute(Attribute.ATTACK_SPEED, new AttributeModifier(Shared.getNamespacedKey("relic_attack_speed"), -2.4, Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
                 } else {
-                    this.dataHandler.setAttribute(Attribute.ATTACK_SPEED, new AttributeModifier(Shared.getNamespacedKey("reliic_attack_speed"), -(2.4 - Math.max(Math.max((Math.sqrt(grade) * (double) tier / (double) 10.0F), 2), 1)), Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
+                    this.dataHandler.setAttribute(Attribute.ATTACK_SPEED, new AttributeModifier(Shared.getNamespacedKey("relic_attack_speed"), -(2.4 - Math.max(Math.max((Math.sqrt(grade) * (double) tier / (double) 10.0F), 2), 1)), Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
                 }
                 break;
             case "armor":

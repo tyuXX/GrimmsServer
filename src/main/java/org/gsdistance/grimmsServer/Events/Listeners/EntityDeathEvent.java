@@ -7,7 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
+import org.gsdistance.grimmsServer.Constructable.Item.CustomEnchantmentHandler;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerLevelHandler;
+import org.gsdistance.grimmsServer.Data.CustomEnchantments;
 import org.gsdistance.grimmsServer.Data.Player.PlayerInventoryData;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.GrimmsServer;
@@ -55,7 +57,8 @@ public class EntityDeathEvent {
 
             // Save inventory if keepInventory is off
             Player player = (Player) event.getEntity();
-            if (!player.getWorld().getGameRuleValue(GameRule.KEEP_INVENTORY)) {
+            Boolean keepInventory = player.getWorld().getGameRuleValue(GameRule.KEEP_INVENTORY);
+            if (keepInventory == null || !keepInventory) {
                 PlayerInventoryData inventoryData = PlayerInventoryData.getPlayerInventoryData(player.getUniqueId());
 
                 // Convert current inventory to Base64 for saving
@@ -85,7 +88,9 @@ public class EntityDeathEvent {
                 ItemStack[] armor = player.getInventory().getArmorContents();
                 for (int i = 0; i < armor.length && i < 4; i++) {
                     try {
-                        armorBase64[i] = PlayerInventoryData.itemStackToBase64(armor[i]);
+                        if (armor[i] != null) {
+                            armorBase64[i] = PlayerInventoryData.itemStackToBase64(armor[i]);
+                        }
                     } catch (IOException e) {
                         GrimmsServer.logger.warning("Failed to serialize armor slot " + i);
                     }
@@ -95,7 +100,9 @@ public class EntityDeathEvent {
                 ItemStack[] extra = player.getInventory().getExtraContents();
                 for (int i = 0; i < extraBase64.length; i++) {
                     try {
-                        extraBase64[i] = PlayerInventoryData.itemStackToBase64(extra[i]);
+                        if (extra[i] != null) {
+                            extraBase64[i] = PlayerInventoryData.itemStackToBase64(extra[i]);
+                        }
                     } catch (IOException e) {
                         GrimmsServer.logger.warning("Failed to serialize extra slot " + i);
                     }
@@ -114,8 +121,46 @@ public class EntityDeathEvent {
                 inventoryData.setExtraFromItemStacks(player.getInventory().getExtraContents());
                 inventoryData.saveToPDS();
 
+                // Mark soulbound items (items that should not drop on death)
+                // Check each item for soulbound enchantment
+                for (Map.Entry<Integer, ItemStack> entry : currentInventory.entrySet()) {
+                    ItemStack item = entry.getValue();
+                    if (item != null) {
+                        CustomEnchantmentHandler enchantHandler = CustomEnchantmentHandler.getHandler(item);
+                        if (enchantHandler.hasEnchantment(CustomEnchantments.SOULBOUND)) {
+                            inventoryData.markSoulboundItemStack(entry.getKey(), item, "inventory");
+                        }
+                    }
+                }
+
+                // Check armor for soulbound items
+                for (int i = 0; i < armor.length && i < 4; i++) {
+                    ItemStack item = armor[i];
+                    if (item != null) {
+                        CustomEnchantmentHandler enchantHandler = CustomEnchantmentHandler.getHandler(item);
+                        if (enchantHandler.hasEnchantment(CustomEnchantments.SOULBOUND)) {
+                            inventoryData.markSoulboundItemStack(i, item, "armor");
+                        }
+                    }
+                }
+
+                // Check extra contents for soulbound items
+                for (int i = 0; i < extra.length && i < 36; i++) {
+                    ItemStack item = extra[i];
+                    if (item != null) {
+                        CustomEnchantmentHandler enchantHandler = CustomEnchantmentHandler.getHandler(item);
+                        if (enchantHandler.hasEnchantment(CustomEnchantments.SOULBOUND)) {
+                            inventoryData.markSoulboundItemStack(i, item, "extra");
+                        }
+                    }
+                }
+
+                // Save again after marking soulbound items to update the saved data
+                inventoryData.saveToPDS();
+
                 // Clear inventory if config allows
-                boolean clearInventory = ActiveConfig.getConfigValue(ConfigKey.CLEAR_INVENTORY_ON_DEATH, Boolean.class);
+                Boolean clearInventoryConfig = ActiveConfig.getConfigValue(ConfigKey.CLEAR_INVENTORY_ON_DEATH, Boolean.class);
+                boolean clearInventory = clearInventoryConfig != null && clearInventoryConfig;
                 if (clearInventory) {
                     player.getInventory().clear();
                 }

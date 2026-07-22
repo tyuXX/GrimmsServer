@@ -40,8 +40,4 @@ public enum PlayerRank {
         return DEFAULT;
     }
 
-    // $FF: synthetic method
-    private static PlayerRank[] $values() {
-        return new PlayerRank[]{DEFAULT, VIP, MVP, MODERATOR, ADMIN, OWNER};
-    }
 }

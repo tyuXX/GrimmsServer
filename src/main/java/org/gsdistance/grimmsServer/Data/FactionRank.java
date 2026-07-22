@@ -19,16 +19,6 @@ public enum FactionRank {
         return this.displayName;
     }
 
-    public static FactionRank fromWeight(int weight) {
-        for (FactionRank rank : values()) {
-            if (rank.weight == weight) {
-                return rank;
-            }
-        }
-
-        return NONE;
-    }
-
     public static FactionRank fromString(String name) {
         for (FactionRank rank : values()) {
             if (rank.displayName.equalsIgnoreCase(name)) {
@@ -37,10 +27,5 @@ public enum FactionRank {
         }
 
         return NONE;
-    }
-
-    // $FF: synthetic method
-    private static FactionRank[] $values() {
-        return new FactionRank[]{LEADER, OFFICER, MEMBER, RECRUIT, NONE};
     }
 }

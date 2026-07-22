@@ -24,6 +24,12 @@ public class GUtilBaseCommand implements CommandExecutor {
                     }
                     return false;
                 }
+                case "enchant" -> {
+                    if (sender instanceof Player player) {
+                        return Enchant.subCommand(player, args);
+                    }
+                    return false;
+                }
                 case "capability" -> {
                     if (sender instanceof Player player) {
                         return Capability.subCommand(player, args);

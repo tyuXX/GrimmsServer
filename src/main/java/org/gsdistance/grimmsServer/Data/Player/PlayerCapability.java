@@ -15,9 +15,4 @@ public enum PlayerCapability {
         this.description = description;
         this.capabilityId = capabilityId;
     }
-
-    // $FF: synthetic method
-    private static PlayerCapability[] $values() {
-        return new PlayerCapability[]{AUTOSELL, MAGNET, VEINMINER, SATURATION_PERK};
-    }
 }

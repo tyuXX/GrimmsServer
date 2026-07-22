@@ -53,8 +53,8 @@ public class TitleGenerator {
         killTitles.put(10L, "Novice Hunter");
         killTitles.put(100L, "Hunter");
         killTitles.put(1000L, "Slayer");
-        killTitles.put(10000L, "Executioneer");
-        killTitles.put(100000L, "Destroyer");
+        killTitles.put(10000L, "Hitman");
+        killTitles.put(100000L, "Mob Eater");
         killTitles.put(1000000L, "Godslayer");
         killTitles.put(10000000L, "World Ender");
         killTitles.put(100000000L, "Mass Murderer");
