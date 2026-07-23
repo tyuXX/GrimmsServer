@@ -2,6 +2,7 @@ package org.gsdistance.grimmsServer.Commands.GLevelCommand;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerLevelHandler;
 import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
@@ -28,6 +29,10 @@ public class Prestige {
         playerStats.setStat("level", 0);
         playerStats.setStat("xp", 0.0);
         playerStats.setStat("xp_required", levelHandler.getXpToLevel());
+
+        Market market = Market.getMarket();
+        market.serverPrestiges += 1;
+        market.saveMarket();
 
         player.sendMessage(ChatColor.GREEN + "You have prestiged to prestige " + newPrestige + "!");
         player.sendMessage(ChatColor.GOLD + "You received " + newPrestige + " prestige points. Total: " + (currentPrestigePoints + newPrestige));

@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.Commands.GUtilCommand.SettingGUIListener;
 import org.gsdistance.grimmsServer.Commands.MarketComand.MarketGUIListener;
 import org.gsdistance.grimmsServer.Config.ConfigLoader;
+import org.gsdistance.grimmsServer.Constructable.Item.CustomItemRegistry;
 import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.Data.PlayerLoginLogManager;
@@ -54,6 +55,7 @@ public final class GrimmsServer extends JavaPlugin {
         PlayerLoginLogManager.initialize();
         PlayerTitles.populateDynamicTitles();
         PlayerTitleChecker.startPeriodicChecking();
+        this.registerCustomItems();
     }
 
     public void onDisable() {
@@ -70,6 +72,11 @@ public final class GrimmsServer extends JavaPlugin {
         }
 
         return rt;
+    }
+
+    public void registerCustomItems(){
+        CustomItemRegistry.registerGunTypes();
+        CustomItemRegistry.registerAmmoTypes();
     }
 
     public void copyResourceFiles() {
@@ -104,44 +111,6 @@ public final class GrimmsServer extends JavaPlugin {
     }
 
     private void migrateData() {
-        // Check if migration is needed (market.json or leaderboard.json don't exist)
-        if (!pds.exists("market.json", "") || !pds.exists("leaderboard.json", "")) {
-            Map<String, Object> serverStats = pds.retrieveData("server_stats.json", "", new TypeToken<Map<String, Object>>(){}.getType());
-            
-            if (serverStats != null) {
-                Gson gson = new Gson();
-                boolean migrated = false;
-                
-                // Migrate market data
-                if (serverStats.containsKey("market")) {
-                    String marketJson = (String) serverStats.get("market");
-                    Market market = gson.fromJson(marketJson, Market.class);
-                    if (market != null) {
-                        pds.saveData(market, Market.class, "market.json", "");
-                        serverStats.remove("market");
-                        migrated = true;
-                        logger.info("Migrated market data to market.json");
-                    }
-                }
-                
-                // Migrate leaderboard data
-                if (serverStats.containsKey("leaderboard")) {
-                    String leaderboardJson = (String) serverStats.get("leaderboard");
-                    PlayerStatLeaderBoard leaderboard = gson.fromJson(leaderboardJson, PlayerStatLeaderBoard.class);
-                    if (leaderboard != null) {
-                        pds.saveData(leaderboard, PlayerStatLeaderBoard.class, "leaderboard.json", "");
-                        serverStats.remove("leaderboard");
-                        migrated = true;
-                        logger.info("Migrated leaderboard data to leaderboard.json");
-                    }
-                }
-                
-                // Save updated server_stats.json if migration occurred
-                if (migrated) {
-                    pds.saveData(serverStats, new TypeToken<Map<String, Object>>(){}.getType(), "server_stats.json", "");
-                    logger.info("Data migration completed successfully");
-                }
-            }
-        }
+
     }
 }

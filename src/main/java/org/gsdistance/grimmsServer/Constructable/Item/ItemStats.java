@@ -2,10 +2,12 @@ package org.gsdistance.grimmsServer.Constructable.Item;
 
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
+import org.gsdistance.grimmsServer.Data.CustomEnchantment;
 import org.gsdistance.grimmsServer.Shared;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ItemStats {
     ItemStack item;
@@ -44,6 +46,21 @@ public class ItemStats {
             }
         }
 
+        // Display custom enchantments (Minecraft-style format)
+        CustomEnchantmentHandler enchantHandler = CustomEnchantmentHandler.getHandler(this.item);
+        Map<CustomEnchantment, Integer> enchantments = enchantHandler.getAllEnchantments();
+        if (!enchantments.isEmpty()) {
+            for (Map.Entry<CustomEnchantment, Integer> entry : enchantments.entrySet()) {
+                CustomEnchantment enchantment = entry.getKey();
+                int level = entry.getValue();
+                String enchantText = ChatColor.GRAY + enchantment.enchantmentName;
+                if (level > 1 || enchantment.maxLevel > 1) {
+                    enchantText += " " + ChatColor.GRAY + getRomanNumeral(level);
+                }
+                toolStats.add(enchantText);
+            }
+        }
+
         if (ItemLevelHandler.isItemLevelable(this.item)) {
             ItemLevelHandler levelHandler = ItemLevelHandler.getLevelHandler(this.item, null);
             toolStats.add(ChatColor.GOLD + "Level: " + ChatColor.YELLOW + Shared.formatNumber(levelHandler.getLevel()));
@@ -60,5 +77,21 @@ public class ItemStats {
         }
 
         return toolStats;
+    }
+
+    private String getRomanNumeral(int number) {
+        return switch (number) {
+            case 1 -> "I";
+            case 2 -> "II";
+            case 3 -> "III";
+            case 4 -> "IV";
+            case 5 -> "V";
+            case 6 -> "VI";
+            case 7 -> "VII";
+            case 8 -> "VIII";
+            case 9 -> "IX";
+            case 10 -> "X";
+            default -> String.valueOf(number);
+        };
     }
 }

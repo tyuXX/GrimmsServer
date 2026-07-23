@@ -1,6 +1,6 @@
 package org.gsdistance.grimmsServer.Data;
 
-public enum CustomEnchantments {
+public enum CustomEnchantment {
     TRUE_DAMAGE("True Damage", 3),
     SOULBOUND("Soulbound", 1);
 
@@ -8,7 +8,7 @@ public enum CustomEnchantments {
     public final int maxLevel;
 
 
-    CustomEnchantments(String enchantmentName, int maxLevel) {
+    CustomEnchantment(String enchantmentName, int maxLevel) {
         this.enchantmentName = enchantmentName;
         this.maxLevel = maxLevel;
     }

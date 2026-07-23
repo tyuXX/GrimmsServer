@@ -17,7 +17,6 @@ public abstract class CustomItem {
             throw new IllegalArgumentException("ItemStack must be initialized with CustomItemHandler first");
         }
         this.handler.setCustomItemId(itemId);
-        this.initializeItem();
     }
 
     protected abstract void initializeItem();

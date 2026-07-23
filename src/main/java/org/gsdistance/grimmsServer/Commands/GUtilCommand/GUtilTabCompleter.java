@@ -1,13 +1,15 @@
 package org.gsdistance.grimmsServer.Commands.GUtilCommand;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.gsdistance.grimmsServer.Constructable.Item.CustomItemRegistry;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
-import org.gsdistance.grimmsServer.Data.CustomEnchantments;
+import org.gsdistance.grimmsServer.Data.CustomEnchantment;
 import org.gsdistance.grimmsServer.Data.Player.PlayerInventoryData;
 import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +23,7 @@ import java.util.stream.Stream;
 
 public class GUtilTabCompleter implements TabCompleter {
     public static final List<String> defSubCommands = List.of("version", "setting", "spawn");
-    public static final List<String> adminSubCommands = List.of("relic", "enchant", "capability", "broadcast", "inventoryrestore", "fly", "god", "heal", "speed", "enderchest", "invsee", "addtitle", "removetitle", "unlevelentity", "sudo", "levelentity");
+    public static final List<String> adminSubCommands = List.of("relic", "enchant", "givecustomitem", "capability", "broadcast", "inventoryrestore", "fly", "god", "heal", "speed", "enderchest", "invsee", "addtitle", "removetitle", "unlevelentity", "sudo", "levelentity");
 
     private CommandMap cachedCommandMap;
 
@@ -83,6 +85,11 @@ public class GUtilTabCompleter implements TabCompleter {
                     case "enchant" -> {
                         return List.of("add", "remove", "set", "list", "clear", "has");
                     }
+                    case "givecustomitem" -> {
+                        return CustomItemRegistry.getRegisteredItemIds().stream()
+                                .filter(id -> id.startsWith(args[1].toLowerCase()))
+                                .collect(Collectors.toList());
+                    }
                     case "version" -> {
                         return List.of("check", "update");
                     }
@@ -134,12 +141,18 @@ public class GUtilTabCompleter implements TabCompleter {
                     case "enchant" -> {
                         if (args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("remove") || 
                             args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("has")) {
-                            return java.util.Arrays.stream(CustomEnchantments.values())
+                            return java.util.Arrays.stream(CustomEnchantment.values())
                                     .map(enchant -> enchant.name().toLowerCase())
                                     .filter(name -> name.startsWith(args[2].toLowerCase()))
                                     .collect(Collectors.toList());
                         }
                         return List.of();
+                    }
+                    case "givecustomitem" -> {
+                        return java.util.Arrays.stream(Material.values())
+                                .map(material -> material.name().toLowerCase())
+                                .filter(name -> name.startsWith(args[2].toLowerCase()))
+                                .collect(Collectors.toList());
                     }
                     case "relic" -> {
                         if (args[1].equalsIgnoreCase("set")) {
@@ -206,7 +219,7 @@ public class GUtilTabCompleter implements TabCompleter {
                     case "enchant" -> {
                         if (args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("set")) {
                             try {
-                                CustomEnchantments enchantment = CustomEnchantments.valueOf(args[2].toUpperCase());
+                                CustomEnchantment enchantment = CustomEnchantment.valueOf(args[2].toUpperCase());
                                 List<String> levels = new ArrayList<>();
                                 for (int i = 1; i <= enchantment.maxLevel; i++) {
                                     levels.add(String.valueOf(i));

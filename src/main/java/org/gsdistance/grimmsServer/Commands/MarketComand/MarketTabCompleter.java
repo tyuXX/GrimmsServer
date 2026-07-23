@@ -7,6 +7,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.gsdistance.grimmsServer.Constructable.Market;
+import org.gsdistance.grimmsServer.Data.CustomEnchantment;
 import org.gsdistance.grimmsServer.Data.Market.EnchantBaseValues;
 import org.gsdistance.grimmsServer.Data.Market.MarketBaseValues;
 import org.gsdistance.grimmsServer.Data.Market.PotionEffectBaseValues;
@@ -28,6 +29,7 @@ public class MarketTabCompleter implements TabCompleter {
             subs.add("stock");
             subs.add("ripoff");
             subs.add("enchant");
+            subs.add("customenchant");
             subs.add("potioneffect");
             subs.add("tp");
             subs.add("buy");
@@ -47,6 +49,8 @@ public class MarketTabCompleter implements TabCompleter {
                     yield MarketBaseValues.marketBaseValues.keySet().stream().map(Material::name).filter((name) -> name.toLowerCase().startsWith(args[1].toLowerCase())).collect(Collectors.toList());
                 case "enchant":
                     yield EnchantBaseValues.enchantBaseValues.keySet().stream().map((enchantment) -> enchantment.getKey().getKey()).map(Object::toString).filter((name) -> name.toLowerCase().startsWith(args[1].toLowerCase())).collect(Collectors.toList());
+                case "customenchant":
+                    yield EnchantBaseValues.customEnchantBaseValues.keySet().stream().map(CustomEnchantment::name).map(String::toLowerCase).filter((name) -> name.startsWith(args[1].toLowerCase())).collect(Collectors.toList());
                 case "potioneffect":
                     yield PotionEffectBaseValues.potionEffectBaseValues.keySet().stream().map(PotionEffectType::getName).filter((name) -> name.toLowerCase().startsWith(args[1].toLowerCase())).collect(Collectors.toList());
                 case "tp":

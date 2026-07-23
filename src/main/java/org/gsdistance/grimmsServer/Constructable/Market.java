@@ -19,6 +19,8 @@ public class Market {
     public double NegMarketSaturation = 0.0;
     public final Map<String, Long> items = new HashMap<>();
     public final Map<String, Long> enchantments = new HashMap<>();
+    public double serverLevels = 0.0;
+    public double serverPrestiges = 0.0;
 
     public Market() {
     }
@@ -165,7 +167,7 @@ public class Market {
             }
         }
 
-        this.NegMarketSaturation = Math.floor(Math.sqrt(Math.sqrt(totalValue)));
+        this.NegMarketSaturation = Math.floor(Math.sqrt(Math.sqrt(totalValue))) * Math.cbrt(serverLevels + 1) * Math.sqrt(serverPrestiges + 1);
     }
 
     public double getPrice(Material item) {

@@ -2,9 +2,12 @@ package org.gsdistance.grimmsServer.Constructable.Item;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.gsdistance.grimmsServer.Constructable.Item.CustomItems.AmmoItem;
+import org.gsdistance.grimmsServer.Constructable.Item.CustomItems.GunItem;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 public class CustomItemRegistry {
@@ -50,5 +53,37 @@ public class CustomItemRegistry {
 
     public static String getVanillaItemId(Material material) {
         return material.name().toLowerCase();
+    }
+
+    public static void registerGunTypes() {
+        // Register pistol
+        registerCustomItem("gun_pistol", (itemStack) -> 
+            new GunItem("gun_pistol", itemStack, "Pistol", 5.0, 2.0, 12, Material.IRON_NUGGET));
+        
+        // Register rifle
+        registerCustomItem("gun_rifle", (itemStack) -> 
+            new GunItem("gun_rifle", itemStack, "Rifle", 8.0, 4.0, 30, Material.GOLD_NUGGET));
+        
+        // Register shotgun
+        registerCustomItem("gun_shotgun", (itemStack) -> 
+            new GunItem("gun_shotgun", itemStack, "Shotgun", 15.0, 1.0, 8, Material.IRON_INGOT));
+    }
+
+    public static void registerAmmoTypes() {
+        // Register pistol ammo
+        registerCustomItem("ammo_pistol", (itemStack) -> 
+            new AmmoItem("ammo_pistol", itemStack, "Pistol", 30, Material.IRON_NUGGET));
+        
+        // Register rifle ammo
+        registerCustomItem("ammo_rifle", (itemStack) -> 
+            new AmmoItem("ammo_rifle", itemStack, "Rifle", 60, Material.GOLD_NUGGET));
+        
+        // Register shotgun ammo
+        registerCustomItem("ammo_shotgun", (itemStack) -> 
+            new AmmoItem("ammo_shotgun", itemStack, "Shotgun", 16, Material.IRON_INGOT));
+    }
+
+    public static Set<String> getRegisteredItemIds() {
+        return itemConstructors.keySet();
     }
 }

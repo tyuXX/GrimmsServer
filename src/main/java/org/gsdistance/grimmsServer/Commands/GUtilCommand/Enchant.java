@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.gsdistance.grimmsServer.Constructable.Item.CustomEnchantmentHandler;
-import org.gsdistance.grimmsServer.Data.CustomEnchantments;
+import org.gsdistance.grimmsServer.Data.CustomEnchantment;
 
 import java.util.Map;
 
@@ -41,7 +41,7 @@ public class Enchant {
                 }
 
                 try {
-                    CustomEnchantments enchantment = CustomEnchantments.valueOf(args[2].toUpperCase());
+                    CustomEnchantment enchantment = CustomEnchantment.valueOf(args[2].toUpperCase());
                     int level = args.length >= 4 ? Integer.parseInt(args[3]) : 1;
 
                     CustomEnchantmentHandler handler = CustomEnchantmentHandler.getHandler(item);
@@ -69,7 +69,7 @@ public class Enchant {
                 }
 
                 try {
-                    CustomEnchantments enchantment = CustomEnchantments.valueOf(args[2].toUpperCase());
+                    CustomEnchantment enchantment = CustomEnchantment.valueOf(args[2].toUpperCase());
 
                     CustomEnchantmentHandler handler = CustomEnchantmentHandler.getHandler(item);
                     if (handler.removeEnchantment(enchantment)) {
@@ -92,7 +92,7 @@ public class Enchant {
                 }
 
                 try {
-                    CustomEnchantments enchantment = CustomEnchantments.valueOf(args[2].toUpperCase());
+                    CustomEnchantment enchantment = CustomEnchantment.valueOf(args[2].toUpperCase());
                     int level = Integer.parseInt(args[3]);
 
                     CustomEnchantmentHandler handler = CustomEnchantmentHandler.getHandler(item);
@@ -115,7 +115,7 @@ public class Enchant {
 
             case "list" -> {
                 CustomEnchantmentHandler handler = CustomEnchantmentHandler.getHandler(item);
-                Map<CustomEnchantments, Integer> enchantments = handler.getAllEnchantments();
+                Map<CustomEnchantment, Integer> enchantments = handler.getAllEnchantments();
 
                 if (enchantments.isEmpty()) {
                     player.sendMessage(ChatColor.GRAY + "Item has no custom enchantments.");
@@ -123,7 +123,7 @@ public class Enchant {
                 }
 
                 player.sendMessage(ChatColor.GOLD + "Custom Enchantments on " + item.getType() + ":");
-                for (Map.Entry<CustomEnchantments, Integer> entry : enchantments.entrySet()) {
+                for (Map.Entry<CustomEnchantment, Integer> entry : enchantments.entrySet()) {
                     player.sendMessage(ChatColor.YELLOW + "- " + entry.getKey().enchantmentName + 
                             ChatColor.GRAY + " (Level " + entry.getValue() + "/" + entry.getKey().maxLevel + ")");
                 }
@@ -144,7 +144,7 @@ public class Enchant {
                 }
 
                 try {
-                    CustomEnchantments enchantment = CustomEnchantments.valueOf(args[2].toUpperCase());
+                    CustomEnchantment enchantment = CustomEnchantment.valueOf(args[2].toUpperCase());
                     CustomEnchantmentHandler handler = CustomEnchantmentHandler.getHandler(item);
                     
                     if (handler.hasEnchantment(enchantment)) {

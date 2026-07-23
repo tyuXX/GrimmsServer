@@ -9,7 +9,7 @@ import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.Constructable.Item.CustomEnchantmentHandler;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerLevelHandler;
-import org.gsdistance.grimmsServer.Data.CustomEnchantments;
+import org.gsdistance.grimmsServer.Data.CustomEnchantment;
 import org.gsdistance.grimmsServer.Data.Player.PlayerInventoryData;
 import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.GrimmsServer;
@@ -127,7 +127,7 @@ public class EntityDeathEvent {
                     ItemStack item = entry.getValue();
                     if (item != null) {
                         CustomEnchantmentHandler enchantHandler = CustomEnchantmentHandler.getHandler(item);
-                        if (enchantHandler.hasEnchantment(CustomEnchantments.SOULBOUND)) {
+                        if (enchantHandler.hasEnchantment(CustomEnchantment.SOULBOUND)) {
                             inventoryData.markSoulboundItemStack(entry.getKey(), item, "inventory");
                         }
                     }
@@ -138,7 +138,7 @@ public class EntityDeathEvent {
                     ItemStack item = armor[i];
                     if (item != null) {
                         CustomEnchantmentHandler enchantHandler = CustomEnchantmentHandler.getHandler(item);
-                        if (enchantHandler.hasEnchantment(CustomEnchantments.SOULBOUND)) {
+                        if (enchantHandler.hasEnchantment(CustomEnchantment.SOULBOUND)) {
                             inventoryData.markSoulboundItemStack(i, item, "armor");
                         }
                     }
@@ -149,7 +149,7 @@ public class EntityDeathEvent {
                     ItemStack item = extra[i];
                     if (item != null) {
                         CustomEnchantmentHandler enchantHandler = CustomEnchantmentHandler.getHandler(item);
-                        if (enchantHandler.hasEnchantment(CustomEnchantments.SOULBOUND)) {
+                        if (enchantHandler.hasEnchantment(CustomEnchantment.SOULBOUND)) {
                             inventoryData.markSoulboundItemStack(i, item, "extra");
                         }
                     }

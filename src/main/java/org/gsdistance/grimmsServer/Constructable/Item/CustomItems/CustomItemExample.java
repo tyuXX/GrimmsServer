@@ -1,9 +1,13 @@
-package org.gsdistance.grimmsServer.Constructable.Item;
+package org.gsdistance.grimmsServer.Constructable.Item.CustomItems;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
+import org.gsdistance.grimmsServer.Constructable.Item.CustomItem;
+import org.gsdistance.grimmsServer.Constructable.Item.CustomItemHandler;
+import org.gsdistance.grimmsServer.Constructable.Item.CustomItemRegistry;
 
 /**
  * Example custom item implementation showing how to create and register custom items.
@@ -21,7 +25,9 @@ public class CustomItemExample extends CustomItem {
         ItemMeta meta = getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.GOLD + "Custom Example Item");
-            meta.setCustomModelData(1001); // Optional: Set custom model data for resource packs
+            CustomModelDataComponent component = meta.getCustomModelDataComponent();
+            component.setFloats(java.util.List.of(1001.0f));
+            meta.setCustomModelDataComponent(component);
             setItemMeta(meta);
         }
         

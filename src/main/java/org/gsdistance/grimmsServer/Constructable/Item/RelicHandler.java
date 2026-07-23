@@ -29,18 +29,6 @@ public class RelicHandler {
         return isRelic != null && isRelic;
     }
 
-    /**
-     * Migrates existing relics to the new CustomItem system.
-     * Call this during plugin startup to update legacy relics.
-     */
-    public static void migrateRelicToCustomItem(ItemStack item) {
-        if (isRelic(item) && !CustomItemHandler.isCustomItem(item)) {
-            CustomItemHandler customHandler = CustomItemHandler.createHandler(item);
-            String relicType = getRelicHandler(item).getRelicType();
-            customHandler.setCustomItemId("relic_" + relicType);
-        }
-    }
-
     public static RelicHandler getRelicHandler(ItemStack item) {
         return new RelicHandler(item);
     }

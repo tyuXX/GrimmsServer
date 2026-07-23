@@ -30,6 +30,12 @@ public class GUtilBaseCommand implements CommandExecutor {
                     }
                     return false;
                 }
+                case "givecustomitem" -> {
+                    if (sender instanceof Player player) {
+                        return GiveCustomItem.subCommand(player, args);
+                    }
+                    return false;
+                }
                 case "capability" -> {
                     if (sender instanceof Player player) {
                         return Capability.subCommand(player, args);

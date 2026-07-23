@@ -78,6 +78,7 @@ public class EventRegistry implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         org.gsdistance.grimmsServer.Events.Listeners.PlayerInteractEvent.Event(event);
+        GunFireEvent.Event(event);
     }
 
     @EventHandler
