@@ -1,7 +1,6 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.block.Action;

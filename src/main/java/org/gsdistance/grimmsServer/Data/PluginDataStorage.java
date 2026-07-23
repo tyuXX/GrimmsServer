@@ -74,7 +74,7 @@ public class PluginDataStorage {
             try {
                 writeFile.createNewFile();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to create file: " + writeFile.getPath(), e);
             }
         }
 
@@ -85,6 +85,7 @@ public class PluginDataStorage {
         } catch (IOException e) {
             this.plugin.getLogger().warning("Failed to save data to " + writeFile.getPath());
             GrimmsServer.logger.log(Level.WARNING, "Failed to save data to " + writeFile.getPath(), e);
+            throw new RuntimeException("Failed to save data to " + writeFile.getPath(), e);
         }
     }
 

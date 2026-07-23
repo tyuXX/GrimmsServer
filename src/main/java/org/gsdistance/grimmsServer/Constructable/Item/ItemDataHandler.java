@@ -7,6 +7,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.gsdistance.grimmsServer.GrimmsServer;
@@ -26,7 +27,22 @@ public class ItemDataHandler {
     }
 
     public <T> T getItemNBTData(String key, PersistentDataType<?, T> type) {
-        return this.item.getItemMeta() != null && this.item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(this.plugin, key), type) ? this.item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(this.plugin, key), type) : null;
+        if (this.item == null || !this.item.hasItemMeta()) {
+            return null;
+        }
+        ItemMeta meta = this.item.getItemMeta();
+        if (meta == null) {
+            return null;
+        }
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+        if (container == null) {
+            return null;
+        }
+        NamespacedKey namespacedKey = new NamespacedKey(this.plugin, key);
+        if (!container.has(namespacedKey, type)) {
+            return null;
+        }
+        return container.get(namespacedKey, type);
     }
 
     public <T> void setItemNBTData(String key, T value, PersistentDataType<?, T> type) {

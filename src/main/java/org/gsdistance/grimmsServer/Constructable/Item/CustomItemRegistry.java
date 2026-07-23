@@ -22,6 +22,9 @@ public class CustomItemRegistry {
     }
 
     public static CustomItem createCustomItem(String itemId, ItemStack itemStack) {
+        if (itemStack == null) {
+            throw new IllegalArgumentException("ItemStack cannot be null");
+        }
         Function<ItemStack, CustomItem> constructor = itemConstructors.get(itemId);
         if (constructor == null) {
             throw new IllegalArgumentException("No custom item registered with ID " + itemId);

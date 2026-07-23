@@ -2,7 +2,6 @@ package org.gsdistance.grimmsServer.Stats;
 
 import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
-import org.gsdistance.grimmsServer.Data.Player.PlayerTitleChecker;
 import org.gsdistance.grimmsServer.Shared;
 
 import java.util.HashMap;

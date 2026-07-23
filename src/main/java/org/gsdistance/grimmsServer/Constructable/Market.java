@@ -1,6 +1,5 @@
 package org.gsdistance.grimmsServer.Constructable;
 
-import com.google.gson.Gson;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -12,6 +11,7 @@ import org.gsdistance.grimmsServer.Data.Market.MarketBaseValues;
 import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,10 +45,10 @@ public class Market {
             PlayerStats playerStats = PlayerStats.getPlayerStats(player);
             this.items.putIfAbsent(itemStack.getType().getKey().getKey(), 0L);
             long initialAmount = this.items.get(itemStack.getType().getKey().getKey());
-            double sold = 0.0;
+            BigDecimal sold = BigDecimal.ZERO;
 
             for (int i = 0; i < itemStack.getAmount(); ++i) {
-                sold += this.getISPriceWithAmount(itemStack.getType(), itemStack.getEnchantments(), initialAmount + i);
+                sold = sold.add(BigDecimal.valueOf(this.getISPriceWithAmount(itemStack.getType(), itemStack.getEnchantments(), initialAmount + i)));
             }
 
             this.items.put(itemStack.getType().getKey().getKey(), initialAmount + (long) itemStack.getAmount());
@@ -56,9 +56,11 @@ public class Market {
                 this.enchantments.putIfAbsent(enchantment.getName(), 0L);
                 this.enchantments.compute(enchantment.getName(), (k, initialEnchantmentAmount) -> initialEnchantmentAmount + (long) itemStack.getAmount());
             }
-            playerStats.setStat("money", playerStats.getStat("money", Double.class) + sold);
+            double currentMoney = playerStats.getStat("money", Double.class);
+            double newMoney = currentMoney + sold.doubleValue();
+            playerStats.setStat("money", newMoney);
             player.getInventory().removeItem(itemStack);
-            return sold;
+            return sold.doubleValue();
         }
     }
 
@@ -116,25 +118,25 @@ public class Market {
             long initialAmount = this.items.get(item.getKey().getKey());
 
             // Calculate total buy cost (prices at current market state, then decreasing amounts)
-            double totalBuyCost = 0.0;
+            BigDecimal totalBuyCost = BigDecimal.ZERO;
             for (int i = 0; i < amount; ++i) {
-                totalBuyCost += this.getPriceWithAmount(item, initialAmount - i);
+                totalBuyCost = totalBuyCost.add(BigDecimal.valueOf(this.getPriceWithAmount(item, initialAmount - i)));
             }
 
             // Add a 50% tax to ensure buy cost is always significantly higher than any potential sell revenue
-            double tax = totalBuyCost * 0.5;
-            double totalCostWithTax = totalBuyCost + tax;
+            BigDecimal tax = totalBuyCost.multiply(BigDecimal.valueOf(0.5));
+            BigDecimal totalCostWithTax = totalBuyCost.add(tax);
 
-            Double money = PlayerStats.getPlayerStats(player).getStat("money", Double.class);
-            if (!(money >= totalCostWithTax)) {
+            double money = PlayerStats.getPlayerStats(player).getStat("money", Double.class);
+            if (!(money >= totalCostWithTax.doubleValue())) {
                 return 0.0F;
             }
 
-            PlayerStats.getPlayerStats(player).setStat("money", money - totalCostWithTax);
+            PlayerStats.getPlayerStats(player).setStat("money", money - totalCostWithTax.doubleValue());
             this.items.put(item.getKey().getKey(), initialAmount - amount);
             player.getInventory().addItem(new ItemStack(item, amount));
 
-            return totalCostWithTax;
+            return totalCostWithTax.doubleValue();
         }
     }
 

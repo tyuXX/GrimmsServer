@@ -14,6 +14,8 @@ import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
+
 public class DepositMoney implements CommandExecutor {
     public DepositMoney() {
     }
@@ -40,13 +42,15 @@ public class DepositMoney implements CommandExecutor {
         }
 
         PlayerStats playerStats = PlayerStats.getPlayerStats((Player) sender);
-        double totalValue = banknoteValue * itemStack.getAmount();
+        BigDecimal banknoteValueBD = BigDecimal.valueOf(banknoteValue);
+        BigDecimal totalValue = banknoteValueBD.multiply(BigDecimal.valueOf(itemStack.getAmount()));
         double currentBalance = playerStats.getStat("money", Double.class);
+        BigDecimal newBalance = BigDecimal.valueOf(currentBalance).add(totalValue);
 
-        playerStats.setStat("money", currentBalance + totalValue);
+        playerStats.setStat("money", newBalance.doubleValue());
         ((Player) sender).getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 
-        sender.sendMessage(ChatColor.GREEN + "Deposited " + ChatColor.GOLD + Shared.formatNumber(totalValue) + ChatColor.GREEN + ". New balance: " + ChatColor.GOLD + Shared.formatNumber(currentBalance + totalValue));
+        sender.sendMessage(ChatColor.GREEN + "Deposited " + ChatColor.GOLD + Shared.formatNumber(totalValue.doubleValue()) + ChatColor.GREEN + ". New balance: " + ChatColor.GOLD + Shared.formatNumber(newBalance.doubleValue()));
         return true;
     }
 }

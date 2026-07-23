@@ -6,7 +6,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.gsdistance.grimmsServer.Constructable.Item.CustomItem;
 import org.gsdistance.grimmsServer.Constructable.Item.CustomItemHandler;
-import org.gsdistance.grimmsServer.Constructable.Item.ItemDataHandler;
 
 public class GunItem extends CustomItem {
     private final String gunType;

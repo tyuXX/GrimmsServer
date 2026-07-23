@@ -27,10 +27,31 @@ public class ChunkMetadata {
     }
 
     public static ChunkMetadata getChunkMetadata(Chunk chunk) {
-        return GrimmsServer.pds.retrieveData(chunk.getX() + "_" + chunk.getZ() + ".json", "chunkMetadata" + File.separator + chunk.getWorld().getName(), ChunkMetadata.class);
+        String worldName = chunk.getWorld().getName();
+        if (!isValidWorldName(worldName)) {
+            GrimmsServer.logger.warning("Invalid world name: " + worldName);
+            return null;
+        }
+        return GrimmsServer.pds.retrieveData(chunk.getX() + "_" + chunk.getZ() + ".json", "chunkMetadata" + File.separator + worldName, ChunkMetadata.class);
     }
 
     public void saveToFile() {
+        if (!isValidWorldName(this.world)) {
+            GrimmsServer.logger.warning("Invalid world name for chunk metadata: " + this.world);
+            return;
+        }
         GrimmsServer.pds.saveData(this, ChunkMetadata.class, this.x + "_" + this.z + ".json", "chunkMetadata" + File.separator + this.world);
+    }
+
+    private static boolean isValidWorldName(String worldName) {
+        if (worldName == null || worldName.isEmpty()) {
+            return false;
+        }
+        // Prevent path traversal attacks
+        if (worldName.contains("..") || worldName.contains("/") || worldName.contains("\\") || worldName.contains(":")) {
+            return false;
+        }
+        // Only allow alphanumeric characters, underscores, and hyphens
+        return worldName.matches("^[a-zA-Z0-9_-]+$");
     }
 }

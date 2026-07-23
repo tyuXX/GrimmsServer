@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.gsdistance.grimmsServer.Constructable.Item.CustomEnchantmentHandler;
 import org.gsdistance.grimmsServer.Constructable.Item.ItemLevelHandler;
-import org.gsdistance.grimmsServer.Constructable.Item.RelicHandler;
 import org.gsdistance.grimmsServer.Data.CustomEnchantment;
 import org.gsdistance.grimmsServer.Data.Market.EnchantBaseValues;
 import org.gsdistance.grimmsServer.Shared;

@@ -3,11 +3,11 @@ package org.gsdistance.grimmsServer.Data;
 import org.gsdistance.grimmsServer.Constructable.Data;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PerSessionDataStorage {
-    public static final Map<String, Data<Object, Type>> dataStore = new HashMap();
+    public static final Map<String, Data<Object, Type>> dataStore = new ConcurrentHashMap<>();
     public static Double tpCost = (double) 500.0F;
 
     public PerSessionDataStorage() {

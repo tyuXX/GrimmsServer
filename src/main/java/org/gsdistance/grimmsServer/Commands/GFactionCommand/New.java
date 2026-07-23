@@ -28,16 +28,31 @@ public class New {
         } else if (args.length < 3) {
             return false;
         } else {
+            String factionId = args[1];
+            String factionName = args[2];
+            
+            // Validate faction ID length
+            if (factionId.length() < 3 || factionId.length() > 16) {
+                player.sendMessage(ChatColor.RED + "Faction id must be between 3 and 16 characters.");
+                return false;
+            }
+            
+            // Validate faction name length
+            if (factionName.length() < 2 || factionName.length() > 32) {
+                player.sendMessage(ChatColor.RED + "Faction name must be between 2 and 32 characters.");
+                return false;
+            }
+            
             Faction[] factions = GrimmsServer.pds.retrieveAllData(Faction.class, "factions");
-            if (factions != null && Arrays.stream(factions).anyMatch((factionx) -> factionx.id.equalsIgnoreCase(args[1]))) {
+            if (factions != null && Arrays.stream(factions).anyMatch((factionx) -> factionx.id.equalsIgnoreCase(factionId))) {
                 player.sendMessage(ChatColor.RED + "Faction already exists with this id.");
                 return false;
-            } else if (!args[1].matches("[a-zA-Z0-9_]+")) {
+            } else if (!factionId.matches("[a-zA-Z0-9_]+")) {
                 player.sendMessage(ChatColor.RED + "Faction id can only contain letters, numbers and underscores.");
                 return false;
             } else {
-                Faction faction = new Faction(args[1], new ArrayList(List.of(new Data(player.getUniqueId(), FactionRank.LEADER))));
-                faction.name = args[2];
+                Faction faction = new Faction(factionId, new ArrayList(List.of(new Data(player.getUniqueId(), FactionRank.LEADER))));
+                faction.name = factionName;
                 faction.saveToFile();
                 playerMetadata.factionUUID = faction.uuid;
                 playerMetadata.saveToPDS();

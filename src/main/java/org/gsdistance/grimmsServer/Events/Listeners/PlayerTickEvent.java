@@ -17,13 +17,18 @@ import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStatLeaderBoard;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayerTickEvent {
-    private static final List<Player> magnetPlayers = new ArrayList();
-    private static final Map<Player, Integer> saturationPerkPlayers = new HashMap();
-    private static final Map<UUID, Long> playerLoginTimes = new HashMap();
-    private static final Map<UUID, Long> lastPaycheckTimes = new HashMap();
+    private static final List<Player> magnetPlayers = new CopyOnWriteArrayList<>();
+    private static final Map<Player, Integer> saturationPerkPlayers = new ConcurrentHashMap<>();
+    private static final Map<UUID, Long> playerLoginTimes = new ConcurrentHashMap<>();
+    private static final Map<UUID, Long> lastPaycheckTimes = new ConcurrentHashMap<>();
+    private static final Map<UUID, Long> lastTitleCheckTimes = new ConcurrentHashMap<>();
     private static final long LOGIN_KICK_TIMEOUT_MS = 60000L; // 60 seconds
     private static final long TITLE_CHECK_INTERVAL_MS = 50000L; // ~50 seconds (was 1000 ticks)
     private static final long PAYCHECK_INTERVAL_MS = 1200000L; // ~20 minutes (was 24000 ticks)
@@ -69,12 +74,14 @@ public class PlayerTickEvent {
         }
 
         // Title checks (was every 1000 ticks, now every ~50 seconds)
-        if ((currentTime - loginTime) % TITLE_CHECK_INTERVAL_MS < 50L) {
+        long lastTitleCheckTime = lastTitleCheckTimes.getOrDefault(playerId, 0L);
+        if ((currentTime - lastTitleCheckTime) >= TITLE_CHECK_INTERVAL_MS) {
             PlayerStatLeaderBoard.getPlayerStatLeaderBoard().checkPlayer(player);
             PlayerTitleChecker.checkForMoney(player);
             PlayerTitleChecker.checkTitles(player);
             PlayerTitleChecker.checkForBlockBreaks(player);
             PlayerTitleChecker.checkForTotalKills(player);
+            lastTitleCheckTimes.put(playerId, currentTime);
         }
 
         // Paycheck (was every 24000 ticks, now every ~20 minutes)
@@ -114,8 +121,12 @@ public class PlayerTickEvent {
     }
 
     public static void onPlayerQuit(Player player) {
-        playerLoginTimes.remove(player.getUniqueId());
-        lastPaycheckTimes.remove(player.getUniqueId());
+        UUID playerId = player.getUniqueId();
+        playerLoginTimes.remove(playerId);
+        lastPaycheckTimes.remove(playerId);
+        lastTitleCheckTimes.remove(playerId);
+        magnetPlayers.remove(player);
+        saturationPerkPlayers.remove(player);
         AfkManager.onPlayerQuit(player);
     }
 

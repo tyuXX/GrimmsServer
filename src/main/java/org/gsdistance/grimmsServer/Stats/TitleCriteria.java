@@ -1,7 +1,6 @@
 package org.gsdistance.grimmsServer.Stats;
 
 import org.bukkit.entity.Player;
-import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 import java.util.function.Predicate;
 

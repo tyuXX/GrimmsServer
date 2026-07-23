@@ -6,12 +6,17 @@ import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public class AfkManager {
-    private static final Map<UUID, Long> lastActivityTimes = new HashMap<>();
-    private static final Set<UUID> afkPlayers = new HashSet<>();
-    private static final Map<UUID, Long> afkSinceTimes = new HashMap<>();
+    private static final Map<UUID, Long> lastActivityTimes = new ConcurrentHashMap<>();
+    private static final Set<UUID> afkPlayers = new CopyOnWriteArraySet<>();
+    private static final Map<UUID, Long> afkSinceTimes = new ConcurrentHashMap<>();
 
     public AfkManager() {
     }
