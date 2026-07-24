@@ -6,8 +6,6 @@ import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class Sethome {
-    public Sethome() {
-    }
 
     public static boolean SubCommand(Player player, String[] args) {
         String homeName = "home";

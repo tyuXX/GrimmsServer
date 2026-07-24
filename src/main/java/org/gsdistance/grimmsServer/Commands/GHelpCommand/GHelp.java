@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GHelp implements CommandExecutor {
-    public GHelp() {
-    }
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length < 1) {

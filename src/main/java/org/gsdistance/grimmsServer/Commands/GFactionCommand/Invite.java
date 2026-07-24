@@ -12,8 +12,6 @@ import org.gsdistance.grimmsServer.Data.FactionRank;
 import java.util.UUID;
 
 public class Invite {
-    public Invite() {
-    }
 
     public static boolean subCommand(Player player, String[] args) {
         if (args.length < 2) {

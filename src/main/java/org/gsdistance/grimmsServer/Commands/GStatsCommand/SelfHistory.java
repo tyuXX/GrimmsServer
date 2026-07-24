@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SelfHistory {
-    public SelfHistory() {
-    }
 
     public static boolean subCommand(Player player, String[] args) {
         if (!player.hasPermission("grimmsserver.stats.self")) {

@@ -4,8 +4,6 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 
 public class Homes {
-    public Homes() {
-    }
 
     public static boolean SubCommand(Player player, String[] args) {
         PlayerMetadata meta = PlayerMetadata.getPlayerMetadata(player);

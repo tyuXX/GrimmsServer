@@ -8,8 +8,6 @@ import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Shared;
 
 public class Buy {
-    public Buy() {
-    }
 
     public static boolean SubCommand(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {

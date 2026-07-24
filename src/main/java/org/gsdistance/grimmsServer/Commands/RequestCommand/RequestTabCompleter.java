@@ -10,8 +10,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class RequestTabCompleter implements TabCompleter {
-    public RequestTabCompleter() {
-    }
 
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         Object requestData = PerSessionDataStorage.dataStore.get("requestData-" + sender.getName()).key();

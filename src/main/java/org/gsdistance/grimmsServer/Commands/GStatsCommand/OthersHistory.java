@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class OthersHistory {
-    public OthersHistory() {
-    }
 
     public static boolean subCommand(Player player, String[] args) {
         if (!player.hasPermission("grimmsserver.stats.other")) {

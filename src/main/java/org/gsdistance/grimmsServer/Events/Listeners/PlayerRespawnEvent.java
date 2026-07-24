@@ -34,7 +34,7 @@ public class PlayerRespawnEvent {
         PlayerInventoryData inventoryData = PlayerInventoryData.getPlayerInventoryData(player.getUniqueId());
 
         // Check if there are soulbound items to restore
-        if (!inventoryData.soulboundInventoryContents.isEmpty() || 
+        if ((inventoryData.soulboundInventoryContents != null && !inventoryData.soulboundInventoryContents.isEmpty()) || 
             hasNonNullItems(inventoryData.soulboundArmorContents) || 
             hasNonNullItems(inventoryData.soulboundExtraContents)) {
             

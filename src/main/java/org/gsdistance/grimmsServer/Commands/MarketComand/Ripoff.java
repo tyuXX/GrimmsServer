@@ -11,8 +11,6 @@ import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class Ripoff {
-    public Ripoff() {
-    }
 
     public static boolean SubCommand(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {

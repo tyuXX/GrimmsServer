@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Capability {
-    public Capability() {
-    }
 
     public static boolean subCommand(Player player, String[] args) {
         if (!player.hasPermission("grimmsserver.util.admin")) {

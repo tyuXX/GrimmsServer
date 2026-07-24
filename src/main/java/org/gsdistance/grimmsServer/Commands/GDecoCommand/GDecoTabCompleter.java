@@ -14,9 +14,6 @@ import java.util.List;
 public class GDecoTabCompleter implements TabCompleter {
     public static final List<String> subCommands = List.of("selectTitle", "clearTitle", "togglePrestigeDeco");
 
-    public GDecoTabCompleter() {
-    }
-
     @Nullable
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player player) {

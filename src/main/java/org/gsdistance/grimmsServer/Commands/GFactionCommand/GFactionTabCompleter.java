@@ -18,9 +18,6 @@ import java.util.stream.Collectors;
 public class GFactionTabCompleter implements TabCompleter {
     private static final List<String> SUBCOMMANDS = Arrays.asList("invite", "join", "leave", "kick", "info", "new", "claim", "unclaim", "setrank", "unclaimall", "sethome", "home", "chat", "showclaims");
 
-    public GFactionTabCompleter() {
-    }
-
     @Nullable
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {

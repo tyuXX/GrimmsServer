@@ -5,8 +5,6 @@ import org.gsdistance.grimmsServer.Constructable.Location;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 
 public class TpHome {
-    public TpHome() {
-    }
 
     public static boolean SubCommand(Player player, String[] args) {
         String homeName = "home";

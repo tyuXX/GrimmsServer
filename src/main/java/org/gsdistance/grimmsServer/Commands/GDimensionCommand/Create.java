@@ -8,8 +8,6 @@ import org.gsdistance.grimmsServer.Indexers.DynamicDimensionGen;
 import java.util.Arrays;
 
 public class Create {
-    public Create() {
-    }
 
     public static boolean subCommand(CommandSender player, String[] args) {
         try {

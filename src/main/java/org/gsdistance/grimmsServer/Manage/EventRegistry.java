@@ -105,7 +105,7 @@ public class EventRegistry implements Listener {
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         org.gsdistance.grimmsServer.Events.Listeners.EntityDamageByEntityEvent.Event(event);
         if (event.getEntity().getType() != org.bukkit.entity.EntityType.PLAYER) {
-            callEvent(new CustomEntityDamageByEntityRegister());
+            callEvent(new CustomEntityDamageByEntityRegister(event));
         }
     }
 

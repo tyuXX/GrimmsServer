@@ -13,8 +13,6 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 import java.util.UUID;
 
 public class Join {
-    public Join() {
-    }
 
     public static boolean subCommand(Player player, String[] args) {
         if (args.length < 2) {

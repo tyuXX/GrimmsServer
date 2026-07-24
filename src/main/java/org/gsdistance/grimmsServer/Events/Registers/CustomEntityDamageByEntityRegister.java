@@ -6,8 +6,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class CustomEntityDamageByEntityRegister extends Event {
     private static final HandlerList handlers = new HandlerList();
+    private final org.bukkit.event.entity.EntityDamageByEntityEvent originalEvent;
 
-    public CustomEntityDamageByEntityRegister() {
+    public CustomEntityDamageByEntityRegister(org.bukkit.event.entity.EntityDamageByEntityEvent originalEvent) {
+        this.originalEvent = originalEvent;
+    }
+
+    public org.bukkit.event.entity.EntityDamageByEntityEvent getOriginalEvent() {
+        return originalEvent;
     }
 
     @NotNull

@@ -10,8 +10,6 @@ import org.gsdistance.grimmsServer.Constructable.Entity.EntityMetadata;
 import org.gsdistance.grimmsServer.Manage.CustomEntityManager;
 
 public class LevelEntity {
-    public LevelEntity() {
-    }
 
     public static boolean subCommand(CommandSender sender, String[] args) {
         if (!sender.hasPermission("grimmsserver.util.admin")) {

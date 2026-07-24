@@ -7,8 +7,6 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 public class Tp {
-    public Tp() {
-    }
 
     public static boolean subCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player player) {

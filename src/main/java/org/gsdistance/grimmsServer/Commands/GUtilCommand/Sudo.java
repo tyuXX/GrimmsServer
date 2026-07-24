@@ -6,8 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Sudo {
-    public Sudo() {
-    }
 
     public static boolean subCommand(CommandSender sender, String[] args) {
         if (!sender.hasPermission("grimmsserver.util.admin")) {

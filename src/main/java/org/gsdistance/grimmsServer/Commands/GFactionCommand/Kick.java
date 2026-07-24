@@ -6,8 +6,6 @@ import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 
 public class Kick {
-    public Kick() {
-    }
 
     public static boolean subCommand(Player player, String[] args) {
         if (args.length < 2) {

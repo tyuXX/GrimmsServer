@@ -10,9 +10,6 @@ import java.util.Map;
 
 public class InventoryRestore {
 
-    public InventoryRestore() {
-    }
-
     public static boolean subCommand(Player player, String[] args) {
         if (!player.hasPermission("grimmsserver.util.admin")) {
             player.sendMessage("You do not have permission to use this command.");

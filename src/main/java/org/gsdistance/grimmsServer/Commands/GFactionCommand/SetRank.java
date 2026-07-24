@@ -12,9 +12,6 @@ import java.util.stream.Collectors;
 
 public class SetRank {
 
-    public SetRank() {
-    }
-
     public static boolean subCommand(Player player, String[] args) {
         // Guard: Ensure minimum argument length
         if (args.length < 3) {

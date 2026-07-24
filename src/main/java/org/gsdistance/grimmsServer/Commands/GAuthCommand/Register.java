@@ -8,8 +8,6 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import java.nio.charset.StandardCharsets;
 
 public class Register {
-    public Register() {
-    }
 
     public static boolean subCommand(Player player, String pass) {
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);

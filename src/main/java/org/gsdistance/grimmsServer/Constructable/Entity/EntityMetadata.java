@@ -27,6 +27,7 @@ public class EntityMetadata {
     public int level = 1;
     public int prestige = 1;
     public String originalName;
+    public boolean levelingApplied = false;
 
     public EntityMetadata(Entity entity) {
         this.uuid = entity.getUniqueId();
@@ -52,6 +53,11 @@ public class EntityMetadata {
         GrimmsServer.pds.saveData(this, EntityMetadata.class, this.uuid.toString() + ".json", "entityMetadata");
     }
 
+    public void deleteFromFile() {
+        GrimmsServer.pds.deleteData(this.uuid.toString() + ".json", "entityMetadata");
+        PerSessionDataStorage.dataStore.remove("entityMetadata-" + this.uuid);
+    }
+
     public static EntityMetadata getEntityMetadata(Entity entity) {
         if (PerSessionDataStorage.dataStore.containsKey("entityMetadata-" + entity.getUniqueId())) {
             return (EntityMetadata) PerSessionDataStorage.dataStore.get("entityMetadata-" + entity.getUniqueId()).key();
@@ -66,20 +72,23 @@ public class EntityMetadata {
                 // Apply levelling when metadata is first created
                 if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER) {
                     applyLevelling((LivingEntity) entity, metadata);
+                    metadata.levelingApplied = true;
                 }
+                metadata.saveToFile();
             } else {
                 String logLevel = ActiveConfig.getConfigValue(ConfigKey.LOG_LEVEL, String.class);
                 if ("Verbose".equalsIgnoreCase(logLevel)) {
                     GrimmsServer.logger.info("Retrieved EntityMetadata for " + entity.getUniqueId());
                 }
-                // Re-apply levelling when metadata is loaded (e.g., after chunk reload)
-                if (entity instanceof LivingEntity && (metadata.level > 1 || metadata.prestige > 1)) {
+                // Only re-apply levelling if it wasn't applied before (e.g., server crash before save)
+                if (entity instanceof LivingEntity && !metadata.levelingApplied && (metadata.level > 1 || metadata.prestige > 1)) {
                     applyLevelling((LivingEntity) entity, metadata);
+                    metadata.levelingApplied = true;
+                    metadata.saveToFile();
                 }
             }
 
             PerSessionDataStorage.dataStore.put("entityMetadata-" + entity.getUniqueId(), Data.of(metadata, EntityMetadata.class));
-            metadata.softSave();
             metadata.logMetadata();
             return metadata;
         }

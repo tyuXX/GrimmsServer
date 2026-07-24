@@ -6,9 +6,6 @@ import org.gsdistance.grimmsServer.Constructable.Item.RelicHandler;
 
 public class Relic {
 
-    public Relic() {
-    }
-
     public static boolean subCommand(Player player, String[] args) {
         // Guard: Permission Check
         if (!player.hasPermission("grimmsserver.util.admin")) {

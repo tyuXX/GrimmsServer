@@ -7,8 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 public class Enderchest {
-    public Enderchest() {
-    }
 
     public static boolean subCommand(CommandSender sender, String[] args) {
         if (!sender.hasPermission("grimmsserver.util.admin")) {

@@ -5,8 +5,6 @@ import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.jetbrains.annotations.NotNull;
 
 public class DelHome {
-    public DelHome() {
-    }
 
     public static boolean SubCommand(Player player, @NotNull String[] args) {
         String homeName = "home";

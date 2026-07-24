@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GDimTabCompleter implements TabCompleter {
-    public GDimTabCompleter() {
-    }
 
     @Nullable
     public java.util.List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

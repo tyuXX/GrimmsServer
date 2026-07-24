@@ -5,8 +5,6 @@ import org.gsdistance.grimmsServer.Constructable.Faction;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 
 public class UnClaim {
-    public UnClaim() {
-    }
 
     public static boolean subCommand(Player player) {
         PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);

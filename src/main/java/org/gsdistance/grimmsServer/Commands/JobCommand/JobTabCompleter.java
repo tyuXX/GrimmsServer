@@ -15,8 +15,6 @@ import java.util.List;
 public class JobTabCompleter implements TabCompleter {
     private static final List<String> SUBCOMMANDS = Arrays.asList("log", "take", "buyedu");
 
-    public JobTabCompleter() {
-    }
 
     @Nullable
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

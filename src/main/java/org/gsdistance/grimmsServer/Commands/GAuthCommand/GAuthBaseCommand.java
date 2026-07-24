@@ -13,8 +13,6 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.jetbrains.annotations.NotNull;
 
 public class GAuthBaseCommand implements CommandExecutor {
-    public GAuthBaseCommand() {
-    }
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 0) {

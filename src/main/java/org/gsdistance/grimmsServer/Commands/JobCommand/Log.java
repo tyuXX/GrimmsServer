@@ -7,10 +7,6 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class Log {
 
-    public Log() {
-    }
-
-    @SuppressWarnings("unchecked")
     public static boolean subCommand(Player player, String[] args) {
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
 

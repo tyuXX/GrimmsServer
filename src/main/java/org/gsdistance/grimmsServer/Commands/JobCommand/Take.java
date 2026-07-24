@@ -6,8 +6,6 @@ import org.gsdistance.grimmsServer.Data.JobTitlesBaseValues;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class Take {
-    public Take() {
-    }
 
     public static boolean subCommand(Player player, String[] args) {
         if (args.length < 2) {

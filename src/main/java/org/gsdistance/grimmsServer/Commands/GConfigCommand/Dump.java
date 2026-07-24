@@ -6,8 +6,6 @@ import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
 
 public class Dump {
-    public Dump() {
-    }
 
     public static boolean subCommand(CommandSender sender) {
         sender.sendMessage(ChatColor.GOLD + "=== Config Dump ===");

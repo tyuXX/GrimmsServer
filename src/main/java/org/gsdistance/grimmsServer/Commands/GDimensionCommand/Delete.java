@@ -4,8 +4,6 @@ import org.bukkit.command.CommandSender;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
 public class Delete {
-    public Delete() {
-    }
 
     public static boolean subCommand(CommandSender player, String[] args) {
         if (args.length < 2) {

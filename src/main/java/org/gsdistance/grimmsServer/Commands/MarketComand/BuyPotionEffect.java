@@ -9,8 +9,6 @@ import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class BuyPotionEffect {
-    public BuyPotionEffect() {
-    }
 
     public static boolean SubCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player player) {

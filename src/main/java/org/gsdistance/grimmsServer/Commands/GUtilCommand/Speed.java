@@ -5,8 +5,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Speed {
-    public Speed() {
-    }
 
     public static boolean subCommand(CommandSender sender, String[] args) {
         if (!sender.hasPermission("grimmsserver.util.admin")) {

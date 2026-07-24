@@ -9,8 +9,6 @@ import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Shared;
 
 public class Stock {
-    public Stock() {
-    }
 
     public static boolean SubCommand(CommandSender sender, String[] args) {
         if (args.length < 2) {

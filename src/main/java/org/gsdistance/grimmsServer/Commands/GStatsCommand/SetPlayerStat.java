@@ -10,8 +10,6 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import org.jetbrains.annotations.NotNull;
 
 public class SetPlayerStat implements CommandExecutor {
-    public SetPlayerStat() {
-    }
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {

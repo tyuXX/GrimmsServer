@@ -8,8 +8,6 @@ import org.gsdistance.grimmsServer.Shared;
 import java.util.logging.Level;
 
 public class Reload {
-    public Reload() {
-    }
 
     public static boolean subCommand() {
         Shared.Broadcast("Reloading config...", null);

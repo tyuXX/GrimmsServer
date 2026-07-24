@@ -6,8 +6,6 @@ import org.bukkit.entity.Player;
 import org.gsdistance.grimmsServer.Shared;
 
 public class Broadcast {
-    public Broadcast() {
-    }
 
     public static boolean subCommand(CommandSender sender, String[] args) {
         if (!sender.hasPermission("grimmsserver.util.admin")) {

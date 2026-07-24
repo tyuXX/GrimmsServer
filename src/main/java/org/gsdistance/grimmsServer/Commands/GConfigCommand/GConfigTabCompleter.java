@@ -13,9 +13,6 @@ import java.util.List;
 public class GConfigTabCompleter implements TabCompleter {
     private static final List<String> SUBCOMMANDS = Arrays.asList("dump", "reload");
 
-    public GConfigTabCompleter() {
-    }
-
     @Nullable
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {

@@ -6,8 +6,6 @@ import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 
 public class SelectTitle {
-    public SelectTitle() {
-    }
 
     public static boolean subCommand(Player player, String title) {
         PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);

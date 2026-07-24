@@ -8,8 +8,6 @@ import org.gsdistance.grimmsServer.GrimmsServer;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class Tp {
-    public Tp() {
-    }
 
     public static boolean SubCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player) {

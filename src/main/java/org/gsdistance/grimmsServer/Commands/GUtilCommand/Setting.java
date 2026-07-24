@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Setting {
-    public Setting() {
-    }
 
     public static boolean subCommand(Player player, String[] args) {
         if (args.length < 2) {

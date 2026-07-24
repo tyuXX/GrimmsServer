@@ -7,8 +7,6 @@ import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 import org.jetbrains.annotations.NotNull;
 
 public class RemoveTitle {
-    public RemoveTitle() {
-    }
 
     public static boolean subCommand(@NotNull CommandSender sender, @NotNull String[] args) {
         if (args.length < 3) {

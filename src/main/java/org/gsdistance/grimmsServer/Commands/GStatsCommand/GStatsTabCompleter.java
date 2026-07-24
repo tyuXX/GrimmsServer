@@ -18,9 +18,6 @@ public class GStatsTabCompleter implements TabCompleter {
     private static final List<String> TIME_RANGES = Arrays.asList("hour", "day", "week", "month", "all");
     private static final List<String> GRAPH_OPTIONS = List.of("largegraph");
 
-    public GStatsTabCompleter() {
-    }
-
     @Nullable
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {

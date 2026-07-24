@@ -35,9 +35,6 @@ public class ItemDataHandler {
             return null;
         }
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        if (container == null) {
-            return null;
-        }
         NamespacedKey namespacedKey = new NamespacedKey(this.plugin, key);
         if (!container.has(namespacedKey, type)) {
             return null;

@@ -27,9 +27,6 @@ public class GUtilTabCompleter implements TabCompleter {
 
     private CommandMap cachedCommandMap;
 
-    public GUtilTabCompleter() {
-    }
-
     private CommandMap getCommandMap() {
         if (cachedCommandMap != null) {
             return cachedCommandMap;

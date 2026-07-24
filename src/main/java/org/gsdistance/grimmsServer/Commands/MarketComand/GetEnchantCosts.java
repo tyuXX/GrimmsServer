@@ -6,8 +6,6 @@ import org.gsdistance.grimmsServer.Data.Market.EnchantBaseValues;
 import org.gsdistance.grimmsServer.Shared;
 
 public class GetEnchantCosts {
-    public GetEnchantCosts() {
-    }
 
     public static boolean SubCommand(CommandSender sender, String[] args) {
         sender.sendMessage("__Enchant costs:");

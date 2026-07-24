@@ -5,8 +5,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class OpenGUI {
-    public OpenGUI() {
-    }
 
     public static boolean SubCommand(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {

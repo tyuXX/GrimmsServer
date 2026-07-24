@@ -9,8 +9,6 @@ import org.gsdistance.grimmsServer.Data.PerSessionDataStorage;
 import org.jetbrains.annotations.NotNull;
 
 public class AcceptRequest implements CommandExecutor {
-    public AcceptRequest() {
-    }
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {

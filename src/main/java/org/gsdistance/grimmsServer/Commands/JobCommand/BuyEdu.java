@@ -5,8 +5,6 @@ import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class BuyEdu {
-    public BuyEdu() {
-    }
 
     public static boolean subCommand(Player player) {
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);

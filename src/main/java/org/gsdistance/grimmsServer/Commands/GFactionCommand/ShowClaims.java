@@ -12,9 +12,6 @@ public class ShowClaims {
     private static final int VISUAL_RADIUS = 3; // Show 3 chunks in each direction
     private static final int CHUNK_SIZE = 16;
 
-    public ShowClaims() {
-    }
-
     public static boolean subCommand(Player player) {
         PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);
         if (playerMetadata.factionUUID == null) {

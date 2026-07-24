@@ -9,8 +9,6 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import java.nio.charset.StandardCharsets;
 
 public class Login {
-    public Login() {
-    }
 
     public static boolean subCommand(Player player, String pass) {
         if (GAuthBaseCommand.isLoggedIn(player)) {

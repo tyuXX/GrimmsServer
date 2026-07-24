@@ -10,9 +10,6 @@ import java.util.Map;
 
 public class Enchant {
 
-    public Enchant() {
-    }
-
     public static boolean subCommand(Player player, String[] args) {
         // Guard: Permission Check
         if (!player.hasPermission("grimmsserver.util.admin")) {

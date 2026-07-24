@@ -7,8 +7,6 @@ import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.FactionRank;
 
 public class Leave {
-    public Leave() {
-    }
 
     public static boolean subCommand(Player player) {
         PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);

@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MarketTabCompleter implements TabCompleter {
-    public MarketTabCompleter() {
-    }
 
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {

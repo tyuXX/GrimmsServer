@@ -14,9 +14,11 @@ import org.gsdistance.grimmsServer.Stats.PlayerStats;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Market {
     public double NegMarketSaturation = 0.0;
+    public double totalValue = 0.0;
     public final Map<String, Long> items = new HashMap<>();
     public final Map<String, Long> enchantments = new HashMap<>();
     public double serverLevels = 0.0;
@@ -148,11 +150,7 @@ public class Market {
             if (material != null) {
                 long amount = this.items.get(string);
                 Double price = MarketBaseValues.marketBaseValues.get(material);
-                if (price != null) {
-                    totalValue += (double) amount * price;
-                } else {
-                    totalValue += (double) amount * 0.25;
-                }
+                totalValue += (double) amount * Objects.requireNonNullElse(price, 0.25);
             }
         }
 
@@ -161,14 +159,11 @@ public class Market {
             if (enchantment != null) {
                 long amount = this.enchantments.get(string);
                 Double price = EnchantBaseValues.enchantBaseValues.get(enchantment) / 10;
-                if (price != null) {
-                    totalValue += (double) amount * price;
-                } else {
-                    totalValue += (double) amount * 0.25;
-                }
+                totalValue += (double) amount * Objects.requireNonNullElse(price, 0.25);
             }
         }
 
+        this.totalValue = totalValue * Math.cbrt(serverLevels + 1) * Math.sqrt(serverPrestiges + 1);
         this.NegMarketSaturation = Math.floor(Math.sqrt(Math.sqrt(totalValue))) * Math.cbrt(serverLevels + 1) * Math.sqrt(serverPrestiges + 1);
     }
 

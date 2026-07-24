@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GHelpTabCompleter implements TabCompleter {
-    public GHelpTabCompleter() {
-    }
 
     @Nullable
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

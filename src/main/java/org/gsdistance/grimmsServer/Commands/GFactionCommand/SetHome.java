@@ -8,8 +8,6 @@ import org.gsdistance.grimmsServer.Constructable.Player.PlayerMetadata;
 import org.gsdistance.grimmsServer.Data.FactionRank;
 
 public class SetHome {
-    public SetHome() {
-    }
 
     public static boolean subCommand(Player player) {
         PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);

@@ -12,8 +12,6 @@ import org.gsdistance.grimmsServer.Shared;
 import org.gsdistance.grimmsServer.Stats.PlayerStats;
 
 public class BuyCustomEnchantment {
-    public BuyCustomEnchantment() {
-    }
 
     public static boolean SubCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player player) {

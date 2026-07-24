@@ -17,8 +17,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class New {
-    public New() {
-    }
 
     public static boolean subCommand(Player player, String[] args) {
         PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);

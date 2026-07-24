@@ -7,8 +7,6 @@ import org.gsdistance.grimmsServer.Stats.PlayerTitles;
 import org.jetbrains.annotations.NotNull;
 
 public class AddTitle {
-    public AddTitle() {
-    }
 
     public static boolean subCommand(@NotNull CommandSender sender, @NotNull String[] args) {
         if (args.length < 3) {

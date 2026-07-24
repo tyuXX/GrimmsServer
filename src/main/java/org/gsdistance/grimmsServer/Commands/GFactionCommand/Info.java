@@ -10,8 +10,6 @@ import org.gsdistance.grimmsServer.Data.FactionRank;
 import java.util.UUID;
 
 public class Info {
-    public Info() {
-    }
 
     public static boolean subCommand(Player player) {
         PlayerMetadata playerMetadata = PlayerMetadata.getPlayerMetadata(player);

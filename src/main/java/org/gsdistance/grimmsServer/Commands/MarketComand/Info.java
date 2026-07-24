@@ -5,11 +5,6 @@ import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Shared;
 
 public class Info {
-
-    public Info() {
-    }
-
-    @SuppressWarnings("unchecked")
     public static boolean subCommand(Player player) {
         Market market = Market.getMarket();
 
@@ -22,9 +17,7 @@ public class Info {
 
         player.sendMessage("Total item count: " + Shared.formatNumber(totalItemCount));
 
-        double totalValue = Math.pow(market.NegMarketSaturation, 4);
-
-        player.sendMessage("Total value: " + Shared.formatNumber(totalValue));
+        player.sendMessage("Total value: " + Shared.formatNumber(market.totalValue));
         player.sendMessage("Unique item count: " + market.items.size());
         return true;
     }

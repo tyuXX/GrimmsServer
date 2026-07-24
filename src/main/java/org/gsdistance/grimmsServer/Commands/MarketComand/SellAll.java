@@ -11,8 +11,6 @@ import org.gsdistance.grimmsServer.Constructable.Market;
 import org.gsdistance.grimmsServer.Shared;
 
 public class SellAll {
-    public SellAll() {
-    }
 
     public static boolean SubCommand(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {

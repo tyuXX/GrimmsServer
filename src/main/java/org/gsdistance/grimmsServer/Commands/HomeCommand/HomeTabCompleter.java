@@ -14,9 +14,6 @@ import java.util.List;
 public class HomeTabCompleter implements TabCompleter {
     private static final List<String> SUBCOMMANDS = Arrays.asList("sethome", "tp", "homes", "delhome");
 
-    public HomeTabCompleter() {
-    }
-
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
             List<String> result = new ArrayList();

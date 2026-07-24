@@ -12,9 +12,6 @@ import java.util.List;
 public class GAuthTabCompleter implements TabCompleter {
     public static final List<String> subCommands = List.of("register", "unregister", "login", "autologin");
 
-    public GAuthTabCompleter() {
-    }
-
     @Nullable
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) {

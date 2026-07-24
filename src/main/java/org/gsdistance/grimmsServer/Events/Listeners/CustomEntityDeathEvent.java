@@ -17,13 +17,17 @@ public class CustomEntityDeathEvent {
         }
 
         CustomEntityManager.currentRegistry.remove(event.getEntity().getUniqueId());
+        CustomEntityManager.saveToFile();
 
-        if (event.getKiller() instanceof Player) {
-            EntityMetadata metadata = EntityMetadata.getEntityMetadata(event.getEntity());
-            if (metadata != null) {
+        // Get metadata before deleting for XP calculation
+        EntityMetadata metadata = EntityMetadata.getEntityMetadata(event.getEntity());
+        if (metadata != null) {
+            if (event.getKiller() instanceof Player) {
                 double extraXp = Math.sqrt(metadata.level) * Math.cbrt(metadata.prestige);
                 PlayerLevelHandler.getLevelHandler((Player) event.getKiller()).addExp(extraXp);
             }
+            // Delete entity metadata file to prevent stale data
+            metadata.deleteFromFile();
         }
     }
 }
