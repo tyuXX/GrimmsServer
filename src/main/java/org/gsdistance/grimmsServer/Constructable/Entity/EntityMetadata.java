@@ -27,14 +27,13 @@ public class EntityMetadata {
     public int level = 1;
     public int prestige = 1;
     public String originalName;
-    public boolean levelingApplied = false;
-    // Store actual attribute values to restore on chunk reload
+    public List<EntityAffix> affixes = new ArrayList<>();
+    public int championTier = 0;
+    // Store base values after first leveling to prevent snowballing on chunk reload
     public double maxHealth = 0;
     public double armor = 0;
     public double armorToughness = 0;
     public double attackDamage = 0;
-    public List<EntityAffix> affixes = new ArrayList<>();
-    public int championTier = 0;
 
     public EntityMetadata(Entity entity) {
         this.uuid = entity.getUniqueId();
@@ -88,7 +87,6 @@ public class EntityMetadata {
                 // Apply levelling when metadata is first created
                 if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER) {
                     applyLevelling((LivingEntity) entity, metadata);
-                    metadata.levelingApplied = true;
                 }
                 metadata.saveToFile();
             } else {
@@ -96,10 +94,9 @@ public class EntityMetadata {
                 if ("Verbose".equalsIgnoreCase(logLevel)) {
                     GrimmsServer.logger.info("Retrieved EntityMetadata for " + entity.getUniqueId() + " with level " + metadata.level);
                 }
-                // Restore saved attribute values when loading from disk (chunk reload)
-                // This prevents releveling by using exact saved values instead of recalculating
-                if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER && (metadata.level > 1 || metadata.prestige > 1)) {
-                    restoreAttributes((LivingEntity) entity, metadata);
+                // Re-apply levelling based on saved level/prestige when loading from disk (chunk reload)
+                if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER) {
+                    applyAttributeModifiers((LivingEntity) entity, metadata);
                 }
             }
 
@@ -166,7 +163,7 @@ public class EntityMetadata {
     }
 
     private static void saveAttributeValues(LivingEntity livingEntity, EntityMetadata metadata) {
-        // Save the actual attribute values after leveling
+        // Save the base values after leveling to restore on chunk reload
         if (livingEntity.getAttribute(Attribute.MAX_HEALTH) != null) {
             metadata.maxHealth = livingEntity.getAttribute(Attribute.MAX_HEALTH).getBaseValue();
         }
@@ -179,32 +176,6 @@ public class EntityMetadata {
         if (livingEntity.getAttribute(Attribute.ATTACK_DAMAGE) != null) {
             metadata.attackDamage = livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).getBaseValue();
         }
-    }
-
-    private static void restoreAttributes(LivingEntity livingEntity, EntityMetadata metadata) {
-        // Restore the exact attribute values that were saved
-        if (livingEntity.getAttribute(Attribute.MAX_HEALTH) != null && metadata.maxHealth > 0) {
-            livingEntity.getAttribute(Attribute.MAX_HEALTH).setBaseValue(metadata.maxHealth);
-            livingEntity.setHealth(metadata.maxHealth);
-        }
-        if (livingEntity.getAttribute(Attribute.ARMOR) != null && metadata.armor > 0) {
-            livingEntity.getAttribute(Attribute.ARMOR).setBaseValue(metadata.armor);
-        }
-        if (livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS) != null && metadata.armorToughness > 0) {
-            livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS).setBaseValue(metadata.armorToughness);
-        }
-        if (livingEntity.getAttribute(Attribute.ATTACK_DAMAGE) != null && metadata.attackDamage > 0) {
-            livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).setBaseValue(metadata.attackDamage);
-        }
-
-        // Restore custom name
-        ChatColor levelColor = getLevelColor(metadata.level);
-        double maxHealth = livingEntity.getAttribute(Attribute.MAX_HEALTH).getValue();
-        String healthBar = Shared.generateHealthBar(livingEntity.getHealth(), maxHealth);
-        String prestigeDisplay = metadata.prestige > 1 ? ChatColor.DARK_PURPLE + "[" + metadata.prestige + "]" : "";
-        String displayName = prestigeDisplay + levelColor + "[" + metadata.level + "] " + ChatColor.WHITE + metadata.originalName + " " + healthBar;
-        livingEntity.setCustomName(displayName);
-        livingEntity.setCustomNameVisible(true);
     }
 
     private static void applyAttributeModifiers(LivingEntity livingEntity, EntityMetadata metadata) {
@@ -222,6 +193,9 @@ public class EntityMetadata {
         int finalLevel = metadata.level;
         int totalPrestige = metadata.prestige;
 
+        // Check if we have saved base values (chunk reload) or need to calculate from vanilla (new entity)
+        boolean hasSavedValues = metadata.maxHealth > 0 || metadata.armor > 0 || metadata.armorToughness > 0 || metadata.attackDamage > 0;
+
         // Clear any existing attribute modifiers to prevent stacking
         if (livingEntity.getAttribute(Attribute.MAX_HEALTH) != null) {
             livingEntity.getAttribute(Attribute.MAX_HEALTH).getModifiers().clear();
@@ -238,31 +212,55 @@ public class EntityMetadata {
 
         // Apply attribute modifiers
         if (livingEntity.getAttribute(Attribute.MAX_HEALTH) != null) {
-            double baseHealth = livingEntity.getAttribute(Attribute.MAX_HEALTH).getBaseValue();
-            Double healthDivisor = ActiveConfig.getConfigValue(ConfigKey.LEVELLED_MOBS_HEALTH_DIVISOR, Double.class);
-            if (healthDivisor == null) healthDivisor = 25.0;
-            double healthBoost = baseHealth * (finalLevel / healthDivisor) * Math.cbrt(totalPrestige);
-            livingEntity.getAttribute(Attribute.MAX_HEALTH).setBaseValue(baseHealth + healthBoost);
-            livingEntity.setHealth(livingEntity.getAttribute(Attribute.MAX_HEALTH).getValue());
+            if (hasSavedValues && metadata.maxHealth > 0) {
+                // Restore saved base value (chunk reload)
+                livingEntity.getAttribute(Attribute.MAX_HEALTH).setBaseValue(metadata.maxHealth);
+                livingEntity.setHealth(metadata.maxHealth);
+            } else {
+                // Calculate from vanilla base value (new entity)
+                double vanillaHealth = livingEntity.getAttribute(Attribute.MAX_HEALTH).getBaseValue();
+                Double healthDivisor = ActiveConfig.getConfigValue(ConfigKey.LEVELLED_MOBS_HEALTH_DIVISOR, Double.class);
+                if (healthDivisor == null) healthDivisor = 25.0;
+                double healthBoost = vanillaHealth * (finalLevel / healthDivisor) * Math.cbrt(totalPrestige);
+                livingEntity.getAttribute(Attribute.MAX_HEALTH).setBaseValue(vanillaHealth + healthBoost);
+                livingEntity.setHealth(livingEntity.getAttribute(Attribute.MAX_HEALTH).getValue());
+            }
         }
 
         if (livingEntity.getAttribute(Attribute.ARMOR) != null) {
-            Double armorDivisor = ActiveConfig.getConfigValue(ConfigKey.LEVELLED_MOBS_ARMOR_DIVISOR, Double.class);
-            if (armorDivisor == null) armorDivisor = 2.0;
-            double armorBoost = Math.sqrt(finalLevel) * Math.sqrt(totalPrestige) / armorDivisor;
-            livingEntity.getAttribute(Attribute.ARMOR).setBaseValue(armorBoost);
+            if (hasSavedValues && metadata.armor > 0) {
+                // Restore saved base value (chunk reload)
+                livingEntity.getAttribute(Attribute.ARMOR).setBaseValue(metadata.armor);
+            } else {
+                // Calculate from scratch (new entity)
+                Double armorDivisor = ActiveConfig.getConfigValue(ConfigKey.LEVELLED_MOBS_ARMOR_DIVISOR, Double.class);
+                if (armorDivisor == null) armorDivisor = 2.0;
+                double armorBoost = Math.sqrt(finalLevel) * Math.sqrt(totalPrestige) / armorDivisor;
+                livingEntity.getAttribute(Attribute.ARMOR).setBaseValue(armorBoost);
+            }
         }
 
         if (livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS) != null) {
-            double toughnessBoost = Math.cbrt(finalLevel) * Math.cbrt(totalPrestige);
-            livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS).setBaseValue(toughnessBoost);
+            if (hasSavedValues && metadata.armorToughness > 0) {
+                // Restore saved base value (chunk reload)
+                livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS).setBaseValue(metadata.armorToughness);
+            } else {
+                // Calculate from scratch (new entity)
+                double toughnessBoost = Math.cbrt(finalLevel) * Math.cbrt(totalPrestige);
+                livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS).setBaseValue(toughnessBoost);
+            }
         }
 
         if (livingEntity.getAttribute(Attribute.ATTACK_DAMAGE) != null) {
-            double damageBoost = Math.cbrt(finalLevel) * Math.sqrt(totalPrestige);
-            livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).setBaseValue(
-                    livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).getBaseValue() + damageBoost
-            );
+            if (hasSavedValues && metadata.attackDamage > 0) {
+                // Restore saved base value (chunk reload)
+                livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).setBaseValue(metadata.attackDamage);
+            } else {
+                // Calculate from vanilla base value (new entity)
+                double vanillaDamage = livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).getBaseValue();
+                double damageBoost = Math.cbrt(finalLevel) * Math.sqrt(totalPrestige);
+                livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).setBaseValue(vanillaDamage + damageBoost);
+            }
         }
 
         // Set custom name with level and health bar

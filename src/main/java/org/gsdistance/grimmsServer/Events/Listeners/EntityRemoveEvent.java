@@ -12,11 +12,8 @@ public class EntityRemoveEvent {
         if (event.getEntity().getType() != EntityType.PLAYER) {
             CustomEntityManager.unregisterEntity(event.getEntity());
             CustomEntityManager.saveToFile();
-            // Delete entity metadata file to prevent stale data on despawn
-            EntityMetadata metadata = EntityMetadata.getEntityMetadata(event.getEntity());
-            if (metadata != null) {
-                metadata.deleteFromFile();
-            }
+            // Do NOT delete metadata here - it should persist across chunk unload/reload
+            // Metadata is only deleted on actual death in CustomEntityDeathEvent
         }
     }
 }

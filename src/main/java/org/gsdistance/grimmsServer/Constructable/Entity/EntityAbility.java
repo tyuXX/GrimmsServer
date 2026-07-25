@@ -4,5 +4,5 @@ import org.bukkit.entity.LivingEntity;
 
 import java.util.function.Function;
 
-public record EntityAffix(String id, Function<LivingEntity, Void> effect) {
+public record EntityAbility(String id, int cooldownTicks, Function<LivingEntity, Void> effect) {
 }
