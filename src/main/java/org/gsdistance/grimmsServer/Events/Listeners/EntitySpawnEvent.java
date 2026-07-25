@@ -11,7 +11,7 @@ public class EntitySpawnEvent {
     public static void Event(org.bukkit.event.entity.EntitySpawnEvent event) {
         if (event.getEntity().getType() != EntityType.PLAYER) {
             CustomEntityManager.registerEntity(event.getEntity());
-            // Leveling is now applied in EntityMetadata.getEntityMetadata()
+            // getEntityMetadata handles both new entities (creates & levels) and chunk reloads (loads from disk without releveling)
             EntityMetadata.getEntityMetadata(event.getEntity());
         }
     }

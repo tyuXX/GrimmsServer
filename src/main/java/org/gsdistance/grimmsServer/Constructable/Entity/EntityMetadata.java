@@ -28,6 +28,11 @@ public class EntityMetadata {
     public int prestige = 1;
     public String originalName;
     public boolean levelingApplied = false;
+    // Store actual attribute values to restore on chunk reload
+    public double maxHealth = 0;
+    public double armor = 0;
+    public double armorToughness = 0;
+    public double attackDamage = 0;
     public List<EntityAffix> affixes = new ArrayList<>();
     public int championTier = 0;
 
@@ -40,7 +45,7 @@ public class EntityMetadata {
         }
         if(championTier > 0){
             while(Math.random() < 0.5){
-                // Add a random affix with tier equal to or less than the champion tier
+                // TODO - Add a random affix with tier equal to or less than the champion tier
 
             }
         }
@@ -89,13 +94,12 @@ public class EntityMetadata {
             } else {
                 String logLevel = ActiveConfig.getConfigValue(ConfigKey.LOG_LEVEL, String.class);
                 if ("Verbose".equalsIgnoreCase(logLevel)) {
-                    GrimmsServer.logger.info("Retrieved EntityMetadata for " + entity.getUniqueId());
+                    GrimmsServer.logger.info("Retrieved EntityMetadata for " + entity.getUniqueId() + " with level " + metadata.level);
                 }
-                // Re-apply attribute modifiers when metadata is loaded from disk (e.g., after chunk reload)
-                // This is necessary because chunk reloads reset entity attributes to vanilla values
-                // Use the saved level/prestige instead of recalculating to prevent releveling
+                // Restore saved attribute values when loading from disk (chunk reload)
+                // This prevents releveling by using exact saved values instead of recalculating
                 if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER && (metadata.level > 1 || metadata.prestige > 1)) {
-                    applyAttributeModifiers((LivingEntity) entity, metadata);
+                    restoreAttributes((LivingEntity) entity, metadata);
                 }
             }
 
@@ -158,6 +162,49 @@ public class EntityMetadata {
         metadata.prestige = totalPrestige;
 
         applyAttributeModifiers(livingEntity, metadata);
+        saveAttributeValues(livingEntity, metadata);
+    }
+
+    private static void saveAttributeValues(LivingEntity livingEntity, EntityMetadata metadata) {
+        // Save the actual attribute values after leveling
+        if (livingEntity.getAttribute(Attribute.MAX_HEALTH) != null) {
+            metadata.maxHealth = livingEntity.getAttribute(Attribute.MAX_HEALTH).getBaseValue();
+        }
+        if (livingEntity.getAttribute(Attribute.ARMOR) != null) {
+            metadata.armor = livingEntity.getAttribute(Attribute.ARMOR).getBaseValue();
+        }
+        if (livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS) != null) {
+            metadata.armorToughness = livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS).getBaseValue();
+        }
+        if (livingEntity.getAttribute(Attribute.ATTACK_DAMAGE) != null) {
+            metadata.attackDamage = livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).getBaseValue();
+        }
+    }
+
+    private static void restoreAttributes(LivingEntity livingEntity, EntityMetadata metadata) {
+        // Restore the exact attribute values that were saved
+        if (livingEntity.getAttribute(Attribute.MAX_HEALTH) != null && metadata.maxHealth > 0) {
+            livingEntity.getAttribute(Attribute.MAX_HEALTH).setBaseValue(metadata.maxHealth);
+            livingEntity.setHealth(metadata.maxHealth);
+        }
+        if (livingEntity.getAttribute(Attribute.ARMOR) != null && metadata.armor > 0) {
+            livingEntity.getAttribute(Attribute.ARMOR).setBaseValue(metadata.armor);
+        }
+        if (livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS) != null && metadata.armorToughness > 0) {
+            livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS).setBaseValue(metadata.armorToughness);
+        }
+        if (livingEntity.getAttribute(Attribute.ATTACK_DAMAGE) != null && metadata.attackDamage > 0) {
+            livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).setBaseValue(metadata.attackDamage);
+        }
+
+        // Restore custom name
+        ChatColor levelColor = getLevelColor(metadata.level);
+        double maxHealth = livingEntity.getAttribute(Attribute.MAX_HEALTH).getValue();
+        String healthBar = Shared.generateHealthBar(livingEntity.getHealth(), maxHealth);
+        String prestigeDisplay = metadata.prestige > 1 ? ChatColor.DARK_PURPLE + "[" + metadata.prestige + "]" : "";
+        String displayName = prestigeDisplay + levelColor + "[" + metadata.level + "] " + ChatColor.WHITE + metadata.originalName + " " + healthBar;
+        livingEntity.setCustomName(displayName);
+        livingEntity.setCustomNameVisible(true);
     }
 
     private static void applyAttributeModifiers(LivingEntity livingEntity, EntityMetadata metadata) {
@@ -174,6 +221,20 @@ public class EntityMetadata {
 
         int finalLevel = metadata.level;
         int totalPrestige = metadata.prestige;
+
+        // Clear any existing attribute modifiers to prevent stacking
+        if (livingEntity.getAttribute(Attribute.MAX_HEALTH) != null) {
+            livingEntity.getAttribute(Attribute.MAX_HEALTH).getModifiers().clear();
+        }
+        if (livingEntity.getAttribute(Attribute.ARMOR) != null) {
+            livingEntity.getAttribute(Attribute.ARMOR).getModifiers().clear();
+        }
+        if (livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS) != null) {
+            livingEntity.getAttribute(Attribute.ARMOR_TOUGHNESS).getModifiers().clear();
+        }
+        if (livingEntity.getAttribute(Attribute.ATTACK_DAMAGE) != null) {
+            livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).getModifiers().clear();
+        }
 
         // Apply attribute modifiers
         if (livingEntity.getAttribute(Attribute.MAX_HEALTH) != null) {
