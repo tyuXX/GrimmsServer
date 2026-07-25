@@ -93,16 +93,11 @@ public class GUtilTabCompleter implements TabCompleter {
                     case "setting" -> {
                         return PlayerMetadata.getPlayerMetadata(player).settings.stream().toList();
                     }
-                    case "inventoryrestore", "heal", "spawn", "enderchest", "invsee", "addtitle", "removetitle", "sudo" -> {
+                    case "inventoryrestore", "heal", "spawn", "enderchest", "invsee", "addtitle", "removetitle", "sudo", "fly", "god" -> {
                         return Bukkit.getOnlinePlayers().stream()
                                 .map(Player::getName)
                                 .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
                                 .collect(Collectors.toList());
-                    }
-                    case "fly", "god" -> {
-                        return Stream.of("on", "off", "true", "false")
-                                .filter(option -> option.startsWith(args[1].toLowerCase()))
-                                .toList();
                     }
                     case "speed" -> {
                         return Stream.of("walk", "fly")
@@ -206,6 +201,11 @@ public class GUtilTabCompleter implements TabCompleter {
                         return getKnownCommands(getCommandMap()).keySet().stream()
                                 .filter(cmd -> cmd.startsWith(args[2].toLowerCase()))
                                 .collect(Collectors.toList());
+                    }
+                    case "fly", "god" -> {
+                        return Stream.of("on", "off", "true", "false")
+                                .filter(option -> option.startsWith(args[2].toLowerCase()))
+                                .toList();
                     }
                     default -> {
                         return List.of();

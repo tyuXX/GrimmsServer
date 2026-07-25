@@ -93,7 +93,7 @@ public class PlayerTickEvent {
                 double multiplier = (double) 1.0F + Math.pow((double) playerStats.getStat("level", Integer.class), 2.0F) * Math.pow(playerStats.getStat("prestige", Integer.class) + 1, 2) / (double) 100.0F;
                 double payCheck = Math.ceil(JobTitlesBaseValues.jobTitleBaseValues.getOrDefault(jobTitleId, null).paycheckSize() * multiplier);
                 double money = playerStats.getStat("money", Double.class);
-                if (!AfkManager.isPlayerAfk(player) && playerStats.getStat("maximum_balance", Double.class) < money + payCheck) {
+                if (!AfkManager.isPlayerAfk(player) && playerStats.getStat("maximum_balance", Double.class) > money + payCheck) {
                     playerStats.setStat("money", money + payCheck);
                     player.sendMessage(ChatColor.GREEN + "You have received your paycheck: " + ChatColor.GOLD + Shared.formatNumber(payCheck));
                 }

@@ -1,5 +1,6 @@
 package org.gsdistance.grimmsServer.Commands.GUtilCommand;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,26 +13,54 @@ public class God {
             return false;
         }
 
-        if (sender instanceof Player player) {
-            if (args.length < 2) {
-                return false;
-            } else {
-                boolean enable;
-                switch (args[1].toLowerCase()) {
-                    case "on", "true" -> enable = true;
-                    case "off", "false" -> enable = false;
-                    default -> {
-                        enable = player.isInvulnerable();
-                    }
-                }
+        Player targetPlayer;
+        int stateIndex;
 
-                player.setInvulnerable(enable);
-                player.sendMessage(ChatColor.GREEN + "God mode " + (enable ? "enabled" : "disabled") + ".");
-                return true;
+        if (args.length >= 2) {
+            Player potentialTarget = Bukkit.getPlayer(args[1]);
+            if (potentialTarget != null) {
+                targetPlayer = potentialTarget;
+                stateIndex = 2;
+            } else {
+                if (sender instanceof Player player) {
+                    targetPlayer = player;
+                } else {
+                    sender.sendMessage(ChatColor.RED + "You must be a player to use this command on yourself.");
+                    return false;
+                }
+                stateIndex = 1;
             }
         } else {
-            sender.sendMessage(ChatColor.RED + "You must be a player to use this command.");
-            return false;
+            if (sender instanceof Player player) {
+                targetPlayer = player;
+            } else {
+                sender.sendMessage(ChatColor.RED + "You must be a player to use this command.");
+                return false;
+            }
+            stateIndex = 1;
         }
+
+        boolean enable;
+        if (args.length > stateIndex) {
+            switch (args[stateIndex].toLowerCase()) {
+                case "on", "true" -> enable = true;
+                case "off", "false" -> enable = false;
+                default -> {
+                    enable = !targetPlayer.isInvulnerable();
+                }
+            }
+        } else {
+            enable = !targetPlayer.isInvulnerable();
+        }
+
+        targetPlayer.setInvulnerable(enable);
+        
+        if (targetPlayer == sender) {
+            targetPlayer.sendMessage(ChatColor.GREEN + "God mode " + (enable ? "enabled" : "disabled") + ".");
+        } else {
+            targetPlayer.sendMessage(ChatColor.GREEN + "God mode " + (enable ? "enabled" : "disabled") + " by " + sender.getName() + ".");
+            sender.sendMessage(ChatColor.GREEN + "God mode " + (enable ? "enabled" : "disabled") + " for " + targetPlayer.getName() + ".");
+        }
+        return true;
     }
 }

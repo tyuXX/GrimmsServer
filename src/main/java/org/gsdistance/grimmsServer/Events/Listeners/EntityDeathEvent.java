@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.gsdistance.grimmsServer.Config.ActiveConfig;
 import org.gsdistance.grimmsServer.Config.ConfigKey;
-import org.gsdistance.grimmsServer.Constructable.Entity.EntityMetadata;
 import org.gsdistance.grimmsServer.Constructable.Item.CustomEnchantmentHandler;
 import org.gsdistance.grimmsServer.Constructable.Player.PlayerLevelHandler;
 import org.gsdistance.grimmsServer.Data.CustomEnchantment;
@@ -32,11 +31,6 @@ public class EntityDeathEvent {
             CustomEntityManager.unregisterEntity(event.getEntity());
             CustomEntityManager.saveToFile();
             event.getEntity().setCustomName(null);
-            // Delete entity metadata file to prevent stale data
-            EntityMetadata metadata = EntityMetadata.getEntityMetadata(event.getEntity());
-            if (metadata != null) {
-                metadata.deleteFromFile();
-            }
         }
 
         if (event.getEntity().getKiller() != null && event.getEntity().getAttribute(Attribute.MAX_HEALTH) != null && event.getEntity().getAttribute(Attribute.MAX_HEALTH).getValue() > 0 && event.getEntity().getKiller().getType() == EntityType.PLAYER) {

@@ -28,11 +28,22 @@ public class EntityMetadata {
     public int prestige = 1;
     public String originalName;
     public boolean levelingApplied = false;
+    public List<EntityAffix> affixes = new ArrayList<>();
+    public int championTier = 0;
 
     public EntityMetadata(Entity entity) {
         this.uuid = entity.getUniqueId();
         this.timestamp = LocalDateTime.now().toString();
         this.originalName = entity.getName();
+        while(Math.random() < 0.01){
+            this.championTier++;
+        }
+        if(championTier > 0){
+            while(Math.random() < 0.5){
+                // Add a random affix with tier equal to or less than the champion tier
+
+            }
+        }
     }
 
     public void logMetadata() {
@@ -80,11 +91,11 @@ public class EntityMetadata {
                 if ("Verbose".equalsIgnoreCase(logLevel)) {
                     GrimmsServer.logger.info("Retrieved EntityMetadata for " + entity.getUniqueId());
                 }
-                // Only re-apply levelling if it wasn't applied before (e.g., server crash before save)
-                if (entity instanceof LivingEntity && !metadata.levelingApplied && (metadata.level > 1 || metadata.prestige > 1)) {
-                    applyLevelling((LivingEntity) entity, metadata);
-                    metadata.levelingApplied = true;
-                    metadata.saveToFile();
+                // Re-apply attribute modifiers when metadata is loaded from disk (e.g., after chunk reload)
+                // This is necessary because chunk reloads reset entity attributes to vanilla values
+                // Use the saved level/prestige instead of recalculating to prevent releveling
+                if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER && (metadata.level > 1 || metadata.prestige > 1)) {
+                    applyAttributeModifiers((LivingEntity) entity, metadata);
                 }
             }
 
@@ -145,6 +156,24 @@ public class EntityMetadata {
 
         metadata.level = finalLevel;
         metadata.prestige = totalPrestige;
+
+        applyAttributeModifiers(livingEntity, metadata);
+    }
+
+    private static void applyAttributeModifiers(LivingEntity livingEntity, EntityMetadata metadata) {
+        Boolean enabled = ActiveConfig.getConfigValue(ConfigKey.LEVELLED_MOBS_ENABLED, Boolean.class);
+        if (enabled == null || !enabled) {
+            return;
+        }
+
+        // Check blacklist
+        List<String> blacklist = ActiveConfig.getConfigValue(ConfigKey.LEVELLED_MOBS_BLACKLIST, List.class);
+        if (blacklist != null && blacklist.contains(livingEntity.getType().name())) {
+            return;
+        }
+
+        int finalLevel = metadata.level;
+        int totalPrestige = metadata.prestige;
 
         // Apply attribute modifiers
         if (livingEntity.getAttribute(Attribute.MAX_HEALTH) != null) {
