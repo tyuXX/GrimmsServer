@@ -16,6 +16,12 @@ public class ServerTickEvent {
         }
 
         PlayerTickEvent.processMagnets();
+
+        // Execute champion mob abilities every 20 ticks (1 second) to reduce load
+        if (ticks % 20L == 0L) {
+            ChampionTickEvent.Event();
+        }
+
         ++ticks;
         if (ticks % 1000L == 0L) {
             Market market = Market.getMarket();

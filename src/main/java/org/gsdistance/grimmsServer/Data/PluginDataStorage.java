@@ -26,27 +26,27 @@ public class PluginDataStorage {
 
     private Gson createGson() {
         return new GsonBuilder()
-            .disableInnerClassSerialization()
-            .excludeFieldsWithModifiers(java.lang.reflect.Modifier.STATIC, java.lang.reflect.Modifier.TRANSIENT)
-            .setExclusionStrategies(new ExclusionStrategy() {
-                @Override
-                public boolean shouldSkipField(FieldAttributes f) {
-                    // Skip fields that contain Optional or other problematic types
-                    String typeName = f.getDeclaredType().getTypeName();
-                    return typeName.contains("java.util.Optional") ||
-                           typeName.contains("java.lang.reflect") ||
-                           typeName.contains("java.security") ||
-                           typeName.contains("java.util.concurrent") ||
-                           typeName.contains("org.bukkit");
-                }
+                .disableInnerClassSerialization()
+                .excludeFieldsWithModifiers(java.lang.reflect.Modifier.STATIC, java.lang.reflect.Modifier.TRANSIENT)
+                .setExclusionStrategies(new ExclusionStrategy() {
+                    @Override
+                    public boolean shouldSkipField(FieldAttributes f) {
+                        // Skip fields that contain Optional or other problematic types
+                        String typeName = f.getDeclaredType().getTypeName();
+                        return typeName.contains("java.util.Optional") ||
+                                typeName.contains("java.lang.reflect") ||
+                                typeName.contains("java.security") ||
+                                typeName.contains("java.util.concurrent") ||
+                                typeName.contains("org.bukkit");
+                    }
 
-                @Override
-                public boolean shouldSkipClass(Class<?> clazz) {
-                    // Skip all Bukkit classes from reflection
-                    return clazz.getName().startsWith("org.bukkit");
-                }
-            })
-            .create();
+                    @Override
+                    public boolean shouldSkipClass(Class<?> clazz) {
+                        // Skip all Bukkit classes from reflection
+                        return clazz.getName().startsWith("org.bukkit");
+                    }
+                })
+                .create();
     }
 
     public boolean exists(String fileName, String addedPath) {

@@ -34,10 +34,10 @@ public class PlayerRespawnEvent {
         PlayerInventoryData inventoryData = PlayerInventoryData.getPlayerInventoryData(player.getUniqueId());
 
         // Check if there are soulbound items to restore
-        if ((inventoryData.soulboundInventoryContents != null && !inventoryData.soulboundInventoryContents.isEmpty()) || 
-            hasNonNullItems(inventoryData.soulboundArmorContents) || 
-            hasNonNullItems(inventoryData.soulboundExtraContents)) {
-            
+        if ((inventoryData.soulboundInventoryContents != null && !inventoryData.soulboundInventoryContents.isEmpty()) ||
+                hasNonNullItems(inventoryData.soulboundArmorContents) ||
+                hasNonNullItems(inventoryData.soulboundExtraContents)) {
+
             // Restore soulbound inventory items
             Map<Integer, ItemStack> soulboundInventory = inventoryData.getSoulboundInventoryAsItemStacks();
             for (Map.Entry<Integer, ItemStack> entry : soulboundInventory.entrySet()) {

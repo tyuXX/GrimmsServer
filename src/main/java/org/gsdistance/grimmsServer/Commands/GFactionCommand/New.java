@@ -28,19 +28,19 @@ public class New {
         } else {
             String factionId = args[1];
             String factionName = args[2];
-            
+
             // Validate faction ID length
             if (factionId.length() < 3 || factionId.length() > 16) {
                 player.sendMessage(ChatColor.RED + "Faction id must be between 3 and 16 characters.");
                 return false;
             }
-            
+
             // Validate faction name length
             if (factionName.length() < 2 || factionName.length() > 32) {
                 player.sendMessage(ChatColor.RED + "Faction name must be between 2 and 32 characters.");
                 return false;
             }
-            
+
             Faction[] factions = GrimmsServer.pds.retrieveAllData(Faction.class, "factions");
             if (factions != null && Arrays.stream(factions).anyMatch((factionx) -> factionx.id.equalsIgnoreCase(factionId))) {
                 player.sendMessage(ChatColor.RED + "Faction already exists with this id.");

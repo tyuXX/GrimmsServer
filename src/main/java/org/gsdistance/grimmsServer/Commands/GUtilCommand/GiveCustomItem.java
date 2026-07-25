@@ -24,7 +24,7 @@ public class GiveCustomItem {
         }
 
         String itemId = args[1].toLowerCase();
-        
+
         // Check if the custom item is registered
         if (!CustomItemRegistry.isCustomItemRegistered(itemId)) {
             player.sendMessage(ChatColor.RED + "Custom item '" + itemId + "' is not registered.");
@@ -54,15 +54,15 @@ public class GiveCustomItem {
             if (itemStack.getItemMeta() == null) {
                 itemStack.setItemMeta(org.bukkit.Bukkit.getItemFactory().getItemMeta(material));
             }
-            
+
             // Initialize the item with CustomItemHandler first
             CustomItemHandler.createHandler(itemStack);
-            
+
             CustomItemRegistry.createCustomItem(itemId, itemStack);
-            
+
             // Update item stats to show proper display name and description
             ItemStats.getItemStats(itemStack).UpdateItemStats();
-            
+
             // Give item to player
             player.getInventory().addItem(itemStack);
             player.sendMessage(ChatColor.GREEN + "Given custom item: " + ChatColor.GOLD + itemId);

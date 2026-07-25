@@ -36,7 +36,7 @@ public class RelicHandler {
     public static void makeRelic(ItemStack item) {
         // Initialize as a custom item first
         CustomItemHandler customHandler = CustomItemHandler.createHandler(item);
-        
+
         RelicHandler relicHandler = new RelicHandler(item);
         relicHandler.dataHandler.setItemNBTData("isRelic", true, PersistentDataType.BOOLEAN);
         relicHandler.dataHandler.setItemNBTData("relicUUID", UUID.randomUUID().toString(), PersistentDataType.STRING);
@@ -58,10 +58,10 @@ public class RelicHandler {
         }
 
         relicHandler.dataHandler.setItemNBTData("relicType", relicType, PersistentDataType.STRING);
-        
+
         // Set custom item ID to relic type for identification
         customHandler.setCustomItemId("relic_" + relicType);
-        
+
         relicHandler.initRandomRelicStats();
     }
 

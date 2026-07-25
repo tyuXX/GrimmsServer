@@ -10,7 +10,7 @@ public class TitleGenerator {
     private static final Map<Long, String> blockBreakTitles = new HashMap<>();
     private static final Map<Long, String> killTitles = new HashMap<>();
     private static final Map<String, String> titleDescriptions = new HashMap<>();
-    
+
     static {
         // Money titles (powers of 10)
         moneyTitles.put("10", "Pocket Change");
@@ -31,7 +31,7 @@ public class TitleGenerator {
         moneyTitles.put("10000000000000000", "Multi-Quadrillionaire");
         moneyTitles.put("100000000000000000", "Hundred-Quadrillionaire");
         moneyTitles.put("1000000000000000000", "Quintillionaire");
-        
+
         // Block break titles (powers of 10)
         blockBreakTitles.put(10L, "Novice Miner");
         blockBreakTitles.put(100L, "Apprentice Miner");
@@ -48,7 +48,7 @@ public class TitleGenerator {
         blockBreakTitles.put(10000000000000L, "Cosmic Miner");
         blockBreakTitles.put(100000000000000L, "Galaxy Breaker");
         blockBreakTitles.put(1000000000000000L, "Universal Miner");
-        
+
         // Kill titles (powers of 10)
         killTitles.put(10L, "Novice Hunter");
         killTitles.put(100L, "Hunter");
@@ -65,7 +65,7 @@ public class TitleGenerator {
         killTitles.put(10000000000000L, "Reality Destroyer");
         killTitles.put(100000000000000L, "Void Consumer");
         killTitles.put(1000000000000000L, "Oblivion");
-        
+
         // Money title descriptions
         titleDescriptions.put("Pocket Change", "A small amount of money, but it's a start.");
         titleDescriptions.put("Coin Collector", "Starting to accumulate some wealth.");
@@ -85,7 +85,7 @@ public class TitleGenerator {
         titleDescriptions.put("Multi-Quadrillionaire", "Wealth that defies comprehension.");
         titleDescriptions.put("Hundred-Quadrillionaire", "You possess more than can be counted.");
         titleDescriptions.put("Quintillionaire", "The pinnacle of financial achievement.");
-        
+
         // Block break title descriptions
         titleDescriptions.put("Novice Miner", "Just starting to break blocks.");
         titleDescriptions.put("Apprentice Miner", "Learning the ways of the mine.");
@@ -102,7 +102,7 @@ public class TitleGenerator {
         titleDescriptions.put("Cosmic Miner", "You mine among the stars themselves.");
         titleDescriptions.put("Galaxy Breaker", "You break through entire galaxies.");
         titleDescriptions.put("Universal Miner", "You mine across all of existence.");
-        
+
         // Kill title descriptions
         titleDescriptions.put("Novice Hunter", "Just starting your hunting journey.");
         titleDescriptions.put("Hunter", "You've proven yourself as a capable hunter.");
@@ -120,7 +120,7 @@ public class TitleGenerator {
         titleDescriptions.put("Void Consumer", "You consume all in your path, even the void.");
         titleDescriptions.put("Oblivion", "You are the end of all things.");
     }
-    
+
     public static List<String> getMoneyTitles(double money) {
         List<String> earnedTitles = new ArrayList<>();
         // Check all money titles from lowest to highest
@@ -132,7 +132,7 @@ public class TitleGenerator {
         }
         return earnedTitles;
     }
-    
+
     public static List<String> getBlockBreakTitles(long blockBreaks) {
         List<String> earnedTitles = new ArrayList<>();
         // Check all block break titles from lowest to highest
@@ -143,7 +143,7 @@ public class TitleGenerator {
         }
         return earnedTitles;
     }
-    
+
     public static List<String> getKillTitles(long kills) {
         List<String> earnedTitles = new ArrayList<>();
         // Check all kill titles from lowest to highest
@@ -154,23 +154,23 @@ public class TitleGenerator {
         }
         return earnedTitles;
     }
-    
+
     public static Map<String, String> getAllMoneyTitles() {
         return new HashMap<>(moneyTitles);
     }
-    
+
     public static Map<Long, String> getAllBlockBreakTitles() {
         return new HashMap<>(blockBreakTitles);
     }
-    
+
     public static Map<Long, String> getAllKillTitles() {
         return new HashMap<>(killTitles);
     }
-    
+
     public static Map<String, String> getAllTitleDescriptions() {
         return new HashMap<>(titleDescriptions);
     }
-    
+
     public static String getTitleDescription(String title) {
         return titleDescriptions.get(title);
     }

@@ -1,8 +1,10 @@
 package org.gsdistance.grimmsServer.Manage;
 
+import com.google.gson.reflect.TypeToken;
 import org.bukkit.entity.Entity;
 import org.gsdistance.grimmsServer.GrimmsServer;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -26,7 +28,9 @@ public class CustomEntityManager {
     }
 
     public static void loadFromFile() {
-        List<UUID> loaded = GrimmsServer.pds.retrieveData("entityRegistry.json", "customEntities", List.class);
+        Type listType = new TypeToken<List<UUID>>() {
+        }.getType();
+        List<UUID> loaded = GrimmsServer.pds.retrieveData("entityRegistry.json", "customEntities", listType);
         if (loaded != null) {
             currentRegistry.clear();
             currentRegistry.addAll(loaded);

@@ -33,7 +33,7 @@ public class BuyCustomEnchantment {
 
                         ItemLevelHandler itemLevelHandler = ItemLevelHandler.getLevelHandler(itemToApply, player.getPlayer());
                         double itemLevel = itemLevelHandler.getLevel();
-                        
+
                         // Respect the hard max level from CustomEnchantment
                         if (currentLevel >= enchantment.maxLevel || Math.sqrt(itemLevel) / 2 < currentLevel + 1) {
                             sender.sendMessage(ChatColor.RED + "Enchantment already at maximum level (" + enchantment.maxLevel + ").");
@@ -41,22 +41,22 @@ public class BuyCustomEnchantment {
                         }
 
                         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
-                        
+
                         // Simple cost calculation based on current level
                         double cost = EnchantBaseValues.customEnchantBaseValues.get(enchantment) * (currentLevel + 1);
-                        
+
                         if (playerStats.getStat("money", Double.class) < cost) {
                             sender.sendMessage(ChatColor.RED + "Not enough money. Cost: " + ChatColor.GOLD + Shared.formatNumber(cost));
                             return false;
                         } else {
                             int oldLevel = currentLevel;
                             int newLevel = oldLevel + 1;
-                            
+
                             if (enchantHandler.setEnchantmentLevel(enchantment, newLevel)) {
                                 playerStats.setStat("money", playerStats.getStat("money", Double.class) - cost);
-                                sender.sendMessage(ChatColor.GREEN + "Upgraded the custom enchantment " + ChatColor.GOLD + enchantment.enchantmentName + 
-                                        ChatColor.GREEN + " from level " + ChatColor.YELLOW + oldLevel + 
-                                        ChatColor.GREEN + " to level " + ChatColor.YELLOW + newLevel + 
+                                sender.sendMessage(ChatColor.GREEN + "Upgraded the custom enchantment " + ChatColor.GOLD + enchantment.enchantmentName +
+                                        ChatColor.GREEN + " from level " + ChatColor.YELLOW + oldLevel +
+                                        ChatColor.GREEN + " to level " + ChatColor.YELLOW + newLevel +
                                         ChatColor.GREEN + " for " + ChatColor.GOLD + Shared.formatNumber(cost) + ChatColor.GREEN + " money.");
                                 return true;
                             } else {

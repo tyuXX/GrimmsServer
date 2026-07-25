@@ -33,7 +33,7 @@ public class ItemStats {
             CustomItemHandler customItemHandler = CustomItemHandler.getHandler(this.item);
             String customItemId = customItemHandler.getCustomItemId();
             toolStats.add(ChatColor.BOLD + "Item: " + ChatColor.RESET + ChatColor.WHITE + customItemId);
-            
+
             // Check if this is a registered custom item with additional info
             if (CustomItemRegistry.isCustomItemRegistered(customItemId)) {
                 CustomItem customItem = CustomItemRegistry.getCustomItem(customItemId);

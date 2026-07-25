@@ -24,7 +24,7 @@ public class Enchant {
 
         String action = args[1].toLowerCase();
         ItemStack item = player.getInventory().getItemInMainHand();
-        
+
         if (item == null || item.getType().isAir()) {
             player.sendMessage(ChatColor.RED + "You must hold an item in your main hand.");
             return false;
@@ -43,7 +43,7 @@ public class Enchant {
 
                     CustomEnchantmentHandler handler = CustomEnchantmentHandler.getHandler(item);
                     if (handler.addEnchantment(enchantment, level)) {
-                        player.sendMessage(ChatColor.GREEN + "Added " + ChatColor.GOLD + enchantment.enchantmentName + 
+                        player.sendMessage(ChatColor.GREEN + "Added " + ChatColor.GOLD + enchantment.enchantmentName +
                                 ChatColor.GREEN + " level " + ChatColor.YELLOW + level + ChatColor.GREEN + " to " + item.getType());
                         return true;
                     } else {
@@ -94,7 +94,7 @@ public class Enchant {
 
                     CustomEnchantmentHandler handler = CustomEnchantmentHandler.getHandler(item);
                     if (handler.setEnchantmentLevel(enchantment, level)) {
-                        player.sendMessage(ChatColor.GREEN + "Set " + ChatColor.GOLD + enchantment.enchantmentName + 
+                        player.sendMessage(ChatColor.GREEN + "Set " + ChatColor.GOLD + enchantment.enchantmentName +
                                 ChatColor.GREEN + " to level " + ChatColor.YELLOW + level + ChatColor.GREEN + " on " + item.getType());
                         return true;
                     } else {
@@ -121,7 +121,7 @@ public class Enchant {
 
                 player.sendMessage(ChatColor.GOLD + "Custom Enchantments on " + item.getType() + ":");
                 for (Map.Entry<CustomEnchantment, Integer> entry : enchantments.entrySet()) {
-                    player.sendMessage(ChatColor.YELLOW + "- " + entry.getKey().enchantmentName + 
+                    player.sendMessage(ChatColor.YELLOW + "- " + entry.getKey().enchantmentName +
                             ChatColor.GRAY + " (Level " + entry.getValue() + "/" + entry.getKey().maxLevel + ")");
                 }
                 return true;
@@ -143,10 +143,10 @@ public class Enchant {
                 try {
                     CustomEnchantment enchantment = CustomEnchantment.valueOf(args[2].toUpperCase());
                     CustomEnchantmentHandler handler = CustomEnchantmentHandler.getHandler(item);
-                    
+
                     if (handler.hasEnchantment(enchantment)) {
                         int level = handler.getEnchantmentLevel(enchantment);
-                        player.sendMessage(ChatColor.GREEN + "Item has " + ChatColor.GOLD + enchantment.enchantmentName + 
+                        player.sendMessage(ChatColor.GREEN + "Item has " + ChatColor.GOLD + enchantment.enchantmentName +
                                 ChatColor.GREEN + " at level " + ChatColor.YELLOW + level);
                     } else {
                         player.sendMessage(ChatColor.RED + "Item does not have " + enchantment.enchantmentName);

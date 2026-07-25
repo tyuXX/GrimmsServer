@@ -43,7 +43,10 @@ public enum ConfigKey {
     LEVELLED_MOBS_SEARCH_RADIUS("levelled_mobs_search_radius", 50),
     LEVELLED_MOBS_HEALTH_DIVISOR("levelled_mobs_health_divisor", 25.0),
     LEVELLED_MOBS_ARMOR_DIVISOR("levelled_mobs_armor_divisor", 2.0),
-    LEVELLED_MOBS_BLACKLIST("levelled_mobs_blacklist", new ArrayList<String>());
+    LEVELLED_MOBS_BLACKLIST("levelled_mobs_blacklist", new ArrayList<String>()),
+    CHAMPION_MOBS_ENABLED("champion_mobs_enabled", true),
+    CHAMPION_MOBS_CHANCE("champion_mobs_chance", 0.01),
+    CHAMPION_MOBS_BOSSBAR_RADIUS("champion_mobs_bossbar_radius", 50);
 
     private final String key;
     private final Object defaultValue;

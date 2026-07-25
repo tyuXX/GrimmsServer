@@ -50,7 +50,7 @@ public class Shared {
     public static void updateResource(String resourcePath, boolean isDirectory) {
         GrimmsServer.logger.info("Updating resource: " + resourcePath);
         File targetFolder = new File(GrimmsServer.instance.getDataFolder(), resourcePath);
-        
+
         if (isDirectory) {
             // Get list of files in JAR for this resource path
             java.util.Set<String> jarFiles = new java.util.HashSet<>();
@@ -67,7 +67,7 @@ public class Shared {
                 GrimmsServer.logger.warning("Error: " + e.getMessage());
                 return;
             }
-            
+
             // Only delete files that exist in the JAR (auto-generated)
             if (targetFolder.exists() && targetFolder.isDirectory()) {
                 File[] files = targetFolder.listFiles();
@@ -85,7 +85,7 @@ public class Shared {
                 targetFolder.delete();
             }
         }
-        
+
         saveResourceIfNotExists(resourcePath, isDirectory);
     }
 

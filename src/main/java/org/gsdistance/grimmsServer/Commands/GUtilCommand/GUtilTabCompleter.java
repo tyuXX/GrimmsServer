@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 public class GUtilTabCompleter implements TabCompleter {
     public static final List<String> defSubCommands = List.of("version", "setting", "spawn");
-    public static final List<String> adminSubCommands = List.of("relic", "enchant", "givecustomitem", "capability", "broadcast", "inventoryrestore", "fly", "god", "heal", "speed", "enderchest", "invsee", "addtitle", "removetitle", "unlevelentity", "sudo", "levelentity");
+    public static final List<String> adminSubCommands = List.of("relic", "enchant", "givecustomitem", "capability", "broadcast", "inventoryrestore", "fly", "god", "heal", "speed", "enderchest", "invsee", "addtitle", "removetitle", "unlevelentity", "sudo", "levelentity", "spawnchampion");
 
     private CommandMap cachedCommandMap;
 
@@ -93,7 +93,8 @@ public class GUtilTabCompleter implements TabCompleter {
                     case "setting" -> {
                         return PlayerMetadata.getPlayerMetadata(player).settings.stream().toList();
                     }
-                    case "inventoryrestore", "heal", "spawn", "enderchest", "invsee", "addtitle", "removetitle", "sudo", "fly", "god" -> {
+                    case "inventoryrestore", "heal", "spawn", "enderchest", "invsee", "addtitle", "removetitle", "sudo",
+                         "fly", "god" -> {
                         return Bukkit.getOnlinePlayers().stream()
                                 .map(Player::getName)
                                 .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
@@ -108,6 +109,13 @@ public class GUtilTabCompleter implements TabCompleter {
                         return player.getWorld().getEntities().stream()
                                 .map(entity -> entity.getUniqueId().toString())
                                 .filter(uuid -> uuid.toLowerCase().startsWith(args[1].toLowerCase()))
+                                .collect(Collectors.toList());
+                    }
+                    case "spawnchampion" -> {
+                        return java.util.Arrays.stream(org.bukkit.entity.EntityType.values())
+                                .filter(type -> type.isSpawnable() && type.isAlive())
+                                .map(type -> type.name().toLowerCase())
+                                .filter(name -> name.startsWith(args[1].toLowerCase()))
                                 .collect(Collectors.toList());
                     }
                     default -> {
@@ -131,8 +139,8 @@ public class GUtilTabCompleter implements TabCompleter {
             } else if (args.length == 3) {
                 switch (args[0].toLowerCase()) {
                     case "enchant" -> {
-                        if (args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("remove") || 
-                            args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("has")) {
+                        if (args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("remove") ||
+                                args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("has")) {
                             return java.util.Arrays.stream(CustomEnchantment.values())
                                     .map(enchant -> enchant.name().toLowerCase())
                                     .filter(name -> name.startsWith(args[2].toLowerCase()))
@@ -207,6 +215,15 @@ public class GUtilTabCompleter implements TabCompleter {
                                 .filter(option -> option.startsWith(args[2].toLowerCase()))
                                 .toList();
                     }
+                    case "spawnchampion" -> {
+                        List<String> tiers = new ArrayList<>();
+                        for (int i = 1; i <= 5; i++) {
+                            tiers.add(String.valueOf(i));
+                        }
+                        return tiers.stream()
+                                .filter(tier -> tier.startsWith(args[2]))
+                                .toList();
+                    }
                     default -> {
                         return List.of();
                     }
@@ -242,12 +259,30 @@ public class GUtilTabCompleter implements TabCompleter {
                         }
                         return List.of();
                     }
+                    case "spawnchampion" -> {
+                        List<String> levels = new ArrayList<>();
+                        for (int i = 1; i <= 100; i++) {
+                            levels.add(String.valueOf(i));
+                        }
+                        return levels.stream()
+                                .filter(level -> level.startsWith(args[3]))
+                                .toList();
+                    }
                     default -> {
                         return List.of();
                     }
                 }
             } else if (args.length == 5) {
                 switch (args[0].toLowerCase()) {
+                    case "spawnchampion" -> {
+                        List<String> prestiges = new ArrayList<>();
+                        for (int i = 1; i <= 10; i++) {
+                            prestiges.add(String.valueOf(i));
+                        }
+                        return prestiges.stream()
+                                .filter(prestige -> prestige.startsWith(args[4]))
+                                .toList();
+                    }
                     case "relic" -> {
                         if (args[1].equalsIgnoreCase("set")) {
                             List<String> resistances = new ArrayList<>();

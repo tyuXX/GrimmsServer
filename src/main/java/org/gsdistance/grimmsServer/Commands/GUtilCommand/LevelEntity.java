@@ -18,6 +18,27 @@ public class LevelEntity {
         }
 
         if (sender instanceof Player player) {
+            // Parse optional level and prestige parameters
+            Integer specifiedLevel = null;
+            Integer specifiedPrestige = null;
+
+            if (args.length >= 3) {
+                try {
+                    specifiedLevel = Integer.parseInt(args[2]);
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(ChatColor.RED + "Invalid level: " + args[2]);
+                    return false;
+                }
+            }
+            if (args.length >= 4) {
+                try {
+                    specifiedPrestige = Integer.parseInt(args[3]);
+                } catch (NumberFormatException e) {
+                    sender.sendMessage(ChatColor.RED + "Invalid prestige: " + args[3]);
+                    return false;
+                }
+            }
+
             if (args.length < 2) {
                 // Force leveling on entity player is looking at
                 RayTraceResult rayTrace = player.getWorld().rayTraceEntities(player.getEyeLocation(), player.getEyeLocation().getDirection(), 5);
@@ -26,7 +47,7 @@ public class LevelEntity {
                     sender.sendMessage(ChatColor.RED + "No entity found in range (5 blocks). Specify an entity UUID or look at an entity.");
                     return false;
                 }
-                return applyLeveling(sender, targetEntity);
+                return applyLeveling(sender, targetEntity, specifiedLevel, specifiedPrestige);
             } else {
                 // Force leveling by UUID
                 try {
@@ -42,7 +63,7 @@ public class LevelEntity {
                         sender.sendMessage(ChatColor.RED + "Entity with UUID " + args[1] + " not found in current world.");
                         return false;
                     }
-                    return applyLeveling(sender, targetEntity);
+                    return applyLeveling(sender, targetEntity, specifiedLevel, specifiedPrestige);
                 } catch (IllegalArgumentException e) {
                     sender.sendMessage(ChatColor.RED + "Invalid UUID format: " + args[1]);
                     return false;
@@ -54,26 +75,35 @@ public class LevelEntity {
         }
     }
 
-    private static boolean applyLeveling(CommandSender sender, Entity entity) {
+    private static boolean applyLeveling(CommandSender sender, Entity entity, Integer specifiedLevel, Integer specifiedPrestige) {
         // Register entity in the registry
         CustomEntityManager.registerEntity(entity);
-        
+
         // Get or create metadata and apply leveling
         EntityMetadata metadata = EntityMetadata.getEntityMetadata(entity);
-        
+
+        // Override level/prestige if specified
+        if (specifiedLevel != null) {
+            metadata.level = specifiedLevel;
+        }
+        if (specifiedPrestige != null) {
+            metadata.prestige = specifiedPrestige;
+        }
+
         if (entity instanceof LivingEntity livingEntity) {
             // Force re-apply leveling even if already leveled
-            if (metadata.level > 1 || metadata.prestige > 1) {
-                // Re-apply to refresh stats
-                try {
-                    java.lang.reflect.Method applyLevelling = EntityMetadata.class.getDeclaredMethod("applyLevelling", LivingEntity.class, EntityMetadata.class);
-                    applyLevelling.setAccessible(true);
-                    applyLevelling.invoke(null, livingEntity, metadata);
-                } catch (Exception e) {
-                    sender.sendMessage(ChatColor.YELLOW + "Warning: Could not re-apply leveling via reflection.");
-                }
+            try {
+                java.lang.reflect.Method applyLevelling = EntityMetadata.class.getDeclaredMethod("applyLevelling", LivingEntity.class, EntityMetadata.class);
+                applyLevelling.setAccessible(true);
+                applyLevelling.invoke(null, livingEntity, metadata);
+                // Save attribute values after applying
+                java.lang.reflect.Method saveAttributeValues = EntityMetadata.class.getDeclaredMethod("saveAttributeValues", LivingEntity.class, EntityMetadata.class);
+                saveAttributeValues.setAccessible(true);
+                saveAttributeValues.invoke(null, livingEntity, metadata);
+            } catch (Exception e) {
+                sender.sendMessage(ChatColor.YELLOW + "Warning: Could not re-apply leveling via reflection.");
             }
-            
+
             sender.sendMessage(ChatColor.GREEN + "Forced leveling on entity: " + entity.getType().name() + " (Level: " + metadata.level + ", Prestige: " + metadata.prestige + ")");
             return true;
         } else {

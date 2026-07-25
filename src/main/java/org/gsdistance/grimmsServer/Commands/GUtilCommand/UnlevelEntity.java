@@ -58,12 +58,12 @@ public class UnlevelEntity {
     private static boolean removeLeveling(CommandSender sender, Entity entity) {
         // Remove from registry
         CustomEntityManager.unregisterEntity(entity);
-        
+
         // Remove metadata file
         try {
             java.io.File metadataFile = new java.io.File(
-                org.gsdistance.grimmsServer.GrimmsServer.instance.getDataFolder(),
-                "entityMetadata/" + entity.getUniqueId() + ".json"
+                    org.gsdistance.grimmsServer.GrimmsServer.instance.getDataFolder(),
+                    "entityMetadata/" + entity.getUniqueId() + ".json"
             );
             if (metadataFile.exists()) {
                 metadataFile.delete();

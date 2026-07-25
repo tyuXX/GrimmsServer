@@ -34,9 +34,9 @@ public class CustomRelicItem extends CustomItem {
                 case 3 -> ChatColor.DARK_PURPLE;
                 default -> ChatColor.WHITE;
             };
-            
-            String displayName = tierColor + (relicType.isEmpty() ? "" : relicType.substring(0, 1).toUpperCase() + relicType.substring(1)) + 
-                                 " Relic " + ChatColor.GRAY + "[" + tierColor + "Tier " + tier + ChatColor.GRAY + "]";
+
+            String displayName = tierColor + (relicType.isEmpty() ? "" : relicType.substring(0, 1).toUpperCase() + relicType.substring(1)) +
+                    " Relic " + ChatColor.GRAY + "[" + tierColor + "Tier " + tier + ChatColor.GRAY + "]";
             meta.setDisplayName(displayName);
             setItemMeta(meta);
         }
@@ -84,7 +84,7 @@ public class CustomRelicItem extends CustomItem {
     public static void registerRelicTypes() {
         // Register each relic type as a custom item
         String[] relicTypes = {"sword", "pickaxe", "axe", "shovel", "hoe", "armor"};
-        
+
         for (String type : relicTypes) {
             String itemId = "relic_" + type;
             CustomItemRegistry.registerCustomItem(itemId, itemStack -> {

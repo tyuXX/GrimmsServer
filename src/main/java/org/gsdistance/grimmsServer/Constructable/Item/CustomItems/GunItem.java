@@ -27,7 +27,7 @@ public class GunItem extends CustomItem {
     @Override
     protected void initializeItem() {
         CustomItemHandler handler = CustomItemHandler.getHandler(this.getItemStack());
-        
+
         // Initialize gun-specific NBT data
         handler.setCustomData("gun_type", this.gunType, PersistentDataType.STRING);
         handler.setCustomData("damage", this.damage, PersistentDataType.DOUBLE);
@@ -44,9 +44,9 @@ public class GunItem extends CustomItem {
 
     @Override
     public String getDescription() {
-        return ChatColor.GRAY + "Damage: " + ChatColor.RED + this.damage + 
-               ChatColor.GRAY + " | Fire Rate: " + ChatColor.YELLOW + this.fireRate + "/s" +
-               ChatColor.GRAY + " | Ammo: " + ChatColor.AQUA + this.maxAmmo;
+        return ChatColor.GRAY + "Damage: " + ChatColor.RED + this.damage +
+                ChatColor.GRAY + " | Fire Rate: " + ChatColor.YELLOW + this.fireRate + "/s" +
+                ChatColor.GRAY + " | Ammo: " + ChatColor.AQUA + this.maxAmmo;
     }
 
     // Getters for gun properties

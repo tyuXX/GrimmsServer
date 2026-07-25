@@ -12,27 +12,27 @@ import java.util.UUID;
 public class PlayerTitles {
     // Static titles (manually awarded or event-based)
     private static final Map<String, String> staticTitles = Map.ofEntries(
-        Map.entry("Dictator", "The title of a dictator, not to be messed with."),
-        Map.entry("Executioner", "The title and power of execution."),
-        Map.entry("Murderer", "Someone whose crimes follow him till death."),
-        Map.entry("Victim", "Got murdered, unfortunate."),
-        Map.entry("DragonSlayer", "The fabled warrior to defeat the fabled dragon or something like that."),
-        Map.entry("Newbie", "Wowie! Joining the game gives a title!"),
-        Map.entry("Titlemaxxer", "Get more than 5 titles"),
-        Map.entry("Leader", "You got on the leaderboard."),
-        Map.entry("Null", "Not a title bro."),
-        Map.entry("BugSlayer", "Reported a bug."),
-        Map.entry("ExploitDestroyer", "Reported an exploit."),
-        Map.entry("Disgrace.", "Abused an exploit.")
+            Map.entry("Dictator", "The title of a dictator, not to be messed with."),
+            Map.entry("Executioner", "The title and power of execution."),
+            Map.entry("Murderer", "Someone whose crimes follow him till death."),
+            Map.entry("Victim", "Got murdered, unfortunate."),
+            Map.entry("DragonSlayer", "The fabled warrior to defeat the fabled dragon or something like that."),
+            Map.entry("Newbie", "Wowie! Joining the game gives a title!"),
+            Map.entry("Titlemaxxer", "Get more than 5 titles"),
+            Map.entry("Leader", "You got on the leaderboard."),
+            Map.entry("Null", "Not a title bro."),
+            Map.entry("BugSlayer", "Reported a bug."),
+            Map.entry("ExploitDestroyer", "Reported an exploit."),
+            Map.entry("Disgrace.", "Abused an exploit.")
     );
-    
+
     // Dynamic titles (based on stats) - populated on-demand
     public static Map<String, String> titles = new HashMap<>();
-    
+
     static {
         titles.putAll(staticTitles);
     }
-    
+
     private final Player player;
 
     public PlayerTitles(Player player) {
@@ -50,7 +50,7 @@ public class PlayerTitles {
         }
         return new OfflinePlayerTitles(metadata);
     }
-    
+
     // Populate dynamic titles from TitleGenerator
     public static void populateDynamicTitles() {
         titles.putAll(TitleGenerator.getAllMoneyTitles());

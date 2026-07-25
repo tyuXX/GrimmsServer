@@ -56,7 +56,7 @@ public class InventoryRestore {
                 }
 
                 PlayerInventoryData.InventorySnapshot snapshot = inventoryData.previousInventories.get(index);
-                
+
                 // Restore inventory to target player
                 targetPlayer.getInventory().clear();
 

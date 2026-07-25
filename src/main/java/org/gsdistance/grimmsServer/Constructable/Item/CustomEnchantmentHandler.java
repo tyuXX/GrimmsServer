@@ -23,15 +23,16 @@ public class CustomEnchantmentHandler {
 
     /**
      * Add a custom enchantment to the item
+     *
      * @param enchantment The enchantment to add
-     * @param level The level of the enchantment
+     * @param level       The level of the enchantment
      * @return true if successful, false if level exceeds max or enchantment already exists
      */
     public boolean addEnchantment(CustomEnchantment enchantment, int level) {
         if (level < 1 || level > enchantment.maxLevel) {
             return false;
         }
-        
+
         if (hasEnchantment(enchantment)) {
             return false;
         }
@@ -43,6 +44,7 @@ public class CustomEnchantmentHandler {
 
     /**
      * Remove a custom enchantment from the item
+     *
      * @param enchantment The enchantment to remove
      * @return true if the enchantment was removed, false if it didn't exist
      */
@@ -61,6 +63,7 @@ public class CustomEnchantmentHandler {
 
     /**
      * Check if the item has a specific custom enchantment
+     *
      * @param enchantment The enchantment to check for
      * @return true if the item has the enchantment with level > 0
      */
@@ -70,6 +73,7 @@ public class CustomEnchantmentHandler {
 
     /**
      * Get the level of a custom enchantment on the item
+     *
      * @param enchantment The enchantment to check
      * @return The level of the enchantment, or 0 if not present
      */
@@ -81,25 +85,27 @@ public class CustomEnchantmentHandler {
 
     /**
      * Get all custom enchantments on the item
+     *
      * @return A map of enchantments to their levels
      */
     public Map<CustomEnchantment, Integer> getAllEnchantments() {
         Map<CustomEnchantment, Integer> enchantments = new HashMap<>();
-        
+
         for (CustomEnchantment enchantment : CustomEnchantment.values()) {
             int level = getEnchantmentLevel(enchantment);
             if (level > 0) {
                 enchantments.put(enchantment, level);
             }
         }
-        
+
         return enchantments;
     }
 
     /**
      * Set the level of an enchantment (overwrites existing)
+     *
      * @param enchantment The enchantment to set
-     * @param level The level to set
+     * @param level       The level to set
      * @return true if successful, false if level is invalid
      */
     public boolean setEnchantmentLevel(CustomEnchantment enchantment, int level) {
@@ -123,6 +129,7 @@ public class CustomEnchantmentHandler {
 
     /**
      * Check if the item has any custom enchantments
+     *
      * @return true if the item has at least one custom enchantment
      */
     public boolean hasAnyEnchantments() {

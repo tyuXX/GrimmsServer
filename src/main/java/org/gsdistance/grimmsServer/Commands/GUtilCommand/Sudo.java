@@ -33,7 +33,7 @@ public class Sudo {
         }
 
         String command = commandBuilder.toString();
-        
+
         try {
             boolean success = target.performCommand(command);
             if (success) {

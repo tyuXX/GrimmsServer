@@ -20,7 +20,7 @@ public class PlayerInventoryData {
     public String[] armorContents; // Store as Base64 strings
     public String[] extraContents; // Store as Base64 strings
     public List<InventorySnapshot> previousInventories;
-    
+
     // Soulbound items - these items are kept on death and restored on respawn
     public Map<Integer, String> soulboundInventoryContents; // Store as Base64 strings
     public String[] soulboundArmorContents; // Store as Base64 strings
@@ -33,7 +33,7 @@ public class PlayerInventoryData {
         this.armorContents = new String[4];
         this.extraContents = new String[36];
         this.previousInventories = new ArrayList<>();
-        
+
         // Initialize soulbound storage
         this.soulboundInventoryContents = new HashMap<>();
         this.soulboundArmorContents = new String[4];
@@ -150,11 +150,11 @@ public class PlayerInventoryData {
     }
 
     // Soulbound item management methods
-    
+
     // Mark an item as soulbound by slot (removes from saved inventory, adds to soulbound storage)
     public void markSoulboundItem(int slot, String itemType) {
         if (itemType == null) return;
-        
+
         if (itemType.equals("inventory")) {
             String item = this.inventoryContents.remove(slot);
             if (item != null) {
@@ -182,7 +182,7 @@ public class PlayerInventoryData {
     // Mark an ItemStack as soulbound (converts to Base64 and marks)
     public void markSoulboundItemStack(int slot, ItemStack itemStack, String itemType) {
         if (itemStack == null) return;
-        
+
         try {
             String base64 = itemStackToBase64(itemStack);
             markSoulboundItem(slot, itemType);

@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'org.gsdistance'
-version = '1.5.6'
+version = '1.5.7'
 
 repositories {
     mavenCentral()
@@ -50,7 +50,7 @@ processResources {
 }
 
 // Custom task to clean only jar files before build
-task cleanJars(type: Delete) {
+tasks.register('cleanJars', Delete) {
     delete fileTree('build/libs') {
         include '*.jar'
         exclude "${project.name}-${version}.jar"
@@ -58,5 +58,19 @@ task cleanJars(type: Delete) {
 }
 
 // Run cleanJars before every build
-build.dependsOn cleanJars
+build.dependsOn 'cleanJars'
+
+// Custom task to increment build.v on every build
+tasks.register('incrementBuildVersion') {
+    doLast {
+        def buildFile = file('src/main/resources/build.v')
+        def currentVersion = buildFile.text.trim().toInteger()
+        def newVersion = currentVersion + 1
+        buildFile.text = newVersion.toString()
+        println "Build version incremented to: ${newVersion}"
+    }
+}
+
+// Run incrementBuildVersion before every build
+build.dependsOn 'incrementBuildVersion'
 

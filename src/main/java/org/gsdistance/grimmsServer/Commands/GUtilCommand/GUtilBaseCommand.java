@@ -115,6 +115,12 @@ public class GUtilBaseCommand implements CommandExecutor {
                     }
                     return false;
                 }
+                case "spawnchampion" -> {
+                    if (sender instanceof Player player) {
+                        return SpawnChampion.subCommand(player, args);
+                    }
+                    return false;
+                }
                 case "sudo" -> {
                     return Sudo.subCommand(sender, args);
                 }

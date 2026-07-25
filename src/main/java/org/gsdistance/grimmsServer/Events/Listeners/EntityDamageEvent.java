@@ -29,6 +29,10 @@ public class EntityDamageEvent {
 
         if (var2 instanceof LivingEntity livingEntity) {
             EntityMetadata metadata = EntityMetadata.getEntityMetadata(livingEntity);
+            // Don't set custom name for champion mobs (they have bossbar instead)
+            if (metadata.championTier > 0) {
+                return;
+            }
             if (metadata.level > 1 || metadata.prestige > 1) {
                 ChatColor levelColor = EntityMetadata.getLevelColor(metadata.level);
 

@@ -65,14 +65,14 @@ public class PlayerTitleChecker {
     private static void checkAllTitles(Player player) {
         PlayerTitles playerTitles = PlayerTitles.getPlayerTitles(player);
         PlayerStats playerStats = PlayerStats.getPlayerStats(player);
-        
+
         // Check static criteria titles
         for (TitleCriteria criteria : TitleCriteria.values()) {
             if (!playerTitles.hasTitle(criteria.getTitleId()) && criteria.test(player)) {
                 playerTitles.addTitle(criteria.getTitleId());
             }
         }
-        
+
         // Check dynamic money titles (all qualifying titles like achievements)
         double money = playerStats.getStat("money", Double.class);
         List<String> moneyTitles = TitleGenerator.getMoneyTitles(money);
@@ -81,7 +81,7 @@ public class PlayerTitleChecker {
                 playerTitles.addTitle(title);
             }
         }
-        
+
         // Check dynamic block break titles (all qualifying titles like achievements)
         long blockBreaks = playerStats.getStat("block_break_count", Long.class);
         List<String> blockBreakTitles = TitleGenerator.getBlockBreakTitles(blockBreaks);
@@ -90,7 +90,7 @@ public class PlayerTitleChecker {
                 playerTitles.addTitle(title);
             }
         }
-        
+
         // Check dynamic kill titles (all qualifying titles like achievements)
         long totalKills = getTotalKills(player);
         List<String> killTitles = TitleGenerator.getKillTitles(totalKills);
@@ -100,7 +100,7 @@ public class PlayerTitleChecker {
             }
         }
     }
-    
+
     private static long getTotalKills(Player player) {
         Object totalKillsObj = PlayerStats.getPlayerStats(player).getStat("total_kill_count", Object.class);
         if (totalKillsObj instanceof Integer) {

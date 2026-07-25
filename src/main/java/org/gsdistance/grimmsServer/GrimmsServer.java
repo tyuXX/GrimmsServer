@@ -69,7 +69,7 @@ public final class GrimmsServer extends JavaPlugin {
         return rt;
     }
 
-    public void registerCustomItems(){
+    public void registerCustomItems() {
         CustomItemRegistry.registerGunTypes();
         CustomItemRegistry.registerAmmoTypes();
     }

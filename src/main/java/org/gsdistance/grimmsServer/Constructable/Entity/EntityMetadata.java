@@ -28,24 +28,53 @@ public class EntityMetadata {
     public int prestige = 1;
     public String originalName;
     public List<EntityAffix> affixes = new ArrayList<>();
+    public List<EntityAbility> abilities = new ArrayList<>();
     public int championTier = 0;
     // Store base values after first leveling to prevent snowballing on chunk reload
     public double maxHealth = 0;
     public double armor = 0;
     public double armorToughness = 0;
     public double attackDamage = 0;
+    // Bossbar for champion mobs
+    public transient org.bukkit.boss.BossBar bossBar;
+    // Ability cooldown tracking (ability UUID -> last execution time in ticks)
+    public transient java.util.Map<UUID, Long> abilityCooldowns = new java.util.HashMap<>();
 
     public EntityMetadata(Entity entity) {
         this.uuid = entity.getUniqueId();
         this.timestamp = LocalDateTime.now().toString();
         this.originalName = entity.getName();
-        while(Math.random() < 0.01){
-            this.championTier++;
-        }
-        if(championTier > 0){
-            while(Math.random() < 0.5){
-                // TODO - Add a random affix with tier equal to or less than the champion tier
 
+        // Determine if this entity becomes a champion
+        Boolean championEnabled = ActiveConfig.getConfigValue(ConfigKey.CHAMPION_MOBS_ENABLED, Boolean.class);
+        Double championChance = ActiveConfig.getConfigValue(ConfigKey.CHAMPION_MOBS_CHANCE, Double.class);
+
+        if (championEnabled != null && championEnabled && championChance != null && Math.random() < championChance) {
+            // Roll for champion tier (1-5)
+            while (Math.random() < 0.5 && this.championTier < 5) {
+                this.championTier++;
+            }
+
+            // Select random affixes based on champion tier
+            if (this.championTier > 0) {
+                int numAffixes = Math.min(this.championTier, EntityAffixes.affixes.size());
+                List<EntityAffix> availableAffixes = new ArrayList<>(EntityAffixes.affixes.keySet());
+                java.util.Collections.shuffle(availableAffixes);
+
+                for (int i = 0; i < numAffixes; i++) {
+                    this.affixes.add(availableAffixes.get(i));
+                }
+
+                // Select random abilities based on champion tier (higher tiers get more abilities)
+                int numAbilities = Math.max(0, this.championTier - 1);
+                if (numAbilities > 0) {
+                    List<EntityAbility> availableAbilities = new ArrayList<>(EntityAbilities.abilities.keySet());
+                    java.util.Collections.shuffle(availableAbilities);
+
+                    for (int i = 0; i < Math.min(numAbilities, availableAbilities.size()); i++) {
+                        this.abilities.add(availableAbilities.get(i));
+                    }
+                }
             }
         }
     }
@@ -69,6 +98,11 @@ public class EntityMetadata {
     }
 
     public void deleteFromFile() {
+        // Remove bossbar if present
+        if (this.bossBar != null) {
+            this.bossBar.removeAll();
+            this.bossBar = null;
+        }
         GrimmsServer.pds.deleteData(this.uuid.toString() + ".json", "entityMetadata");
         PerSessionDataStorage.dataStore.remove("entityMetadata-" + this.uuid);
     }
@@ -87,6 +121,7 @@ public class EntityMetadata {
                 // Apply levelling when metadata is first created
                 if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER) {
                     applyLevelling((LivingEntity) entity, metadata);
+                    applyChampionAffixes((LivingEntity) entity, metadata);
                 }
                 metadata.saveToFile();
             } else {
@@ -97,6 +132,7 @@ public class EntityMetadata {
                 // Re-apply levelling based on saved level/prestige when loading from disk (chunk reload)
                 if (entity instanceof LivingEntity && entity.getType() != EntityType.PLAYER) {
                     applyAttributeModifiers((LivingEntity) entity, metadata);
+                    applyChampionAffixes((LivingEntity) entity, metadata);
                 }
             }
 
@@ -175,6 +211,60 @@ public class EntityMetadata {
         }
         if (livingEntity.getAttribute(Attribute.ATTACK_DAMAGE) != null) {
             metadata.attackDamage = livingEntity.getAttribute(Attribute.ATTACK_DAMAGE).getBaseValue();
+        }
+    }
+
+    private static void applyChampionAffixes(LivingEntity livingEntity, EntityMetadata metadata) {
+        // Apply all champion affixes to the entity
+        for (EntityAffix affix : metadata.affixes) {
+            affix.effect().apply(livingEntity);
+        }
+
+        // Create bossbar for champion mobs
+        if (metadata.championTier > 0) {
+            createBossBar(livingEntity, metadata);
+        }
+    }
+
+    private static void createBossBar(LivingEntity livingEntity, EntityMetadata metadata) {
+        // Remove existing bossbar if present
+        if (metadata.bossBar != null) {
+            metadata.bossBar.removeAll();
+        }
+
+        // Create new bossbar
+        String title = ChatColor.GOLD + "★ Champion " + metadata.championTier + " ★ " + ChatColor.WHITE + livingEntity.getName();
+        metadata.bossBar = org.bukkit.Bukkit.createBossBar(title, org.bukkit.boss.BarColor.RED, org.bukkit.boss.BarStyle.SEGMENTED_10);
+        updateBossBarHealth(livingEntity, metadata);
+
+        // Add nearby players to bossbar
+        Integer radius = ActiveConfig.getConfigValue(ConfigKey.CHAMPION_MOBS_BOSSBAR_RADIUS, Integer.class);
+        if (radius == null) radius = 50;
+
+        for (org.bukkit.entity.Player player : livingEntity.getWorld().getPlayers()) {
+            if (player.getLocation().distance(livingEntity.getLocation()) <= radius) {
+                metadata.bossBar.addPlayer(player);
+            }
+        }
+    }
+
+    public static void updateBossBarHealth(LivingEntity livingEntity, EntityMetadata metadata) {
+        if (metadata.bossBar != null && livingEntity.getAttribute(Attribute.MAX_HEALTH) != null) {
+            double maxHealth = livingEntity.getAttribute(Attribute.MAX_HEALTH).getValue();
+            double currentHealth = livingEntity.getHealth();
+            metadata.bossBar.setProgress(Math.max(0, Math.min(1, currentHealth / maxHealth)));
+        }
+    }
+
+    public void executeAbilities(LivingEntity livingEntity, EntityMetadata metadata, long currentTick) {
+        for (EntityAbility ability : metadata.abilities) {
+            UUID abilityId = java.util.UUID.nameUUIDFromBytes(ability.id().getBytes());
+            Long lastExecution = metadata.abilityCooldowns.get(abilityId);
+
+            if (lastExecution == null || currentTick - lastExecution >= ability.cooldownTicks()) {
+                ability.effect().apply(livingEntity);
+                metadata.abilityCooldowns.put(abilityId, currentTick);
+            }
         }
     }
 
@@ -263,7 +353,11 @@ public class EntityMetadata {
             }
         }
 
-        // Set custom name with level and health bar
+        // Set custom name with level and health bar (skip for champion mobs)
+        if (metadata.championTier > 0) {
+            return;
+        }
+
         ChatColor levelColor = getLevelColor(finalLevel);
 
         double maxHealth = livingEntity.getAttribute(Attribute.MAX_HEALTH).getValue();

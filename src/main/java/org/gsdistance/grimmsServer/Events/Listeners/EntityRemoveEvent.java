@@ -1,7 +1,6 @@
 package org.gsdistance.grimmsServer.Events.Listeners;
 
 import org.bukkit.entity.EntityType;
-import org.gsdistance.grimmsServer.Constructable.Entity.EntityMetadata;
 import org.gsdistance.grimmsServer.Manage.CustomEntityManager;
 
 public class EntityRemoveEvent {

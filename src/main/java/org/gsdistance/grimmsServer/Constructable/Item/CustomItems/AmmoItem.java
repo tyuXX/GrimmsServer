@@ -23,7 +23,7 @@ public class AmmoItem extends CustomItem {
     @Override
     protected void initializeItem() {
         CustomItemHandler handler = CustomItemHandler.getHandler(this.getItemStack());
-        
+
         // Initialize ammo-specific NBT data
         handler.setCustomData("ammo_type", this.ammoType, PersistentDataType.STRING);
         handler.setCustomData("ammo_amount", this.ammoAmount, PersistentDataType.INTEGER);

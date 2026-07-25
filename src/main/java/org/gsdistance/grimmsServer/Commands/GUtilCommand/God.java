@@ -54,7 +54,7 @@ public class God {
         }
 
         targetPlayer.setInvulnerable(enable);
-        
+
         if (targetPlayer == sender) {
             targetPlayer.sendMessage(ChatColor.GREEN + "God mode " + (enable ? "enabled" : "disabled") + ".");
         } else {

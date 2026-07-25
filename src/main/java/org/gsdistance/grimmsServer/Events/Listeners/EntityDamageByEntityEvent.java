@@ -16,7 +16,6 @@ public class EntityDamageByEntityEvent {
             if (!GAuthBaseCommand.isLoggedIn(player)) {
                 player.sendMessage(ChatColor.RED + "You must login with /gAuth login <password> to perform this action.");
                 event.setCancelled(true);
-                return;
             }
         }
     }

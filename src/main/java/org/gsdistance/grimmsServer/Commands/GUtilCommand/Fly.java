@@ -55,7 +55,7 @@ public class Fly {
 
         targetPlayer.setAllowFlight(enable);
         targetPlayer.setFlying(enable);
-        
+
         if (targetPlayer == sender) {
             targetPlayer.sendMessage(ChatColor.GREEN + "Fly mode " + (enable ? "enabled" : "disabled") + ".");
         } else {

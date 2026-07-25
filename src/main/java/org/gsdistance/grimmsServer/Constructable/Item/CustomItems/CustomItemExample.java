@@ -14,7 +14,7 @@ import org.gsdistance.grimmsServer.Constructable.Item.CustomItemRegistry;
  * This is a template for creating your own custom items.
  */
 public class CustomItemExample extends CustomItem {
-    
+
     public CustomItemExample(String itemId, ItemStack itemStack) {
         super(itemId, itemStack);
     }
@@ -30,7 +30,7 @@ public class CustomItemExample extends CustomItem {
             meta.setCustomModelDataComponent(component);
             setItemMeta(meta);
         }
-        
+
         // Store custom data specific to this item type
         getHandler().setCustomData("exampleValue", 42, org.bukkit.persistence.PersistentDataType.INTEGER);
     }
@@ -44,7 +44,7 @@ public class CustomItemExample extends CustomItem {
     public String getDescription() {
         return "An example custom item with special properties.";
     }
-    
+
     /**
      * Example method to register this custom item.
      * Call this during your plugin's onEnable() method.
@@ -53,15 +53,15 @@ public class CustomItemExample extends CustomItem {
         CustomItemRegistry.registerCustomItem("custom_example", itemStack -> {
             // Create the ItemStack (can be any material)
             ItemStack stack = new ItemStack(Material.DIAMOND_SWORD);
-            
+
             // Initialize it as a custom item
             CustomItemHandler.createHandler(stack);
-            
+
             // Create and return the custom item instance
             return new CustomItemExample("custom_example", stack);
         });
     }
-    
+
     /**
      * Example method to create an instance of this custom item.
      */
